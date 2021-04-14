@@ -1,3 +1,3 @@
 # project
 
-Plagable Gamification
+Pluggable Gamification
