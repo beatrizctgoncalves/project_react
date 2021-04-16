@@ -6,8 +6,8 @@ module.exports = function(express, services) {
     }
     const router = express.Router();
 
-    router.post('groups', createGroup); //create group
-    router.get('/groups', getUserGroups); //get user's groups
+    router.post('/groups', createGroup); //create group
+    router.get('/groups/:owner', getUserGroups); //get user's groups
     router.get('/groups/:id', getGroupDetails); //get details of a specific group
     router.get('/groups/:id/rankings', getGroupRankings); //get group's rankings
     router.get('/rankings', getRankings); //get all rankings
@@ -16,7 +16,7 @@ module.exports = function(express, services) {
 
     function createGroup(req, res) {
         promisesAsyncImplementation(
-            services.createGroup(req.body.owner, req.body.group_name, req.body.group_description, req.body.type, req.body.project_id),
+            services.createGroup(req.body.owner, req.body.name, req.body.description, req.body.type, req.body.project_id, 'api/groups/'),
             res
         );
     }
@@ -29,7 +29,7 @@ module.exports = function(express, services) {
     }
 
     function getGroupDetails(req, res) {
-        promisesAsyncImplementation(services.getGroupsDetails(req.params.group_id),
+        promisesAsyncImplementation(services.getGroupDetails(req.params.group_id),
             res
         );
     }
