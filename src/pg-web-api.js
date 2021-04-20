@@ -6,42 +6,80 @@ module.exports = function(express, services) {
     }
     const router = express.Router();
 
-    router.post('/groups', createGroup); //create group
-    router.get('/groups/:owner', getUserGroups); //get user's groups
-    router.get('/groups/:id', getGroupDetails); //get details of a specific group
-    router.get('/groups/:id/rankings', getGroupRankings); //get group's rankings
+    router.post('/projects', createProject); //create project
+    router.get('/projects/owner/:owner', getUserProjects); //get user's projects
+    router.get('/projects/:project_id', getProjectDetails); //get details of a specific project
+    router.delete('/projects/:project_id', deleteProject); //delete a project
+    router.put('/projects/:project_id', editProject); //update project
+
+    router.post(`/projects/:project_id/member/:username`, addMemberToProject); //Add a specific user to a project
+    router.delete('/projects/:project_id/member/:username', removeMemberFromProject); //Remove a specific user from a project
+
+    router.get('/projects/:project_id/rankings', getProjectRankings); //get project's rankings
     router.get('/rankings', getRankings); //get all rankings
+    
 
     return router;
 
-    function createGroup(req, res) {
+    function createProject(req, res) {
         promisesAsyncImplementation(
-            services.createGroup(req.body.owner, req.body.name, req.body.description, req.body.type, req.body.project_id, 'api/groups/'),
+            services.createProject(req.body.owner, req.body.name, req.body.description, req.body.type, req.body.project_id, 'api/projects/'),
             res
         );
     }
 
-    function getUserGroups(req, res) {
+    function getUserProjects(req, res) {
         promisesAsyncImplementation(
-            services.getUserGroups(req.params.owner),
+            services.getUserProjects(req.params.owner),
             res
         );
     }
 
-    function getGroupDetails(req, res) {
-        promisesAsyncImplementation(services.getGroupDetails(req.params.group_id),
+    function getProjectDetails(req, res) {
+        promisesAsyncImplementation(
+            services.getProjectDetails(req.params.project_id),
             res
         );
     }
 
-    function getGroupRankings(req, res) {
-        promisesAsyncImplementation(services.getGroupRankings(req.params.group_id),
+    function deleteProject(req, res) {
+        promisesAsyncImplementation(
+            services.deleteProject(req.params.project_id, 'api/projects/'),
+            res
+        );
+    }
+
+    function editProject(req, res) {
+        promisesAsyncImplementation(
+            services.editProject(req.params.project_id, req.body.name, req.body.description, 'api/projects/'),
+            res
+        );
+    }
+
+    function addMemberToProject(req, res) { //Implementation of the route to add a user to a specific project
+        promisesAsyncImplementation(
+            services.addMemberToProject(req.params.project_id, req.params.username, 'api/projects/'),
+            res
+        );
+    }
+
+    function removeMemberFromProject(req, res) { //Implementation of the route to delete a specific user from a project
+        promisesAsyncImplementation(
+            services.removeMemberFromProject(req.params.project_id, req.params.username, 'api/projects/'),
+            res
+        );
+    }
+
+    function getProjectRankings(req, res) {
+        promisesAsyncImplementation(
+            services.getProjectRankings(req.params.project_id),
             res
         );
     }
 
     function getRankings(req, res) {
-        promisesAsyncImplementation(services.getRankings(),
+        promisesAsyncImplementation(
+            services.getRankings(),
             res
         );
     }

@@ -6,19 +6,31 @@ module.exports = function(express, services) {
     }
     const router = express.Router();
 
-    router.post('/', createUser); //create user    
+    router.post('/signup', signUp);
+    router.get('/:username', getUser);
+    router.post('/signin', signIn);
 
     return router;
 
-    function createUser(req, res) {
+    function signUp(req, res) {
         promisesAsyncImplementation(
-            services.createUser(req.body.owner),
+            services.createUser(req.body.username, req.body.password, 'users/'),
             res
         );
     }
+
+    function getUser(req, res) {
+        promisesAsyncImplementation(
+            services.getUser(req.params.username),
+            res
+        );
+    }
+
+    function signIn(req, res) {
+        
+    }
 }
 
-//Handle multiple asynchronous operations easily and provide better error handling than callbacks and events
 function promisesAsyncImplementation(promise, res) {
     promise
     .then(result => {

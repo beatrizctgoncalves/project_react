@@ -11,7 +11,8 @@ module.exports = {
     DB_ERROR_MSG: "Bad Gateway: Error in DataBase",
     API_ERROR_MSG: "Service Unavailable",
     NOT_FOUND_USER_MSG: "User not found",
-    NOT_FOUND_GROUPS_MSG: "You do not have any groups yet",
+    NOT_FOUND_PROJECT_MSG: "Project not found",
+    NOT_FOUND_PROJECTS_MSG: "You do not have any projects yet",
     BAD_REQUEST_MSG: "Bad Request",
     FORBIDDEN_MSG: "Forbidden",
 
