@@ -12,13 +12,13 @@ module.exports = function(express, services) {
     router.delete('/projects/:project_id', deleteProject); //delete a project
     router.put('/projects/:project_id', editProject); //update project
 
+    router.get(`/projects/:project_id/members`, getProjectMembers); //Add a specific user to a project
     router.post(`/projects/:project_id/member/:username`, addMemberToProject); //Add a specific user to a project
     router.delete('/projects/:project_id/member/:username', removeMemberFromProject); //Remove a specific user from a project
 
     router.get('/projects/:project_id/rankings', getProjectRankings); //get project's rankings
     router.get('/rankings', getRankings); //get all rankings
     
-
     return router;
 
     function createProject(req, res) {
@@ -52,6 +52,13 @@ module.exports = function(express, services) {
     function editProject(req, res) {
         promisesAsyncImplementation(
             services.editProject(req.params.project_id, req.body.name, req.body.description, 'api/projects/'),
+            res
+        );
+    }
+
+    function getProjectMembers(req, res) {
+        promisesAsyncImplementation(
+            services.getProjectMembers(req.params.project_id),
             res
         );
     }

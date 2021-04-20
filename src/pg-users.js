@@ -7,8 +7,11 @@ module.exports = function(express, services) {
     const router = express.Router();
 
     router.post('/signup', signUp);
-    router.get('/:username', getUser);
     router.post('/signin', signIn);
+
+    router.get('/:username', getUser);
+    router.post('/:username', updateUser);
+    router.delete('/:username', deleteUser);
 
     return router;
 
@@ -19,6 +22,10 @@ module.exports = function(express, services) {
         );
     }
 
+    function signIn(req, res) {
+        
+    }
+
     function getUser(req, res) {
         promisesAsyncImplementation(
             services.getUser(req.params.username),
@@ -26,8 +33,18 @@ module.exports = function(express, services) {
         );
     }
 
-    function signIn(req, res) {
-        
+    function updateUser(req, res) {
+        promisesAsyncImplementation(
+            services.updateUser(req.params.username, req.params.firstName, req.params.lastName, req.params.email, req.params.password, 'users/'),
+            res
+        );
+    }
+
+    function deleteUser(req, res) {
+        promisesAsyncImplementation(
+            services.deleteUser(req.params.username, 'users/'),
+            res
+        );
     }
 }
 

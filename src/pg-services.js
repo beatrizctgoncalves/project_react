@@ -71,6 +71,25 @@ function services(database, pgResponses, apiGitlab, apiJira) {
             }
         },
 
+        getProjectMembers: function(project_id, new_name, new_desc, index) {
+            var regExp = /[a-zA-Z]/g;
+            if(!regExp.test(new_name)) {  //verify if new_name has a string
+                return pgResponses.setError( //send the uri with id
+                    pgResponses.BAD_REQUEST,
+                    pgResponses.BAD_REQUEST_MSG
+                )
+            } else {
+                return database.editProject(project_id, new_name, new_desc)
+                    .then(group => {
+                        return pgResponses.setSuccessUri(
+                            pgResponses.OK,
+                            index,
+                            group
+                        )
+                    })
+            }
+        },
+
         addMemberToProject: function(project_id, username, index) {
             return database.getUser(username) //check if the user exists
                 .then(userObj => {
@@ -126,7 +145,7 @@ function services(database, pgResponses, apiGitlab, apiJira) {
 
 
 
-        //USERS
+        /*** USERS ***/
         createUser: function(username, password, index) { //TODO
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(username)) {  //verify if username is a string
@@ -158,6 +177,34 @@ function services(database, pgResponses, apiGitlab, apiJira) {
                         pgResponses.OK,
                         userObj
                     )
+                })
+        },
+
+        updateUser: function(username, firstName, lastName, email, password, index) {
+            return database.getUserId(username)
+                .then(id => {
+                    return database.updateUser(id, firstName, lastName, email, password)
+                        .then(user_name => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                user_name,
+                                index
+                            )
+                        })
+                })
+        },
+
+        deleteUser: function(username, index) {
+            return database.getUserId(username)
+                .then(id => {
+                    return database.deleteUser(id)
+                        .then(user_name => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                user_name,
+                                index
+                            )
+                        })
                 })
         }
     }

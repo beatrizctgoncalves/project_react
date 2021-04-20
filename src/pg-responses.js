@@ -8,12 +8,14 @@ module.exports = {
     BAD_REQUEST: 400,
     FORBIDDEN: 403,
 
-    DB_ERROR_MSG: "Bad Gateway: Error in DataBase",
+    DB_ERROR_MSG: "Bad Gateway - Error in DataBase",
     API_ERROR_MSG: "Service Unavailable",
     NOT_FOUND_USER_MSG: "User not found",
     NOT_FOUND_PROJECT_MSG: "Project not found",
     NOT_FOUND_PROJECTS_MSG: "You do not have any projects yet",
     BAD_REQUEST_MSG: "Bad Request",
+    BAD_REQUEST_USERNAME_MSG: "Invalid username supplied",
+    BAD_REQUEST_PASSWORD_MSG: "Invalid password supplied",
     FORBIDDEN_MSG: "Forbidden",
 
     setError: function(status, message) {
