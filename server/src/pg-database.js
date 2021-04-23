@@ -23,17 +23,17 @@ function makeFetch(uri, method, body) {
 }
 
 module.exports = {
-    createProject: function(owner, project_name, project_description, type, project_id) {
+    createGroup: function(owner, group_name, group_description, type, group_id) {
         var requestBody = JSON.stringify({
             "owner": owner,
-            "name": project_name,
-            "description": project_description,
+            "name": group_name,
+            "description": group_description,
             "members": [],
             "type": type,
-            "project_id": project_id,
+            "group_id": group_id,
             "ratings": []
         })
-        return makeFetch('projects/_doc', arrayMethods.POST, requestBody)
+        return makeFetch('groups/_doc', arrayMethods.POST, requestBody)
             .then(body => {
                 if(!body.error) return body._id;
                 else return pgResponses.setError(pgResponses.DB_ERROR)
@@ -41,8 +41,8 @@ module.exports = {
             .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
     },
 
-    getUserProjects: function(owner) {
-        return makeFetch(`projects/_search?q=owner:${owner}`, arrayMethods.POST, null)
+    getUserGroups: function(owner) {
+        return makeFetch(`groups/_search?q=owner:${owner}`, arrayMethods.POST, null)
             .then(body => {
                 if(body.hits && body.hits.hits.length) {
                     return body.hits.hits.map(hit => {
@@ -50,7 +50,7 @@ module.exports = {
                         return hit._source;
                     });
                 } else {
-                    return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_PROJECTS_MSG);
+                    return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_groupS_MSG);
                 }
             })
             .catch(error => {
@@ -59,13 +59,13 @@ module.exports = {
             })
     },
 
-    getProjectDetails: function(id) {
-        return makeFetch(`projects/_doc/${id}`, arrayMethods.GET, null)
+    getGroupDetails: function(id) {
+        return makeFetch(`groups/_doc/${id}`, arrayMethods.GET, null)
             .then(body => {
                 if(body.found) {
                     body._source.id = body._id;
                     return body._source;
-                } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_PROJECT_MSG);
+                } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_group_MSG);
             })
             .catch(error => {
                 if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
@@ -73,11 +73,11 @@ module.exports = {
             })
     },
 
-    deleteProject: function(project_id) {
-        return makeFetch(`projects/_doc/${project_id}?refresh=true`, arrayMethods.DELETE, null)
+    deleteGroup: function(group_id) {
+        return makeFetch(`groups/_doc/${group_id}?refresh=true`, arrayMethods.DELETE, null)
             .then(body => {
                 if(body.result === 'deleted') return body._id
-                else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_PROJECT_MSG);
+                else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_group_MSG);
             })
             .catch(error => {
                 if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
@@ -85,7 +85,7 @@ module.exports = {
             })
     },
 
-    editProject: function(project_id, new_name, new_desc) {
+    editGroup: function(group_id, new_name, new_desc) {
         var requestBody = JSON.stringify({
             "script": {
                 "source": "ctx._source.name = params.name; ctx._source.description = params.description",
@@ -95,11 +95,11 @@ module.exports = {
                 }
             }
         });
-        return makeFetch(`projects/_update/${project_id}`, arrayMethods.POST, requestBody)
+        return makeFetch(`groups/_update/${group_id}`, arrayMethods.POST, requestBody)
             .then(body => {
                 if(body.result == 'updated') {
                     return body._id;
-                } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_PROJECT_MSG);
+                } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_group_MSG);
             })
             .catch(error => {
                 if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
@@ -107,7 +107,7 @@ module.exports = {
             })
     },
 
-    addMemberToProject: function(project_id, username){
+    addMemberToGroup: function(group_id, username){
         var requestBody = JSON.stringify({
             "script": {
                 "lang": "painless",
@@ -119,12 +119,12 @@ module.exports = {
                 }
             }
         });
-        return makeFetch(`projects/_update/${project_id}`, arrayMethods.POST, requestBody)
+        return makeFetch(`groups/_update/${group_id}`, arrayMethods.POST, requestBody)
             .then(body => body._id)
             .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
     },
 
-    removeMemberFromProject: function(project_id, user_index) {
+    removeMemberFromGroup: function(group_id, user_index) {
         var requestBody =  JSON.stringify({
             "script": {
                 "lang": "painless",
@@ -134,7 +134,7 @@ module.exports = {
                 }
             }
         });
-        return makeFetch(`projects/_update/${project_id}`,arrayMethods.POST,requestBody)
+        return makeFetch(`groups/_update/${group_id}`,arrayMethods.POST,requestBody)
             .then(body => body._id)
             .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
     },
@@ -192,11 +192,11 @@ module.exports = {
                 }
             }
         });
-        return makeFetch(`projects/_update/${id}`, arrayMethods.POST, requestBody)
+        return makeFetch(`groups/_update/${id}`, arrayMethods.POST, requestBody)
             .then(body => {
                 if(body.result == 'updated') {
                     return body._id;
-                } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_PROJECT_MSG);
+                } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_group_MSG);
             })
             .catch(error => {
                 if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
@@ -208,7 +208,7 @@ module.exports = {
         return makeFetch(`users/_doc/${id}?refresh=true`, arrayMethods.DELETE, null)
             .then(body => {
                 if(body.result === 'deleted') return body._id
-                else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_PROJECT_MSG);
+                else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_group_MSG);
             })
             .catch(error => {
                 if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);

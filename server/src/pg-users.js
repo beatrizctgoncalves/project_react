@@ -10,7 +10,7 @@ module.exports = function(express, services) {
     router.post('/signin', signIn);
 
     router.get('/:username', getUser);
-    router.post('/:username', updateUser);
+    router.patch('/:username', updateUser);
     router.delete('/:username', deleteUser);
 
     return router;
