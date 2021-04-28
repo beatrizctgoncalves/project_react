@@ -4,14 +4,14 @@ const URL = 'https://gitlab.com/api/v4/'
 
 const fetch = require('node-fetch');
 
-getUserId(UserName,AccessToken)
+getUserId(UserName)
     .then(Uid => getProjects(Uid,AccessToken))
     .then(Pid => getIssues(Pid,AccessToken))
 
 
 
-function getUserId(username,AToken) {
-    return fetch(`${URL}users?username=${username}&access_token=${AToken}`, {
+function getUserId(username) {
+    return fetch(`${URL}users?username=${username}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
