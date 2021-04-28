@@ -18,6 +18,8 @@ module.exports = function(express, services) {
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
     router.get('/rankings', getRankings); //get all rankings
+
+    router.get('/groups/:group_id/jira/issues', getJiraIssuesFromGroup);
     
     return router;
 
@@ -87,6 +89,13 @@ module.exports = function(express, services) {
     function getRankings(req, res) {
         promisesAsyncImplementation(
             services.getRankings(),
+            res
+        );
+    }
+
+    function getJiraIssuesFromGroup(req, res) {
+        promisesAsyncImplementation(
+            services.getJiraIssuesFromGroup(req.group_id),
             res
         );
     }

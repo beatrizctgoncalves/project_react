@@ -55,7 +55,7 @@ function services(database, pgResponses, apiGitlab, apiJira) {
         editGroup: function(group_id, new_name, new_desc, index) {
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(new_name)) {  //verify if new_name has a string
-                return pgResponses.setError( //send the uri with id
+                return pgResponses.setError(
                     pgResponses.BAD_REQUEST,
                     pgResponses.BAD_REQUEST_MSG
                 )
@@ -74,7 +74,7 @@ function services(database, pgResponses, apiGitlab, apiJira) {
         getGroupMembers: function(group_id, new_name, new_desc, index) {
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(new_name)) {  //verify if new_name has a string
-                return pgResponses.setError( //send the uri with id
+                return pgResponses.setError(
                     pgResponses.BAD_REQUEST,
                     pgResponses.BAD_REQUEST_MSG
                 )
@@ -206,6 +206,10 @@ function services(database, pgResponses, apiGitlab, apiJira) {
                             )
                         })
                 })
+        },
+
+        getJiraIssuesFromGroup: function(group_id) {
+            return apiJira.getJiraIssues()
         }
     }
     return serv;
