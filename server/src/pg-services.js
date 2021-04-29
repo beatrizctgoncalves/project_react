@@ -71,31 +71,77 @@ function services(database, pgResponses, apiGitlab, apiJira) {
             }
         },
 
-        getGroupMembers: function(group_id, new_name, new_desc, index) {
-            var regExp = /[a-zA-Z]/g;
-            if(!regExp.test(new_name)) {  //verify if new_name has a string
-                return pgResponses.setError(
-                    pgResponses.BAD_REQUEST,
-                    pgResponses.BAD_REQUEST_MSG
-                )
-            } else {
-                return database.editGroup(group_id, new_name, new_desc)
-                    .then(group => {
-                        return pgResponses.setSuccessUri(
-                            pgResponses.OK,
-                            index,
-                            group
-                        )
-                    })
-            }
+        getGroupProjects: function(group_id) {
+            return database.getGroupDetails(group_id)
+                .then(group => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        group.projects
+                    )
+                })
         },
 
+        addProjectJiraToGroup: function(group_id, url, email, token, name, index) {
+            return apiJira.validateProject(url, email, token, name)
+                .then(validatedObj => {
+                    return database.getGroupDetails(group_id)
+                        .then(groupObj => {
+                            const projectExists = groupObj.projects.findIndex(p => p.name == name)
+                            if(projectExists != -1) {
+                                return pgResponses.setError(
+                                    pgResponses.FORBIDDEN,
+                                    pgResponses.FORBIDDEN_MSG
+                                )
+                            }
+                            return database.addProjectToGroup(group_id, name, "jira")
+                                .then(finalObj => {
+                                    return pgResponses.setSuccessUri(
+                                        pgResponses.OK,
+                                        index,
+                                        finalObj
+                                    )   
+                                })
+                        })
+                })
+        },
+
+        removeProjectJiraFromGroup: function(group_id, name, index) {
+            return database.getGroupDetails(group_id) //check if the group exists
+                .then(groupObj => {
+                    const project_index = groupObj.projects.findIndex(p => p.name === name)  //get the user's index
+                    if(project_index === -1) { //the user doesnt exist in the group
+                        return pgResponses.setError(
+                            pgResponses.NOT_FOUND,
+                            pgResponses.NOT_FOUND_USER_MSG //todo
+                        );
+                    }
+                    return database.removeProjectFromGroup(group_id, project_index) //remove the user by index
+                        .then(id => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                index,
+                                id
+                            )
+                        })
+                })
+        },
+
+        getGroupMembers: function(group_id) {
+            return database.getGroupDetails(group_id)
+                .then(group => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        group.members
+                    )
+                })
+        },
+        
         addMemberToGroup: function(group_id, username, index) {
             return database.getUser(username) //check if the user exists
                 .then(userObj => {
                     return database.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            const userExists = groupObj.members.findIndex(m => m.username === parseInt(username))
+                            const userExists = groupObj.members.findIndex(m => m.username === username)
                             if(userExists != -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
@@ -206,10 +252,6 @@ function services(database, pgResponses, apiGitlab, apiJira) {
                             )
                         })
                 })
-        },
-
-        getJiraIssuesFromGroup: function(group_id) {
-            return apiJira.getJiraIssues()
         }
     }
     return serv;

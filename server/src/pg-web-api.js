@@ -12,14 +12,16 @@ module.exports = function(express, services) {
     router.delete('/groups/:group_id', deleteGroup); //delete a group
     router.patch('/groups/:group_id', editGroup); //update group
 
+    router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
+    router.post(`/groups/:group_id/project/jira`, addProjectJiraToGroup); //Add a specific project to a group
+    router.delete('/groups/:group_id/project/jira/:name', removeProjectJiraFromGroup); //Remove a specific project from a group
+
     router.get(`/groups/:group_id/members`, getGroupMembers); //Add a specific user to a group
     router.post(`/groups/:group_id/member/:username`, addMemberToGroup); //Add a specific user to a group
     router.delete('/groups/:group_id/member/:username', removeMemberFromGroup); //Remove a specific user from a group
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
     router.get('/rankings', getRankings); //get all rankings
-
-    router.get('/groups/:group_id/jira/issues', getJiraIssuesFromGroup);
     
     return router;
 
@@ -58,6 +60,27 @@ module.exports = function(express, services) {
         );
     }
 
+    function getGroupProjects(req, res) {
+        promisesAsyncImplementation(
+            services.getGroupProjects(req.params.group_id),
+            res
+        );
+    }
+
+    function addProjectJiraToGroup(req, res) {
+        promisesAsyncImplementation(
+            services.addProjectJiraToGroup(req.params.group_id, req.body.url, req.body.email, req.body.token, req.body.name, 'api/groups/'),
+            res
+        );
+    }
+
+    function removeProjectJiraFromGroup(req, res) {
+        promisesAsyncImplementation(
+            services.removeProjectJiraFromGroup(req.params.group_id, req.params.name, 'api/groups/'),
+            res
+        );
+    }
+
     function getGroupMembers(req, res) {
         promisesAsyncImplementation(
             services.getGroupMembers(req.params.group_id),
@@ -89,13 +112,6 @@ module.exports = function(express, services) {
     function getRankings(req, res) {
         promisesAsyncImplementation(
             services.getRankings(),
-            res
-        );
-    }
-
-    function getJiraIssuesFromGroup(req, res) {
-        promisesAsyncImplementation(
-            services.getJiraIssuesFromGroup(req.group_id),
             res
         );
     }

@@ -23,14 +23,13 @@ function makeFetch(uri, method, body) {
 }
 
 module.exports = {
-    createGroup: function(owner, group_name, group_description, type, group_id) {
+    createGroup: function(owner, group_name, group_description) {
         var requestBody = JSON.stringify({
             "owner": owner,
             "name": group_name,
             "description": group_description,
             "members": [],
-            "type": type,
-            "group_id": group_id,
+            "projects": [],
             "ratings": []
         })
         return makeFetch('groups/_doc', arrayMethods.POST, requestBody)
@@ -105,6 +104,39 @@ module.exports = {
                 if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
                 else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
             })
+    },
+
+    addProjectToGroup: function(group_id, name, type) {
+        var requestBody = JSON.stringify({
+            "script": {
+                "lang": "painless",
+                "inline": "ctx._source.projects.add(params.projects)",
+                "params": {
+                    "projects": {
+                        "name": name,
+                        "type": type
+                    }
+                }
+            }
+        });
+        return makeFetch(`groups/_update/${group_id}`, arrayMethods.POST, requestBody)
+            .then(body => body._id)
+            .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+    },
+
+    removeProjectFromGroup: function(group_id, project_index) {
+        var requestBody =  JSON.stringify({
+            "script": {
+                "lang": "painless",
+                "inline": "ctx._source.projects.remove(params.project)",
+                "params": {
+                    "project": project_index
+                }
+            }
+        });
+        return makeFetch(`groups/_update/${group_id}`,arrayMethods.POST,requestBody)
+            .then(body => body._id)
+            .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
     },
 
     addMemberToGroup: function(group_id, username){
