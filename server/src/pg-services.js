@@ -81,19 +81,19 @@ function services(database, pgResponses, apiGitlab, apiJira) {
                 })
         },
 
-        addProjectJiraToGroup: function(group_id, url, email, token, name, index) {
-            return apiJira.validateProject(url, email, token, name)
+        addProjectJiraToGroup: function(group_id, url, email, token, key, index) {
+            return apiJira.validateProject(url, email, token, key)
                 .then(validatedObj => {
                     return database.getGroupDetails(group_id)
                         .then(groupObj => {
-                            const projectExists = groupObj.projects.findIndex(p => p.name == name)
+                            const projectExists = groupObj.projects.findIndex(p => p.key == key)
                             if(projectExists != -1) {
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return database.addProjectToGroup(group_id, name, "jira")
+                            return database.addProjectToGroup(group_id, key, "jira")
                                 .then(finalObj => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,
@@ -105,17 +105,17 @@ function services(database, pgResponses, apiGitlab, apiJira) {
                 })
         },
 
-        removeProjectJiraFromGroup: function(group_id, name, index) {
-            return database.getGroupDetails(group_id) //check if the group exists
+        removeProjectJiraFromGroup: function(group_id, key, index) {
+            return database.getGroupDetails(group_id)
                 .then(groupObj => {
-                    const project_index = groupObj.projects.findIndex(p => p.name === name)  //get the user's index
-                    if(project_index === -1) { //the user doesnt exist in the group
+                    const project_index = groupObj.projects.findIndex(p => p.key === key)
+                    if(project_index === -1) {
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
-                            pgResponses.NOT_FOUND_USER_MSG //todo
+                            pgResponses.NOT_FOUND_PROJECT_MSG
                         );
                     }
-                    return database.removeProjectFromGroup(group_id, project_index) //remove the user by index
+                    return database.removeProjectFromGroup(group_id, project_index)
                         .then(id => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,

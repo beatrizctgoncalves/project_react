@@ -49,6 +49,6 @@ function getIssues(PId,AToken) {
                 "due_date": issue.due_date 
             }
         }))
-        .then(issues => console.log(issues))
+        //.then(issues => console.log(issues))
         .catch(err => console.error(err));
 }
