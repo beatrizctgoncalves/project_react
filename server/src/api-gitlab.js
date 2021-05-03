@@ -3,11 +3,14 @@ const UserName = 'pinto6'
 const URL = 'https://gitlab.com/api/v4/'
 
 const fetch = require('node-fetch');
+const pgResponses = require('./pg-responses');
 
 /*Test to get issues*/
 //getUserId(UserName)
 //    .then(Uid => getProjects(Uid, AccessToken))
 //    .then(Pid => getIssues(Pid, AccessToken))
+
+teste("pinto6")
 
 function makeRequest(URI) {
     return fetch(`${URL}${URI}`, {
@@ -16,21 +19,56 @@ function makeRequest(URI) {
             'Accept': 'application/json'
         }
     })
-    .then(response => response.json())
-    .catch(err => console.error(err));
+    .then(response => {
+        console.log(response)
+        if(response.status != pgResponses.OK) return Promise.reject(response);
+        return response.json()
+    })
+}
+
+
+function resolveError(error){
+    if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, pgResponses.NOT_FOUND_PROJECT_MSG);
+    else if(error.status == pgResponses.FORBIDDEN) return pgResponses.setError(error.status, pgResponses.FORBIDDEN_MSG);
+    else return pgResponses.setError(pgResponses.API_ERROR, pgResponses.API_ERROR_MSG);            
 }
 
 module.exports = {
+
+    validateProject: function(Pid, AToken) {
+        return makeRequest(`projects/${Pid}?access_token=${AToken}`)
+            .then(body => {
+                return {
+                    "id": body.id,
+                    "owner_name": body.owner.username,
+                    "owner_id": body.owner.id,
+                    "description": body.description,
+                    "avatar": body.avatar_url,
+                    "type": "Gitlab"
+                }
+            })
+            .catch(error => resolveError(error))
+    },
+
     getUserId: function(username) {
         return makeRequest(`users?username=${username}`)
             .then(user => user[0].id)
-            .catch(err => console.error(err));
+            .catch(error => resolveError(error))
     },
     
-    getProjects: function(Uid, AToken) {
+    getProjectsFromUser: function(Uid, AToken) {
         return makeRequest(`users/${Uid}/projects?access_token=${AToken}`)
-            .then(projects => projects[0].id)  //getting the first project available, should be searched by name or something similar
-            .catch(err => console.error(err));
+        .then(body => body.map(project =>{
+            return {
+                "id": project.id,
+                "owner_name": project.owner.username,
+                "owner_id": project.owner.id,
+                "description": project.description,
+                "avatar": project.avatar_url,
+                "type": "Gitlab"
+            }
+        }))    
+        .catch(error => resolveError(error))
     },
     
     getIssues: function(PId, AToken) {
@@ -47,7 +85,6 @@ module.exports = {
                     "due_date": issue.due_date 
                 }
             }))
-            //.then(issues => console.log(issues))
-            .catch(err => console.error(err));
+            .catch(error => resolveError(error));
     }
 }
