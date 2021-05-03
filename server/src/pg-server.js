@@ -11,8 +11,9 @@ const database = require('./pg-database');
 const apiGitlab = require('./api-gitlab');
 const apiJira = require('./api-jira');
 const pgResponses = require('./pg-responses');
+const pgScores = require('./pg-scores');
 
-const services = require('./pg-services')(database, pgResponses, apiGitlab, apiJira);
+const services = require('./pg-services')(database, pgResponses, pgScores, apiGitlab, apiJira);
 
 const webApi = require('./pg-web-api')(express, services); //Import the web-api
 const usersCreator = require('./pg-users')(express, services);

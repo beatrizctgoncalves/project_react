@@ -1,6 +1,6 @@
 'use strict'
 
-function services(database, pgResponses, apiGitlab, apiJira) {
+function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
     const serv = {
 
         createGroup: function(owner, name, description, type, group_id, index) {
@@ -93,7 +93,7 @@ function services(database, pgResponses, apiGitlab, apiJira) {
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return database.addProjectToGroup(group_id, key, "jira")
+                            return database.addProjectJiraToGroup(group_id, validatedObj)
                                 .then(finalObj => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,
@@ -181,8 +181,23 @@ function services(database, pgResponses, apiGitlab, apiJira) {
                 })
         },
 
-        getgroupRankings: function(group_id) {
-            //TODO
+        getGroupRankings: function(group_id, url, email, token) {
+            return database.getGroupDetails(group_id)
+                .then(groupObj => groupObj.projects.map(p => apiJira.getIssues(url, email, token, p.key)))
+                .then(issuesObj => Promise.all(issuesObj))
+                .then(issues => { 
+                    return issues[0].map(i => {
+                        if(i.state.statusCategory.key == 'done') 
+                            return database.addRatingsToGroup(group_id, i.key, i.assignee.accountId, pgScores.ISSUE)
+                    })
+                })
+                .then(addedIssueObj => Promise.all(addedIssueObj))
+                .then(ratings => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        ratings
+                    )
+                })
         },
 
         getRankings: function() {

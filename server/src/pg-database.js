@@ -106,15 +106,20 @@ module.exports = {
             })
     },
 
-    addProjectToGroup: function(group_id, name, type) {
+    addProjectJiraToGroup: function(group_id, information) {
         var requestBody = JSON.stringify({
             "script": {
                 "lang": "painless",
                 "inline": "ctx._source.projects.add(params.projects)",
                 "params": {
                     "projects": {
-                        "key": name,
-                        "type": type
+                        "key": information.key,
+                        "lead_name": information.lead_name,
+                        "lead_id": information.lead_id,
+                        "description": information.description,
+                        "avatar": information.avatar,
+                        "projectTypeKey": information.projectTypeKey,
+                        "type": information.type
                     }
                 }
             }
@@ -167,6 +172,25 @@ module.exports = {
             }
         });
         return makeFetch(`groups/_update/${group_id}`,arrayMethods.POST,requestBody)
+            .then(body => body._id)
+            .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+    },
+
+    addRatingsToGroup: function(group_id, key, accountId, score) {
+        var requestBody = JSON.stringify({
+            "script": {
+                "lang": "painless",
+                "inline": "ctx._source.ratings.add(params.ratings)",
+                "params": {
+                    "ratings": {
+                        "key": key,
+                        "assignee_id": accountId,
+                        "score": score
+                    }
+                }
+            }
+        });
+        return makeFetch(`groups/_update/${group_id}`, arrayMethods.POST, requestBody)
             .then(body => body._id)
             .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
     },

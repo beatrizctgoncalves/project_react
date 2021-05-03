@@ -104,7 +104,7 @@ module.exports = function(express, services) {
 
     function getGroupRankings(req, res) {
         promisesAsyncImplementation(
-            services.getGroupRankings(req.params.group_id),
+            services.getGroupRankings(req.params.group_id, req.body.url, req.body.email, req.body.token),
             res
         );
     }
