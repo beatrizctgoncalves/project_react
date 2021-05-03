@@ -126,6 +126,51 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                 })
         },
 
+        addProjectGitlabToGroup: function(group_id, Pid, AToken, index) {
+            return apiGitlab.validateProject(Pid, AToken)
+                .then(validatedObj => {
+                    return database.getGroupDetails(group_id)
+                        .then(groupObj => {
+                            const projectExists = groupObj.projects.findIndex(p => p.key == key)
+                            if(projectExists != -1) {
+                                return pgResponses.setError(
+                                    pgResponses.FORBIDDEN,
+                                    pgResponses.FORBIDDEN_MSG
+                                )
+                            }
+                            return database.addProjectGitlabToGroup(group_id, validatedObj)
+                                .then(finalObj => {
+                                    return pgResponses.setSuccessUri(
+                                        pgResponses.OK,
+                                        index,
+                                        finalObj
+                                    )   
+                                })
+                        })
+                })
+        },
+
+        removeProjectJiraFromGroup: function(group_id, id, index) {
+            return database.getGroupDetails(group_id)
+                .then(groupObj => {
+                    const project_index = groupObj.projects.findIndex(p => p.id === id)
+                    if(project_index === -1) {
+                        return pgResponses.setError(
+                            pgResponses.NOT_FOUND,
+                            pgResponses.NOT_FOUND_PROJECT_MSG
+                        );
+                    }
+                    return database.removeProjectFromGroup(group_id, project_index)
+                        .then(id => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                index,
+                                id
+                            )
+                        })
+                })
+        },
+
         getGroupMembers: function(group_id) {
             return database.getGroupDetails(group_id)
                 .then(group => {

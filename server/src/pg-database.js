@@ -130,6 +130,29 @@ module.exports = {
             .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
     },
 
+    //should be the same info as the project from Jira (instead of key should be id on both, should be the same)
+    addProjectGitlabToGroup: function(group_id, information) {
+        var requestBody = JSON.stringify({
+            "script": {
+                "lang": "painless",
+                "inline": "ctx._source.projects.add(params.projects)",
+                "params": {
+                    "projects": {
+                        "id": information.id,
+                        "owner_name": information.owner_name,
+                        "owner_id": information.owner_id,
+                        "description": information.description,
+                        "avatar": information.avatar,
+                        "type": information.type
+                    }
+                }
+            }
+        });
+        return makeFetch(`groups/_update/${group_id}`, arrayMethods.POST, requestBody)
+            .then(body => body._id)
+            .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+    },
+
     removeProjectFromGroup: function(group_id, project_index) {
         var requestBody =  JSON.stringify({
             "script": {
