@@ -113,6 +113,7 @@ module.exports = {
                 "inline": "ctx._source.projects.add(params.projects)",
                 "params": {
                     "projects": {
+                        "id": information.id,
                         "key": information.key,
                         "lead_name": information.lead_name,
                         "lead_id": information.lead_id,

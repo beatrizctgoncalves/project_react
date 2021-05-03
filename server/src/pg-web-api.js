@@ -14,7 +14,7 @@ module.exports = function(express, services) {
 
     router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
     router.post(`/groups/:group_id/project/jira`, addProjectJiraToGroup); //Add a specific project to a group
-    router.delete('/groups/:group_id/project/jira/:key', removeProjectJiraFromGroup); //Remove a specific project from a group
+    router.delete('/groups/:group_id/project/jira/:project_id', removeProjectFromGroup); //Remove a specific project from a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Add a specific user to a group
     router.post(`/groups/:group_id/member/:username`, addMemberToGroup); //Add a specific user to a group
@@ -74,9 +74,9 @@ module.exports = function(express, services) {
         );
     }
 
-    function removeProjectJiraFromGroup(req, res) {
+    function removeProjectFromGroup(req, res) {
         promisesAsyncImplementation(
-            services.removeProjectJiraFromGroup(req.params.group_id, req.params.key, 'api/groups/'),
+            services.removeProjectFromGroup(req.params.group_id, req.params.project_id, 'api/groups/'),
             res
         );
     }

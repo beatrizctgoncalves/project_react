@@ -105,10 +105,10 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                 })
         },
 
-        removeProjectJiraFromGroup: function(group_id, key, index) {
+        removeProjectFromGroup: function(group_id, project_id, index) {
             return database.getGroupDetails(group_id)
                 .then(groupObj => {
-                    const project_index = groupObj.projects.findIndex(p => p.key === key)
+                    const project_index = groupObj.projects.findIndex(p => p.id === project_id)
                     if(project_index === -1) {
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,

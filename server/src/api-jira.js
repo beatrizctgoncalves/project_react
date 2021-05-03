@@ -31,6 +31,7 @@ module.exports = {
         return makeFetch(`${url}/rest/api/3/project/${key}?expand=lead`, arrayMethods.GET, null, email, token)
             .then(body => {
                 return {
+                    "id": body.id,
                     "key": key,
                     "lead_self": body.lead.self,
                     "lead_id": body.lead.accountId,
@@ -48,8 +49,8 @@ module.exports = {
     },
 
     getUserById: function(url, email, token) {
-        return makeFetch(url, arrayMethods.GET, null, email, token)
-            .then(body => body.emailAddress)
+        return makeFetch(`${url}&expand=groups,applicationRoles`, arrayMethods.GET, null, email, token)
+            .then(body => body)
             .catch(error => {
                 if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, pgResponses.NOT_FOUND_PROJECT_MSG);
                 else if(error.status == pgResponses.FORBIDDEN) return pgResponses.setError(error.status, pgResponses.FORBIDDEN_MSG);
