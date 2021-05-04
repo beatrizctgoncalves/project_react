@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(express, services) {
+module.exports = function(express, services,authization) {
     if (!services) {
         throw "Invalid services object";
     }

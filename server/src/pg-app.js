@@ -22,19 +22,24 @@ const dbConfigs = {
     "user":'postgres',
     "password":'1234',
     "connectionLimit": 5,
-    "database":'PS',
+    "database":'plug',
     "dbms": 'postgres'
-    }
-  
-    var authization = await require('@authization/authization').setup({app,db:dbConfigs});
+    
+}
+ 
 
-const services = require('./pg-services')(database, pgResponses, pgScores, apiGitlab, apiJira);
+let authization = await require('@authization/authization').setup({app,db:dbConfigs});
 
-const webApi = require('./pg-web-api')(express, services,authization); //Import the web-api
-const usersCreator = require('./pg-users')(express, services,authization);
+console.log(authization)
+
+const services = require('./pg-services')(database, pgResponses, pgScores, apiGitlab, apiJira, authization);
+
+const webApi = require('./pg-web-api')(express, services, authization); //Import the web-api
+const usersCreator = require('./pg-users')(express, services, authization);
 
 app.use('/api', webApi);
 app.use('/users', usersCreator);
 
 return app
+
 }

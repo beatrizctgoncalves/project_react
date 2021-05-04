@@ -8,7 +8,7 @@ module.exports = function(express, services,authization) {
     const users = authization.users
 
     router.post('/signup', signUp);
-    router.post('/signin',authization.authenticate.usinglocal, signIn);
+    //router.post('/signin',authization.authenticate.usinglocal, signIn);
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
@@ -17,6 +17,7 @@ module.exports = function(express, services,authization) {
     return router;
 
     function signUp(req, res) {
+        console.log("signUp in pg-users");
         promisesAsyncImplementation(
             services.createUser(req.body.username, req.body.password, 'users/'),
             res

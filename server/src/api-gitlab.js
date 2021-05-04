@@ -10,7 +10,6 @@ const pgResponses = require('./pg-responses');
 //    .then(Uid => getProjects(Uid, AccessToken))
 //    .then(Pid => getIssues(Pid, AccessToken))
 
-teste("pinto6")
 
 function makeRequest(URI) {
     return fetch(`${URL}${URI}`, {

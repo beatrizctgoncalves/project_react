@@ -1,6 +1,8 @@
 'use strict'
 
-function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
+function services(database, pgResponses, pgScores, apiGitlab, apiJira, authization) {
+
+    const  authUser = authization.user
     const serv = {
 
         createGroup: function(owner, name, description, type, group_id, index) {
@@ -252,6 +254,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
 
 
         /*** USERS ***/
+        /*
         createUser: function(username, password, index) { //TODO
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(username)) {  //verify if username is a string
@@ -274,7 +277,29 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                             }
                         })
                 })
+        },*/
+
+        createUser: function(username, password, index) { //TODO
+            var regExp = /[a-zA-Z]/g;
+            if(!regExp.test(username)) {  //verify if username is a string
+                return pgResponses.setError(
+                    pgResponses.BAD_REQUEST,
+                    pgResponses.BAD_REQUEST_MSG
+                )
+            }
+            
+            return authUser.create(username,password).then(()=>{
+                return {
+                    status: pgResponses.OK,
+                    body: pgResponses.URI_MSG.concat(index).concat(username)
+                }
+
+            }).catch(error=>{
+                return pgResponses.setError(error.status,error.body)
+            });
+            
         },
+        /*
 
         getUser: function(username) {
             return database.getUser(username)
@@ -284,7 +309,20 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                         userObj
                     )
                 })
+        },*/
+
+        getUser: function(username) {
+            return authUser.getByUsername(username)
+                .then(userObj => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        userObj
+                    )
+                })
         },
+
+
+
 
         updateUser: function(username, firstName, lastName, email, password, index) {
             return database.getUserId(username)
@@ -301,9 +339,8 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
         },
 
         deleteUser: function(username, index) {
-            return database.getUserId(username)
-                .then(id => {
-                    return database.deleteUser(id)
+            const id = getUser(username).id
+            return authUser.delete(id)
                         .then(user_name => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
@@ -311,7 +348,6 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                                 index
                             )
                         })
-                })
         }
     }
     return serv;
