@@ -1,13 +1,14 @@
 'use strict'
 
-module.exports = function(express, services) {
+module.exports = function(express, services,authization) {
     if (!services) {
         throw "Invalid services object";
     }
     const router = express.Router();
+    const users = authization.users
 
     router.post('/signup', signUp);
-    router.post('/signin', signIn);
+    router.post('/signin',authization.authenticate.usinglocal, signIn);
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
@@ -23,6 +24,12 @@ module.exports = function(express, services) {
     }
 
     function signIn(req, res) {
+        if(req.isAuthenticated()){
+            res.send("Successfull login")
+        }
+        else{
+            res.send("Something wrong with login")
+        }
         
     }
 
