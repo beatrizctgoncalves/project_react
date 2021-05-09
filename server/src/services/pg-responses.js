@@ -25,12 +25,28 @@ module.exports = {
             body: message
         })
     },
+    
+    resolveErrorApis: function(error) {
+        if(error.status == this.NOT_FOUND) return this.setError(error.status, this.NOT_FOUND_PROJECT_MSG);
+        else if(error.status == this.FORBIDDEN) return this.setError(error.status, this.FORBIDDEN_MSG);
+        else return this.setError(this.API_ERROR, this.API_ERROR_MSG);            
+    },
+
+    resolveErrorElastic: function(error) {
+        if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
+        else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);           
+    },
 
     //Success
     OK: 200,
     CREATE: 201,
 
     URI_MSG: "http://localhost:8080/",
+    index: {
+        api: '/api/g5/pluggable/gamification',
+        users: '/users/g5/pluggable/gamification'
+    },
+
     setSuccessUri: function(status, index, id) {
         return {
             status: status,

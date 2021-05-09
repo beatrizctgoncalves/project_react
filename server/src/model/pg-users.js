@@ -1,11 +1,10 @@
 'use strict'
 
-module.exports = function(express, services,authization) {
+module.exports = function(express, services, aux) {
     if (!services) {
         throw "Invalid services object";
     }
     const router = express.Router();
-    const users = authization.users
 
     router.post('/signup', signUp);
     //router.post('/signin',authization.authenticate.usinglocal, signIn);
@@ -18,7 +17,7 @@ module.exports = function(express, services,authization) {
 
     function signUp(req, res) {
         console.log("signUp in pg-users");
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.createUser(req.body.username, req.body.password, 'users/'),
             res
         );
@@ -35,37 +34,23 @@ module.exports = function(express, services,authization) {
     }
 
     function getUser(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.getUser(req.params.username),
             res
         );
     }
 
     function updateUser(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.updateUser(req.params.username, req.params.firstName, req.params.lastName, req.params.email, req.params.password, 'users/'),
             res
         );
     }
 
     function deleteUser(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.deleteUser(req.params.username, 'users/'),
             res
         );
     }
-}
-
-function promisesAsyncImplementation(promise, res) {
-    promise
-    .then(result => {
-        //Success reponse
-        res.statusCode = result.status
-        res.json(result.body)
-    })
-    .catch(err => {
-        //Error response
-        res.statusCode = err.status
-        res.json({error: err})
-    });
 }

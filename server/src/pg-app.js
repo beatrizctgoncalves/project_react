@@ -1,45 +1,45 @@
 'use strict'
 
 module.exports = async function(){
-
     const express = require('express'); //Import the express module
-const app = express(); //Create an Express application
+    const app = express(); //Create an Express application
 
-const bodyParser = require('body-parser'); //Import the body-parser module 
-app.use(bodyParser.json()); //Parse application/json
-app.use(bodyParser.urlencoded({extended: true})); //Parse application/x-www-form-urlencoded
+    const bodyParser = require('body-parser'); //Import the body-parser module 
+    app.use(bodyParser.json()); //Parse application/json
+    app.use(bodyParser.urlencoded({extended: true})); //Parse application/x-www-form-urlencoded
 
-const database = require('./pg-database');
-const apiGitlab = require('./api-gitlab');
-const apiJira = require('./api-jira');
-const pgResponses = require('./pg-responses');
-const pgScores = require('./pg-scores');
+    const fetch = require('node-fetch');
+    const pgResponses = require('./services/pg-responses');
+    const pgScores = require('./services/pg-scores');
+    const aux = require('./model/pg-promises');
 
+    const requests = require('./services/apis-db-requests')(fetch, pgResponses);
+    const databaseGroups = require('./database/pg-database-groups')(requests, pgResponses);
+    const databaseUsers = require('./database/pg-database-groups')(requests, pgResponses);
 
-const dbConfigs = {
-    "host":'localhost',
-    "port":5432,
-    "user":'postgres',
-    "password":'1234',
-    "connectionLimit": 5,
-    "database":'plug',
-    "dbms": 'postgres'
+    const apiGitlab = require('./apis/api-gitlab')(requests, pgResponses);
+    const apiJira = require('./apis/api-jira')(requests, pgResponses);
+
+    const dbConfigs = {
+        "host":'localhost',
+        "port": 5432,
+        "user":'postgres',
+        "password":'1234',
+        "connectionLimit": 5,
+        "database":'plug',
+        "dbms": 'postgres'
+    }
     
-}
- 
+    let authization = await require('@authization/authization').setup({app,db:dbConfigs});
 
-let authization = await require('@authization/authization').setup({app,db:dbConfigs});
+    const servicesGroups = require('./services/pg-services-groups')(databaseGroups, pgResponses, pgScores, apiGitlab, apiJira);
+    const servicesUsers = require('./services/pg-services-groups')(databaseUsers, pgResponses, authization);
 
-console.log(authization)
+    const webApi = require('./model/pg-web-api')(express, servicesGroups, aux); //Import the web-api
+    const usersCreator = require('./model/pg-users')(express, servicesUsers, aux);
 
-const services = require('./pg-services')(database, pgResponses, pgScores, apiGitlab, apiJira, authization);
+    app.use(pgResponses.index.api, webApi);
+    app.use(pgResponses.index.users, usersCreator);
 
-const webApi = require('./pg-web-api')(express, services, authization); //Import the web-api
-const usersCreator = require('./pg-users')(express, services, authization);
-
-app.use('/api', webApi);
-app.use('/users', usersCreator);
-
-return app
-
+    return app
 }

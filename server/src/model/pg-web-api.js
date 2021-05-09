@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(express, services,authization) {
+module.exports = function(express, services, aux) {
     if (!services) {
         throw "Invalid services object";
     }
@@ -27,115 +27,100 @@ module.exports = function(express, services,authization) {
     return router;
 
     function createGroup(req, res) {
-        promisesAsyncImplementation(
-            services.createGroup(req.body.owner, req.body.name, req.body.description, req.body.type, req.body.group_id, 'api/groups/'),
+        aux.promisesAsyncImplementation(
+            services.createGroup(req.body.owner, req.body.name, req.body.description, req.body.type, req.body.group_id),
             res
         );
     }
 
     function getUserGroups(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.getUserGroups(req.params.owner),
             res
         );
     }
 
     function getGroupDetails(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.getGroupDetails(req.params.group_id),
             res
         );
     }
 
     function deleteGroup(req, res) {
-        promisesAsyncImplementation(
-            services.deleteGroup(req.params.group_id, 'api/groups/'),
+        aux.promisesAsyncImplementation(
+            services.deleteGroup(req.params.group_id),
             res
         );
     }
 
     function editGroup(req, res) {
-        promisesAsyncImplementation(
-            services.editGroup(req.params.group_id, req.body.name, req.body.description, 'api/groups/'),
+        aux.promisesAsyncImplementation(
+            services.editGroup(req.params.group_id, req.body.name, req.body.description),
             res
         );
     }
 
     function getGroupProjects(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.getGroupProjects(req.params.group_id),
             res
         );
     }
 
     function addProjectJiraToGroup(req, res) {
-        promisesAsyncImplementation(
-            services.addProjectJiraToGroup(req.params.group_id, req.body.url, req.body.email, req.body.token, req.body.key, 'api/groups/'),
+        aux.promisesAsyncImplementation(
+            services.addProjectJiraToGroup(req.params.group_id, req.body.url, req.body.email, req.body.token, req.body.key),
             res
         );
     }
 
     function removeProjectFromGroup(req, res) {
-        promisesAsyncImplementation(
-            services.removeProjectFromGroup(req.params.group_id, req.params.project_id, 'api/groups/'),
+        aux.promisesAsyncImplementation(
+            services.removeProjectFromGroup(req.params.group_id, req.params.project_id),
             res
         );
     }
 
     function addProjectGitlabToGroup(req, res) {
-        promisesAsyncImplementation(
-            services.addProjectGitlabToGroup(req.params.group_id, req.body.pid, req.body.atoken, 'api/groups/'),
+        aux.promisesAsyncImplementation(
+            services.addProjectGitlabToGroup(req.params.group_id, req.body.pid, req.body.atoken),
             res
         );
     }
 
     function getGroupMembers(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.getGroupMembers(req.params.group_id),
             res
         );
     }
 
     function addMemberToGroup(req, res) { //Implementation of the route to add a user to a specific group
-        promisesAsyncImplementation(
-            services.addMemberToGroup(req.params.group_id, req.params.username, 'api/groups/'),
+        aux.promisesAsyncImplementation(
+            services.addMemberToGroup(req.params.group_id, req.params.username),
             res
         );
     }
 
     function removeMemberFromGroup(req, res) { //Implementation of the route to delete a specific user from a group
-        promisesAsyncImplementation(
-            services.removeMemberFromGroup(req.params.group_id, req.params.username, 'api/groups/'),
+        aux.promisesAsyncImplementation(
+            services.removeMemberFromGroup(req.params.group_id, req.params.username),
             res
         );
     }
 
     function getGroupRankings(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.getGroupRankings(req.params.group_id, req.body.url, req.body.email, req.body.token),
             res
         );
     }
 
     function getRankings(req, res) {
-        promisesAsyncImplementation(
+        aux.promisesAsyncImplementation(
             services.getRankings(),
             res
         );
     }
-}
-
-//Handle multiple asynchronous operations easily and provide better error handling than callbacks and events
-function promisesAsyncImplementation(promise, res) {
-    promise
-    .then(result => {
-        //Success reponse
-        res.statusCode = result.status
-        res.json(result.body)
-    })
-    .catch(err => {
-        //Error response
-        res.statusCode = err.status
-        res.json({error: err})
-    });
 }

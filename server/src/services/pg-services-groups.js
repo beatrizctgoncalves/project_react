@@ -1,11 +1,8 @@
 'use strict'
 
-function services(database, pgResponses, pgScores, apiGitlab, apiJira, authization) {
-
-    const  authUser = authization.user
+function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
     const serv = {
-
-        createGroup: function(owner, name, description, type, group_id, index) {
+        createGroup: function(owner, name, description, type, group_id) {
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(name) || !description || !owner) {  //verify if name has a string
                 return pgResponses.setError(
@@ -17,7 +14,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 .then(groups => {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,
-                        index,
+                        pgResponses.index.api,
                         groups
                     )
                 })
@@ -43,7 +40,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 })
         },
 
-        deleteGroup: function(group_id, index) {
+        deleteGroup: function(group_id) {
             return database.deleteGroup(group_id)
                 .then(group => {
                     return pgResponses.setSuccessUri(
@@ -54,7 +51,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 })
         },
 
-        editGroup: function(group_id, new_name, new_desc, index) {
+        editGroup: function(group_id, new_name, new_desc) {
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(new_name)) {  //verify if new_name has a string
                 return pgResponses.setError(
@@ -83,7 +80,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 })
         },
 
-        addProjectJiraToGroup: function(group_id, url, email, token, key, index) {
+        addProjectJiraToGroup: function(group_id, url, email, token, key) {
             return apiJira.validateProject(url, email, token, key)
                 .then(validatedObj => {
                     return database.getGroupDetails(group_id)
@@ -107,7 +104,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 })
         },
 
-        removeProjectFromGroup: function(group_id, project_id, index) {
+        removeProjectFromGroup: function(group_id, project_id) {
             return database.getGroupDetails(group_id)
                 .then(groupObj => {
                     const project_index = groupObj.projects.findIndex(p => p.id === project_id)
@@ -128,7 +125,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 })
         },
 
-        addProjectGitlabToGroup: function(group_id, Pid, AToken, index) {
+        addProjectGitlabToGroup: function(group_id, Pid, AToken) {
             return apiGitlab.validateProject(Pid, AToken)
                 .then(validatedObj => {
                     return database.getGroupDetails(group_id)
@@ -152,7 +149,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 })
         },
 
-        removeProjectJiraFromGroup: function(group_id, id, index) {
+        removeProjectJiraFromGroup: function(group_id, id) {
             return database.getGroupDetails(group_id)
                 .then(groupObj => {
                     const project_index = groupObj.projects.findIndex(p => p.id === id)
@@ -183,7 +180,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 })
         },
         
-        addMemberToGroup: function(group_id, username, index) {
+        addMemberToGroup: function(group_id, username) {
             return database.getUser(username) //check if the user exists
                 .then(userObj => {
                     return database.getGroupDetails(group_id) //check if the group exists
@@ -207,7 +204,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
                 })
         },
 
-        removeMemberFromGroup: function(group_id, username, index) {
+        removeMemberFromGroup: function(group_id, username) {
             return database.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {
                     const user_index = groupObj.members.findIndex(m => m.user === username)  //get the user's index
@@ -249,105 +246,6 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira, authizati
 
         getRankings: function() {
             //TODO
-        },
-
-
-
-        /*** USERS ***/
-        /*
-        createUser: function(username, password, index) { //TODO
-            var regExp = /[a-zA-Z]/g;
-            if(!regExp.test(username)) {  //verify if username is a string
-                return pgResponses.setError(
-                    pgResponses.BAD_REQUEST,
-                    pgResponses.BAD_REQUEST_MSG
-                )
-            }
-            return database.getUser(username)
-                .then(() => pgResponses.setError(pgResponses.FORBIDDEN, pgResponses.FORBIDDEN_MSG))
-                .catch(error => {
-                    if(error.status == pgResponses.FORBIDDEN || error.status == pgResponses.BAD_REQUEST || error.status == pgResponses.DB_ERROR) {
-                        return pgResponses.setError(error.status, error.body);
-                    }
-                    return database.createUser(username, password)
-                        .then(() => {
-                            return {
-                                status: pgResponses.OK,
-                                body: pgResponses.URI_MSG.concat(index).concat(username)
-                            }
-                        })
-                })
-        },*/
-
-        createUser: function(username, password, index) { //TODO
-            var regExp = /[a-zA-Z]/g;
-            if(!regExp.test(username)) {  //verify if username is a string
-                return pgResponses.setError(
-                    pgResponses.BAD_REQUEST,
-                    pgResponses.BAD_REQUEST_MSG
-                )
-            }
-            
-            return authUser.create(username,password).then(()=>{
-                return {
-                    status: pgResponses.OK,
-                    body: pgResponses.URI_MSG.concat(index).concat(username)
-                }
-
-            }).catch(error=>{
-                return pgResponses.setError(error.status,error.body)
-            });
-            
-        },
-        /*
-
-        getUser: function(username) {
-            return database.getUser(username)
-                .then(userObj => {
-                    return pgResponses.setSuccessList(
-                        pgResponses.OK,
-                        userObj
-                    )
-                })
-        },*/
-
-        getUser: function(username) {
-            return authUser.getByUsername(username)
-                .then(userObj => {
-                    return pgResponses.setSuccessList(
-                        pgResponses.OK,
-                        userObj
-                    )
-                })
-        },
-
-
-
-
-        updateUser: function(username, firstName, lastName, email, password, index) {
-            return database.getUserId(username)
-                .then(id => {
-                    return database.updateUser(id, firstName, lastName, email, password)
-                        .then(user_name => {
-                            return pgResponses.setSuccessUri(
-                                pgResponses.OK,
-                                user_name,
-                                index
-                            )
-                        })
-                })
-        },
-
-        deleteUser: function(username, index) {
-            const id = getUser(username).id
-            return authUser.delete(id)
-                        .then(user_name => {
-                            return pgResponses.setSuccessUri(
-                                pgResponses.OK,
-                                user_name,
-                                index
-                            )
-                        })
         }
     }
     return serv;
