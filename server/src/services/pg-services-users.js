@@ -36,15 +36,12 @@ function services(database, pgResponses, authization) {
                 )
             }
             
-            return authUser.create(username,password).then(()=>{
+            return authUser.create(username,password).then(()=> {
                 return {
                     status: pgResponses.OK,
                     body: pgResponses.URI_MSG.concat(index).concat(username)
                 }
-
-            }).catch(error=>{
-                return pgResponses.setError(error.status,error.body)
-            });
+            }).catch(error=>pgResponses.setError(error.status,error.body));
             
         },
         /*

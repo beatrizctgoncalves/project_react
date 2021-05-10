@@ -1,12 +1,14 @@
 'use strict'
 
-module.exports = async function(){
+module.exports = async function() {
     const express = require('express'); //Import the express module
     const app = express(); //Create an Express application
+    const cors = require("cors");
 
     const bodyParser = require('body-parser'); //Import the body-parser module 
     app.use(bodyParser.json()); //Parse application/json
     app.use(bodyParser.urlencoded({extended: true})); //Parse application/x-www-form-urlencoded
+    app.use(cors());
 
     const fetch = require('node-fetch');
     const pgResponses = require('./services/pg-responses');
@@ -37,9 +39,12 @@ module.exports = async function(){
 
     const webApi = require('./model/pg-web-api')(express, servicesGroups, aux); //Import the web-api
     const usersCreator = require('./model/pg-users')(express, servicesUsers, aux);
-
+    
     app.use(pgResponses.index.api, webApi);
     app.use(pgResponses.index.users, usersCreator);
+    app.get('/', function(req, res) {
+        res.send("Hello world")
+    })
 
     return app
 }

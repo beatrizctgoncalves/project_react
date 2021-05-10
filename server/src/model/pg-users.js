@@ -16,7 +16,6 @@ module.exports = function(express, services, aux) {
     return router;
 
     function signUp(req, res) {
-        console.log("signUp in pg-users");
         aux.promisesAsyncImplementation(
             services.createUser(req.body.username, req.body.password, 'users/'),
             res

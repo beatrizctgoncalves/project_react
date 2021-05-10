@@ -1,5 +1,6 @@
 'use strict'
 
+
 function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
     const serv = {
         createGroup: function(owner, name, description, type, group_id) {
@@ -104,27 +105,6 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                 })
         },
 
-        removeProjectFromGroup: function(group_id, project_id) {
-            return database.getGroupDetails(group_id)
-                .then(groupObj => {
-                    const project_index = groupObj.projects.findIndex(p => p.id === project_id)
-                    if(project_index === -1) {
-                        return pgResponses.setError(
-                            pgResponses.NOT_FOUND,
-                            pgResponses.NOT_FOUND_PROJECT_MSG
-                        );
-                    }
-                    return database.removeProjectFromGroup(group_id, project_index)
-                        .then(id => {
-                            return pgResponses.setSuccessUri(
-                                pgResponses.OK,
-                                index,
-                                id
-                            )
-                        })
-                })
-        },
-
         addProjectGitlabToGroup: function(group_id, Pid, AToken) {
             return apiGitlab.validateProject(Pid, AToken)
                 .then(validatedObj => {
@@ -149,7 +129,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                 })
         },
 
-        removeProjectJiraFromGroup: function(group_id, id) {
+        removeProjectFromGroup: function(group_id, id) {
             return database.getGroupDetails(group_id)
                 .then(groupObj => {
                     const project_index = groupObj.projects.findIndex(p => p.id === id)

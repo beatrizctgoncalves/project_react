@@ -47,7 +47,6 @@ module.exports = (fetch, pgResponses) => {
             }
         })
         .then(response => {
-            console.log(response)
             if(response.status != pgResponses.OK) return Promise.reject(response);
             return response.json()
         })
