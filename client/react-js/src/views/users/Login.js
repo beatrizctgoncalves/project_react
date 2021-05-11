@@ -1,4 +1,5 @@
 import React from 'react'
+import './../css/Login.css'
 
 
 class Login extends React.Component {
@@ -19,28 +20,26 @@ class Login extends React.Component {
 
     handlePasswordChange = (event) => {
         event.persist()
-        this.setState(()=>
-            ({password : event.target.value})
-        )
+        this.setState(() => ({password : event.target.value}))
     }
-  
-    handleLoginClick = () =>{
+
+    handleLoginClick = () => {
         //TODO
+        return fetch('http://localhost:8080/users/g5/pluggable/gamification/login')
     }
 
     handleLoginClick = () => {this.props.history.push('#login')}
 
     render() {
         return (
-            <div class="sign">
+            <div class="log-in">
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card">
-                            <form class="box" action="/users/login" method="POST">
+                            <form class="box-login" action="/users/login" method="POST">
                                 <h1>Login</h1>
                                 <br></br>
                                 <p class="text-muted"> Please enter your username and password!</p>
-                                <br></br>
                                 <input type="text" name="username" placeholder="Username" required></input>
                                 <input type="password" name="password" placeholder="Password" required></input>
                                 <input type="submit" name="" value="Login" href="#"></input>

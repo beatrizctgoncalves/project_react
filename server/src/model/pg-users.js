@@ -7,7 +7,7 @@ module.exports = function(express, services, aux) {
     const router = express.Router();
 
     router.post('/signup', signUp);
-    //router.post('/signin',authization.authenticate.usinglocal, signIn);
+    //router.post('/login',authization.authenticate.usinglocal, signIn);
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);

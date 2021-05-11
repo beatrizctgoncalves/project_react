@@ -5,7 +5,7 @@ import Navbar from './views/Navbar';
 import Home from './views/Home';
 import SignUp from './views/users/SignUp';
 import Login from './views/users/Login';
-import { BrowserRouter as Router, Route} from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Group from './views/Group';
 import Footer from './views/Footer';
 import ContactUs from './views/ContactUs';
@@ -44,7 +44,7 @@ class App extends React.Component {
             />
 
             <Route
-              exact path='#groups'
+              exact path='/groups'
               render={(props) => (
                 this.isLoggedIn() ? (
                   <Group {...props} />
