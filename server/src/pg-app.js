@@ -42,9 +42,6 @@ module.exports = async function() {
     
     app.use(pgResponses.index.api, webApi);
     app.use(pgResponses.index.users, usersCreator);
-    app.get('/', function(req, res) {
-        res.send("Hello world")
-    })
 
     return app
 }
