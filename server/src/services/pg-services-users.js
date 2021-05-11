@@ -28,6 +28,7 @@ function services(database, pgResponses, authization) {
         },*/
 
         createUser: function(username, password, index) { //TODO
+            
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(username)) {  //verify if username is a string
                 return pgResponses.setError(
@@ -35,7 +36,6 @@ function services(database, pgResponses, authization) {
                     pgResponses.BAD_REQUEST_MSG
                 )
             }
-            
             return authUser.create(username,password).then(()=> {
                 return {
                     status: pgResponses.OK,
