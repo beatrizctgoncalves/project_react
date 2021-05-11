@@ -1,0 +1,307 @@
+html {
+  background-color: rgb(211, 211, 211);;
+}
+  
+body {
+  margin: 0 auto;
+  font-family: sans-serif;
+  background-color: rgb(211, 211, 211);
+}
+
+.navbar-custom {
+  background-color: rgb(66, 66, 66);
+}
+
+/* index */
+#search-rankings-button a {
+  text-decoration: none;
+  color: black;
+  padding: 8px;
+}
+
+#title {
+  font-family: "Open Sans", sans-serif;
+  font-size: 42px;
+  color: rgb(66, 66, 66);
+}
+
+#mail {
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #2a8adac2;
+  padding: 10px 10px;
+  width: 250px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+#sub {
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid whitesmoke;
+  padding: 14px 40px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+#search-rankings-button {
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid black;
+  padding: 14px 40px;
+  outline: none;
+  color: black;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.masthead {
+  margin-top: 200px;
+  height: 60vh;
+  min-height: 200px;
+  background-image: url(https://image.freepik.com/free-vector/blue-black-arrow-overlap-gray-background_33869-651.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.sign {
+  margin-top: 50px;
+  margin-bottom: 220px;
+  height: 60vh;
+  min-height: 200px;
+  background-color: rgb(211, 211, 211);
+}
+
+/* login */
+#login-body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: linear-gradient(to right, #c4c5bd, #ffffff);
+}
+
+#index-body {
+  margin: 0 auto;
+  padding: 0;
+  font-family: sans-serif;
+  width: 100%;
+  background-color: rgb(211, 211, 211);
+}
+
+.box {
+  width: 500px;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background-color: #191919;
+  text-align: center;
+  transition: 0.25s;
+  margin-top: 150px;
+  opacity: 80%;
+  border-radius: 20px;
+  height: 470px;
+}
+
+.box input[type="text"],
+
+.box input[type="password"] {
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #2a8adac2;
+  padding: 10px 10px;
+  width: 250px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+.box h1 {
+  color: rgb(211, 211, 211);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.box input[type="text"]:hover,
+
+.box input[type="password"]:hover {
+  border-color: whitesmoke;
+}
+
+.box input[type="submit"] {
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid rgb(211, 211, 211);
+  padding: 14px 40px;
+  outline: none;
+  color: rgb(211, 211, 211);;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.box input[type="submit"]:hover {
+  background: #535353;
+}
+
+.forgot {
+  text-decoration: underline;
+}
+
+.intro {
+  line-height: 0.5;
+}
+
+.section {
+  height: 40%;
+  background-color: rgb(211, 211, 211);
+}
+
+.text-box {
+  display: inline-block;
+}
+
+.text-box h3 {
+  margin-left: 2vh;
+  margin-left: 10vh;
+  font-family: "Bebas Neue", cursive;
+  font-size: 42px;
+}
+
+.text-box p {
+  margin-left: 10vh;
+  font-family: "Roboto", sans-serif;
+  font-size: 22px;
+  text-align: center;
+}
+
+#rankings-box {
+  background-color: #92929277;
+  height: 70vh;
+  text-align: center;
+}
+
+#main-title {
+  position: relative;
+  margin-top: 10vh;
+  font-size: 52px;
+  font-family: "Assistant", sans-serif;
+}
+
+#rankings-img {
+  width: 30%;
+  float: right;
+  margin-right: 100px;
+  margin-bottom: 20px;
+  margin-top: -75px;
+}
+
+#groups-img {
+  width: 30%;
+  float: left;
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+#groups-text {
+  float: right;
+  text-align: center;
+}
+
+#search-rankings-button {
+  border: 0;
+  background-color: rgb(66, 66, 66);
+  padding: 10px 10px;
+  width: 300px;
+  color: #e6e6e6;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  margin-left: 650px;
+  float: left;
+}
+
+#groups-box {
+  margin-top: 80px;
+}
+
+#search-rankings-button:hover {
+  background-color: #2a8adac2;
+}
+
+#create-groups-button:hover {
+  background-color: #535461c2;
+}
+
+#create-groups-button {
+  border: 0;
+  background-color: rgb(83, 84, 97);
+  padding: 10px 10px;
+  width: 200px;
+  color: #e6e6e6;
+  border-radius: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}
+
+#sticky-footer {
+  position: absolute;
+  width: 100%;
+  background-color: rgb(66, 66, 66);
+}
+
+
+
+@media screen and (max-width: 1500px) {
+  body {}
+
+  #rankings-img {
+    visibility: hidden;
+  }
+
+  #groups-img {
+    visibility: hidden;
+  }
+
+  #rankings-text {
+    width: 100%;
+  }
+
+  #groups-text {
+    width: 100%;
+  }
+
+  #groups-text h3,
+  h2 {
+    text-align: center;
+  }
+
+  #rankings-text h3,
+  h2 {
+    text-align: center;
+  }
+
+  #rankings-text h2 {
+    margin-right: 10vh;
+  }
+}
