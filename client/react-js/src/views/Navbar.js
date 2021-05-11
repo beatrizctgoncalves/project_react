@@ -32,6 +32,10 @@ function Navbar() {
                             </li>
                             <li class="nav-item">
                                 <br></br>
+                                <a class="nav-link" href="/profiles">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <br></br>
                                 <p class="nav-link">|</p>
                             </li>
                             <li class="nav-item">

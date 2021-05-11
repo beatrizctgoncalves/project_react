@@ -3,6 +3,7 @@ import './App.css';
 import Head from './views/Head';
 import Navbar from './views/Navbar';
 import Home from './views/Home';
+import Profile from './views/users/Profile';
 import SignUp from './views/users/SignUp';
 import Login from './views/users/Login';
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -68,6 +69,12 @@ class App extends React.Component {
               exact path='/contact-us'
               render={(props) => <ContactUs {...props} />}
             />
+
+            <Route
+              exact path='/profile'
+              render={(props) => <Profile {...props} />}
+            />
+
           </Router>
 
           <Footer></Footer>
