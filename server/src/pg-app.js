@@ -12,7 +12,6 @@ module.exports = async function() {
 
     const fetch = require('node-fetch');
     const pgResponses = require('./services/pg-responses');
-    const pgScores = require('./services/pg-scores');
     const aux = require('./model/pg-promises');
 
     const requests = require('./services/apis-db-requests')(fetch, pgResponses);
@@ -22,6 +21,7 @@ module.exports = async function() {
     const apiGitlab = require('./apis/api-gitlab')(requests, pgResponses);
     const apiJira = require('./apis/api-jira')(requests, pgResponses);
     const authizationConfig = require('./database/authization-dg-config/config')
+    const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, pgResponses);
 
     let authization = await require('@authization/authization').setup({app,db:authizationConfig.dbConfigs,rbac_opts:authizationConfig.rbac_opts});
 
