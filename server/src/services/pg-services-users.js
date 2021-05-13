@@ -2,32 +2,9 @@
 
 function services(database, pgResponses, authization) {
     const authUser = authization.user
-    const serv = {        /*
-        createUser: function(username, password, index) { //TODO
-            var regExp = /[a-zA-Z]/g;
-            if(!regExp.test(username)) {  //verify if username is a string
-                return pgResponses.setError(
-                    pgResponses.BAD_REQUEST,
-                    pgResponses.BAD_REQUEST_MSG
-                )
-            }
-            return database.getUser(username)
-                .then(() => pgResponses.setError(pgResponses.FORBIDDEN, pgResponses.FORBIDDEN_MSG))
-                .catch(error => {
-                    if(error.status == pgResponses.FORBIDDEN || error.status == pgResponses.BAD_REQUEST || error.status == pgResponses.DB_ERROR) {
-                        return pgResponses.setError(error.status, error.body);
-                    }
-                    return database.createUser(username, password)
-                        .then(() => {
-                            return {
-                                status: pgResponses.OK,
-                                body: pgResponses.URI_MSG.concat(index).concat(username)
-                            }
-                        })
-                })
-        },*/
+    const serv = {     
 
-        createUser: function(username, password, index) { //TODO
+        createUser: function(username, password,name,surname, index) { //TODO
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(username)) {  //verify if username is a string
                 return pgResponses.setError(
@@ -36,28 +13,36 @@ function services(database, pgResponses, authization) {
                 )
             }
             
-            return authUser.create(username,password).then(()=> {
-                return {
-                    status: pgResponses.OK,
-                    body: pgResponses.URI_MSG.concat(index).concat(username)
-                }
-            }).catch(error=>pgResponses.setError(error.status,error.body));
+            return authUser.create(username,password).then(()=>{
+                console.log("antes do create");
+                return database.createUser(username,name,surname).then(()=>{
+                    console.log("dps do create");
+                    return {
+                        status: pgResponses.OK,
+                        body: pgResponses.URI_MSG.concat(index).concat(username)
+                    }
+    
+                })
+                
+            });
             
         },
-        /*
 
-        getUser: function(username) {
-            return database.getUser(username)
+        getUserAuthization: function(username) {
+            return authUser.getByUsername(username)
                 .then(userObj => {
                     return pgResponses.setSuccessList(
                         pgResponses.OK,
                         userObj
                     )
+                }).catch(error => {
+                    pgResponses.setError(error.status,error.body)
                 })
-        },*/
+        },
 
-        getUser: function(username) {
-            return authUser.getByUsername(username)
+        getUser : function(username) {
+            
+            return database.getUser(username)
                 .then(userObj => {
                     return pgResponses.setSuccessList(
                         pgResponses.OK,
@@ -90,15 +75,19 @@ function services(database, pgResponses, authization) {
              * delete this user from all groups
              * 
              */
-
-            return this.getUser(username).then(user => {
+                console.log("DELETE START SERVICE")
+            return this.getUserAuthization(username).then(user => {
                 return authUser.delete(user.body.id)
-                .then(user_name => {
-                    return pgResponses.setSuccessUri(
-                        pgResponses.OK,
-                        user_name,
-                        index
-                    )
+                .then(()=>{
+                    console.log("DELETE SERVICE");
+                    return database.deleteUser(username)
+                    .then(user_name => {
+                        return pgResponses.setSuccessUri(
+                            pgResponses.OK,
+                            user_name,
+                            index
+                        )
+                    })
                 })
 
 

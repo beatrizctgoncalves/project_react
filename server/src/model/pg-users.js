@@ -1,13 +1,16 @@
 'use strict'
 
-module.exports = function(express, services, aux) {
+module.exports = function(express, services, aux, authization) {
     if (!services) {
         throw "Invalid services object";
     }
     const router = express.Router();
+    const authenticate = authization.authenticate
+
+    console.log(authenticate.usingLocal)
 
     router.post('/signup', signUp);
-    //router.post('/signin',authization.authenticate.usinglocal, signIn);
+    router.post('/signin', authenticate.usingLocal, signIn);
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
@@ -15,14 +18,20 @@ module.exports = function(express, services, aux) {
 
     return router;
 
+    
     function signUp(req, res) {
+        console.log("signUp in pg-users");
+        const name = req.body.name? req.body.name : "";
+        const surname = req.body.surname? req.body.surname :  "";
+
         aux.promisesAsyncImplementation(
-            services.createUser(req.body.username, req.body.password, 'users/'),
+            services.createUser(req.body.username, req.body.password,name,surname, 'users/'),
             res
         );
     }
 
     function signIn(req, res) {
+        console.log("entrou")
         if(req.isAuthenticated()){
             res.send("Successfull login")
         }
