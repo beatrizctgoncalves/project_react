@@ -1,9 +1,30 @@
-.masterhead {
-    height: 90vh;
-    background-image: url(https://img.elo7.com.br/product/zoom/1D455AC/papel-de-parede-geometrico-triangulo-azul-cinza-adesivo-10m-papel-de-parede-infantil.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+.intro {
+    height: 300px;
+    text-align: center;
+    word-break: break-all;
+}
+
+.intro input[type="password"]:hover {
+    border-color: whitesmoke;
+}
+
+.intro input[type="submit"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 10px auto;
+    text-align: center;
+    border: 2px solid rgb(211, 211, 211);
+    padding: 14px 40px;
+    outline: none;
+    color: rgb(211, 211, 211);;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+.intro input[type="submit"]:hover {
+    background: #535353;
 }
 
 .titlehead {
@@ -48,6 +69,7 @@
 
 #groups-button:hover {
     background: #535353;
+    border-color: rgb(211, 211, 211);
 }
 
 #groups-button a {
@@ -55,6 +77,7 @@
 }
 
 .box-create-groups {
+    margin-top: auto;
     width: 500px;
     padding: 20px;
     background-color: #191919;
@@ -62,7 +85,7 @@
     transition: 0.25s;
     opacity: 80%;
     border-radius: 20px;
-    height: 280px;
+    height: 330px;
 }
 
 .box-create-groups input[type="text"],
@@ -87,6 +110,13 @@
     font-weight: 100;
 }
 
+.box-create-groups h2 {
+    margin-top: 10px;
+    font-size: 40px;
+    text-align: center;
+    font-family: "Bebas Neue", cursive;
+}
+
 .box-create-groups input[type="submit"] {
     border: 0;
     background: none;
@@ -106,13 +136,6 @@
     background: #535353;
 }
 
-#sec-title {
-    margin-top: 5vh;
-    font-size: 40px;
-    text-align: center;
-    font-family: "Bebas Neue", cursive;
-}
-
 .box-profile-statistics {
     width: 500px;
     padding: 40px;
@@ -127,6 +150,7 @@
 .box-profile-statistics h1 {
     color: rgb(211, 211, 211);
     font-weight: 100;
+    padding-top: 0px;
 }
 
 .box-profile-statistics h5 {
@@ -140,103 +164,4 @@
     font-family: "Roboto", sans-serif;
     font-size: 18px;
     text-align: center;
-}
-
-.box-profile-avatar {
-    width: 300px;
-    padding: 25px;
-    background-color: #191919;
-    text-align: center;
-    transition: 0.25s;
-    opacity: 80%;
-    border-radius: 20px;
-    height: 300px;
-}
-
-.box-profile {
-    width: 500px;
-    padding: 40px;
-    background-color: #191919;
-    text-align: left;
-    transition: 0.25s;
-    opacity: 80%;
-    border-radius: 20px;
-    height: 600px;
-}
-
-.box-profile input[type="text"],
-
-.box-profile input[type="password"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #2a8adac2;
-    padding: 10px 10px;
-    width: 250px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s;
-}
-
-.box-profile h3 {
-    color: rgb(211, 211, 211);
-    font-weight: 100;
-}
-
-.box-profile input[type="text"]:hover,
-
-.box-profile input[type="password"]:hover {
-    border-color: whitesmoke;
-}
-
-.box-profile input[type="submit"] {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 30px auto;
-    text-align: center;
-    border: 2px solid rgb(211, 211, 211);
-    padding: 14px 40px;
-    outline: none;
-    color: rgb(211, 211, 211);;
-    border-radius: 24px;
-    transition: 0.25s;
-    cursor: pointer;
-}
-
-.box-profile input[type="submit"]:hover {
-    background: #535353;
-}
-  
-#mail {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid #2a8adac2;
-    padding: 10px 10px;
-    width: 250px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s;
-}
-    
-#sub {
-    border: 0;
-    background: none;
-    display: block;
-    margin: 20px auto;
-    text-align: center;
-    border: 2px solid whitesmoke;
-    padding: 14px 40px;
-    outline: none;
-    color: white;
-    border-radius: 24px;
-    transition: 0.25s;
-    cursor: pointer;
 }

@@ -12,7 +12,6 @@ module.exports = async function() {
 
     const fetch = require('node-fetch');
     const pgResponses = require('./services/pg-responses');
-    const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, pgResponses);
     const aux = require('./model/pg-promises');
 
     const requests = require('./services/apis-db-requests')(fetch, pgResponses);
@@ -21,6 +20,7 @@ module.exports = async function() {
 
     const apiGitlab = require('./apis/api-gitlab')(requests, pgResponses);
     const apiJira = require('./apis/api-jira')(requests, pgResponses);
+    const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, pgResponses);
 
     const dbConfigs = {
         "host":'localhost',

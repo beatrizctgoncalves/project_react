@@ -35,7 +35,7 @@ class App extends React.Component {
           <Head></Head>
         </head>
         
-        <body className="index-body">
+        <body>
           <Navbar></Navbar>
 
           <Router>
