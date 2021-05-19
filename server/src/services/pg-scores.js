@@ -21,12 +21,14 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                 }
             }))
             .then(projects => projects.forEach(project => { //TODO
-                if(project.type == "Gitlab"){
-                    this.countPointsGitlab(project.id)
-                }
-                if(project.type == "Jira"){
-                    this.countPointsJira(project.id)
-                }
+                // if(project.type == "Gitlab"){
+                //     this.countPointsGitlab(project.id)
+                // }
+                // if(project.type == "Jira"){
+                //     this.countPointsJira(project.id)
+                // }
+                const x = require("./plugins/pg-scores-" + project.type)
+                x.countPoints(project)
             }))
         },
 
