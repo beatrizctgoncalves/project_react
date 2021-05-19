@@ -4,34 +4,22 @@ module.exports = {
     rbac_opts : {
         "roles": ["admin", "Developer", "guest"],
         "permissions": [
-        { "resource": "auth-types", "action": "GET" },
-        { "resource": "permissions", "action": "GET" },
-        { "resource": "permissions", "action": "POST" },
-        { "resource": "permissions", "action": "PUT" },
-        { "resource": "permissions", "action": "DELETE" },
-        { "resource": "roles", "action": "GET" }, 
-        { "resource": "roles", "action": "POST" },
-        { "resource": "users", "action": "GET" },
-        { "resource": "users", "action": "POST" },
-        { "resource": "users", "action": "PUT" },
-        { "resource": "users", "action": "DELETE" },
+            { "resource": "/api/g5/pluggable/gamification/groups", "action": "GET" }, 
+            { "resource": "/api/g5/pluggable/gamification/groups", "action": "POST" },
         ],
         "grants": {
         "Developer": [
-            { "resource": "roles", "action": "GET" }, 
-            { "resource": "roles", "action": "POST" },
-            { "resource": "users", "action": "GET" },
-            { "resource": "users", "action": "POST" },
-            { "resource": "users", "action": "PUT" },
-            { "resource": "users", "action": "DELETE" },
+            { "resource": "/api/g5/pluggable/gamification/groups", "action": "GET" }, 
+            { "resource": "/api/g5/pluggable/gamification/groups", "action": "POST" },
+        ],
+        "Colaborator":[
+            { "resource": "/api/g5/pluggable/gamification/groups", "action": "GET" }, 
+            { "resource": "/api/g5/pluggable/gamification/groups", "action": "POST" },
+
         ],
         "guest": [
-            { "resource": "roles", "action": "GET" }, 
-            { "resource": "roles", "action": "POST" },
-            { "resource": "users", "action": "GET" },
-            { "resource": "users", "action": "POST" },
-            { "resource": "users", "action": "PUT" },
-            { "resource": "users", "action": "DELETE" },
+            { "resource": "/api/g5/pluggable/gamification/groups", "action": "GET" }, 
+            { "resource": "/api/g5/pluggable/gamification/groups", "action": "POST" },
         ]
         }
        },

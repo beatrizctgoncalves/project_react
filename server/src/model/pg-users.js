@@ -7,10 +7,11 @@ module.exports = function(express, services, aux, authization) {
     const router = express.Router();
     const authenticate = authization.authenticate
 
-    console.log(authenticate.usingLocal)
 
     router.post('/signup', signUp);
     router.post('/signin', authenticate.usingLocal, signIn);
+    router.post('/logout',authenticate.logout, logOut);
+    
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
@@ -31,15 +32,29 @@ module.exports = function(express, services, aux, authization) {
     }
 
     function signIn(req, res) {
-        console.log("entrou")
         if(req.isAuthenticated()){
             res.send("Successfull login")
         }
         else{
+
             res.send("Something wrong with login")
         }
         
     }
+
+    function logOut(req, res) {
+        if(!req.isAuthenticated()){
+            res.send("Successfull logOut")
+        }
+        else{
+
+            res.send("Something wrong with logout")
+        }
+        
+    }
+
+    
+
 
     function getUser(req, res) {
         aux.promisesAsyncImplementation(

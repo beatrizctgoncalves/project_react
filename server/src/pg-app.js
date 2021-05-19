@@ -23,16 +23,27 @@ module.exports = async function() {
     const authizationConfig = require('./database/authization-dg-config/config')
     const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, pgResponses);
 
-    let authization = await require('@authization/authization').setup({app,db:authizationConfig.dbConfigs,rbac_opts:authizationConfig.rbac_opts});
-
-    const servicesGroups = require('./services/pg-services-groups')(databaseGroups, pgResponses, pgScores, apiGitlab, apiJira);
-    const servicesUsers = require('./services/pg-services-users')(databaseUsers, pgResponses, authization);
-
-    const webApi = require('./model/pg-web-api')(express, servicesGroups, aux); //Import the web-api
-    const usersCreator = require('./model/pg-users')(express, servicesUsers, aux, authization);
+    try {
+        let authization = await require('@authization/authization').setup({app,db:authizationConfig.dbConfigs,rbac_opts:authizationConfig.rbac_opts,https:true});
+        const servicesGroups = require('./services/pg-services-groups')(databaseGroups, pgResponses, pgScores, apiGitlab, apiJira);
+        const servicesUsers = require('./services/pg-services-users')(databaseUsers, pgResponses, authization);
     
-    app.use(pgResponses.index.api, webApi);
-    app.use(pgResponses.index.users, usersCreator);
+        const webApi = require('./model/pg-web-api')(express, servicesGroups, aux); //Import the web-api
+        const usersCreator = require('./model/pg-users')(express, servicesUsers, aux, authization);
+        
+        app.use(pgResponses.index.api, webApi);
+        app.use(pgResponses.index.users, usersCreator);        
+    } catch (error) {
+        console.log(" ERRO DE SETUP")
+        console.log(error);
+        
+    }
+
+    
+
+    
+
+   
 
     return app
 }
