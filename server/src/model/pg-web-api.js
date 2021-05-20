@@ -27,10 +27,14 @@ module.exports = function(express, services, aux) {
     return router;
 
     function createGroup(req, res) {
+
+        console.log(req.user)
+        
         aux.promisesAsyncImplementation(
-            services.createGroup(req.body.owner, req.body.name, req.body.description, req.body.type, req.body.group_id),
+            services.createGroup(req.user.username, req.body.name, req.body.description, req.body.type, req.body.group_id),
             res
         );
+        
     }
 
     function getUserGroups(req, res) {

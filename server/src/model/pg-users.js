@@ -6,11 +6,14 @@ module.exports = function(express, services, aux, authization) {
     }
     const router = express.Router();
     const authenticate = authization.authenticate
+    const auth = authization.authorization
 
 
     router.post('/signup', signUp);
     router.post('/signin', authenticate.usingLocal, signIn);
     router.post('/logout',authenticate.logout, logOut);
+
+    router.get('/test',auth.getUserPermissions,test)
     
 
     router.get('/:username', getUser);
@@ -31,8 +34,14 @@ module.exports = function(express, services, aux, authization) {
         );
     }
 
+    function test (req,res){
+        res.send()
+
+    }
+
     function signIn(req, res) {
         if(req.isAuthenticated()){
+            console.log(req.isAuthenticated())
             res.send("Successfull login")
         }
         else{

@@ -14,6 +14,7 @@ function services(database, pgResponses, authization) {
             }
             
             return authUser.create(username,password).then(()=>{
+                
                 console.log("antes do create");
                 return database.createUser(username,name,surname).then(()=>{
                     console.log("dps do create");

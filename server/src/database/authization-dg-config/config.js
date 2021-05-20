@@ -2,24 +2,16 @@
 module.exports = {
 
     rbac_opts : {
-        "roles": ["admin", "Developer", "guest"],
+        "roles": ["admin","Colaborator"],
         "permissions": [
-            { "resource": "/api/g5/pluggable/gamification/groups", "action": "GET" }, 
-            { "resource": "/api/g5/pluggable/gamification/groups", "action": "POST" },
+            { "resource": "g5", "action": "GET" }, 
+            { "resource": "g5", "action": "POST" },
         ],
         "grants": {
-        "Developer": [
-            { "resource": "/api/g5/pluggable/gamification/groups", "action": "GET" }, 
-            { "resource": "/api/g5/pluggable/gamification/groups", "action": "POST" },
-        ],
         "Colaborator":[
-            { "resource": "/api/g5/pluggable/gamification/groups", "action": "GET" }, 
-            { "resource": "/api/g5/pluggable/gamification/groups", "action": "POST" },
+            { "resource": "g5", "action": "GET" }, 
+            { "resource": "g5", "action": "POST" },
 
-        ],
-        "guest": [
-            { "resource": "/api/g5/pluggable/gamification/groups", "action": "GET" }, 
-            { "resource": "/api/g5/pluggable/gamification/groups", "action": "POST" },
         ]
         }
        },
