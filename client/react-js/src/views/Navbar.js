@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 
+
 function Navbar() {
     return (
         <nav class="navbar-custom navbar navbar-expand-lg navbar-dark shadow fixed-top">
@@ -9,7 +10,7 @@ function Navbar() {
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
                                 <a href="/">
-                                    <img src="https://www.isel.pt/media/assets/default/images/fb_logo.png" width="auto" height="90"></img>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Video-Game-Controller-Icon.svg/1024px-Video-Game-Controller-Icon.svg.png" width="auto" height="80"></img>
                                 </a>
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

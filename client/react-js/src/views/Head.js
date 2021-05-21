@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 function Head() {
   return (
     <div>
@@ -13,6 +14,7 @@ function Head() {
       <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"></link>
       <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@800&display=swap" rel="stylesheet"></link>
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+      <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     </div>
   )
 }

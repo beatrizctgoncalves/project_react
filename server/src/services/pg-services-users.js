@@ -36,12 +36,14 @@ function services(database, pgResponses, authization) {
                     pgResponses.BAD_REQUEST_MSG
                 )
             }
-            return authUser.create(username,password).then(()=> {
-                return {
-                    status: pgResponses.OK,
-                    body: pgResponses.URI_MSG.concat(index).concat(username)
-                }
-            }).catch(error=>pgResponses.setError(error.status,error.body));
+            return authUser.create(username, password)
+                .then(() => {
+                    return {
+                        status: pgResponses.CREATE,
+                        body: pgResponses.URI_MSG.concat(index).concat(username)
+                    }
+                })
+                .catch(error => pgResponses.setError(error.status,error.body));
             
         },
         /*

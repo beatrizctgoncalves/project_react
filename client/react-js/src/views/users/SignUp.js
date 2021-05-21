@@ -20,20 +20,18 @@ class SignUp extends React.Component {
 
     handlePasswordChange = (event) => {
         event.persist()
-        this.setState(()=>
-            ({password : event.target.value})
-        )
+        this.setState(() => ({password : event.target.value}))
     }
 
-    handleSignUpClick = () =>{
+    handleSignUpClick = () => {
         const username = document.getElementById("username").value
         const password = document.getElementById("password").value
 
-        if(!username | !password){
+        if(!username | !password) {
             return
         }
 
-        if(password != document.getElementById("passwordRepeat").value){
+        if(password != document.getElementById("passwordRepeat").value) {
             //send alert password must match
             return
         }
