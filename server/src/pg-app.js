@@ -33,7 +33,7 @@ module.exports = async function(){
     let authization = await require('@authization/authization').setup({app,db:dbConfigs});
 
     const servicesGroups = require('./services/pg-services-groups')(databaseGroups, pgResponses, pgScores, apiGitlab, apiJira);
-    const servicesUsers = require('./services/pg-services-groups')(databaseUsers, pgResponses, authization);
+    const servicesUsers = require('./services/pg-services-users')(databaseUsers, pgResponses, authization);
 
     const webApi = require('./model/pg-web-api')(express, servicesGroups, aux); //Import the web-api
     const usersCreator = require('./model/pg-users')(express, servicesUsers, aux);

@@ -3,10 +3,12 @@
 
 function database(requests, pgResponses) {
     const dt = {
-        createUser: function(username, password) { //TODO
+        createUser: function(username,name,surname) { //TODO
             var requestBody = JSON.stringify({
                 "username": username,
-                "password": password
+                "name": name,
+                "surname" : surname,
+                "info": {}
             });
             return makeFetch('users/_doc', arrayMethods.POST, requestBody)
                 .then(() => username)

@@ -17,8 +17,15 @@ module.exports = function(express, services, aux) {
 
     function signUp(req, res) {
         console.log("signUp in pg-users");
+        let name;
+        let surname;
+
+        req.body.name? name = req.body.name:name = "";
+        req.body.surname? surname = req.body.surname : surname = "";
+       
+
         aux.promisesAsyncImplementation(
-            services.createUser(req.body.username, req.body.password, 'users/'),
+            services.createUser(req.body.username, req.body.password,name,surname, 'users/'),
             res
         );
     }

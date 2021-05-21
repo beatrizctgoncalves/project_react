@@ -27,7 +27,7 @@ function services(database, pgResponses, authization) {
                 })
         },*/
 
-        createUser: function(username, password, index) { //TODO
+        createUser: function(username, password,name,surname, index) { //TODO
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(username)) {  //verify if username is a string
                 return pgResponses.setError(
@@ -37,6 +37,10 @@ function services(database, pgResponses, authization) {
             }
             
             return authUser.create(username,password).then(()=>{
+
+                return database.createUser(username,name,surname)
+                
+            }).then(()=>{
                 return {
                     status: pgResponses.OK,
                     body: pgResponses.URI_MSG.concat(index).concat(username)
@@ -47,17 +51,6 @@ function services(database, pgResponses, authization) {
             });
             
         },
-        /*
-
-        getUser: function(username) {
-            return database.getUser(username)
-                .then(userObj => {
-                    return pgResponses.setSuccessList(
-                        pgResponses.OK,
-                        userObj
-                    )
-                })
-        },*/
 
         getUser: function(username) {
             return authUser.getByUsername(username)
