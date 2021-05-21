@@ -10,7 +10,7 @@ module.exports = function(express, services, aux) {
     router.get('/groups/owner/:owner', getUserGroups); //get user's groups
     router.get('/groups/:group_id', getGroupDetails); //get details of a specific group
     router.delete('/groups/:group_id', deleteGroup); //delete a group
-    router.patch('/groups/:group_id', editGroup); //update group
+    router.put('/groups/:group_id', editGroup); //update group
 
     router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
     router.post(`/groups/:group_id/project/jira`, addProjectJiraToGroup); //Add a specific Jira project to a group
@@ -26,10 +26,7 @@ module.exports = function(express, services, aux) {
     
     return router;
 
-    function createGroup(req, res) {
-
-        console.log(req.user)
-        
+    function createGroup(req, res) {      
         aux.promisesAsyncImplementation(
             services.createGroup(req.user.username, req.body.name, req.body.description, req.body.type, req.body.group_id),
             res

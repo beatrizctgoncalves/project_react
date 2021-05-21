@@ -6,11 +6,15 @@ module.exports = {
         "permissions": [
             { "resource": "g5", "action": "GET" }, 
             { "resource": "g5", "action": "POST" },
+            { "resource": "g5", "action": "DELETE" },
+            { "resource": "g5", "action": "PUT" },
         ],
         "grants": {
         "Colaborator":[
             { "resource": "g5", "action": "GET" }, 
             { "resource": "g5", "action": "POST" },
+            { "resource": "g5", "action": "DELETE" },
+            { "resource": "g5", "action": "PUT" },
 
         ]
         }

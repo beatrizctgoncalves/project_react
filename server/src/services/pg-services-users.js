@@ -13,8 +13,8 @@ function services(database, pgResponses, authization) {
                 )
             }
             
-            return authUser.create(username,password).then(()=>{
-                
+            return authUser.create(username,password)
+            .then(()=>{
                 console.log("antes do create");
                 return database.createUser(username,name,surname).then(()=>{
                     console.log("dps do create");
@@ -22,10 +22,17 @@ function services(database, pgResponses, authization) {
                         status: pgResponses.OK,
                         body: pgResponses.URI_MSG.concat(index).concat(username)
                     }
-                }).catch(error =>{
-                    this.deleteFromAuthization(username);
                 })
                 
+            }).catch(err =>{
+                console.log(err);
+                
+                if(!err.body)  err.body = err.error.errors[0].message
+                else{
+                    this.deleteFromAuthization(username);
+                }
+                return pgResponses.setError(err.status, err.body)
+
             });
             
         },
@@ -71,8 +78,12 @@ function services(database, pgResponses, authization) {
         },
 
         deleteFromAuthization : function(username){
-            return this.getUserAuthization(username).then(user => {
+            return this.getUserAuthization(username)
+            .then(user => {
                 return authUser.delete(user.body.id)
+            }).catch(err=>{
+                if(!err.body)  err.body = err.error.errors[0].message;
+                return  pgResponses.setError(err.status, err.body);
             })
 
 

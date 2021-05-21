@@ -32,21 +32,27 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
         },
 
         getGroupDetails: function(group_id) {
+            
             return database.getGroupDetails(group_id)
-                .then(group => {
+            .then(group => {
+                    console.log(group+"SERVICE");
+
                     return pgResponses.setSuccessList(
                         pgResponses.OK,
                         group
                     )
                 })
+                
         },
 
         deleteGroup: function(group_id) {
             return database.deleteGroup(group_id)
                 .then(group => {
+                    console.log(group+"DELETE");
+
                     return pgResponses.setSuccessUri(
                         pgResponses.OK,
-                        index,
+                        'groups/',
                         group
                     )
                 })
@@ -64,7 +70,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                     .then(group => {
                         return pgResponses.setSuccessUri(
                             pgResponses.OK,
-                            index,
+                            'groups/',
                             group
                         )
                     })
