@@ -105,30 +105,6 @@ function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJ
                                 })
                         })
                 })
-        },
-
-        addProjectGitlabToGroup: function(group_id, Pid, AToken) {
-            return apiGitlab.validateProject(Pid, AToken)
-                .then(validatedObj => {
-                    return database.getGroupDetails(group_id)
-                        .then(groupObj => {
-                            const projectExists = groupObj.projects.findIndex(p => p.key == key)
-                            if(projectExists != -1) {
-                                return pgResponses.setError(
-                                    pgResponses.FORBIDDEN,
-                                    pgResponses.FORBIDDEN_MSG
-                                )
-                            }
-                            return database.addProjectGitlabToGroup(group_id, validatedObj)
-                                .then(finalObj => {
-                                    return pgResponses.setSuccessUri(
-                                        pgResponses.OK,
-                                        index,
-                                        finalObj
-                                    )   
-                                })
-                        })
-                })
         },*/
 
         addProjectToGroup: function(group_id, Pid, type) {
