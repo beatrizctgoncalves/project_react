@@ -39,13 +39,6 @@ module.exports = async function() {
         
     }
 
-<<<<<<< HEAD
-    const servicesGroups = require('./services/pg-services-groups')(databaseGroups, pgResponses, pgScores, apiGitlab, apiJira);
-    const servicesUsers = require('./services/pg-services-users')(databaseUsers, pgResponses, authization);
-=======
-    
->>>>>>> 6494e483c480cd3bd08e643c28b00a8032b13dae
-
     
 
    

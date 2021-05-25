@@ -25,17 +25,8 @@ module.exports = function(express, services, aux, authization) {
     
     function signUp(req, res) {
         console.log("signUp in pg-users");
-<<<<<<< HEAD
-        let name;
-        let surname;
-
-        req.body.name? name = req.body.name:name = "";
-        req.body.surname? surname = req.body.surname : surname = "";
-       
-=======
         const name = req.body.name? req.body.name : "";
         const surname = req.body.surname? req.body.surname :  "";
->>>>>>> 6494e483c480cd3bd08e643c28b00a8032b13dae
 
         aux.promisesAsyncImplementation(
             services.createUser(req.body.username, req.body.password,name,surname, 'users/'),
