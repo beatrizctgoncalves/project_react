@@ -21,14 +21,14 @@ module.exports = async function() {
     const apiGitlab = require('./apis/api-Gitlab')(requests, pgResponses);
     const apiJira = require('./apis/api-Jira')(requests, pgResponses);
     const authizationConfig = require('./database/authization-dg-config/config')
-    const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, pgResponses);
+    const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, requests, pgResponses);
 
     try {
         let authization = await require('@authization/authization').setup({app,db:authizationConfig.dbConfigs,rbac_opts:authizationConfig.rbac_opts});
         const servicesGroups = require('./services/pg-services-groups')(databaseGroups,databaseUsers, pgResponses, pgScores, apiGitlab, apiJira, requests);
         const servicesUsers = require('./services/pg-services-users')(databaseUsers, pgResponses, authization);
     
-        const webApi = require('./model/pg-web-api')(express, servicesGroups, aux); //Import the web-api
+        const webApi = require('./model/pg-web-api')(express, servicesGroups, pgScores ,aux); //Import the web-api
         const usersCreator = require('./model/pg-users')(express, servicesUsers, aux, authization);
         
         app.use(pgResponses.index.api, webApi);

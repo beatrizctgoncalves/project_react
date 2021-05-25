@@ -1,43 +1,37 @@
 'use strict'
 
-function services(databaseGroup, databaseUsers, pgResponses) {
+function services(databaseGroup, databaseUsers, requests, pgResponses) {
     const serv = {       
 
         countPointsInGroup: function(groupId) { //TODO
-            let usersPoints = []
             let usersInfoMap = []
+            let projects = []
+            let owner = undefined
             databaseGroup.getGroupDetails(groupId)
             .then(group => {
-                    group.members.forEach(member =>{
-                        databaseUsers.getUser(member)
-                        .then(user => usersInfoMap.push({member: user.info}))  // needs to review if getUser will return info being a object with all the usernames of the tools like Jira or Gitlab
-                    })
-                return group.projects
+                let membersInfo = []
+                projects = group.projects
+                owner = group.owner
+                group.members.forEach(member =>{
+                    membersInfo.push(databaseUsers.getUser(member)
+                        .then(user => usersInfoMap.push({
+                            "username": user.username,
+                            "info" : user.info
+                        }))
+                    )  
+                })
+                return Promise.all(membersInfo)
             })
-            .then(projects => projects.map(project => { 
+            .then(() => projects.map(project => { 
                 return {
                     "id": project.id,
                     "type": project.type
                 }
             }))
             .then(projects => projects.forEach(project => { //TODO
-                // if(project.type == "Gitlab"){
-                //     this.countPointsGitlab(project.id)
-                // }
-                // if(project.type == "Jira"){
-                //     this.countPointsJira(project.id)
-                // }
                 const x = require("./plugins/pg-scores-" + project.type)
-                x.countPoints(project)
+                x.countPoints(project.id, usersInfoMap, owner, requests, pgResponses)
             }))
-        },
-
-        countPointsGitlab: function(projectId) { 
-            //TODO
-        },
-        
-        countPointsJira: function(projectId) { 
-            //TODO
         }
 
     }

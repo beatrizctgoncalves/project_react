@@ -213,7 +213,7 @@ function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJ
                             )
                         })
                 })
-        },
+        }/*,
 
         getGroupRankings: function(group_id, url, email, token) {
             return database.getGroupDetails(group_id)
@@ -236,7 +236,7 @@ function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJ
 
         getRankings: function() {
             //TODO
-        }
+        }*/
     }
     return serv;
 }

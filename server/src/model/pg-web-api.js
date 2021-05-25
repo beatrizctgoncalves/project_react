@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(express, services, aux) {
+module.exports = function(express, services, pgScores, aux) {
     if (!services) {
         throw "Invalid services object";
     }
@@ -113,7 +113,7 @@ module.exports = function(express, services, aux) {
 
     function getGroupRankings(req, res) {
         aux.promisesAsyncImplementation(
-            services.getGroupRankings(req.params.group_id, req.body.url, req.body.email, req.body.token),
+            pgScores.countPointsInGroup(req.params.group_id),
             res
         );
     }
