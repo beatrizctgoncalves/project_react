@@ -131,15 +131,16 @@ function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJ
                 })
         },*/
 
-        addProjectToGroup: function(group_id, Pid, type, AToken) {
+        addProjectToGroup: function(group_id, Pid, type) {
             
             //TODO needs "Other" type
 
             const x = require("../apis/api-" + type)(requests,pgResponses)
 
-
-            //missing Atoken from user
-            return x.validateProject(Pid, AToken)
+            return database.getGroupDetails(group_id)
+                .then(groupObj => databaseUsers.getUser(groupObj.owner))
+                .then(user => user.info.filter(tool => tool.type = type)[0])
+                .then(tool => x.validateProject(Pid, tool.AToken))
                 .then(validatedObj => {
                     return database.getGroupDetails(group_id)
                         .then(groupObj => {
