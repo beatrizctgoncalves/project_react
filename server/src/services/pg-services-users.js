@@ -13,6 +13,16 @@ function services(database, pgResponses, authization) {
                 )
             }
             
+<<<<<<< HEAD
+            return authUser.create(username,password).then(()=>{
+
+                return database.createUser(username,name,surname)
+                
+            }).then(()=>{
+                return {
+                    status: pgResponses.OK,
+                    body: pgResponses.URI_MSG.concat(index).concat(username)
+=======
             return authUser.create(username,password)
             .then(()=>{
                 console.log("antes do create");
@@ -30,12 +40,15 @@ function services(database, pgResponses, authization) {
                 if(!err.body)  err.body = err.error.errors[0].message
                 else{
                     this.deleteFromAuthization(username);
+>>>>>>> 6494e483c480cd3bd08e643c28b00a8032b13dae
                 }
                 return pgResponses.setError(err.status, err.body)
 
             });
             
         },
+<<<<<<< HEAD
+=======
 
         getUserAuthization: function(username) {
             return authUser.getByUsername(username)
@@ -48,6 +61,7 @@ function services(database, pgResponses, authization) {
                     pgResponses.setError(error.status,error.body)
                 })
         },
+>>>>>>> 6494e483c480cd3bd08e643c28b00a8032b13dae
 
         getUser : function(username) {
             

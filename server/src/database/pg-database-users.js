@@ -6,9 +6,12 @@ const fetch = require('node-fetch');
 
 function database(requests, pgResponses) {
     const dt = {
+<<<<<<< HEAD
+=======
 
         request1 : require('../services/apis-db-requests')(fetch,pgResponses),
 
+>>>>>>> 6494e483c480cd3bd08e643c28b00a8032b13dae
         createUser: function(username,name,surname) { //TODO
             var requestBody = JSON.stringify({
                 "username": username,
