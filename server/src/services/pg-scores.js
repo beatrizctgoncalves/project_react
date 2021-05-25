@@ -4,7 +4,7 @@ function services(databaseGroup, databaseUsers, requests, pgResponses) {
     const serv = {       
 
         countPointsInGroup: function(groupId) { //TODO
-            let usersInfoMap = []
+            let usersInfoMap = new Map()
             let projects = []
             let owner = undefined
             return databaseGroup.getGroupDetails(groupId)
@@ -14,9 +14,9 @@ function services(databaseGroup, databaseUsers, requests, pgResponses) {
                 owner = group.owner
                 group.members.forEach(member =>{
                     membersInfo.push(databaseUsers.getUser(member)
-                        .then(user => usersInfoMap.push({
-                            "username": user.username,
-                            "info" : user.info
+                        .then(user => usersInfoMap.set(user.username,{
+                            "info" : user.info,
+                            "Points" : 0
                         }))
                     )  
                 })
@@ -28,10 +28,20 @@ function services(databaseGroup, databaseUsers, requests, pgResponses) {
                     "type": project.type
                 }
             }))
-            .then(projects => projects.forEach(project => { //TODO
-                const x = require("./plugins/pg-scores-" + project.type)
-                x.countPoints(project.id, usersInfoMap, owner, requests, pgResponses)
-            }))
+            .then(projects => {
+                let promisses = []
+                projects.forEach(project => { //TODO
+                    const x = require("./plugins/pg-scores-" + project.type)
+                    promisses.push(x.countPoints(project.id, usersInfoMap, owner, requests, pgResponses)
+                        .then(memberInfoMapGitlab => memberInfoMapGitlab.forEach(info => {
+                            let aux = usersInfoMap.get(info.AppUsername)
+                            aux.Points += info.Points
+                            usersInfoMap.set(info.AppUsername,aux)
+                        }))
+                )})
+                return Promise.all(promisses)
+            })
+            .then(() => console.log(usersInfoMap))
             .then(() => {
                 return pgResponses.setSuccessUri(
                     pgResponses.OK,
