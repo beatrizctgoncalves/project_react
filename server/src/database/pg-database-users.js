@@ -13,7 +13,6 @@ function database(requests, pgResponses) {
                 "surname" : surname,
                 "info": {}
             });
-            console.log(this.request1);
 
             return fetch(`http://localhost:9200/users/_doc`, {
                 method: 'POST',
@@ -43,12 +42,10 @@ function database(requests, pgResponses) {
 
             
             return this.getRawUser(username).then(body => {
-                console.log("SUCCESS")
                 if(body.hits && body.hits.hits.length) return body.hits.hits.map(hit => hit._source)[0];
                 else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
             })
             .catch(error=> {
-                console.log("ERROR")
                  if(error.status == pgResponses.NOT_FOUND) return error
                  else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
                 });
@@ -82,25 +79,24 @@ function database(requests, pgResponses) {
 
         },
 
-        updateUser: function(username, firstName, lastName) {
+        updateUser: function(username, updatedInfo) {
+
             var requestBody = JSON.stringify({
                 "script": {
-                    "source": "ctx._source.name = params.name; ctx._source.description = params.description",
-                    "params": {
-                        "firstName": firstName, 
-                        "lastName": lastName
-                    }
+                    "source": "ctx._source.name = params.name; ctx._source.surname = params.surname; ctx._source.email = params.email; ctx._source.info = params.info;",
+                    "params": updatedInfo
                 }
             });
             return this.getRawUser(username).then(body=>{
                 const id =  body.hits.hits.map(hit => hit._id);
-                return fetch(`http://localhost:9200/groups/_update/${id}`, {
+                return fetch(`http://localhost:9200/users/_update/${id}`, {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json'
                     },
                     body: requestBody 
-                }).then(res => res.json).then(body =>{
+                }).then(res => res.json())
+                .then(body =>{
                     if(body.result == 'updated') {
                         return body._id;
                     } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);

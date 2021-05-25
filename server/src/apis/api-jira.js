@@ -15,6 +15,15 @@ function apiJira(requests, pgResponses) {
                         "avatar": body.avatarUrls,
                         "projectTypeKey": body.projectTypeKey,
                         "type": "jira"
+                    
+                    
+                        /* NEEDS TO BE LIKE THIS WITH THIS KEYS
+                        "id": body.id,
+                        "owner_name": body.owner.username,
+                        "owner_id": body.owner.id,
+                        "description": body.description,
+                        "avatar": body.avatar_url,
+                        "type": "Gitlab"*/
                     }
                 })
                 .catch(error => pgResponses.resolveErrorApis(error));

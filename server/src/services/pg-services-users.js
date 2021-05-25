@@ -63,15 +63,16 @@ function services(database, pgResponses, authization) {
 
 
 
-        updateUser: function(username, firstName, lastName, email, password, index) {
-            return database.getUserId(username)
-                .then(id => {
-                    return database.updateUser(id, firstName, lastName, email, password)
+        updateUser: function(username, updatedInfo) {
+            return database.getUser(username)
+                .then(user => {
+                    return database.updateUser(user.username, updatedInfo)
                         .then(user_name => {
+                            console.log("AQUI 2---------------------------------------------------")
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                user_name,
-                                index
+                                'users/',
+                                user_name
                             )
                         })
                 })

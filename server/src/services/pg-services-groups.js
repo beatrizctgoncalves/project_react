@@ -1,9 +1,9 @@
 'use strict'
 
 
-function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJira) {
+function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJira, requests) {
     const serv = {
-        createGroup: function(owner, name, description, type, group_id) {
+        createGroup: function(owner, name, description) {
             var regExp = /[a-zA-Z]/g;
             if(!regExp.test(name) || !description || !owner) {  //verify if name has a string
                 return pgResponses.setError(
@@ -11,7 +11,7 @@ function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJ
                     pgResponses.BAD_REQUEST_MSG
                 )
             }
-            return database.createGroup(owner, name, description, type, group_id)
+            return database.createGroup(owner, name, description)
                 .then(groups => {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,
@@ -83,7 +83,7 @@ function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJ
                 })
         },
 
-        addProjectJiraToGroup: function(group_id, url, email, token, key) {
+        /*addProjectJiraToGroup: function(group_id, url, email, token, key) {
             return apiJira.validateProject(url, email, token, key)
                 .then(validatedObj => {
                     return database.getGroupDetails(group_id)
@@ -125,6 +125,37 @@ function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJ
                                         pgResponses.OK,
                                         index,
                                         finalObj
+                                    )   
+                                })
+                        })
+                })
+        },*/
+
+        addProjectToGroup: function(group_id, Pid, type, AToken) {
+            
+            //TODO needs "Other" type
+
+            const x = require("../apis/api-" + type)(requests,pgResponses)
+
+
+            //missing Atoken from user
+            return x.validateProject(Pid, AToken)
+                .then(validatedObj => {
+                    return database.getGroupDetails(group_id)
+                        .then(groupObj => {
+                            const projectExists = groupObj.projects.findIndex(p => p.id == Pid && p.type == type)
+                            if(projectExists != -1) {
+                                return pgResponses.setError(
+                                    pgResponses.FORBIDDEN,
+                                    pgResponses.FORBIDDEN_MSG
+                                )
+                            }
+                            return database.addProjectToGroup(group_id, validatedObj)
+                                .then(() => {
+                                    return pgResponses.setSuccessUri(
+                                        pgResponses.OK,
+                                        pgResponses.index.api + "/groups/",
+                                        group_id
                                     )   
                                 })
                         })

@@ -9,7 +9,7 @@ function database(requests, pgResponses) {
                 "owner": owner,
                 "name": group_name,
                 "description": group_description,
-                "members": [],
+                "members": [owner],
                 "projects": [],
                 "ratings": []
             })
@@ -179,7 +179,7 @@ function database(requests, pgResponses) {
                 */
         },
 
-        addProjectJiraToGroup: function(group_id, information) {
+        /*addProjectJiraToGroup: function(group_id, information) {
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",
@@ -215,10 +215,47 @@ function database(requests, pgResponses) {
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
                 */
-        },
+       /* },
 
         //should be the same info as the project from Jira (instead of key should be id on both, should be the same)
         addProjectGitlabToGroup: function(group_id, information) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline": "ctx._source.projects.add(params.projects)",
+                    "params": {
+                        "projects": {
+                            "id": information.id,
+                            "owner_name": information.owner_name,
+                            "owner_id": information.owner_id,
+                            "description": information.description,
+                            "avatar": information.avatar,
+                            "type": information.type
+                        }
+                    }
+                }
+            });
+
+
+            return fetch(`http://localhost:9200/groups/_update/${group_id}`, {
+                method: 'POST',
+                headers: { //Request headers. format is the identical to that accepted by the Headers constructor (see below)
+                    'Content-Type': 'application/json'
+                },
+                body: requestBody //Request body
+            }).then(response => response.json())
+            .then(body => body._id)
+            .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG));
+            
+            
+            /*makeFetch(`groups/_update/${group_id}`, arrayMethods.POST, requestBody)
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+
+                */
+        /*},*/
+
+        addProjectToGroup: function(group_id, information) {
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",

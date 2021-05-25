@@ -39,8 +39,8 @@ function requests(fetch, pgResponses) {
         },
 
         makeRequestGitLab: function(URI) {
-            return fetch(GIT_URL.concat(URI), {
-                method: arrayMethods.GET,
+            return fetch(this.GIT_URL.concat(URI), {
+                method: this.arrayMethods.GET,
                 headers: {
                     'Accept': 'application/json'
                 }
