@@ -25,7 +25,6 @@ function database(requests, pgResponses) {
                 else return pgResponses.setError(pgResponses.DB_ERROR)
             })
             .catch(() => {
-                    console.log("nop");
                    return  pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG)
                 });
 
@@ -96,11 +95,8 @@ function database(requests, pgResponses) {
                 body: null //Request body
             }).then(response => response.json())
             .then(body => {
-                console.log(body)
                 if(body.found) {
                     body._source.id = body._id;
-                    console.log(body._source.id);
-                    console.log(body._source);
                     return body._source;
                 } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_group_MSG);
             })

@@ -1,7 +1,7 @@
 'use strict'
 
 
-function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
+function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJira) {
     const serv = {
         createGroup: function(owner, name, description, type, group_id) {
             var regExp = /[a-zA-Z]/g;
@@ -35,8 +35,6 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
             
             return database.getGroupDetails(group_id)
             .then(group => {
-                    console.log(group+"SERVICE");
-
                     return pgResponses.setSuccessList(
                         pgResponses.OK,
                         group
@@ -48,8 +46,6 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
         deleteGroup: function(group_id) {
             return database.deleteGroup(group_id)
                 .then(group => {
-                    console.log(group+"DELETE");
-
                     return pgResponses.setSuccessUri(
                         pgResponses.OK,
                         'groups/',
@@ -167,11 +163,11 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
         },
         
         addMemberToGroup: function(group_id, username) {
-            return database.getUser(username) //check if the user exists
+            return databaseUsers.getUser(username) //check if the user exists
                 .then(userObj => {
                     return database.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            const userExists = groupObj.members.findIndex(m => m.username === username)
+                            const userExists = groupObj.members.findIndex(m => m.user === username)
                             if(userExists != -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
@@ -182,7 +178,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                                 .then(finalObj => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,
-                                        index,
+                                        'groups/',
                                         finalObj
                                     )   
                                 })
@@ -204,7 +200,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                         .then(id => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                index,
+                                'groups/',
                                 id
                             )
                         })
