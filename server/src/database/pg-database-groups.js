@@ -326,9 +326,7 @@ function database(requests, pgResponses) {
                     "lang": "painless",
                     "inline": "ctx._source.members.add(params.members)",
                     "params": {
-                        "members": {
-                            "user": username,
-                        }
+                        "members": username
                     }
                 }
             });

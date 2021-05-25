@@ -7,7 +7,7 @@ function services(databaseGroup, databaseUsers, requests, pgResponses) {
             let usersInfoMap = []
             let projects = []
             let owner = undefined
-            databaseGroup.getGroupDetails(groupId)
+            return databaseGroup.getGroupDetails(groupId)
             .then(group => {
                 let membersInfo = []
                 projects = group.projects
@@ -32,6 +32,13 @@ function services(databaseGroup, databaseUsers, requests, pgResponses) {
                 const x = require("./plugins/pg-scores-" + project.type)
                 x.countPoints(project.id, usersInfoMap, owner, requests, pgResponses)
             }))
+            .then(() => {
+                return pgResponses.setSuccessUri(
+                    pgResponses.OK,
+                    'groups/',
+                    ""
+                )   
+            })
         }
 
     }

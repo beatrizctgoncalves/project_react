@@ -13,14 +13,13 @@ module.exports = {
                     memberInfoMapGitlab.set(info.username, {"AppUsername" : userInfo.username, "Points" : 0 })
             })
         })
-        ApiGitlab.getIssues(Pid,AToken)
+        return ApiGitlab.getIssues(Pid,AToken)
             .then(issues => issues.forEach(issue => {
                 let Points = 0
                 if(issue.closed_at)
                     Points += 10
                 if(issue.due_date && issue.closed_at && issue.closed_at.slice(0,10)>issue.due_date)
                     Points -=5
-                console.log(issue)
                 issue.assignees.forEach(assignee => {
                     if(memberInfoMapGitlab.has(assignee)){
                         let aux = memberInfoMapGitlab.get(assignee)

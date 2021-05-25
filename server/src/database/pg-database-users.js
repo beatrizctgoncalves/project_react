@@ -83,7 +83,7 @@ function database(requests, pgResponses) {
 
             var requestBody = JSON.stringify({
                 "script": {
-                    "source": "ctx._source.name = params.name; ctx._source.surname = params.surname; ctx._source.email = params.email; ctx._source.info = params.info;",
+                    "source": "if(params.name != null) ctx._source.name = params.name; if(params.surname != null) ctx._source.surname = params.surname; if(params.email != null) ctx._source.email = params.email; if(params.info != null) ctx._source.info = params.info;",
                     "params": updatedInfo
                 }
             });
