@@ -1,10 +1,35 @@
 'use strict'
 
+const fetch = require('node-fetch');
+const pgResponses = require('../../pg-responses');
 
-function apiJira(requests, pgResponses) {
+var arrayMethods = {
+    POST: 'POST',
+    GET: 'GET',
+    DELETE: 'DELETE'
+}
+
+function makeFetch(uri, method, body, email, token) {
+    return fetch(uri, {
+        method: method,
+        headers: {
+            'Authorization': `Basic ${Buffer.from(
+                `${email}:${token}`
+            ).toString('base64')}`,
+            'Accept': 'application/json'
+        },
+        body: body //Request body
+    })
+        .then(response => {
+            if(response.status != pgResponses.OK) return Promise.reject(response);
+            return response.json()
+        })
+}
+
+function apiJira() {
     const jira = {
         validateProject: function(url, email, token, key) {
-            return requests.makeRequestJira(`${url}/rest/api/3/project/${key}?expand=lead`, requests.arrayMethods.GET, null, email, token)
+            return makeFetch(`${url}/rest/api/3/project/${key}?expand=lead`, arrayMethods.GET, null, email, token)
                 .then(body => {
                     return {
                         "id": body.id,
@@ -30,13 +55,13 @@ function apiJira(requests, pgResponses) {
         },
 
         getUserById: function(url, email, token) {
-            return requests.makeRequestJira(`${url}&expand=groups,applicationRoles`, requests.arrayMethods.GET, null, email, token)
+            return makeFetch(`${url}&expand=groups,applicationRoles`, arrayMethods.GET, null, email, token)
                 .then(body => body)
                 .catch(error => pgResponses.resolveErrorApis(error));
         },
 
         getIssues: function(url, email, token, key) {
-            return requests.makeRequestJira(`${url}/rest/api/2/search?jql=project=${key}`, requests.arrayMethods.GET, null, email, token)
+            return makeFetch(`${url}/rest/api/2/search?jql=project=${key}`, arrayMethods.GET, null, email, token)
                 .then(body => {
                     let arrayIssues = []
                     body.issues.forEach(issue => arrayIssues.push({

@@ -2,7 +2,7 @@
 
 module.exports = {
     countPoints: function(Pid, userInfoMap, owner, requests, pgResponses) {
-        const ApiGitlab = require("../../apis/api-Gitlab")(requests, pgResponses)
+        const ApiGitlab = require("./api")(requests, pgResponses)
         let AToken = userInfoMap.get(owner).info
         AToken = AToken.filter(info => info.type == "Gitlab")[0].AToken
         let memberInfoMapGitlab = new Map()

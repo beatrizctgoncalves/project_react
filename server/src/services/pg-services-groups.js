@@ -1,7 +1,7 @@
 'use strict'
 
 
-function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJira, requests) {
+function services(database,databaseUsers, pgResponses, requests) {
     const serv = {
         createGroup: function(owner, name, description) {
             var regExp = /[a-zA-Z]/g;
@@ -111,7 +111,7 @@ function services(database,databaseUsers, pgResponses, pgScores, apiGitlab, apiJ
             
             //TODO needs "Other" type
 
-            const x = require("../apis/api-" + type)(requests,pgResponses)
+            const x = require("./plugins/" + type + "/api")()
 
             return database.getGroupDetails(group_id)
                 .then(groupObj => databaseUsers.getUser(groupObj.owner))
