@@ -2,7 +2,7 @@
 const fetch = require('node-fetch');
 
 
-function database(requests, pgResponses) {
+function database(pgResponses) {
     const dt = {
         createGroup: function(owner, group_name, group_description) {
             var requestBody = JSON.stringify({

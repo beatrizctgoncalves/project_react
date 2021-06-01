@@ -1,7 +1,7 @@
 'use strict'
 
 
-function services(database,databaseUsers, pgResponses, requests) {
+function services(database,databaseUsers, pgResponses) {
     const serv = {
         createGroup: function(owner, name, description) {
             var regExp = /[a-zA-Z]/g;

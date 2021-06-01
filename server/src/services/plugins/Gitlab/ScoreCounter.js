@@ -1,8 +1,8 @@
 'use strict'
 
 module.exports = {
-    countPoints: function(Pid, userInfoMap, owner, requests, pgResponses) {
-        const ApiGitlab = require("./api")(requests, pgResponses)
+    countPoints: function(Pid, userInfoMap, owner) {
+        const ApiGitlab = require("./api")()
         let AToken = userInfoMap.get(owner).info
         AToken = AToken.filter(info => info.type == "Gitlab")[0].AToken
         let memberInfoMapGitlab = new Map()
