@@ -6,10 +6,10 @@ function Group() {
     return (
         <div class="homeItems">
             <div class="box-home m-3">
-                <div class="row">
+                <div class="text-center">
+                <h1>username's Groups</h1>
                     <div class="col-md-8">
                         <div class="intro">
-                            <h1>username's Groups</h1>
                             <div class="card-columns card-groups m-3">
                                 <div class="card text-center">
                                     <div class="card-header">

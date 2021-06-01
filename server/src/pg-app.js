@@ -20,28 +20,23 @@ module.exports = async function() {
 
     const apiGitlab = require('./apis/api-gitlab')(requests, pgResponses);
     const apiJira = require('./apis/api-jira')(requests, pgResponses);
-    const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, pgResponses);
+    const authizationConfig = require('./database/authization-dg-config/config')
 
-    const dbConfigs = {
-        "host":'localhost',
-        "port": 5432,
-        "user":'postgres',
-        "password":'1234',
-        "connectionLimit": 5,
-        "database":'plug',
-        "dbms": 'postgres'
+    try {
+        let authization = await require('@authization/authization').setup({app,db:authizationConfig.dbConfigs,rbac_opts:authizationConfig.rbac_opts});
+        const servicesGroups = require('./services/pg-services-groups')(databaseGroups, pgResponses, pgScores, apiGitlab, apiJira);
+        const servicesUsers = require('./services/pg-services-users')(databaseUsers, pgResponses, authization);
+    
+        const webApi = require('./model/pg-web-api')(express, servicesGroups, aux); //Import the web-api
+        const usersCreator = require('./model/pg-users')(express, servicesUsers, aux, authization);
+        
+        app.use(pgResponses.index.api, webApi);
+        app.use(pgResponses.index.users, usersCreator);
+             
+    } catch (error) {
+        console.log(" ERRO DE SETUP")
+        console.log(error);
     }
-    
-    let authization = await require('@authization/authization').setup({app,db:dbConfigs});
-
-    const servicesGroups = require('./services/pg-services-groups')(databaseGroups, pgResponses, pgScores, apiGitlab, apiJira);
-    const servicesUsers = require('./services/pg-services-users')(databaseUsers, pgResponses, authization);
-
-    const webApi = require('./model/pg-web-api')(express, servicesGroups, aux); //Import the web-api
-    const usersCreator = require('./model/pg-users')(express, servicesUsers, aux);
-    
-    app.use(pgResponses.index.api, webApi);
-    app.use(pgResponses.index.users, usersCreator);
 
     return app
 }

@@ -1,4 +1,5 @@
 'use strict'
+const fetch = require('node-fetch');
 
 
 function database(requests, pgResponses) {
@@ -12,15 +13,63 @@ function database(requests, pgResponses) {
                 "projects": [],
                 "ratings": []
             })
+            
+            return fetch(`http://localhost:9200/groups/_doc`, {
+                method: 'POST',
+                headers: { //Request headers. format is the identical to that accepted by the Headers constructor (see below)
+                    'Content-Type': 'application/json'
+                },
+                body: requestBody //Request body
+            }).then(response => response.json()).then(body => {
+                if(!body.error) return body._id;
+                else return pgResponses.setError(pgResponses.DB_ERROR)
+            })
+            .catch(() => {
+                    console.log("nop");
+                   return  pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG)
+                });
+
+
+
+
+            /*
             return requests.makeFetchElastic('groups/_doc', requests.arrayMethods.POST, requestBody)
                 .then(body => {
                     if(!body.error) return body._id;
                     else return pgResponses.setError(pgResponses.DB_ERROR)
                 })
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+
+                */
         },
 
         getUserGroups: function(owner) {
+
+            fetch(`http://localhost:9200/groups/_search?q=owner:${owner}`, {
+                method: 'POST',
+                headers: { //Request headers. format is the identical to that accepted by the Headers constructor (see below)
+                    'Content-Type': 'application/json'
+                },
+                body: null //Request body
+            }).then(response => response.json())
+            .then(body => {
+                if(body.hits && body.hits.hits.length) {
+                    return body.hits.hits.map(hit => {
+                        hit._source.id = hit._id;
+                        return hit._source;
+                    });
+                } else {
+                    return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_groupS_MSG);
+                }
+            })
+            .catch(() => {
+                   return  pgResponses.resolveErrorElastic(error)
+                });
+
+
+
+
+            /*
             return makeFetch(`groups/_search?q=owner:${owner}`, requests.arrayMethods.POST, null)
                 .then(body => {
                     if(body.hits && body.hits.hits.length) {
@@ -33,6 +82,7 @@ function database(requests, pgResponses) {
                     }
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
+                */
         },
 
         getGroupDetails: function(id) {

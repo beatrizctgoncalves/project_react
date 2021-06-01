@@ -143,7 +143,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                         .then(id => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                index,
+                                index.api,
                                 id
                             )
                         })
