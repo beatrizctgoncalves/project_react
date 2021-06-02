@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(express, services, aux) {
+module.exports = function(express, services, pgScores, aux) {
     if (!services) {
         throw "Invalid services object";
     }
@@ -9,13 +9,14 @@ module.exports = function(express, services, aux) {
     router.post('/groups', createGroup); //create group
     router.get('/groups/owner/:owner', getUserGroups); //get user's groups
     router.get('/groups/:group_id', getGroupDetails); //get details of a specific group
-    router.patch('/groups/:group_id', editGroup); //update group
+    
     router.delete('/groups/:group_id', deleteGroup); //delete a group
+    router.put('/groups/:group_id', editGroup); //update group
 
-    router.get(`/groups/:group_id/projects`, getGroupProjects); //Get all projects of a group
-    router.post(`/groups/:group_id/projects/jira`, addProjectJiraToGroup); //Add a specific Jira project to a group
-    router.post(`/groups/:group_id/projects/gitlab`, addProjectGitlabToGroup); //Add a specific Gitlab project to a group
-    router.delete('/groups/:group_id/projects/:project_id', removeProjectFromGroup); //Remove a specific project from a group
+    router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
+    router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
+    // router.post(`/groups/:group_id/project/jira`, addProjectJiraToGroup); //Add a specific Jira project to a group
+    router.delete('/groups/:group_id/project/:project_id', removeProjectFromGroup); //Remove a specific project from a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
     router.post(`/groups/:group_id/members/:username`, addMemberToGroup); //Add a specific user to a group
@@ -26,9 +27,9 @@ module.exports = function(express, services, aux) {
     
     return router;
 
-    function createGroup(req, res) {        
+    function createGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.createGroup(req.user.username, req.body.name, req.body.description, req.body.type, req.body.group_id),
+            services.createGroup(req.body.owner, req.body.name, req.body.description),
             res
         );
     }
@@ -68,9 +69,16 @@ module.exports = function(express, services, aux) {
         );
     }
 
-    function addProjectJiraToGroup(req, res) {
+    // function addProjectJiraToGroup(req, res) {
+    //     aux.promisesAsyncImplementation(
+    //         services.addProjectJiraToGroup(req.params.group_id, req.body.url, req.body.email, req.body.token, req.body.key),
+    //         res
+    //     );
+    // }
+
+    function addProjectToGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.addProjectJiraToGroup(req.params.group_id, req.body.url, req.body.email, req.body.token, req.body.key),
+            services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.type),
             res
         );
     }
@@ -78,13 +86,6 @@ module.exports = function(express, services, aux) {
     function removeProjectFromGroup(req, res) {
         aux.promisesAsyncImplementation(
             services.removeProjectFromGroup(req.params.group_id, req.params.project_id),
-            res
-        );
-    }
-
-    function addProjectGitlabToGroup(req, res) {
-        aux.promisesAsyncImplementation(
-            services.addProjectGitlabToGroup(req.params.group_id, req.body.pid, req.body.atoken),
             res
         );
     }
@@ -112,7 +113,7 @@ module.exports = function(express, services, aux) {
 
     function getGroupRankings(req, res) {
         aux.promisesAsyncImplementation(
-            services.getGroupRankings(req.params.group_id, req.body.url, req.body.email, req.body.token),
+            pgScores.countPointsInGroup(req.params.group_id),
             res
         );
     }

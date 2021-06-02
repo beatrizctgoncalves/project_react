@@ -12,7 +12,6 @@ function services(database, pgResponses, authization) {
                     pgResponses.BAD_REQUEST_MSG
                 )
             }
-
             return authUser.create(username, password)
                 .then(() => {
                     return database.createUser(username, name, surname)
@@ -44,7 +43,16 @@ function services(database, pgResponses, authization) {
                         body: pgResponses.URI_MSG.concat(index).concat(username)
                     }
                 })
-                .catch(error => pgResponses.setError(error.status, error.body));
+                .catch(err => {
+                    console.log(err);
+
+                    if (!err.body) err.body = err.error.errors[0].message
+                    else {
+                        this.deleteFromAuthization(username);
+                    }
+                    return pgResponses.setError(err.status, err.body)
+
+                });
         },
 
         getUserAuthization: function (username) {
@@ -69,15 +77,16 @@ function services(database, pgResponses, authization) {
                 })
         },
 
-        updateUser: function (username, firstName, lastName, email, password, index) {
-            return database.getUserId(username)
-                .then(id => {
-                    return database.updateUser(id, firstName, lastName, email, password)
+        updateUser: function (username, updatedInfo) {
+            return database.getUser(username)
+                .then(user => {
+                    return database.updateUser(user.username, updatedInfo)
                         .then(user_name => {
+                            console.log("AQUI 2---------------------------------------------------")
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                user_name,
-                                index
+                                'users/',
+                                user_name
                             )
                         })
                 })
@@ -85,7 +94,13 @@ function services(database, pgResponses, authization) {
 
         deleteFromAuthization: function (username) {
             return this.getUserAuthization(username)
-                .then(user => authUser.delete(user.body.id))
+                .then(user => {
+                    return authUser.delete(user.body.id)
+                })
+                .catch(err => {
+                    if (!err.body) err.body = err.error.errors[0].message;
+                    return pgResponses.setError(err.status, err.body);
+                })
         },
 
         deleteUser: function (username, index) {

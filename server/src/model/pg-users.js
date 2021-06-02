@@ -63,7 +63,7 @@ module.exports = function(express, services, aux, authization) {
 
     function updateUser(req, res) {
         aux.promisesAsyncImplementation(
-            services.updateUser(req.params.username, req.params.firstName, req.params.lastName, req.params.email, req.params.password, 'users/'),
+            services.updateUser(req.params.username, req.body.updatedInfo),
             res
         );
     }

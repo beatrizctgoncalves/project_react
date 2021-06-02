@@ -5,17 +5,13 @@ const fetch = require('node-fetch');
 
 function database(requests, pgResponses) {
     const dt = {
-
-        request1 : require('../services/apis-db-requests')(fetch,pgResponses),
-
-        createUser: function(username,name,surname) { //TODO
+        createUser: function (username, name, surname) { //TODO
             var requestBody = JSON.stringify({
                 "username": username,
                 "name": name,
-                "surname" : surname,
+                "surname": surname,
                 "info": {}
             });
-            console.log(this.request1);
 
             return fetch(`http://localhost:9200/users/_doc`, {
                 method: 'POST',
@@ -23,14 +19,14 @@ function database(requests, pgResponses) {
                     'Content-Type': 'application/json'
                 },
                 body: requestBody //Request body
-            }).then(response => response.json())
-            .catch(() => {
+            })
+                .then(response => response.json())
+                .catch(() => {
                     console.log("nop");
-                   return  pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG)
+                    return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG)
                 });
-            
-            /*
-            
+
+            /*            
             return this.request1.makeFetchElastic('users/_doc', arrayMethods.POST, requestBody)
                 .then(() =>{
                     console.log("cria?");
@@ -38,25 +34,18 @@ function database(requests, pgResponses) {
                 .catch(() => {
                     console.log("nop");
                    return  pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG)})
-              */     
+              */
         },
 
-        getUser: function(username) {
-
-            
+        getUser: function (username) {
             return this.getRawUser(username).then(body => {
-                console.log("SUCCESS")
-                if(body.hits && body.hits.hits.length) return body.hits.hits.map(hit => hit._source)[0];
+                if (body.hits && body.hits.hits.length) return body.hits.hits.map(hit => hit._source)[0];
                 else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
             })
-            .catch(error=> {
-                console.log("ERROR")
-                 if(error.status == pgResponses.NOT_FOUND) return error
-                 else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
+                .catch(error => {
+                    if (error.status == pgResponses.NOT_FOUND) return error
+                    else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
                 });
-
-
-
 
             /*
             return makeFetch(`users/_search?q=username:${username}`, arrayMethods.GET, null)
@@ -68,12 +57,10 @@ function database(requests, pgResponses) {
                     if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
                     else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
                 })
-
-                */
+            */
         },
 
-        getRawUser : function(username){
-
+        getRawUser: function (username) {
             return fetch(`http://localhost:9200/users/_search?q=username:${username}`, {
                 method: 'GET',
                 headers: { //Request headers. format is the identical to that accepted by the Headers constructor (see below)
@@ -81,40 +68,38 @@ function database(requests, pgResponses) {
                 },
                 body: null //Request body
             }).then(res => res.json())
-
         },
 
-        updateUser: function(username, firstName, lastName) {
+        updateUser: function (username, updatedInfo) {
             var requestBody = JSON.stringify({
                 "script": {
-                    "source": "ctx._source.name = params.name; ctx._source.description = params.description",
-                    "params": {
-                        "firstName": firstName, 
-                        "lastName": lastName
-                    }
+                    "source": "if(params.name != null) ctx._source.name = params.name; if(params.surname != null) ctx._source.surname = params.surname; if(params.email != null) ctx._source.email = params.email; if(params.info != null) ctx._source.info = params.info;",
+                    "params": updatedInfo
                 }
             });
-            return this.getRawUser(username).then(body=>{
-                const id =  body.hits.hits.map(hit => hit._id);
-                return fetch(`http://localhost:9200/groups/_update/${id}`, {
+            return this.getRawUser(username).then(body => {
+                const id = body.hits.hits.map(hit => hit._id);
+                return fetch(`http://localhost:9200/users/_update/${id}`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: requestBody 
-                }).then(res => res.json).then(body =>{
-                    if(body.result == 'updated') {
-                        return body._id;
-                    } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
-
-                }).catch(error => {
-                    if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
-                    else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
+                    body: requestBody
                 })
+                    .then(res => res.json())
+                    .then(body => {
+                        if (body.result == 'updated') {
+                            return body._id;
+                        } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
+
+                    })
+                    .catch(error => {
+                        if (error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
+                        else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
+                    })
 
             });
             /*
-            
             makeFetch(`groups/_update/${id}`, arrayMethods.POST, requestBody)
                 .then(body => {
                     if(body.result == 'updated') {
@@ -128,24 +113,24 @@ function database(requests, pgResponses) {
                 */
         },
 
-        deleteUser: function(username) {
+        deleteUser: function (username) {
             console.log("INICIO DO FETCH");
-
             return this.getRawUser(username).then(body => {
-                const id =  body.hits.hits.map(hit => hit._id);
+                const id = body.hits.hits.map(hit => hit._id);
                 return fetch(`http://localhost:9200/users/_doc/${id}`, {
                     method: 'DELETE',
                     headers: { //Request headers. format is the identical to that accepted by the Headers constructor (see below)
                         'Content-Type': 'application/json'
                     },
                     body: null //Request body
-                }).then(res => res.json()).then(body => {
-                    if(body.result === 'deleted') return body.username
-                    else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
                 })
-                .catch(error=> {
-                    if(error.status == pgResponses.NOT_FOUND) return error
-                    else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
+                    .then(res => res.json()).then(body => {
+                        if (body.result === 'deleted') return body.username
+                        else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
+                    })
+                    .catch(error => {
+                        if (error.status == pgResponses.NOT_FOUND) return error
+                        else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
                     });
             })
         }

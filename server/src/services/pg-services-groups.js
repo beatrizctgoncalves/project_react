@@ -1,17 +1,17 @@
 'use strict'
 
 
-function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
+function services(database, databaseUsers, pgResponses, pgScores, apiGitlab, apiJira, requests) {
     const serv = {
-        createGroup: function(owner, name, description, type, group_id) {
+        createGroup: function (owner, name, description) {
             var regExp = /[a-zA-Z]/g;
-            if(!regExp.test(name) || !description || !owner) {  //verify if name has a string
+            if (!regExp.test(name) || !description || !owner) {  //verify if name has a string
                 return pgResponses.setError(
                     pgResponses.BAD_REQUEST,
                     pgResponses.BAD_REQUEST_MSG
                 )
             }
-            return database.createGroup(owner, name, description, type, group_id)
+            return database.createGroup(owner, name, description)
                 .then(groups => {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,
@@ -21,7 +21,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                 })
         },
 
-        getUserGroups: function(owner) {
+        getUserGroups: function (owner) {
             return database.getUserGroups(owner)
                 .then(groups => {
                     return pgResponses.setSuccessList(
@@ -31,7 +31,8 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                 })
         },
 
-        getGroupDetails: function(group_id) {
+        getGroupDetails: function (group_id) {
+
             return database.getGroupDetails(group_id)
                 .then(group => {
                     return pgResponses.setSuccessList(
@@ -39,22 +40,23 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                         group
                     )
                 })
+
         },
 
-        deleteGroup: function(group_id) {
+        deleteGroup: function (group_id) {
             return database.deleteGroup(group_id)
                 .then(group => {
                     return pgResponses.setSuccessUri(
                         pgResponses.OK,
-                        index,
+                        'groups/',
                         group
                     )
                 })
         },
 
-        editGroup: function(group_id, new_name, new_desc) {
+        editGroup: function (group_id, new_name, new_desc) {
             var regExp = /[a-zA-Z]/g;
-            if(!regExp.test(new_name)) {  //verify if new_name has a string
+            if (!regExp.test(new_name)) {  //verify if new_name has a string
                 return pgResponses.setError(
                     pgResponses.BAD_REQUEST,
                     pgResponses.BAD_REQUEST_MSG
@@ -64,14 +66,14 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                     .then(group => {
                         return pgResponses.setSuccessUri(
                             pgResponses.OK,
-                            index,
+                            'groups/',
                             group
                         )
                     })
             }
         },
 
-        getGroupProjects: function(group_id) {
+        getGroupProjects: function (group_id) {
             return database.getGroupDetails(group_id)
                 .then(group => {
                     return pgResponses.setSuccessList(
@@ -81,7 +83,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                 })
         },
 
-        addProjectJiraToGroup: function(group_id, url, email, token, key) {
+        /*addProjectJiraToGroup: function(group_id, url, email, token, key) {
             return apiJira.validateProject(url, email, token, key)
                 .then(validatedObj => {
                     return database.getGroupDetails(group_id)
@@ -103,37 +105,45 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                                 })
                         })
                 })
-        },
+        },*/
 
-        addProjectGitlabToGroup: function(group_id, Pid, AToken) {
-            return apiGitlab.validateProject(Pid, AToken)
+        addProjectToGroup: function (group_id, Pid, type) {
+
+            //TODO needs "Other" type
+
+            const x = require("../apis/api-" + type)(requests, pgResponses)
+
+            return database.getGroupDetails(group_id)
+                .then(groupObj => databaseUsers.getUser(groupObj.owner))
+                .then(user => user.info.filter(tool => tool.type = type)[0])
+                .then(tool => x.validateProject(Pid, tool.AToken))
                 .then(validatedObj => {
                     return database.getGroupDetails(group_id)
                         .then(groupObj => {
-                            const projectExists = groupObj.projects.findIndex(p => p.key == key)
-                            if(projectExists != -1) {
+                            const projectExists = groupObj.projects.findIndex(p => p.id == Pid && p.type == type)
+                            if (projectExists != -1) {
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return database.addProjectGitlabToGroup(group_id, validatedObj)
-                                .then(finalObj => {
+                            return database.addProjectToGroup(group_id, validatedObj)
+                                .then(() => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,
-                                        index,
-                                        finalObj
-                                    )   
+                                        pgResponses.index.api + "/groups/",
+                                        group_id
+                                    )
                                 })
                         })
                 })
         },
 
-        removeProjectFromGroup: function(group_id, id) {
+        removeProjectFromGroup: function (group_id, id) {
             return database.getGroupDetails(group_id)
                 .then(groupObj => {
                     const project_index = groupObj.projects.findIndex(p => p.id === id)
-                    if(project_index === -1) {
+                    if (project_index === -1) {
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
                             pgResponses.NOT_FOUND_PROJECT_MSG
@@ -150,7 +160,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                 })
         },
 
-        getGroupMembers: function(group_id) {
+        getGroupMembers: function (group_id) {
             return database.getGroupDetails(group_id)
                 .then(group => {
                     return pgResponses.setSuccessList(
@@ -159,14 +169,14 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                     )
                 })
         },
-        
-        addMemberToGroup: function(group_id, username) {
-            return database.getUser(username) //check if the user exists
+
+        addMemberToGroup: function (group_id, username) {
+            return databaseUsers.getUser(username) //check if the user exists
                 .then(userObj => {
                     return database.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            const userExists = groupObj.members.findIndex(m => m.username === username)
-                            if(userExists != -1) {  //check if the user already exists in the group
+                            const userExists = groupObj.members.findIndex(m => m.user === username)
+                            if (userExists != -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
@@ -176,19 +186,19 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                                 .then(finalObj => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,
-                                        index,
+                                        'groups/',
                                         finalObj
-                                    )   
+                                    )
                                 })
                         })
                 })
         },
 
-        removeMemberFromGroup: function(group_id, username) {
+        removeMemberFromGroup: function (group_id, username) {
             return database.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {
                     const user_index = groupObj.members.findIndex(m => m.user === username)  //get the user's index
-                    if(user_index === -1) { //the user doesnt exist in the group
+                    if (user_index === -1) { //the user doesnt exist in the group
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
                             pgResponses.NOT_FOUND_USER_MSG
@@ -198,12 +208,12 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
                         .then(id => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                index,
+                                'groups/',
                                 id
                             )
                         })
                 })
-        },
+        }/*,
 
         getGroupRankings: function(group_id, url, email, token) {
             return database.getGroupDetails(group_id)
@@ -226,7 +236,7 @@ function services(database, pgResponses, pgScores, apiGitlab, apiJira) {
 
         getRankings: function() {
             //TODO
-        }
+        }*/
     }
     return serv;
 }
