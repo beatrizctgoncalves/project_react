@@ -1,10 +1,27 @@
 'use strict'
 
+const URL = 'https://gitlab.com/api/v4/'
 
-function apiGitlab(requests, pgResponses) {
+const fetch = require('node-fetch');
+const pgResponses = require('../../pg-responses');
+
+function makeRequest(URI) {
+    return fetch(`${URL}${URI}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if(response.status != pgResponses.OK) return Promise.reject(response);
+        return response.json()
+    })
+}
+
+function apiGitlab() {
     const gitlab = {
         validateProject: function(Pid, AToken) {
-            return requests.makeRequestGitLab(`projects/${Pid}?access_token=${AToken}`)
+            return makeRequest(`projects/${Pid}?access_token=${AToken}`)
                 .then(body => {
                     return {
                         "id": body.id,
@@ -19,13 +36,13 @@ function apiGitlab(requests, pgResponses) {
         },
 
         getUserId: function(username) {
-            return requests.makeRequestGitLab(`users?username=${username}`)
+            return makeRequest(`users?username=${username}`)
                 .then(user => user[0].id)
                 .catch(error => pgResponses.resolveErrorApis(error))
         },
         
         getProjectsFromUser: function(Uid, AToken) {
-            return requests.makeRequestGitLab(`users/${Uid}/projects?access_token=${AToken}`)
+            return makeRequest(`users/${Uid}/projects?access_token=${AToken}`)
             .then(body => body.map(project =>{
                 return {
                     "id": project.id,
@@ -40,7 +57,7 @@ function apiGitlab(requests, pgResponses) {
         },
         
         getIssues: function(PId, AToken) {
-            return requests.makeRequestGitLab(`projects/${PId}/issues?access_token=${AToken}`)
+            return makeRequest(`projects/${PId}/issues?access_token=${AToken}`)
                 .then(issues => issues.map(issue => {
                     return {
                         "id" : issue.id, 

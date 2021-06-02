@@ -1,6 +1,6 @@
 'use strict'
 
-function services(databaseGroup, databaseUsers, requests, pgResponses) {
+function services(databaseGroup, databaseUsers, pgResponses) {
     const serv = {       
 
         countPointsInGroup: function(groupId) { //TODO
@@ -31,8 +31,8 @@ function services(databaseGroup, databaseUsers, requests, pgResponses) {
             .then(projects => {
                 let promisses = []
                 projects.forEach(project => { //TODO
-                    const x = require("./plugins/pg-scores-" + project.type)
-                    promisses.push(x.countPoints(project.id, usersInfoMap, owner, requests, pgResponses)
+                    const x = require("./plugins/" + project.type + "/ScoreCounter")
+                    promisses.push(x.countPoints(project.id, usersInfoMap, owner)
                         .then(memberInfoMapGitlab => memberInfoMapGitlab.forEach(info => {
                             let aux = usersInfoMap.get(info.AppUsername)
                             aux.Points += info.Points

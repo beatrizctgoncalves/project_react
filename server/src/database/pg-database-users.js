@@ -3,7 +3,7 @@
 const fetch = require('node-fetch');
 
 
-function database(requests, pgResponses) {
+function database(pgResponses) {
     const dt = {
         createUser: function (username, name, surname) { //TODO
             var requestBody = JSON.stringify({
