@@ -27,7 +27,7 @@ module.exports = function(express, services, aux, authization) {
         const surname = req.body.surname ? req.body.surname : "";
 
         aux.promisesAsyncImplementation(
-            services.createUser(req.body.username, req.body.password, name, surname, 'users/'),
+            services.createUser(req.body.username, req.body.password, name, surname),
             res
         );
     }
@@ -70,7 +70,7 @@ module.exports = function(express, services, aux, authization) {
 
     function deleteUser(req, res) {
         aux.promisesAsyncImplementation(
-            services.deleteUser(req.params.username, 'users/'),
+            services.deleteUser(req.params.username),
             res
         );
     }

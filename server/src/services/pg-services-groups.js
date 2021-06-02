@@ -16,6 +16,7 @@ function services(database, databaseUsers, pgResponses) {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,
                         pgResponses.index.api,
+                        pgResponses.index.groups,
                         groups
                     )
                 })
@@ -32,7 +33,6 @@ function services(database, databaseUsers, pgResponses) {
         },
 
         getGroupDetails: function (group_id) {
-
             return database.getGroupDetails(group_id)
                 .then(group => {
                     return pgResponses.setSuccessList(
@@ -48,7 +48,8 @@ function services(database, databaseUsers, pgResponses) {
                 .then(group => {
                     return pgResponses.setSuccessUri(
                         pgResponses.OK,
-                        'groups/',
+                        pgResponses.index.api,
+                        pgResponses.index.groups,
                         group
                     )
                 })
@@ -66,7 +67,8 @@ function services(database, databaseUsers, pgResponses) {
                     .then(group => {
                         return pgResponses.setSuccessUri(
                             pgResponses.OK,
-                            'groups/',
+                            pgResponses.index.api,
+                            pgResponses.index.groups,
                             group
                         )
                     })
@@ -108,7 +110,6 @@ function services(database, databaseUsers, pgResponses) {
         },*/
 
         addProjectToGroup: function (group_id, Pid, type) {
-
             //TODO needs "Other" type
             const x = require("./plugins/" + type + "/api")()
 
@@ -130,7 +131,8 @@ function services(database, databaseUsers, pgResponses) {
                                 .then(() => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,
-                                        pgResponses.index.api + "/groups/",
+                                        pgResponses.index.api,
+                                        pgResponses.index.groups,
                                         group_id
                                     )
                                 })
@@ -152,7 +154,8 @@ function services(database, databaseUsers, pgResponses) {
                         .then(id => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                index.api,
+                                pgResponses.index.api,
+                                pgResponses.index.groups,
                                 id
                             )
                         })
@@ -182,11 +185,12 @@ function services(database, databaseUsers, pgResponses) {
                                 )
                             }
                             return database.addMemberToGroup(group_id, username) //add user
-                                .then(finalObj => {
+                                .then(group => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,
-                                        'groups/',
-                                        finalObj
+                                        pgResponses.index.api,
+                                        pgResponses.index.groups,
+                                        group
                                     )
                                 })
                         })
@@ -204,11 +208,12 @@ function services(database, databaseUsers, pgResponses) {
                         );
                     }
                     return database.removeMemberFromGroup(group_id, user_index) //remove the user by index
-                        .then(id => {
+                        .then(group => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                'groups/',
-                                id
+                                pgResponses.index.api,
+                                pgResponses.index.groups,
+                                group
                             )
                         })
                 })

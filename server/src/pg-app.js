@@ -1,5 +1,6 @@
 'use strict'
 
+
 module.exports = async function() {
     const express = require('express'); //Import the express module
     const app = express(); //Create an Express application
@@ -13,9 +14,10 @@ module.exports = async function() {
     const fetch = require('node-fetch');
     const pgResponses = require('./services/pg-responses');
     const aux = require('./model/pg-promises');
+    const requests = require('./services/apis-db-requests')(fetch, pgResponses);
 
-    const databaseGroups = require('./database/pg-database-groups')(pgResponses);
-    const databaseUsers = require('./database/pg-database-users')(pgResponses);
+    const databaseGroups = require('./database/pg-database-groups')(pgResponses, requests);
+    const databaseUsers = require('./database/pg-database-users')(pgResponses, requests);
 
     const authizationConfig = require('./database/authization-dg-config/config')
     const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, pgResponses);

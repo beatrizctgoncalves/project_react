@@ -3,8 +3,7 @@
 function services(database, pgResponses, authization) {
     const authUser = authization.user
     const serv = {
-
-        createUser: function (username, password, name, surname, index) { //TODO
+        createUser: function (username, password) { //TODO
             var regExp = /[a-zA-Z]/g;
             if (!regExp.test(username)) {  //verify if username is a string
                 return pgResponses.setError(
@@ -14,45 +13,17 @@ function services(database, pgResponses, authization) {
             }
             return authUser.create(username, password)
                 .then(() => {
-                    return database.createUser(username, name, surname)
-                        .then(() => {
-                            return {
-                                status: pgResponses.OK,
-                                body: pgResponses.URI_MSG.concat(index).concat(username)
-                            }
-                        })
-                        .catch(error => {
-                            this.deleteFromAuthization(username);
-                        })
-                })
-        },
-
-        createUser: function (username, password, index) { //TODO
-
-            var regExp = /[a-zA-Z]/g;
-            if (!regExp.test(username)) {  //verify if username is a string
-                return pgResponses.setError(
-                    pgResponses.BAD_REQUEST,
-                    pgResponses.BAD_REQUEST_MSG
-                )
-            }
-            return authUser.create(username, password)
-                .then(() => {
-                    return {
-                        status: pgResponses.CREATE,
-                        body: pgResponses.URI_MSG.concat(index).concat(username)
-                    }
+                    return pgResponses.setSuccessUri(
+                        pgResponses.CREATE,
+                        pgResponses.index.users,
+                        username
+                    )
                 })
                 .catch(err => {
-                    console.log(err);
-
                     if (!err.body) err.body = err.error.errors[0].message
-                    else {
-                        this.deleteFromAuthization(username);
-                    }
+                    else this.deleteFromAuthization(username);
                     return pgResponses.setError(err.status, err.body)
-
-                });
+                })
         },
 
         getUserAuthization: function (username) {
@@ -62,7 +33,8 @@ function services(database, pgResponses, authization) {
                         pgResponses.OK,
                         userObj
                     )
-                }).catch(error => {
+                })
+                .catch(error => {
                     pgResponses.setError(error.status, error.body)
                 })
         },
@@ -85,7 +57,7 @@ function services(database, pgResponses, authization) {
                             console.log("AQUI 2---------------------------------------------------")
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                'users/',
+                                pgResponses.index.users,
                                 user_name
                             )
                         })
@@ -94,23 +66,19 @@ function services(database, pgResponses, authization) {
 
         deleteFromAuthization: function (username) {
             return this.getUserAuthization(username)
-                .then(user => {
-                    return authUser.delete(user.body.id)
-                })
+                .then(user => authUser.delete(user.body.id))
                 .catch(err => {
                     if (!err.body) err.body = err.error.errors[0].message;
                     return pgResponses.setError(err.status, err.body);
                 })
         },
 
-        deleteUser: function (username, index) {
-
+        deleteUser: function (username) {
             /**
              * TODO()
              * delete this user from all groups
              * 
              */
-            console.log("DELETE START SERVICE")
             return this.deleteFromAuthization(username)
                 .then(() => {
                     console.log("DELETE SERVICE");
@@ -118,12 +86,11 @@ function services(database, pgResponses, authization) {
                         .then(user_name => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
-                                user_name,
-                                index
+                                pgResponses.index.users,
+                                user_name
                             )
                         })
                 })
-                .catch(error => pgResponses.setError(error.status, error.body))
         }
     }
     return serv;

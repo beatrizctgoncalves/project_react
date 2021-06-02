@@ -41,16 +41,17 @@ module.exports = {
     OK: 200,
     CREATE: 201,
 
-    URI_MSG: "http://localhost:8080/",
+    URI_MSG: "http://localhost:8080",
     index: {
         api: '/api/g5/pluggable/gamification',
+        groups: '/groups/',
         users: '/users/g5/pluggable/gamification'
     },
 
-    setSuccessUri: function(status, index, id) {
+    setSuccessUri: function(status, index, groups, id) {
         return {
             status: status,
-            body: this.URI_MSG.concat(index).concat(id.toString())
+            body: this.URI_MSG.concat(index).concat(groups).concat(id.toString())
         }
     },
 
