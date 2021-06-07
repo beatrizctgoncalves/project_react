@@ -2,12 +2,11 @@ import React from 'react';
 import './App.css';
 import Head from './views/Head';
 import Navbar from './views/Navbar';
-import Home from './views/Home';
+import Home from './views/HomePage/Home';
 import Profile from './views/users/Profile';
 import SignUp from './views/users/SignUp';
-import Login from './views/users/Login';
+import SignIn from './views/users/SignIn';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Footer from './views/Footer';
 import ContactUs from './views/ContactUs';
 import Groups from './views/Groups';
 
@@ -51,12 +50,17 @@ class App extends React.Component {
               />
 
               <Route
-                exact path='/log-in' 
-                render={(props) => <Login {...props} onLogin = {this.setStateLogin}/>}
+                exact path='/sign-in' 
+                render={(props) => <SignIn {...props} onLogin = {this.setStateLogin}/>}
               />
 
               <Route
-                exact path='/contact-us'
+                exact path='/contact'
+                render={(props) => <ContactUs {...props} />}
+              />
+
+              <Route
+                exact path='/about'
                 render={(props) => <ContactUs {...props} />}
               />
 
@@ -71,8 +75,6 @@ class App extends React.Component {
               />
             </Switch>
           </Router>
-
-          <Footer></Footer>
         </body>
       </div>
     )

@@ -1,77 +1,141 @@
-import React from 'react'
-import './../css/SignUp.css';
+import React from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
-
-class SignUp extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            userName: "",
-            password: ""
-        }
-    }
-
-    handleUserChange = (event) => {
-        event.persist() //If you want to access the event properties in an asynchronous way, you should call event.persist()
-        this.setState(() => 
-            ({userName: event.target.value})
-        )
-    }
-
-    handlePasswordChange = (event) => {
-        event.persist()
-        this.setState(() => ({password : event.target.value}))
-    }
-
-    handleSignUpClick = () => {
-        const username = document.getElementById("username").value
-        const password = document.getElementById("password").value
-
-        if(!username | !password) {
-            return
-        }
-
-        if(password != document.getElementById("passwordRepeat").value) {
-            //send alert password must match
-            return
-        }
-        
-        return fetch('http://localhost:8080/users/g5/pluggable/gamification/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'username': username,
-                'password': password
-            })
-        })
-    }
-
-    handleLoginClick = () => {this.props.history.push('#login')}
-
-    render() {
-        return (
-            <div class="sign-up">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <form class="box" id="myForm">
-                                <h1>Sign up</h1>
-                                <input type="email" name="email" placeholder="Email" id="mail" required></input>
-                                <input type="text"  id="username" name="username" placeholder="Username" required></input>
-                                <input type="text" name="name" placeholder="Name" required></input>
-                                <input type="text" name="surname" placeholder="Surname" required></input>
-                                <input type="password" name="password" placeholder="Password" id="password" required></input>
-                                <input type="password" name="passwordRepeat" placeholder="Repeat your password" id="passwordRepeat" required></input>
-                                <input type="button" id="sub" value="Sign Up" onClick={this.handleSignUpClick}></input>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="http://localhost:8888/">
+                Pluggable Gamification
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
 }
 
-export default SignUp
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: '#f4623a',
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    }
+}));
+
+export default function SignUp() {
+    const classes = useStyles();
+
+    return (
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <br /><br />
+                <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign Up
+                </Typography>
+                <form className={classes.form} noValidate>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                autoComplete="fname"
+                                name="firstName"
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="firstName"
+                                label="First Name"
+                                autoFocus
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="lastName"
+                                label="Last Name"
+                                name="lastName"
+                                autoComplete="lname"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                label="I want to receive inspiration, marketing promotions and updates via email."
+                            />
+                        </Grid>
+                    </Grid>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Sign Up
+                    </Button>
+                    <Grid container justify="flex-end">
+                        <Grid item>
+                            <Link href="#" variant="body2">
+                                Already have an account? Sign in
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </form>
+            </div>
+            <Box mt={5}>
+                <Copyright />
+            </Box>
+        </Container>
+    );
+}

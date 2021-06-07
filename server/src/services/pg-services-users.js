@@ -54,7 +54,6 @@ function services(database, pgResponses, authization) {
                 .then(user => {
                     return database.updateUser(user.username, updatedInfo)
                         .then(user_name => {
-                            console.log("AQUI 2---------------------------------------------------")
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
                                 pgResponses.index.users,
@@ -75,9 +74,8 @@ function services(database, pgResponses, authization) {
 
         deleteUser: function (username) {
             /**
-             * TODO()
+             * TODO
              * delete this user from all groups
-             * 
              */
             return this.deleteFromAuthization(username)
                 .then(() => {

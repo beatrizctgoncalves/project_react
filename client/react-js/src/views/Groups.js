@@ -1,6 +1,5 @@
 import React from 'react'
 import EditIcon from '@material-ui/icons/Edit';
-import './css/Groups.css'
 
 function Group() {
     return (

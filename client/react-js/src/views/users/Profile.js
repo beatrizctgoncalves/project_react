@@ -1,5 +1,4 @@
 import React from 'react'
-import './../css/Profile.css'
 import LockIcon from '@material-ui/icons/Lock';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 

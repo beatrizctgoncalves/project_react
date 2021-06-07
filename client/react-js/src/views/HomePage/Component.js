@@ -2,36 +2,19 @@ import React from 'react'
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import PersonIcon from '@material-ui/icons/Person';
 import LocalAtmIcon from '@material-ui/icons/LocalAtm';
+import Grid from '@material-ui/core/Grid';
 
-
-function Home() {
+function Component() {
     return (
         <div class="homeItems">
-            <div class="box-home m-3">
+            <div class="box-home m-3">            
                 <div class="row">
                     <div class="col-md-8">
                         <div class="intro">
-                            <br></br>                                
-                            <br></br>
-                            <br></br>
                             <h1>Pluggable Gamification</h1>
-                            <br></br>
-                            <br></br>
-                            <br></br>
                             <p>Never get bored of your work!
-                                <br></br>
-                                <br></br>
-                                <br></br>
                                 Start creating groups of projects with your colleagues.
-                                <br></br>
-                                <br></br>
-                                <br></br>
                                 Transforme your work in a fun game to play!
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <br></br>
-                                <br></br>
                                 <em>Made in ISEL</em>
                             </p>
                         </div>
@@ -78,4 +61,4 @@ function Home() {
     )
 }
 
-export default Home;
+export default Component;
