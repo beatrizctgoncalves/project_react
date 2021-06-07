@@ -5,7 +5,7 @@ import Navbar from './views/Navbar';
 import Home from './views/HomePage/Home';
 import Profile from './views/users/Profile';
 import SignUp from './views/users/SignUp';
-import SignIn from './views/users/SignIn';
+import SignIn from './views/SignIn/SignIn';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ContactUs from './views/ContactUs';
 import Groups from './views/Groups';
