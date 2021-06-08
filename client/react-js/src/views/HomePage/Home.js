@@ -1,6 +1,8 @@
 import React from 'react'
 import '../../App.css';
-import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Copyright from '../Copyright';
+
 
 function Home() {
     return (
@@ -21,7 +23,7 @@ function Home() {
                 </div>
             </header>
 
-            <section class="page-section bg-primary" id="about">
+            <section class="page-section bg-primary">
                 <div class="container px-4 px-lg-5">
                     <div class="row gx-4 gx-lg-5 justify-content-center">
                         <div class="col-lg-8 text-center">
@@ -35,6 +37,11 @@ function Home() {
                     </div>
                 </div>
             </section>
+
+            <Box mt={8}>
+                <Copyright/>
+                <br/><br/>
+            </Box>
         </div>
     )
 }

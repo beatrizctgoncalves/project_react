@@ -1,49 +1,50 @@
 import React from 'react'
+import Copyright from './Copyright.js';
+import Box from '@material-ui/core/Box';
 
 
 function About() {
     return (
-        <section id="content">
-            <div class="container-mt-3" id="team-box">
-                <div class="row">
-                    <div class="card">
-                        <img class="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                            alt="Card image cap"></img>
-                        <div class="card-body">
-                            <h5 class="card-title">Beatriz Goncalves</h5>
-                            <p class="card-text"> Engineering student at ISEL <br></br>(Instituto Politécnico Engenharia de Lisboa)</p>
-                            <br></br>
-                            <a href="https://github.com/beatrizctgoncalves"> <img id="github-logo"
-                                src="https://img2.gratispng.com/20180709/lgb/kisspng-computer-icons-download-github-clip-art-github-icon-5b44289596fd85.7749119715311934936185.jpg"></img>
-                            </a>
+        <section class="page-section">
+            <div class="container px-4 px-lg-5">
+                <h2 class="text-center mt-0">About Us</h2>
+                <hr class="divider" />
+                <div class="row gx-4 gx-lg-5">
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="mt-5">
+                            <div class="mb-2"><i class="bi-gem fs-1 text-primary"></i></div>
+                            <h3 class="h4 mb-2">Up to Date</h3>
+                            <p class="text-muted mb-0">All dependencies are kept current to keep things fresh.</p>
                         </div>
                     </div>
-                    <div class="card">
-                        <img class="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                        alt="Card image cap"></img>
-                        <div class="card-body">
-                            <h5 class="card-title">Maksym</h5>
-                            <p class="card-text">Engineering student at ISEL <br></br>(Instituto Politécnico Engenharia de Lisboa)</p>
-                            <br></br>
-                            <a href="https://github.com/"> <img id="github-logo"
-                                src="https://img2.gratispng.com/20180709/lgb/kisspng-computer-icons-download-github-clip-art-github-icon-5b44289596fd85.7749119715311934936185.jpg"></img>
-                            </a>
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="mt-5">
+                            <div class="mb-2"><i class="bi-laptop fs-1 text-primary"></i></div>
+                            <h3 class="h4 mb-2">Responsive Design</h3>
+                            <p class="text-muted mb-0">Something</p>
                         </div>
                     </div>
-                    <div class="card">
-                        <img class="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                            alt="Card image cap"></img>
-                        <div class="card-body">
-                            <h5 class="card-title">Miguel Pinto</h5>
-                            <p class="card-text">Engineering student at ISEL <br></br>(Instituto Politécnico Engenharia de Lisboa)</p>
-                            <br></br>
-                            <a href="https://github.com/"><img id="github-logo"
-                                src="https://img2.gratispng.com/20180709/lgb/kisspng-computer-icons-download-github-clip-art-github-icon-5b44289596fd85.7749119715311934936185.jpg"></img>
-                            </a>
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="mt-5">
+                            <div class="mb-2"><i class="bi-globe fs-1 text-primary"></i></div>
+                            <h3 class="h4 mb-2">Something</h3>
+                            <p class="text-muted mb-0">Something</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 text-center">
+                        <div class="mt-5">
+                            <div class="mb-2"><i class="bi-heart fs-1 text-primary"></i></div>
+                            <h3 class="h4 mb-2">Something</h3>
+                            <p class="text-muted mb-0">Something</p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <Box mt={8}>
+                <br/><br/>
+                <Copyright />
+            </Box>
         </section>
     )
 }
