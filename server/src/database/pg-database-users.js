@@ -36,7 +36,10 @@ function database(pgResponses, requests) {
         updateUser: function (username, updatedInfo) {
             var requestBody = JSON.stringify({
                 "script": {
-                    "source": "if(params.name != null) ctx._source.name = params.name; if(params.surname != null) ctx._source.surname = params.surname; if(params.email != null) ctx._source.email = params.email; if(params.info != null) ctx._source.info = params.info;",
+                    "source": "if(params.name != null) ctx._source.name = params.name; " +
+                        "if(params.surname != null) ctx._source.surname = params.surname; " + 
+                        "if(params.email != null) ctx._source.email = params.email; " + 
+                        "if(params.info != null) ctx._source.info = params.info;",
                     "params": updatedInfo
                 }
             });

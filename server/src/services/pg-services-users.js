@@ -54,6 +54,11 @@ function services(database, pgResponses, authization) {
         updateUser: function (username, updatedInfo) {
             return database.getUser(username)
                 .then(user => {
+                    console.log(user)
+                    user.info.forEach(info => {
+                        if(!updatedInfo.info.find(i => i.type == info.type))
+                            updatedInfo.info.push(info)
+                    })
                     return database.updateUser(user.username, updatedInfo)
                         .then(user_name => {
                             return pgResponses.setSuccessUri(

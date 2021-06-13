@@ -171,7 +171,10 @@ function database(pgResponses, requests) {
             });
 
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
-                .then(body => body._id)
+                .then(body => {
+                    console.log(body)
+                    return body._id
+                })
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
