@@ -39,8 +39,5 @@ module.exports = {
 function checkDate(issueOpen, beginDate, endDate){
     if(!beginDate || !endDate)
         return true
-    issueOpen = issueOpen.slice(0,10)
-    beginDate = beginDate.slice(0,10)
-    endDate = endDate.slice(0,10)
-    return issueOpen >= beginDate && issueOpen <= endDate
+    return issueOpen.slice(0,10) >= beginDate && issueOpen <= endDate
 }

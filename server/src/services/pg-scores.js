@@ -6,7 +6,8 @@ function services(databaseGroup, databaseUsers, pgResponses) {
         countPointsInGroup: function(groupId) { //TODO
             let usersInfoMap = new Map()
             let projects = []
-            let sprints = []
+            let sprints = []            
+            let SprintScores = []
             let owner = undefined
             return databaseGroup.getGroupDetails(groupId)
             .then(group => {
@@ -31,18 +32,16 @@ function services(databaseGroup, databaseUsers, pgResponses) {
             })
             .then(() => {
                 let promisses = []
-                projects.forEach(project => { //TODO
-                    const x = require("./plugins/" + project.type + "/ScoreCounter")
-                    promisses.push(x.countPoints(project.id, usersInfoMap, owner)
-                        .then(memberInfoMapGitlab => memberInfoMapGitlab.forEach(info => {
-                            let aux = usersInfoMap.get(info.AppUsername)
-                            aux.Points += info.Points
-                            usersInfoMap.set(info.AppUsername,aux)
-                        }))
-                )})
+                sprints.forEach(sprint => {
+                    projects.forEach(project => { 
+                        const x = require("./plugins/" + project.type + "/ScoreCounter")
+                        promisses.push(x.countPoints(project.id, usersInfoMap, owner, sprint.beginDate, sprint.endDate)
+                            .then(memberInfoMapGitlab => SprintScores.push(auxFunc(memberInfoMapGitlab, sprint.title)))
+                    )})
+                })
                 return Promise.all(promisses)
             })
-            .then(() => console.log(usersInfoMap))
+            .then(() => console.log(SprintScores))
             .then(() => {
                 return pgResponses.setSuccessUri(
                     pgResponses.OK,
@@ -55,6 +54,16 @@ function services(databaseGroup, databaseUsers, pgResponses) {
 
     }
     return serv;
+}
+
+function auxFunc(memberInfoMapGitlab, title){
+    let toRet = {SprintTitle:title, Scores: new Map()}
+
+    memberInfoMapGitlab.forEach(info => {
+        toRet.Scores.set(info.AppUsername,info.Points)
+    })
+
+    return toRet
 }
 
 module.exports = services;
