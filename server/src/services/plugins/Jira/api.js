@@ -41,7 +41,7 @@ function apiJira() {
                     project = {
                         "id": body.id,
                         "owner_name": "",
-                        "owner_id": body.lead.accountId,
+                        "owner_id": "",
                         "description": body.description,
                         "avatar": body.avatarUrls,
                         "type": "Jira"
