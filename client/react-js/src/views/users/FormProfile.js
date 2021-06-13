@@ -34,17 +34,6 @@ function FormSignUp() {
     return (
         <form className={classes.form} noValidate>
             <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        autoComplete="username"
-                    />
-                </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         autoComplete="fname"
@@ -91,12 +80,6 @@ function FormSignUp() {
                         autoComplete="current-password"
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <FormControlLabel
-                        control={<Checkbox value="allowExtraEmails" color="primary" />}
-                        label="I want to receive inspiration, marketing promotions and updates via email."
-                    />
-                </Grid>
             </Grid>
             <Button
                 type="submit"
@@ -105,12 +88,12 @@ function FormSignUp() {
                 color="primary"
                 className={classes.submit}
             >
-                Sign Up
+                Save
             </Button>
             <Grid container justify="flex-end">
-                <Grid item>
-                    <Link href="/sign-in" variant="body2">
-                        Already have an account? Sign in
+                <Grid item xs>
+                    <Link href="#" variant="body2">
+                        Forgot password?
                     </Link>
                 </Grid>
             </Grid>

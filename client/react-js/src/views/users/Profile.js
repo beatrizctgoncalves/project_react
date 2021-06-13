@@ -63,6 +63,9 @@ function Profile() {
                         <Grid item xs={12}>
                             <h3>Email Address</h3>
                         </Grid>
+                        <Grid item xs={12}>
+                            <h3>Additional Information</h3>
+                        </Grid>
                     </Grid>
                     <br/>
                     <br/>
@@ -82,78 +85,6 @@ function Profile() {
                 <br/>
             </Box>
         </Container>
-
-        /*
-        <div class="homeItems">
-            <div class="box-home m-3">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="intro">
-                            <br></br>                                
-                            <br></br>
-                            <br></br>
-                            <h2>User's Profile</h2>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <h4>Name:
-                                <br></br>
-                                Surname:
-                                <br></br>
-                                Email:                                                           
-                                <br></br>
-                                Additional Information:
-                                <br></br>
-                                <br></br>
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="col-10 col-sm-2 offset-0 intro">
-                        <img src="https://thumbs.dreamstime.com/b/programmer-linear-icon-technologist-freelancer-thin-line-illustration-contour-symbol-vector-isolated-outline-drawing-programmer-197065655.jpg" 
-                            width="auto" height="150"></img>
-                            <br></br><br></br><br></br><br></br>
-                        <div class="d-none d-md-block"></div>
-                        <input type="submit" name="" value="Edit Profile" href="#"></input>
-                        <input type="submit" name="" value="Change Password" href="#"></input>
-                    </div>
-                </div>
-            </div>
-            <div class="box-home features m-3">
-                <div class="container">
-                    <div class="row h-100 justify-content-center align-items-center">
-                        <div class="col-sm">
-                            <div class="box-profile-statistics">
-                                <h1>Account Statistics</h1>
-                                <div class="card-body">
-                                    <h5 class="card-title"><i><LockIcon style={{ width: 30, height: 'auto' }}/></i> Groups</h5>
-                                    <p class="card-text"><b>groups_length</b> Groups Registered</p>
-                                    <h5 class="card-title"><i><SportsEsportsIcon style={{ width: 30, height: 'auto' }}/></i> Projects</h5>
-                                    <p class="card-text"><b>projects_length</b> Projects Saved</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm">
-                            <form class="box-create-groups" action="/site/groups" method="POST">
-                                <h2>Create A New Group!</h2>
-                                <input type="text" name="name" id="name" placeholder="Enter Group Name" required></input>
-                                <input type="text" id="desc" name="desc" placeholder="Enter Group Description" required></input>
-                                <input type="hidden" name="owner" required></input>
-                                <input type="submit" name="" value="Create" href="#"></input>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm">
-                            <div class = "mx-auto">
-                                <a onclick="myGroups()" id="groups-button" class="mt-5">
-                                    Groups
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*/
     )
 }
 

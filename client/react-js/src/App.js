@@ -12,7 +12,7 @@ import About from './views/About';
 import Groups from './views/Groups';
 import Terms from './views/Terms';
 import Privacy from './views/Privacy';
-
+import EditProfile from './views/users/EditProfile';
 
 class App extends React.Component {
   constructor(props) {
@@ -80,6 +80,11 @@ class App extends React.Component {
               <Route
                 exact path='/profile'
                 render={(props) => <Profile {...props} />}
+              />
+              
+              <Route
+                exact path='/edit-profile'
+                render={(props) => <EditProfile {...props} />}
               />
 
               <Route
