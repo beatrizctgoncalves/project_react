@@ -160,6 +160,7 @@ function database(pgResponses, requests) {
                             "id": information.id,
                             "owner_name": information.owner_name,
                             "owner_id": information.owner_id,
+                            "title": information.title,
                             "description": information.description,
                             "avatar": information.avatar,
                             "type": information.type

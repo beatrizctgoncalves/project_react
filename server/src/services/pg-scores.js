@@ -3,8 +3,9 @@
 function services(databaseGroup, databaseUsers, pgResponses) {
     const serv = {       
 
-        countPointsInGroup: function(groupId) { //TODO
+        countPointsInGroup: function(groupId) { 
             let usersInfoMap = new Map()
+            let projectsMilestonesScores = []
             let projects = []
             let owner = undefined
             return databaseGroup.getGroupDetails(groupId)
@@ -25,6 +26,7 @@ function services(databaseGroup, databaseUsers, pgResponses) {
             .then(() => projects.map(project => { 
                 return {
                     "id": project.id,
+                    "title": project.title,
                     "type": project.type
                 }
             }))
@@ -33,15 +35,13 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                 projects.forEach(project => { //TODO
                     const x = require("./plugins/" + project.type + "/ScoreCounter")
                     promisses.push(x.countPoints(project.id, usersInfoMap, owner)
-                        .then(memberInfoMapGitlab => memberInfoMapGitlab.forEach(info => {
-                            let aux = usersInfoMap.get(info.AppUsername)
-                            aux.Points += info.Points
-                            usersInfoMap.set(info.AppUsername,aux)
+                        .then(memberInfoMapGitlab => memberInfoMapGitlab.forEach(milestoneScore => {
+                            projectsMilestonesScores.push(auxFunc(milestoneScore, project.type, project.title))
                         }))
                 )})
                 return Promise.all(promisses)
             })
-            .then(() => console.log(usersInfoMap))
+            .then(() => console.log(projectsMilestonesScores))
             .then(() => {
                 return pgResponses.setSuccessUri(
                     pgResponses.OK,
@@ -53,6 +53,14 @@ function services(databaseGroup, databaseUsers, pgResponses) {
 
     }
     return serv;
+}
+
+function auxFunc(milestoneScore, type, title){
+    let toRet = {ProjectType: type, ProjectTitle:title, Milestone: milestoneScore.Milestone, Scores: new Map()}
+    milestoneScore.Scores.forEach(info => {
+        toRet.Scores.set(info.AppUsername,info.Points)
+    })
+    return toRet
 }
 
 module.exports = services;

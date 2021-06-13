@@ -1,10 +1,9 @@
 'use strict'
 
+const ApiGitlab = require("./api")()
+
 module.exports = {
-    countPoints: function(Pid, userInfoMap, owner) {
-        const ApiGitlab = require("./api")()
-        let AToken = userInfoMap.get(owner).info
-        AToken = AToken.filter(info => info.type == "Gitlab")[0].AToken
+    countPointsSingleMilestone: function(Pid, MId, MTitle, userInfoMap, AToken) {
         let memberInfoMapGitlab = new Map()
         Array.from(userInfoMap, ([key, value]) => {
             value.info.forEach(info => {
@@ -13,7 +12,7 @@ module.exports = {
             })
         })
 
-        return ApiGitlab.getIssues(Pid,AToken)
+        return ApiGitlab.getIssuesFromMilestone(Pid,MId,AToken)
             .then(issues => {
                 issues.forEach(issue => {
                     let Points = 0
@@ -29,7 +28,23 @@ module.exports = {
                         }
                     })
                 })
-                return memberInfoMapGitlab
+                return {Milestone:MTitle, Scores:memberInfoMapGitlab}
             })
+    },
+
+    countPoints: function(Pid, userInfoMap, owner){
+        let AToken = userInfoMap.get(owner).info
+        AToken = AToken.filter(info => info.type == "Gitlab")[0].AToken
+
+        return ApiGitlab.getMilestones(Pid,AToken)
+            .then(milestones => {
+                let milestonesIssuesPoints = []
+                milestones.forEach(milestone => {
+                    milestonesIssuesPoints.push(this.countPointsSingleMilestone(Pid, milestone.id, milestone.title, userInfoMap, AToken))
+                })
+                return milestonesIssuesPoints
+            })
+            .then(milestonesIssuesPoints => Promise.all(milestonesIssuesPoints))
     }
+
 }
