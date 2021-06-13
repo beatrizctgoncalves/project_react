@@ -49,6 +49,7 @@ module.exports = {
     },
 
     setSuccessUri: function(status, index, groups, id) {
+        
         return {
             status: status,
             body: this.URI_MSG.concat(index).concat(groups).concat(id.toString())

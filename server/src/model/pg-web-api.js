@@ -20,6 +20,7 @@ module.exports = function(express, services, pgScores, aux) {
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
     router.post(`/groups/:group_id/members/:username`, addMemberToGroup); //Add a specific user to a group
+    router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
     router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
@@ -100,6 +101,13 @@ module.exports = function(express, services, pgScores, aux) {
     function addMemberToGroup(req, res) { //Implementation of the route to add a user to a specific group
         aux.promisesAsyncImplementation(
             services.addMemberToGroup(req.params.group_id, req.params.username),
+            res
+        );
+    }
+
+    function addSprintToGroup(req, res) { //Implementation of the route to add a user to a specific group
+        aux.promisesAsyncImplementation(
+            services.addSprintToGroup(req.params.group_id, req.body.title, req.body.beginDate, req.body.endDate),
             res
         );
     }

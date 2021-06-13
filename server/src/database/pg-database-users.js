@@ -8,10 +8,10 @@ function database(pgResponses, requests) {
                 "username": username,
                 "name": name,
                 "surname": surname,
-                "info": {}
+                "info": []
             });
 
-            return requests.makeFetchElastic(requests.index.user.concat('_doc'), requests.arrayMethods.POST, requestBody)
+            return requests.makeFetchElastic(requests.index.users.concat('_doc'), requests.arrayMethods.POST, requestBody)
                 .then(() => username)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
@@ -27,6 +27,11 @@ function database(pgResponses, requests) {
                     else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
                 })
         },
+        
+        getUserIdES : function(username){
+            return requests.makeFetchElastic(requests.index.users.concat(`_search?q=username:${username}`), requests.arrayMethods.GET, null)
+                .then(body => body.hits.hits.map(hit => hit._id))
+        },
 
         updateUser: function (username, updatedInfo) {
             var requestBody = JSON.stringify({
@@ -36,7 +41,7 @@ function database(pgResponses, requests) {
                 }
             });
 
-            return this.getUser(username)
+            return this.getUserIdES(username)
                 .then(id => {
                     return requests.makeFetchElastic(requests.index.users.concat(`_update/${id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {

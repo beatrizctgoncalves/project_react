@@ -197,6 +197,28 @@ function services(database, databaseUsers, pgResponses) {
                 })
         },
 
+        addSprintToGroup: function (group_id, title, beginDate, endDate) {
+            return database.getGroupDetails(group_id) //check if the group exists
+                .then(groupObj => {
+                    const sprintExists = groupObj.sprints.findIndex(s => s.title === title)
+                    if (sprintExists != -1) {  //check if the sprint already exists in the group
+                        return pgResponses.setError(
+                            pgResponses.FORBIDDEN,
+                            pgResponses.FORBIDDEN_MSG
+                        )
+                    }
+                    return database.addSprintToGroup(group_id, title, beginDate, endDate) //add sprint
+                        .then(() => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                pgResponses.index.api,
+                                pgResponses.index.groups,
+                                group_id
+                            )
+                        })
+                })
+        },
+
         removeMemberFromGroup: function (group_id, username) {
             return database.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {

@@ -3,15 +3,21 @@
 function services(databaseGroup, databaseUsers, pgResponses) {
     const serv = {       
 
-        countPointsInGroup: function(groupId) { 
+        countPointsInGroup: function(groupId) { //TODO
             let usersInfoMap = new Map()
-            let projectsMilestonesScores = []
             let projects = []
+            let sprints = []
             let owner = undefined
             return databaseGroup.getGroupDetails(groupId)
             .then(group => {
                 let membersInfo = []
-                projects = group.projects
+                projects = group.projects.map(project => { 
+                    return {
+                        "id": project.id,
+                        "type": project.type
+                    }
+                })
+                sprints = group.sprints
                 owner = group.owner
                 group.members.forEach(member =>{
                     membersInfo.push(databaseUsers.getUser(member)
@@ -23,29 +29,25 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                 })
                 return Promise.all(membersInfo)
             })
-            .then(() => projects.map(project => { 
-                return {
-                    "id": project.id,
-                    "title": project.title,
-                    "type": project.type
-                }
-            }))
-            .then(projects => {
+            .then(() => {
                 let promisses = []
                 projects.forEach(project => { //TODO
                     const x = require("./plugins/" + project.type + "/ScoreCounter")
                     promisses.push(x.countPoints(project.id, usersInfoMap, owner)
-                        .then(memberInfoMapGitlab => memberInfoMapGitlab.forEach(milestoneScore => {
-                            projectsMilestonesScores.push(auxFunc(milestoneScore, project.type, project.title))
+                        .then(memberInfoMapGitlab => memberInfoMapGitlab.forEach(info => {
+                            let aux = usersInfoMap.get(info.AppUsername)
+                            aux.Points += info.Points
+                            usersInfoMap.set(info.AppUsername,aux)
                         }))
                 )})
                 return Promise.all(promisses)
             })
-            .then(() => console.log(projectsMilestonesScores))
+            .then(() => console.log(usersInfoMap))
             .then(() => {
                 return pgResponses.setSuccessUri(
                     pgResponses.OK,
                     'groups/',
+                    "",
                     ""
                 )   
             })
@@ -53,14 +55,6 @@ function services(databaseGroup, databaseUsers, pgResponses) {
 
     }
     return serv;
-}
-
-function auxFunc(milestoneScore, type, title){
-    let toRet = {ProjectType: type, ProjectTitle:title, Milestone: milestoneScore.Milestone, Scores: new Map()}
-    milestoneScore.Scores.forEach(info => {
-        toRet.Scores.set(info.AppUsername,info.Points)
-    })
-    return toRet
 }
 
 module.exports = services;

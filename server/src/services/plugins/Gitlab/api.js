@@ -68,7 +68,8 @@ function apiGitlab() {
                         "assignees":issue.assignees.map(assignee => assignee.username),
                         "upvotes": issue.upvotes,
                         "downvotes": issue.downvotes,
-                        "due_date": issue.due_date 
+                        "due_date": issue.due_date,
+                        "created_at": issue.created_at
                     }
                 }))
                 .catch(error => pgResponses.resolveErrorApis(error));
@@ -98,7 +99,8 @@ function apiGitlab() {
                         "assignees":issue.assignees.map(assignee => assignee.username),
                         "upvotes": issue.upvotes,
                         "downvotes": issue.downvotes,
-                        "due_date": issue.due_date 
+                        "due_date": issue.due_date,
+                        "created_at": issue.created_at
                     }
                 }))
                 .catch(error => pgResponses.resolveErrorApis(error));
