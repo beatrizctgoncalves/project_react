@@ -4,12 +4,23 @@
 module.exports = async function() {
     const express = require('express'); //Import the express module
     const app = express(); //Create an Express application
-    const cors = require("cors");
+    const cors = require('cors');
+    
 
     const bodyParser = require('body-parser'); //Import the body-parser module 
     app.use(bodyParser.json()); //Parse application/json
     app.use(bodyParser.urlencoded({extended: true})); //Parse application/x-www-form-urlencoded
-    app.use(cors());
+    /*
+
+    app.use(cors({
+        origin: 'http://localhost:8081',
+        optionsSuccessStatus: 200 // For legacy browser support
+    } ));
+    */
+
+    app.options('http://localhost:8081',cors())
+    app.options('*', cors())
+
 
     const fetch = require('node-fetch');
     const pgResponses = require('./services/pg-responses');
