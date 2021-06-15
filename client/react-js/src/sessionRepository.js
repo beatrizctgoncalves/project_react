@@ -7,7 +7,7 @@
 
 /**
  * The contract to be supported by user session repositories.
- */
+ 
 export class UserSessionRepository {
     isLoggedIn: () => Credentials | null,
     login: (username: string, password: string) => void
@@ -18,6 +18,8 @@ export class UserSessionRepository {
  * Creates a user session repository.
  * @returns The newly created user session repository.
  */
+
+/*
 export function createUserSessionRepository(): UserSessionRepository {
     const KEY = 'CredentialsKey'
     return {
@@ -32,3 +34,4 @@ export function createUserSessionRepository(): UserSessionRepository {
         logout: () => { sessionStorage.removeItem(KEY) }
     }
 }
+*/
