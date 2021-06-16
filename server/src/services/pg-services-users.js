@@ -3,7 +3,7 @@
 function services(database, pgResponses, authization) {
     const authUser = authization.user
     const serv = {
-        createUser: function (username, password) { //TODO
+        createUser: function (username, password, name, surname) { //TODO
             var regExp = /[a-zA-Z]/g;
             if (!regExp.test(username)) {  //verify if username is a string
                 return pgResponses.setError(
@@ -12,15 +12,17 @@ function services(database, pgResponses, authization) {
                 )
             }
             return authUser.create(username, password)
+                .then(database.createUser(username,name,surname))
                 .then(() => {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,
                         pgResponses.index.users,
-                        username
+                        username,
+                        ""
                     )
                 })
                 .catch(err => {
-                    if (!err.body) err.body = err.error.errors[0].message
+                    if (!err.body) err.body = err.errors[0].message
                     else this.deleteFromAuthization(username);
                     return pgResponses.setError(err.status, err.body)
                 })
@@ -52,12 +54,18 @@ function services(database, pgResponses, authization) {
         updateUser: function (username, updatedInfo) {
             return database.getUser(username)
                 .then(user => {
+                    console.log(user)
+                    user.info.forEach(info => {
+                        if(!updatedInfo.info.find(i => i.type == info.type))
+                            updatedInfo.info.push(info)
+                    })
                     return database.updateUser(user.username, updatedInfo)
                         .then(user_name => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
                                 pgResponses.index.users,
-                                user_name
+                                user_name,
+                                ""
                             )
                         })
                 })
@@ -85,7 +93,8 @@ function services(database, pgResponses, authization) {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
                                 pgResponses.index.users,
-                                user_name
+                                user_name,
+                                ""
                             )
                         })
                 })

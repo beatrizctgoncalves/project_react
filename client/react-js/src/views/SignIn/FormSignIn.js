@@ -6,6 +6,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { loginFetch } from '../../components/Services/authenticationService';
+import  { ChangeEvent, useEffect, useState } from 'react'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,11 +30,40 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
+
 function FormSignIn() {
+  const [userToLogin, setUserToLogin] = useState({ username: undefined, password: undefined })
+  const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
+
+
+
+  
+
+      function handlingSubmit(){
+        console.log("login SUBMIT")
+        const login=loginFetch(userToLogin.username,userToLogin.username)
+        console.log(login)
+
+      }
+
+      const handlePassword = event => {
+        console.log(event.target.value)
+        setUserToLogin({ ...userToLogin, password: event.target.value })
+    }
+
+    const handleUsername = event => {
+      console.log(event.target.value)
+        setUserToLogin({ ...userToLogin, username: event.target.value })
+    }
+
+       
+
+
     const classes = useStyles();
 
     return (
-        <form className={classes.form} noValidate>
+        <form >
           <TextField
             variant="outlined"
             margin="normal"
@@ -43,6 +74,7 @@ function FormSignIn() {
             name="username"
             autoComplete="username"
             autoFocus
+            onChange={handleUsername}
           />
           <TextField
             variant="outlined"
@@ -54,6 +86,7 @@ function FormSignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handlePassword}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -64,7 +97,7 @@ function FormSignIn() {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            onClick = {handlingSubmit}
           >
             Sign In
           </Button>

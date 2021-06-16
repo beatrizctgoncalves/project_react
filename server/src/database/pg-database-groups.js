@@ -8,7 +8,8 @@ function database(pgResponses, requests) {
                 "owner": owner,
                 "name": group_name,
                 "description": group_description,
-                "members": [],
+                "members": [owner],
+                "sprints": [],
                 "projects": [],
                 "ratings": []
             })
@@ -160,6 +161,7 @@ function database(pgResponses, requests) {
                             "id": information.id,
                             "owner_name": information.owner_name,
                             "owner_id": information.owner_id,
+                            "title": information.title,
                             "description": information.description,
                             "avatar": information.avatar,
                             "type": information.type
@@ -169,7 +171,10 @@ function database(pgResponses, requests) {
             });
 
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
-                .then(body => body._id)
+                .then(body => {
+                    console.log(body)
+                    return body._id
+                })
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
@@ -195,6 +200,25 @@ function database(pgResponses, requests) {
                     "inline": "ctx._source.members.add(params.members)",
                     "params": {
                         "members": username
+                    }
+                }
+            });
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
+        addSprintToGroup: function (group_id, title, beginDate, endDate) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline": "ctx._source.sprints.add(params.sprint)",
+                    "params": {
+                        "sprint": {
+                            "title": title,
+                            "beginDate": beginDate,
+                            "endDate": endDate
+                        }
                     }
                 }
             });

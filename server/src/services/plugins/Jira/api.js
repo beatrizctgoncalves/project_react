@@ -1,5 +1,7 @@
 'use strict'
 
+const URL = 'https://pluggable-gamification.atlassian.net'
+
 const fetch = require('node-fetch');
 const pgResponses = require('../../pg-responses');
 
@@ -9,15 +11,19 @@ var arrayMethods = {
     DELETE: 'DELETE'
 }
 
-function makeFetch(uri, method, body, email, token) {
+function makeFetch(uri, method, body, AToken) {
+    let headers = {
+        'Accept': 'application/json'
+    }
+    if(AToken){
+        headers.Authorization = `Basic ${Buffer.from(
+                `${AToken}`
+            ).toString('base64')}`
+    }
+
     return fetch(uri, {
         method: method,
-        headers: {
-            'Authorization': `Basic ${Buffer.from(
-                `${email}:${token}`
-            ).toString('base64')}`,
-            'Accept': 'application/json'
-        },
+        headers,
         body: body //Request body
     })
         .then(response => {
@@ -28,56 +34,43 @@ function makeFetch(uri, method, body, email, token) {
 
 function apiJira() {
     const jira = {
-        validateProject: function(url, email, token, key) {
-            return makeFetch(`${url}/rest/api/3/project/${key}?expand=lead`, arrayMethods.GET, null, email, token)
+        validateProject: function(Pid, AToken) {
+            let project = {}
+            return makeFetch(`${URL}/rest/api/3/project/${Pid}`, arrayMethods.GET, null, AToken)
                 .then(body => {
-                    return {
+                    project = {
                         "id": body.id,
-                        "key": key,
-                        "lead_self": body.lead.self,
-                        "lead_id": body.lead.accountId,
+                        "owner_name": "",
+                        "owner_id": "",
                         "description": body.description,
                         "avatar": body.avatarUrls,
-                        "projectTypeKey": body.projectTypeKey,
-                        "type": "jira"
-                    
-                    
-                        /* NEEDS TO BE LIKE THIS WITH THIS KEYS
-                        "id": body.id,
-                        "owner_name": body.owner.username,
-                        "owner_id": body.owner.id,
-                        "description": body.description,
-                        "avatar": body.avatar_url,
-                        "type": "Gitlab"*/
+                        "type": "Jira"
                     }
+                    return this.getUserById(body.lead.accountId, AToken)
                 })
+                .then(id => project.owner_name = id)
+                .then(() => project)
                 .catch(error => pgResponses.resolveErrorApis(error));
         },
 
-        getUserById: function(url, email, token) {
-            return makeFetch(`${url}&expand=groups,applicationRoles`, arrayMethods.GET, null, email, token)
-                .then(body => body)
+        getUserById: function(UId, AToken) {
+            return makeFetch(`${URL}/rest/api/3/user?accountId=${UId}`, arrayMethods.GET, null, AToken)
+                .then(body => body.emailAddress)
                 .catch(error => pgResponses.resolveErrorApis(error));
         },
 
-        getIssues: function(url, email, token, key) {
-            return makeFetch(`${url}/rest/api/2/search?jql=project=${key}`, arrayMethods.GET, null, email, token)
+        getIssues: function(Pid, AToken) {
+            return makeFetch(`${URL}/rest/api/2/search?jql=project=${Pid}`, arrayMethods.GET, null, AToken)
                 .then(body => {
                     let arrayIssues = []
                     body.issues.forEach(issue => arrayIssues.push({
                         "id": issue.id,
-                        "key": issue.key,
-                        "issuetype_name": issue.fields.issuetype.name,
-                        "issuetype_iconUrl": issue.fields.issuetype.iconUrl,
-                        "summary": issue.fields.summary,
-                        "priority_name": issue.fields.priority.name,
-                        "priority_id": issue.fields.priority.id,
-                        "assignee": issue.fields.assignee,
-                        "reporter": issue.fields.reporter.accountId,
+                        "title": issue.fields.summary,
+                        "assigneeId": issue.fields.assignee.accountId,
                         "state": issue.fields.status,
-                        "created": issue.fields.created,
-                        "project_id": issue.fields.project.id,
-                        "project_name": issue.fields.project.name
+                        "created_at": issue.fields.created,
+                        "closed_at":issue.fields.resolutiondate,
+                        "due_date": issue.fields.duedate
                     }))
                     return arrayIssues
                 })

@@ -13,7 +13,7 @@ import Groups from './views/Groups';
 import Terms from './views/Terms';
 import Privacy from './views/Privacy';
 import EditProfile from './views/users/EditProfile';
-
+/*
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -99,4 +99,75 @@ class App extends React.Component {
   }
 }
 
+
+*/
+
+function App() {
+  return (
+<div>
+        <head>
+          <Head></Head>
+        </head>
+        
+        <body>
+          <Navbar></Navbar>
+
+          <Router>
+            <Switch>
+              <Route
+                exact path='/'
+                render={() => <Home></Home>}
+              />
+
+              <Route
+                exact path='/terms'
+                render={() => <Terms></Terms>}
+              />
+
+              <Route
+                exact path='/privacy-policy'
+                render={() => <Privacy></Privacy>}
+              />
+
+              <Route
+                exact path='/sign-up'
+                render={(props) => <SignUp {...props} />}
+              />
+
+              <Route
+                exact path='/sign-in' 
+              >
+                <SignIn></SignIn>
+              </Route>
+
+              <Route
+                exact path='/contact'
+                render={(props) => <Contact {...props} />}
+              />
+
+              <Route
+                exact path='/about'
+                render={(props) => <About {...props} />}
+              />
+
+              <Route
+                exact path='/profile'
+                render={(props) => <Profile {...props} />}
+              />
+              
+              <Route
+                exact path='/edit-profile'
+                render={(props) => <EditProfile {...props} />}
+              />
+
+              <Route
+                exact path='/groups'
+              > <Groups></Groups></Route>
+            </Switch>
+          </Router>
+        </body>
+      </div>
+    
+  );
+}
 export default App;

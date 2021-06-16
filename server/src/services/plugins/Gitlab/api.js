@@ -27,6 +27,7 @@ function apiGitlab() {
                         "id": body.id,
                         "owner_name": body.owner.username,
                         "owner_id": body.owner.id,
+                        "title": body.name,
                         "description": body.description,
                         "avatar": body.avatar_url,
                         "type": "Gitlab"
@@ -67,7 +68,39 @@ function apiGitlab() {
                         "assignees":issue.assignees.map(assignee => assignee.username),
                         "upvotes": issue.upvotes,
                         "downvotes": issue.downvotes,
-                        "due_date": issue.due_date 
+                        "due_date": issue.due_date,
+                        "created_at": issue.created_at
+                    }
+                }))
+                .catch(error => pgResponses.resolveErrorApis(error));
+        },
+
+        getMilestones: function(PId, AToken) {
+            return makeRequest(`projects/${PId}/milestones?access_token=${AToken}`)
+                .then(milestones => milestones.map(milestone => {
+                    return {
+                        "id" : milestone.id, 
+                        "title" : milestone.title, 
+                        "start_date": milestone.start_date,
+                        "due_date": milestone.due_date 
+                    }
+                }))
+                .catch(error => pgResponses.resolveErrorApis(error));
+        },
+
+        getIssuesFromMilestone: function(PId, MId, AToken) {
+            return makeRequest(`projects/${PId}/milestones/${MId}/issues?access_token=${AToken}`)
+                .then(issues => issues.map(issue => {
+                    return {
+                        "id" : issue.id, 
+                        "title" : issue.title, 
+                        "state": issue.state,
+                        "closed_at":issue.closed_at,
+                        "assignees":issue.assignees.map(assignee => assignee.username),
+                        "upvotes": issue.upvotes,
+                        "downvotes": issue.downvotes,
+                        "due_date": issue.due_date,
+                        "created_at": issue.created_at
                     }
                 }))
                 .catch(error => pgResponses.resolveErrorApis(error));
