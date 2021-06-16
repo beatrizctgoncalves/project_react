@@ -34,7 +34,7 @@ module.exports = async function() {
         app.use(pgResponses.index.users, usersCreator);
              
     } catch (error) {
-        console.log(" ERRO DE SETUP")
+        console.log("ERRO DE SETUP")
         console.log(error);
     }
 
