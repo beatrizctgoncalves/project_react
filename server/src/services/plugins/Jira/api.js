@@ -65,18 +65,12 @@ function apiJira() {
                     let arrayIssues = []
                     body.issues.forEach(issue => arrayIssues.push({
                         "id": issue.id,
-                        "key": issue.key,
-                        "issuetype_name": issue.fields.issuetype.name,
-                        "issuetype_iconUrl": issue.fields.issuetype.iconUrl,
-                        "summary": issue.fields.summary,
-                        "priority_name": issue.fields.priority.name,
-                        "priority_id": issue.fields.priority.id,
-                        "assignee": issue.fields.assignee,
-                        "reporter": issue.fields.reporter.accountId,
+                        "title": issue.fields.summary,
+                        "assigneeId": issue.fields.assignee.accountId,
                         "state": issue.fields.status,
-                        "created": issue.fields.created,
-                        "project_id": issue.fields.project.id,
-                        "project_name": issue.fields.project.name
+                        "created_at": issue.fields.created,
+                        "closed_at":issue.fields.resolutiondate,
+                        "due_date": issue.fields.duedate
                     }))
                     return arrayIssues
                 })

@@ -36,11 +36,12 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                     projects.forEach(project => { 
                         const x = require("./plugins/" + project.type + "/ScoreCounter")
                         promisses.push(x.countPoints(project.id, usersInfoMap, owner, sprint.beginDate, sprint.endDate)
-                            .then(memberInfoMapGitlab => SprintScores.push(auxFunc(memberInfoMapGitlab, sprint.title)))
+                            .then(memberInfoMap => SprintScores.push(auxFunc(memberInfoMap, sprint.title)))
                     )})
                 })
                 return Promise.all(promisses)
             })
+            .then(() => SprintScores = MergeProjectsInSprint(SprintScores))
             .then(() => console.log(SprintScores))
             .then(() => {
                 return pgResponses.setSuccessUri(
@@ -61,6 +62,28 @@ function auxFunc(memberInfoMapGitlab, title){
 
     memberInfoMapGitlab.forEach(info => {
         toRet.Scores.set(info.AppUsername,info.Points)
+    })
+
+    return toRet
+}
+
+function MergeProjectsInSprint(SprintScores){
+    let toRet = []
+
+    SprintScores.forEach(sprintScore => {
+        let value = toRet.find(v => v.SprintTitle == sprintScore.SprintTitle)
+        if (!value){
+            toRet.push(sprintScore)
+        }else{
+            Array.from(sprintScore.Scores, ([user, points]) => {
+                if(value.Scores.has(user)){
+                    let p = value.Scores.get(user)
+                    value.Scores.set(user,p + points)
+                }else{
+                    value.Scores.set(user, points)
+                }
+            })
+        }
     })
 
     return toRet
