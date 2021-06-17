@@ -7,6 +7,7 @@ const produceInit = (body, met) => ({...DEFAULT_OPTIONS(met), body: JSON.stringi
 const request = (url, init) =>  fetch(url, init)
 .then(async resp => {
     const jsonResponse = await resp.json()
+    console.log(resp.status)
     if (resp.ok) {
         return jsonResponse
     }

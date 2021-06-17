@@ -3,10 +3,20 @@ import EditIcon from '@material-ui/icons/Edit';
 import Copyright from './Copyright.js';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
+import { getUserGroups } from '../components/Services/BasicService.js';
 
 
 
 function Group() {
+
+    const[groups,setGroups] = useState({})
+
+    useEffect(()=>{
+        const owner = window.sessionStorage.getItem("username")
+        getUserGroups(owner).then(resp =>{
+            
+        })
+    },[])
 
   
 

@@ -131,8 +131,9 @@ function App() {
 
               <Route
                 exact path='/sign-up'
-                render={(props) => <SignUp {...props} />}
-              />
+              >
+                <SignUp> </SignUp>
+              </Route>
 
               <Route
                 exact path='/sign-in' 

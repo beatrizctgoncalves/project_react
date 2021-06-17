@@ -11,15 +11,11 @@ module.exports = async function() {
     app.use(bodyParser.json()); //Parse application/json
     app.use(bodyParser.urlencoded({extended: true})); //Parse application/x-www-form-urlencoded
     /*
+ */
+   
+   
 
-    app.use(cors({
-        origin: 'http://localhost:8081',
-        optionsSuccessStatus: 200 // For legacy browser support
-    } ));
-    */
-
-    app.options('http://localhost:8081',cors())
-    app.options('*', cors())
+  
 
 
     const fetch = require('node-fetch');
@@ -42,7 +38,8 @@ module.exports = async function() {
         const usersCreator = require('./model/pg-users')(express, servicesUsers, aux, authization);
         
         app.use(pgResponses.index.api, webApi);
-        app.use(pgResponses.index.users, usersCreator);
+        app.use(pgResponses.index.users, usersCreator); 
+       
              
     } catch (error) {
         console.log(" ERRO DE SETUP")

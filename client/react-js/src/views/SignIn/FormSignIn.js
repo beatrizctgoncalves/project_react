@@ -41,10 +41,17 @@ function FormSignIn() {
   
 
       function handlingSubmit(){
-        console.log("login SUBMIT")
-        const login=loginFetch(userToLogin.username,userToLogin.username)
-        console.log(login)
+        loginFetch(userToLogin.username,userToLogin.password)
+            .then(resp =>{
+                console.log(resp)
+                window.sessionStorage.setItem('username',userToLogin.username);
+                window.location.assign('/groups')
+                })
+                  .catch(error=>{
+                    console.log(error)
+                    setError({errorMessage:error,shouldShow: true })
 
+                  })
       }
 
       const handlePassword = event => {
@@ -63,7 +70,7 @@ function FormSignIn() {
     const classes = useStyles();
 
     return (
-        <form >
+        <div>
           <TextField
             variant="outlined"
             margin="normal"
@@ -113,7 +120,7 @@ function FormSignIn() {
               </Link>
             </Grid>
           </Grid>
-        </form>
+        </div>
     );
 }
 

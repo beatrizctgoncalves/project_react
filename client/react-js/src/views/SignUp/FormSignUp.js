@@ -6,6 +6,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { loginFetch,signUpFetch } from '../../components/Services/authenticationService';
+import  { ChangeEvent, useEffect, useState } from 'react'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,8 +33,35 @@ const useStyles = makeStyles((theme) => ({
 function FormSignUp() {
     const classes = useStyles();
 
+    const [userToCreate, setUserToCreate] = useState({})
+    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
+
+
+   const handleChange = (event) =>{ 
+        console.log(event.target.value)
+        console.log(userToCreate)
+        const {name, value} = event.target
+        setUserToCreate({ ...userToCreate,  [name]: value })
+        
+    }
+
+    function handleSignUpClick(){
+
+        signUpFetch(userToCreate)
+            .then(resp=>{
+                window.location.assign('/sign-in')        
+                }).catch(err => {
+                    setError({errorMessage:error,shouldShow: true })
+                    
+                })  
+
+    }
+
+
+
+
     return (
-        <form className={classes.form} noValidate>
+        <div>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
@@ -43,18 +72,20 @@ function FormSignUp() {
                         label="Username"
                         name="username"
                         autoComplete="username"
+                        onChange = {handleChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         autoComplete="fname"
-                        name="firstName"
+                        name="name"
                         variant="outlined"
                         required
                         fullWidth
-                        id="firstName"
+                        id="name"
                         label="First Name"
                         autoFocus
+                        onChange = {handleChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -62,10 +93,11 @@ function FormSignUp() {
                         variant="outlined"
                         required
                         fullWidth
-                        id="lastName"
+                        id="surname"
                         label="Last Name"
-                        name="lastName"
+                        name="surname"
                         autoComplete="lname"
+                        onChange = {handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -77,6 +109,7 @@ function FormSignUp() {
                         label="Email Address"
                         name="email"
                         autoComplete="email"
+                        onChange = {handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -89,6 +122,7 @@ function FormSignUp() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange = {handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -103,7 +137,8 @@ function FormSignUp() {
                 fullWidth
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                onClick = {handleSignUpClick}
+                
             >
                 Sign Up
             </Button>
@@ -114,7 +149,7 @@ function FormSignUp() {
                     </Link>
                 </Grid>
             </Grid>
-        </form>
+        </div>
     )
 }
 
