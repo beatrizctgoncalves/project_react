@@ -1,5 +1,3 @@
-
-
 const DEFAULT_OPTIONS = met => ({ method: met, credentials: 'include', headers: { 'Content-Type': 'application/json' } });
 
 const produceInit = (body, met) => ({ ...DEFAULT_OPTIONS(met), body: JSON.stringify(body), json: true });

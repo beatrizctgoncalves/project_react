@@ -1,7 +1,7 @@
 'use strict'
 
 
-module.exports = function(express, services, aux, authization) {
+module.exports = function (express, services, aux, authization) {
     if (!services) {
         throw "Invalid services object";
     }
@@ -10,15 +10,15 @@ module.exports = function(express, services, aux, authization) {
     const auth = authization.authorization
 
     router.post('/signup', signUp);
-    router.post('/signin', async(req, res, next) => {
-        await authenticate.usingLocal(req, res, err =>  {
-            if(err) {
+    router.post('/signin', async (req, res, next) => {
+        await authenticate.usingLocal(req, res, err => {
+            if (err) {
                 const myError = {
                     status: err.status,
                     body: err.message
                 }
                 res.statusCode = err.status
-                res.json({error: myError})
+                res.json({ error: myError })
             }
             next()
         })
@@ -26,7 +26,7 @@ module.exports = function(express, services, aux, authization) {
     router.post('/logout', authenticate.logout, logOut);
 
     router.get('/test', auth.getUserPermissions, test);
-    
+
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
     router.delete('/:username', deleteUser);
@@ -50,15 +50,16 @@ module.exports = function(express, services, aux, authization) {
     }
 
     function signIn(req, res) {
-        if(req.isAuthenticated()) {
+        if (req.isAuthenticated()) {
             res.send("Successfull SignIn")
+
         } else {
             res.send("Something wrong with SignIn")
         }
     }
 
     function logOut(req, res) {
-        if(!req.isAuthenticated()) {
+        if (!req.isAuthenticated()) {
             res.send("Successfull logOut")
         } else {
             res.send("Something wrong with logout")

@@ -26,17 +26,17 @@ function App() {
         <Switch>
           <Route
             exact path='/'
-            render={() => <Home/>}
+            render={() => <Home />}
           />
 
           <Route
             exact path='/terms'
-            render={() => <Terms/>}
+            render={() => <Terms />}
           />
 
           <Route
             exact path='/privacy-policy'
-            render={() => <Privacy/>}
+            render={() => <Privacy />}
           />
 
           <Route
@@ -47,7 +47,7 @@ function App() {
           <Route
             exact path='/sign-in'
           >
-            <SignIn/>
+            <SignIn />
           </Route>
 
           <Route
@@ -77,7 +77,6 @@ function App() {
         </Switch>
       </Router>
     </>
-
   );
 }
 export default App;

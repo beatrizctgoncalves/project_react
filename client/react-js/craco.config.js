@@ -1,9 +1,9 @@
 module.exports = {
   devServer: {
     proxy: {
-      '/xd': {
+      '/server': {
         target: 'http://localhost:8080',
-        pathRewrite: {'^/xd' : ''}
+        pathRewrite: {'^/server' : ''}
       }
     }
   }

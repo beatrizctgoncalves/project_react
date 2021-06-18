@@ -1,12 +1,25 @@
 const { request, makeRequest, getRequest, DEFAULT_OPTIONS } = require('./Requests').requests;
 
 
-export function loginFetch(usernameInput, passwordInput) {
-    const uri = `http://localhost:8080/users/g5/pluggable/gamification/signin`
+export async function loginFetch(usernameInput, passwordInput) {
+    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/signin`
     const options = {
         username: usernameInput,
         password: passwordInput
     }
 
+
     return makeRequest(uri, options, 'POST')
+}
+
+export async function signUpFetch(options) {
+    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/signup`
+
+    return makeRequest(uri, options, 'POST')
+        .then(resp => {
+            console.log(resp)
+            return resp
+        }).catch(err => {
+            console.log(err)
+        })
 }
