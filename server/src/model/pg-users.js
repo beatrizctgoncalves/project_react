@@ -1,5 +1,6 @@
 'use strict'
 
+
 module.exports = function(express, services, aux, authization) {
     if (!services) {
         throw "Invalid services object";
@@ -9,7 +10,19 @@ module.exports = function(express, services, aux, authization) {
     const auth = authization.authorization
 
     router.post('/signup', signUp);
-    router.post('/signin', authenticate.usingLocal, signIn);
+    router.post('/signin', async(req, res, next) => {
+        await authenticate.usingLocal(req, res, err =>  {
+            if(err) {
+                const myError = {
+                    status: err.status,
+                    body: err.message
+                }
+                res.statusCode = err.status
+                res.json({error: myError})
+            }
+            next()
+        })
+    }, signIn);
     router.post('/logout', authenticate.logout, logOut);
 
     router.get('/test', auth.getUserPermissions, test);
@@ -22,12 +35,12 @@ module.exports = function(express, services, aux, authization) {
 
 
     function signUp(req, res) {
-        console.log("signUp in pg-users");
         const name = req.body.name ? req.body.name : "";
         const surname = req.body.surname ? req.body.surname : "";
+        const email = req.body.email ? req.body.email : "";
 
         aux.promisesAsyncImplementation(
-            services.createUser(req.body.username, req.body.password, name, surname),
+            services.createUser(req.body.username, req.body.password, name, surname, email),
             res
         );
     }
@@ -38,10 +51,9 @@ module.exports = function(express, services, aux, authization) {
 
     function signIn(req, res) {
         if(req.isAuthenticated()) {
-            console.log(req.isAuthenticated())
-            res.send("Successfull login")
+            res.send("Successfull SignIn")
         } else {
-            res.send("Something wrong with login")
+            res.send("Something wrong with SignIn")
         }
     }
 

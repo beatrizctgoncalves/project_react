@@ -1,14 +1,10 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Footer from '../Components/Footer';
-import Form from './FormSignUp';
-
+import Form from './FormProfile';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -21,37 +17,42 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         backgroundColor: '#274e81e1',
     },
-    form: {
+    div: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(3),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: theme.spacing(3, 0, 2)
     }
 }));
 
-export default function SignUp() {
+function EditProfile() {
     const classes = useStyles();
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <br /><br />
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign Up
-                </Typography>
-                <br /><br />
-                <Form/>
-            </div>
-            
-            <Box mt={5}>
                 <br/><br/>
+                <img src="https://thumbs.dreamstime.com/b/programmer-linear-icon-technologist-freelancer-thin-line-illustration-contour-symbol-vector-isolated-outline-drawing-programmer-197065655.jpg" 
+                width="auto" height="150"></img>
+                <br/>
+                <div class="container px-4 px-lg-5">
+                    <h2 class="text-center mt-0">Editing Username...</h2>
+                    <hr class="divider"/>
+                </div>
+                <div className={classes.div}>
+                    <Form/>                 
+                </div>
+            </div>
+            <Box mt={5}>
+                <br /><br />
                 <Footer />
+                <br/>
             </Box>
         </Container>
-    );
+    )
 }
+
+
+export default EditProfile

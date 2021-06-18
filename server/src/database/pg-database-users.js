@@ -23,12 +23,12 @@ function database(pgResponses, requests) {
                     else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
                 })
                 .catch(error => {
-                    if (error.status == pgResponses.NOT_FOUND) return error
+                    if (error.status == pgResponses.NOT_FOUND) return error;
                     else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);
                 })
         },
         
-        getUserIdES : function(username){
+        getUserIdES : function(username) {
             return requests.makeFetchElastic(requests.index.users.concat(`_search?q=username:${username}`), requests.arrayMethods.GET, null)
                 .then(body => body.hits.hits.map(hit => hit._id))
         },

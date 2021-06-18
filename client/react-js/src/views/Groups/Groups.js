@@ -1,15 +1,9 @@
-import React, { useEffect,useState } from 'react'
-import EditIcon from '@material-ui/icons/Edit';
-import Copyright from './Copyright.js';
+import React from 'react';
+import Footer from '../Components/Footer.js';
 import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
-
 
 
 function Group() {
-
-  
-
     return (
         <section class="page-section">
             <div class="container px-2 px-lg-5">
@@ -21,7 +15,7 @@ function Group() {
                 </div>
             </div>
             <Box mt={8}>
-                <Copyright />
+                <Footer />
             </Box>
         </section>
     )

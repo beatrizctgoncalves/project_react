@@ -7,7 +7,7 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { loginFetch } from '../../components/Services/authenticationService';
-import  { ChangeEvent, useEffect, useState } from 'react'
+import  { useState } from 'react'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,15 +36,10 @@ function FormSignIn() {
   const [userToLogin, setUserToLogin] = useState({ username: undefined, password: undefined })
   const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
-
-
-  
-
       function handlingSubmit(){
         console.log("login SUBMIT")
-        const login=loginFetch(userToLogin.username,userToLogin.username)
+        const login = loginFetch(userToLogin.username, userToLogin.username)
         console.log(login)
-
       }
 
       const handlePassword = event => {
@@ -57,13 +52,10 @@ function FormSignIn() {
         setUserToLogin({ ...userToLogin, username: event.target.value })
     }
 
-       
-
-
     const classes = useStyles();
 
     return (
-        <form >
+        <div >
           <TextField
             variant="outlined"
             margin="normal"
@@ -113,7 +105,7 @@ function FormSignIn() {
               </Link>
             </Grid>
           </Grid>
-        </form>
+        </div>
     );
 }
 

@@ -3,7 +3,7 @@
 function services(database, pgResponses, authization) {
     const authUser = authization.user
     const serv = {
-        createUser: function (username, password, name, surname) { //TODO
+        createUser: function (username, password, name, surname, email) { //TODO
             var regExp = /[a-zA-Z]/g;
             if (!regExp.test(username)) {  //verify if username is a string
                 return pgResponses.setError(
@@ -12,7 +12,7 @@ function services(database, pgResponses, authization) {
                 )
             }
             return authUser.create(username, password)
-                .then(database.createUser(username,name,surname))
+                .then(database.createUser(username, name, surname, email))
                 .then(() => {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,
@@ -36,9 +36,7 @@ function services(database, pgResponses, authization) {
                         userObj
                     )
                 })
-                .catch(error => {
-                    pgResponses.setError(error.status, error.body)
-                })
+                .catch(error => pgResponses.setError(error.status, error.body))
         },
 
         getUser: function (username) {

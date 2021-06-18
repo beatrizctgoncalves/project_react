@@ -15,7 +15,6 @@ module.exports = function(express, services, pgScores, aux) {
 
     router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
     router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
-    // router.post(`/groups/:group_id/project/jira`, addProjectJiraToGroup); //Add a specific Jira project to a group
     router.delete('/groups/:group_id/project/:project_id', removeProjectFromGroup); //Remove a specific project from a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group

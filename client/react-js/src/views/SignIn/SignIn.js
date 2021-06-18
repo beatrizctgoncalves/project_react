@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import Copyright from '../Copyright';
+import Footer from '../Components/Footer';
 import Form from './FormSignIn';
 
 
@@ -44,12 +44,14 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
+        <br /><br />
+
         <Form/>
       </div>
 
       <Box mt={8}>
         <br/><br/>
-        <Copyright />
+        <Footer />
       </Box>
     </Container>
   );

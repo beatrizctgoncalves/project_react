@@ -3,6 +3,7 @@
     "@authization/authization": "^1.0.53",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-react-views": "^0.11.0",
     "fetch": "^1.1.0",
     "jest": "^26.6.3",
     "node-fetch": "^2.6.1"

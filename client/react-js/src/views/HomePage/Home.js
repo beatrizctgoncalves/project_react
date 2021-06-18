@@ -1,7 +1,7 @@
 import React from 'react'
 import '../../App.css';
 import Box from '@material-ui/core/Box';
-import Copyright from '../Copyright';
+import Footer from '../Components/Footer';
 
 
 function Home() {
@@ -39,7 +39,7 @@ function Home() {
             </section>
 
             <Box mt={8}>
-                <Copyright/>
+                <Footer/>
                 <br/><br/>
             </Box>
         </div>
