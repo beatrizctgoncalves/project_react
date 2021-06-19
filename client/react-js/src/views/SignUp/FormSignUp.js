@@ -42,7 +42,6 @@ function FormSignUp() {
         console.log(userToCreate)
         const {name, value} = event.target
         setUserToCreate({ ...userToCreate,  [name]: value })
-        
     }
 
     function handleSignUpClick(){

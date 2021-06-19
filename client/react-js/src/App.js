@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Contact from './views/Contact';
 import About from './views/About';
 import Groups from './views/Groups';
+import Group from './views/Group';
 import Terms from './views/Terms';
 import Privacy from './views/Privacy';
 import EditProfile from './views/users/EditProfile';
@@ -160,10 +161,15 @@ function App() {
                 exact path='/edit-profile'
                 render={(props) => <EditProfile {...props} />}
               />
+              <Route
+              exact path = "/groups/:id"
+              render = {(props) => <Group {...props}></Group>}
+              ></Route>
 
               <Route
                 exact path='/groups'
               > <Groups></Groups></Route>
+
             </Switch>
           </Router>
         </body>

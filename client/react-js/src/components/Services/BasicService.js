@@ -2,9 +2,53 @@ const {request,makeRequest,getRequest,DEFAULT_OPTIONS} =require('./Requests').re
 export   async function getUserGroups(owner){
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/owner/${owner}`
     
-    return   makeRequest(uri, 'GET')
+    return   makeRequest(uri)
                 .then(resp =>{
                     console.log(resp)
                     return resp
                 })
 }
+
+export   async function getSpecificGroup(id){
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${id}`
+    
+    return   makeRequest(uri)
+                .then(resp =>{
+                    console.log(resp)
+                    return resp
+                })
+}
+
+export   async function addMemberToGroup(groupId,member){
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/member/${member}`
+    
+    return   makeRequest(uri,{},"POST")
+                .then(resp =>{
+                    console.log(resp)
+                    return resp
+                })
+}
+
+export   async function deleteGroup(groupId){
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`
+    
+    return   makeRequest(uri,{},"DELETE")
+                .then(resp =>{
+                    console.log(resp)
+                    return resp
+                })
+}
+
+
+export   async function createGroup(newGroup){
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups`
+    
+    return   makeRequest(uri,newGroup,"POST")
+                .then(resp =>{
+                    console.log(resp)
+                    return resp
+                })
+}
+
+
+

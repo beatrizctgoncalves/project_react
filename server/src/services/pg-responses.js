@@ -52,7 +52,10 @@ module.exports = {
         
         return {
             status: status,
-            body: this.URI_MSG.concat(index).concat(groups).concat(id.toString())
+            body: {
+                id : id,
+                link : this.URI_MSG.concat(index).concat(groups).concat(id.toString())
+            }
         }
     },
 
