@@ -1,7 +1,7 @@
 'use strict'
 
 
-module.exports = async function () {
+module.exports = async function() {
     const express = require('express'); //Import the express module
     const app = express(); //Create an Express application
     const cors = require('cors');

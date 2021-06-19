@@ -69,13 +69,6 @@ module.exports = function(express, services, pgScores, aux) {
         );
     }
 
-    // function addProjectJiraToGroup(req, res) {
-    //     aux.promisesAsyncImplementation(
-    //         services.addProjectJiraToGroup(req.params.group_id, req.body.url, req.body.email, req.body.token, req.body.key),
-    //         res
-    //     );
-    // }
-
     function addProjectToGroup(req, res) {
         aux.promisesAsyncImplementation(
             services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.type),
@@ -99,7 +92,7 @@ module.exports = function(express, services, pgScores, aux) {
 
     function addMemberToGroup(req, res) { //Implementation of the route to add a user to a specific group
         aux.promisesAsyncImplementation(
-            services.addMemberToGroup(req.params.group_id, req.params.username),
+            services.addMemberToGroup(req.params.group_id, req.params.username, req.body.manager),
             res
         );
     }

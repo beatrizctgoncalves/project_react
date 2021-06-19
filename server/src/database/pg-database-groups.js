@@ -75,82 +75,6 @@ function database(pgResponses, requests) {
                 .catch(error => pgResponses.resolveErrorElastic(error))
         },
 
-        /*addProjectJiraToGroup: function(group_id, information) {
-            var requestBody = JSON.stringify({
-                "script": {
-                    "lang": "painless",
-                    "inline": "ctx._source.projects.add(params.projects)",
-                    "params": {
-                        "projects": {
-                            "id": information.id,
-                            "key": information.key,
-                            "lead_name": information.lead_name,
-                            "lead_id": information.lead_id,
-                            "description": information.description,
-                            "avatar": information.avatar,
-                            "projectTypeKey": information.projectTypeKey,
-                            "type": information.type
-                        }
-                    }
-                }
-            });
-            return fetch(`http://localhost:9200/groups/_update/${group_id}`, {
-                method: 'POST',
-                headers: { //Request headers. format is the identical to that accepted by the Headers constructor (see below)
-                    'Content-Type': 'application/json'
-                },
-                body: requestBody //Request body
-            }).then(response => response.json())
-            .then(body => body._id)
-            .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG));
-            
-            
-            
-            
-            /*makeFetchElastic(`groups/_update/${group_id}`, arrayMethods.POST, requestBody)
-                .then(body => body._id)
-                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
-                */
-        /* },
- 
-         //should be the same info as the project from Jira (instead of key should be id on both, should be the same)
-         addProjectGitlabToGroup: function(group_id, information) {
-             var requestBody = JSON.stringify({
-                 "script": {
-                     "lang": "painless",
-                     "inline": "ctx._source.projects.add(params.projects)",
-                     "params": {
-                         "projects": {
-                             "id": information.id,
-                             "owner_name": information.owner_name,
-                             "owner_id": information.owner_id,
-                             "description": information.description,
-                             "avatar": information.avatar,
-                             "type": information.type
-                         }
-                     }
-                 }
-             });
- 
- 
-             return fetch(`http://localhost:9200/groups/_update/${group_id}`, {
-                 method: 'POST',
-                 headers: { //Request headers. format is the identical to that accepted by the Headers constructor (see below)
-                     'Content-Type': 'application/json'
-                 },
-                 body: requestBody //Request body
-             }).then(response => response.json())
-             .then(body => body._id)
-             .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG));
-             
-             
-             /*makeFetchElastic(`groups/_update/${group_id}`, arrayMethods.POST, requestBody)
-                 .then(body => body._id)
-                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
- 
-                 */
-        /*},*/
-
         addProjectToGroup: function (group_id, information) {
             var requestBody = JSON.stringify({
                 "script": {
@@ -171,10 +95,7 @@ function database(pgResponses, requests) {
             });
 
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
-                .then(body => {
-                    console.log(body)
-                    return body._id
-                })
+                .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
