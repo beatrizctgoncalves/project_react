@@ -6,7 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { loginFetch,signUpFetch } from '../../components/Services/authenticationService';
+import { loginFetch,signUpFetch } from '../Services/authenticationService';
 import  { ChangeEvent, useEffect, useState } from 'react'
 
 
@@ -42,7 +42,6 @@ function FormSignUp() {
         console.log(userToCreate)
         const {name, value} = event.target
         setUserToCreate({ ...userToCreate,  [name]: value })
-        
     }
 
     function handleSignUpClick(){

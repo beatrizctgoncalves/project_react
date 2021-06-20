@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Footer from '../Components/Footer';
 import Form from './FormSignUp';
-import { signUpFetch } from '../../components/Services/authenticationService';
+import { signUpFetch } from '../Services/authenticationService';
 
 
 const useStyles = makeStyles((theme) => ({

@@ -7,76 +7,94 @@ import Profile from './views/Profile/Profile';
 import SignUp from './views/SignUp/SignUp';
 import SignIn from './views/SignIn/SignIn';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ContactUs from './views/GeneralPages/ContactUs';
-import AboutUs from './views/GeneralPages/AboutUs';
+import Contact from './views/GeneralPages/ContactUs';
+import About from './views/GeneralPages/AboutUs';
 import Groups from './views/Groups/Groups';
+import Group from './views/Groups/Group';
 import Terms from './views/GeneralPages/Terms';
 import Privacy from './views/GeneralPages/Privacy';
 import EditProfile from './views/Profile/EditProfile';
+/*
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {apiResponse: ""};
+  }
+  */
 
 
 function App() {
   return (
-    <>
-      <Head></Head>
+<div>
+        <head>
+          <Head></Head>
+        </head>
+        
+        <body>
+          <Navbar></Navbar>
 
-      <Navbar></Navbar>
+          <Router>
+            <Switch>
+              <Route
+                exact path='/'
+                render={() => <Home></Home>}
+              />
 
-      <Router>
-        <Switch>
-          <Route
-            exact path='/'
-            render={() => <Home />}
-          />
+              <Route
+                exact path='/terms'
+                render={() => <Terms></Terms>}
+              />
 
-          <Route
-            exact path='/terms'
-            render={() => <Terms />}
-          />
+              <Route
+                exact path='/privacy-policy'
+                render={() => <Privacy></Privacy>}
+              />
 
-          <Route
-            exact path='/privacy-policy'
-            render={() => <Privacy />}
-          />
+              <Route
+                exact path='/sign-up'
+              >
+                <SignUp> </SignUp>
+              </Route>
 
-          <Route
-            exact path='/sign-up'
-            render={(props) => <SignUp {...props} />}
-          />
+              <Route
+                exact path='/sign-in' 
+              >
+                <SignIn></SignIn>
+              </Route>
 
-          <Route
-            exact path='/sign-in'
-          >
-            <SignIn />
-          </Route>
+              <Route
+                exact path='/contact'
+                render={(props) => <Contact {...props} />}
+              />
 
-          <Route
-            exact path='/contacts'
-            render={(props) => <ContactUs {...props} />}
-          />
+              <Route
+                exact path='/about'
+                render={(props) => <About {...props} />}
+              />
 
-          <Route
-            exact path='/about-us'
-            render={(props) => <AboutUs {...props} />}
-          />
+              <Route
+                exact path='/profile'
+                render={(props) => <Profile {...props} />}
+              />
+              
+              <Route
+                exact path='/edit-profile'
+                render={(props) => <EditProfile {...props} />}
+              />
+              <Route
+              exact path = "/groups/:id"
+              render = {(props) => <Group {...props}></Group>}
+              ></Route>
 
-          <Route
-            exact path='/profile'
-            render={(props) => <Profile {...props} />}
-          />
+              <Route
+                exact path='/groups'
+              > <Groups></Groups></Route>
 
-          <Route
-            exact path='/edit-profile'
-            render={(props) => <EditProfile {...props} />}
-          />
-
-          <Route
-            exact path='/groups'
-            render={(props) => <Groups {...props} />}
-          />
-        </Switch>
-      </Router>
-    </>
+            </Switch>
+          </Router>
+        </body>
+      </div>
+    
   );
 }
 export default App;

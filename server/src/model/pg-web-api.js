@@ -91,6 +91,7 @@ module.exports = function(express, services, pgScores, aux) {
     }
 
     function addMemberToGroup(req, res) { //Implementation of the route to add a user to a specific group
+        console.log("addMember to group")
         aux.promisesAsyncImplementation(
             services.addMemberToGroup(req.params.group_id, req.params.username, req.body.manager),
             res
