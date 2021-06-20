@@ -51,10 +51,11 @@ module.exports = function (express, services, aux, authization) {
 
     function signIn(req, res) {
         if (req.isAuthenticated()) {
-            res.send("Successfull SignIn")
+            res.json({message : "Successfull SignIn"})
 
         } else {
-            res.send("Something wrong with SignIn")
+            res.json({message : "Something wrong with SignIn"})
+           // res.send("Something wrong with SignIn")
         }
     }
 

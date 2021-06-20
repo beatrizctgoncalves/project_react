@@ -56,9 +56,12 @@ function Groups() {
             .then(resp => {
                 getSpecificGroup(resp.id)
                     .then(group => {
-                        setToCreate(false)
-                        setGroups(groups.push(group))
+                        let aux = groups
+                        aux.push(group)
+                         setGroups(aux)
+                         setToCreate(false)
                     })
+                    
         })
         .catch(err => console.log(err) )
 
