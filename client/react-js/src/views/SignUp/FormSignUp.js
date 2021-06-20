@@ -6,58 +6,26 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import { loginFetch,signUpFetch } from '../Services/authenticationService';
-import  { ChangeEvent, useEffect, useState } from 'react'
+import { loginFetch, signUpFetch } from '../Services/authenticationService';
+import { ChangeEvent, useEffect, useState } from 'react'
 
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: '#274e81e1',
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    }
-}));
 
 function FormSignUp() {
-    const classes = useStyles();
-
     const [userToCreate, setUserToCreate] = useState({})
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
-
-   const handleChange = (event) =>{ 
+    const handleChange = (event) => {
         console.log(event.target.value)
         console.log(userToCreate)
-        const {name, value} = event.target
-        setUserToCreate({ ...userToCreate,  [name]: value })
+        const { name, value } = event.target
+        setUserToCreate({ ...userToCreate, [name]: value })
     }
 
-    function handleSignUpClick(){
-
+    function handleSignUpClick() {
         signUpFetch(userToCreate)
-            .then(resp=>{
-                window.location.assign('/sign-in')        
-                }).catch(err => {
-                    setError({errorMessage:error,shouldShow: true })
-                    
-                })  
-
+            .then(resp => window.location.assign('/sign-in'))
+            .catch(err => setError({ errorMessage: error, shouldShow: true }))
     }
-
-
-
 
     return (
         <div>
@@ -71,7 +39,7 @@ function FormSignUp() {
                         label="Username"
                         name="username"
                         autoComplete="username"
-                        onChange = {handleChange}
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -84,7 +52,7 @@ function FormSignUp() {
                         id="name"
                         label="First Name"
                         autoFocus
-                        onChange = {handleChange}
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -96,7 +64,7 @@ function FormSignUp() {
                         label="Last Name"
                         name="surname"
                         autoComplete="lname"
-                        onChange = {handleChange}
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -108,7 +76,7 @@ function FormSignUp() {
                         label="Email Address"
                         name="email"
                         autoComplete="email"
-                        onChange = {handleChange}
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -121,7 +89,7 @@ function FormSignUp() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                        onChange = {handleChange}
+                        onChange={handleChange}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -131,18 +99,19 @@ function FormSignUp() {
                     />
                 </Grid>
             </Grid>
+            <br />
             <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick = {handleSignUpClick}
-                
+                onClick={handleSignUpClick}
             >
                 Sign Up
             </Button>
             <Grid container justify="flex-end">
                 <Grid item>
+                    <br />
                     <Link href="/sign-in" variant="body2">
                         Already have an account? Sign in
                     </Link>

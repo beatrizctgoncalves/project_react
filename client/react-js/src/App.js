@@ -14,87 +14,84 @@ import Group from './views/Groups/Group';
 import Terms from './views/GeneralPages/Terms';
 import Privacy from './views/GeneralPages/Privacy';
 import EditProfile from './views/Profile/EditProfile';
-/*
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {apiResponse: ""};
-  }
-  */
 
 
 function App() {
   return (
-<div>
-        <head>
-          <Head></Head>
-        </head>
-        
-        <body>
-          <Navbar></Navbar>
+    <div>
+      <Head></Head>
 
-          <Router>
-            <Switch>
-              <Route
-                exact path='/'
-                render={() => <Home></Home>}
-              />
+      <Navbar></Navbar>
 
-              <Route
-                exact path='/terms'
-                render={() => <Terms></Terms>}
-              />
+      <Router>
+        <Switch>
+          <Route
+            exact path='/'
+          >
+            <Home />
+          </Route>
 
-              <Route
-                exact path='/privacy-policy'
-                render={() => <Privacy></Privacy>}
-              />
+          <Route
+            exact path='/terms'
+          >
+            <Terms />
+          </Route>
 
-              <Route
-                exact path='/sign-up'
-              >
-                <SignUp> </SignUp>
-              </Route>
+          <Route
+            exact path='/privacy-policy'
+          >
+            <Privacy />
+          </Route>
 
-              <Route
-                exact path='/sign-in' 
-              >
-                <SignIn></SignIn>
-              </Route>
+          <Route
+            exact path='/sign-up'
+          >
+            <SignUp />
+          </Route>
 
-              <Route
-                exact path='/contact'
-                render={(props) => <Contact {...props} />}
-              />
+          <Route
+            exact path='/sign-in'
+          >
+            <SignIn />
+          </Route>
 
-              <Route
-                exact path='/about'
-                render={(props) => <About {...props} />}
-              />
+          <Route
+            exact path='/contact'
+          >
+            <Contact />
+          </Route>
 
-              <Route
-                exact path='/profile'
-                render={(props) => <Profile {...props} />}
-              />
-              
-              <Route
-                exact path='/edit-profile'
-                render={(props) => <EditProfile {...props} />}
-              />
-              <Route
-              exact path = "/groups/:id"
-              render = {(props) => <Group {...props}></Group>}
-              ></Route>
+          <Route
+            exact path='/about'
+          >
+            <About />
+          </Route>
 
-              <Route
-                exact path='/groups'
-              > <Groups></Groups></Route>
+          <Route
+            exact path='/profile'
+            render={(props) => <Profile {...props} />}
+          />
 
-            </Switch>
-          </Router>
-        </body>
-      </div>
-    
+          <Route
+            exact path='/edit-profile'
+            render={(props) => <EditProfile {...props} />}
+          />
+
+          <Route
+            exact path="/groups/:id"
+            render={(props) => <Group {...props} />}
+          />
+
+          <Route
+            exact path='/groups'
+          >
+            <Groups />
+          </Route>
+
+        </Switch>
+      </Router>
+    </div >
+
   );
 }
 export default App;
