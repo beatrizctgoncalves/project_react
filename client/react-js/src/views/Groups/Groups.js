@@ -1,9 +1,8 @@
-import React, { useEffect,useState } from 'react'
-import EditIcon from '@material-ui/icons/Edit';
-import Copyright from './Copyright.js';
+import React, { useState, useEffect } from 'react';
+import Footer from '../Components/Footer.js';
 import Box from '@material-ui/core/Box';
 import { Link } from 'react-router-dom';
-import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../components/Services/BasicService.js';
+import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
 import Button from '@material-ui/core/Button';
 
 
@@ -183,7 +182,7 @@ function Groups() {
                 </div>
             
             <Box mt={8}>
-                <Copyright />
+                <Footer />
             </Box>
            </div> 
         </section>

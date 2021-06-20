@@ -87,30 +87,6 @@ function services(database, databaseUsers, pgResponses) {
                 })
         },
 
-        /*addProjectJiraToGroup: function(group_id, url, email, token, key) {
-            return apiJira.validateProject(url, email, token, key)
-                .then(validatedObj => {
-                    return database.getGroupDetails(group_id)
-                        .then(groupObj => {
-                            const projectExists = groupObj.projects.findIndex(p => p.key == key)
-                            if(projectExists != -1) {
-                                return pgResponses.setError(
-                                    pgResponses.FORBIDDEN,
-                                    pgResponses.FORBIDDEN_MSG
-                                )
-                            }
-                            return database.addProjectJiraToGroup(group_id, validatedObj)
-                                .then(finalObj => {
-                                    return pgResponses.setSuccessUri(
-                                        pgResponses.OK,
-                                        index,
-                                        finalObj
-                                    )   
-                                })
-                        })
-                })
-        },*/
-
         addProjectToGroup: function (group_id, Pid, type) {
             //TODO needs "Other" type
             const x = require("./plugins/" + type + "/api")()
@@ -174,26 +150,29 @@ function services(database, databaseUsers, pgResponses) {
                 })
         },
 
-        addMemberToGroup: function (group_id, username) {
-            return databaseUsers.getUser(username) //check if the user exists
-                .then(userObj => {
+        addMemberToGroup: function (group_id, member, manager) {
+            return databaseUsers.getUserId(member) //check if the user exists
+                .then(memberId => {
                     return database.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            const userExists = groupObj.members.findIndex(m => m.user === username)
+                            const userExists = groupObj.members.findIndex(m => m.user === member)
                             if (userExists != -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return database.addMemberToGroup(group_id, username) //add user
+                            return database.addMemberToGroup(group_id, member) //add user
                                 .then(group => {
-                                    return pgResponses.setSuccessUri(
-                                        pgResponses.OK,
-                                        pgResponses.index.api,
-                                        pgResponses.index.groups,
-                                        group
-                                    )
+                                    return databaseUsers.addNotificationToUser(group, memberId, manager)
+                                        .then(() => {
+                                            return pgResponses.setSuccessUri(
+                                                pgResponses.OK,
+                                                pgResponses.index.api,
+                                                pgResponses.index.groups,
+                                                group
+                                            )
+                                        })
                                 })
                         })
                 })

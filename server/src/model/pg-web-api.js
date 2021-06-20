@@ -15,7 +15,6 @@ module.exports = function(express, services, pgScores, aux) {
 
     router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
     router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
-    // router.post(`/groups/:group_id/project/jira`, addProjectJiraToGroup); //Add a specific Jira project to a group
     router.delete('/groups/:group_id/project/:project_id', removeProjectFromGroup); //Remove a specific project from a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
@@ -70,13 +69,6 @@ module.exports = function(express, services, pgScores, aux) {
         );
     }
 
-    // function addProjectJiraToGroup(req, res) {
-    //     aux.promisesAsyncImplementation(
-    //         services.addProjectJiraToGroup(req.params.group_id, req.body.url, req.body.email, req.body.token, req.body.key),
-    //         res
-    //     );
-    // }
-
     function addProjectToGroup(req, res) {
         aux.promisesAsyncImplementation(
             services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.type),
@@ -101,7 +93,7 @@ module.exports = function(express, services, pgScores, aux) {
     function addMemberToGroup(req, res) { //Implementation of the route to add a user to a specific group
         console.log("addMember to group")
         aux.promisesAsyncImplementation(
-            services.addMemberToGroup(req.params.group_id, req.params.username),
+            services.addMemberToGroup(req.params.group_id, req.params.username, req.body.manager),
             res
         );
     }

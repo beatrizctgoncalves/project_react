@@ -19,6 +19,9 @@ module.exports = {
     BAD_REQUEST_PASSWORD_MSG: "Invalid password supplied",
     FORBIDDEN_MSG: "Forbidden",
 
+    WRONG_PASSWORD_MSG: "Invalid password",
+    WRONG_USERNAME_MSG: "Invalid username",
+
     setError: function(status, message) {
         return Promise.reject({
             status: status,
@@ -33,8 +36,8 @@ module.exports = {
     },
 
     resolveErrorElastic: function(error) {
-        if(error.status == pgResponses.NOT_FOUND) return pgResponses.setError(error.status, error.body);
-        else return pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG);           
+        if(error.status == this.NOT_FOUND) return this.setError(error.status, error.body);
+        else return this.setError(this.DB_ERROR, this.DB_ERROR_MSG);           
     },
 
     //Success

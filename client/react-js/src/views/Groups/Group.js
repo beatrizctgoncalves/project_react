@@ -1,7 +1,6 @@
 import React, { useEffect,useState,useParams } from 'react'
-import Copyright from './Copyright.js';
 import Box from '@material-ui/core/Box';
-import { addMemberToGroup, getSpecificGroup } from '../components/Services/BasicService.js';
+import { addMemberToGroup, getSpecificGroup } from '../Services/BasicService.js';
 import Button from '@material-ui/core/Button';
 
 
@@ -97,7 +96,7 @@ function Group(props) {
 
             </div>
             <Box mt={8}>
-                <Copyright />
+                
             </Box>
         </section>
  

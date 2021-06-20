@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Copyright from '../Copyright';
-import Form from './FormProfile';
+import Footer from '../Components/Footer';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
     },
     submit: {
-        margin: theme.spacing(3, 0, 2)
+        margin: theme.spacing(3, 0, 2),
     }
 }));
 
-function EditProfile() {
+function Profile() {
     const classes = useStyles();
 
     return (
@@ -39,16 +39,39 @@ function EditProfile() {
                 width="auto" height="150"></img>
                 <br/>
                 <div class="container px-4 px-lg-5">
-                    <h2 class="text-center mt-0">Editing Username...</h2>
+                    <h2 class="text-center mt-0">Username</h2>
                     <hr class="divider"/>
                 </div>
                 <div className={classes.div}>
-                    <Form/>                 
+                    <Grid container spacing={2} align="center">
+                        <Grid item xs={12} sm={6}>
+                            <h3>First Name</h3>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <h3>Last Name</h3>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <h3>Email Address</h3>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <h3>Additional Information</h3>
+                        </Grid>
+                    </Grid>
+                    <br/>
+                    <br/>
+                    <Grid container spacing={2} align="center">
+                        <Grid item xs={12} sm={6}>
+                            <a class="btn btn-profile btn-xl" href="/edit-profile">Edit Profile</a>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <a class="btn btn-profile btn-xl" href="/groups">My Groups</a>
+                        </Grid>
+                    </Grid>                    
                 </div>
             </div>
             <Box mt={5}>
                 <br /><br />
-                <Copyright />
+                <Footer />
                 <br/>
             </Box>
         </Container>
@@ -56,4 +79,4 @@ function EditProfile() {
 }
 
 
-export default EditProfile
+export default Profile

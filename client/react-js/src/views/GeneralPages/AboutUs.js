@@ -1,5 +1,5 @@
 import React from 'react'
-import Copyright from './Copyright.js';
+import Footer from '../Components/Footer.js';
 import Box from '@material-ui/core/Box';
 
 
@@ -43,7 +43,7 @@ function About() {
 
             <Box mt={8}>
                 <br/><br/>
-                <Copyright />
+                <Footer />
             </Box>
         </section>
     )
