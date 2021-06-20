@@ -66,6 +66,7 @@ function database(pgResponses, requests) {
                     }
                 }
             });
+            
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
                 .then(body => {
                     if(body.result == 'updated') {

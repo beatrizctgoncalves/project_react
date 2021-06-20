@@ -9,28 +9,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { loginFetch } from '../Services/authenticationService';
 
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: '#274e81e1',
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  }
-}));
-
-
-
 function FormSignIn() {
   const [userToLogin, setUserToLogin] = useState({ username: undefined, password: undefined })
   const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
@@ -58,8 +36,6 @@ function FormSignIn() {
     console.log(event.target.value)
     setUserToLogin({ ...userToLogin, username: event.target.value })
   }
-
-  const classes = useStyles();
 
   return (
     <div>
@@ -100,6 +76,8 @@ function FormSignIn() {
       >
         Sign In
       </Button>
+      <br/>
+      <br/>
       <Grid container>
         <Grid item xs>
           <Link href="#" variant="body2">

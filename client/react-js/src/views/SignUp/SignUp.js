@@ -93,7 +93,7 @@ export default function SignUp() {
                 <Form />
             </div>
 
-            <Box mt={5}>
+            <Box mt={8}>
                 <br /><br />
                 <Footer />
             </Box>

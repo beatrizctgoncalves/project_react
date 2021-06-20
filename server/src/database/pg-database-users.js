@@ -79,12 +79,10 @@ function database(pgResponses, requests) {
 
         deleteUser: function (username) {
             return this.getUserId(username)
-                .then(id => {
-                    return requests.makeFetchElastic(requests.index.users.concat(`_doc/${id}`), requests.arrayMethods.DELETE, null)
-                        .then(body => {
-                            if (body.result === 'deleted') return body.username
-                            else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
-                        })
+                .then(id => requests.makeFetchElastic(requests.index.users.concat(`_doc/${id}`), requests.arrayMethods.DELETE, null))
+                .then(body => {
+                    if (body.result === 'deleted') return body.username
+                    else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
         }

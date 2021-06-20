@@ -45,10 +45,6 @@ module.exports = function (express, services, aux, authization) {
         );
     }
 
-    function test(req, res) {
-        res.send()
-    }
-
     function signIn(req, res) {
         if (req.isAuthenticated()) {
             res.json({message : "Successfull SignIn"})

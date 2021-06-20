@@ -52,7 +52,6 @@ module.exports = {
     },
 
     setSuccessUri: function(status, index, groups, id) {
-        
         return {
             status: status,
             body: {
