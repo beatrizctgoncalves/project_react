@@ -25,7 +25,7 @@ module.exports = function (express, services, aux, authization) {
     }, signIn);
     router.post('/logout', authenticate.logout, logOut);
 
-    router.get('/test', auth.getUserPermissions, test);
+    //router.get('/test', auth.getUserPermissions, test);
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
