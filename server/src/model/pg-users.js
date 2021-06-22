@@ -11,6 +11,7 @@ module.exports = function (express, services, aux, authization) {
 
     router.post('/signup', signUp);
     router.post('/signin', async (req, res, next) => {
+        console.log("__________________________________________________")
         await authenticate.usingLocal(req, res, err => {
             if (err) {
                 const myError = {
@@ -25,7 +26,7 @@ module.exports = function (express, services, aux, authization) {
     }, signIn);
     router.post('/logout', authenticate.logout, logOut);
 
-    router.get('/test', auth.getUserPermissions, test);
+    //router.get('/test', auth.getUserPermissions, test);
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
