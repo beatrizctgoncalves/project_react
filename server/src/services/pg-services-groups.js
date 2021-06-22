@@ -20,7 +20,7 @@ function services(database, databaseUsers, pgResponses) {
                         groups
                     )
 
-                    
+
                 })
         },
 
@@ -162,17 +162,14 @@ function services(database, databaseUsers, pgResponses) {
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return database.addMemberToGroup(group_id, member) //add user
-                                .then(group => {
-                                    return databaseUsers.addNotificationToUser(group, memberId, manager)
-                                        .then(() => {
-                                            return pgResponses.setSuccessUri(
-                                                pgResponses.OK,
-                                                pgResponses.index.api,
-                                                pgResponses.index.groups,
-                                                group
-                                            )
-                                        })
+                            return databaseUsers.addNotificationToUser(group, memberId, manager)
+                                .then(() => {
+                                    return pgResponses.setSuccessUri(
+                                        pgResponses.OK,
+                                        pgResponses.index.api,
+                                        pgResponses.index.groups,
+                                        group
+                                    )
                                 })
                         })
                 })
