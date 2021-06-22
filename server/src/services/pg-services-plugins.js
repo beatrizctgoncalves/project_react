@@ -1,7 +1,32 @@
 'use strict'
 
 function services(databaseGroup, databaseUsers, pgResponses) {
-    const serv = {       
+    const serv = {    
+        
+        getProjectsOfTool: function(toolName, userId){
+            let api = undefined
+            try{
+                api = require("./plugins/" + toolName + "/api")()
+            }catch(error){
+                return pgResponses.setError(
+                    pgResponses.NOT_FOUND,
+                    "Tool is not implemented in this server"
+                )
+            }
+            let Atoken = undefined
+            return databaseUsers.getUser(userId)
+                .then(user => user.info.filter(i => i.type == toolName)[0])
+                .then(info => {
+                    Atoken = info.AToken
+                    return api.getProjectsFromUsername(info.username,Atoken)
+                })
+                .then(projects => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        projects
+                    )
+                })
+        },
 
         countPointsInGroup: function(groupId) { //TODO
             let usersInfoMap = new Map()
