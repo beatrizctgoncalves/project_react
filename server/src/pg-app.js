@@ -21,14 +21,14 @@ module.exports = async function() {
     const databaseUsers = require('./database/pg-database-users')(pgResponses, requests);
 
     const authizationConfig = require('./database/authization-dg-config/config')
-    const pgScores = require('./services/pg-scores')(databaseGroups, databaseUsers, pgResponses);
+    const servicesPlugins = require('./services/pg-services-plugins')(databaseGroups, databaseUsers, pgResponses);
 
     try {
         let authization = await require('@authization/authization').setup({ app, db: authizationConfig.dbConfigs, rbac_opts: authizationConfig.rbac_opts });
         const servicesGroups = require('./services/pg-services-groups')(databaseGroups, databaseUsers, pgResponses);
         const servicesUsers = require('./services/pg-services-users')(databaseUsers, pgResponses, authization);
 
-        const webApi = require('./model/pg-web-api')(express, servicesGroups, pgScores, aux); //Import the web-api
+        const webApi = require('./model/pg-web-api')(express, servicesGroups, servicesPlugins, aux); //Import the web-api
         const usersCreator = require('./model/pg-users')(express, servicesUsers, aux, authization);
 
         app.use(pgResponses.index.api, webApi);

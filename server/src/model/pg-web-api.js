@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(express, services, pgScores, aux) {
+module.exports = function(express, services, servicesPlugins, aux) {
     if (!services) {
         throw "Invalid services object";
     }
@@ -23,7 +23,10 @@ module.exports = function(express, services, pgScores, aux) {
     router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
-    router.get('/rankings', getRankings); //get all rankings
+
+    router.get('/tools/:tool_name/projects',getProjectsOfTool)
+
+    router.get('/rankings', getRankings); //TODO get all rankings
     
     return router;
 
@@ -112,9 +115,16 @@ module.exports = function(express, services, pgScores, aux) {
         );
     }
 
+    function getProjectsOfTool(req, res) {
+        aux.promisesAsyncImplementation(
+            servicesPlugins.getProjectsOfTool(req.params.tool_name,req.body.userId),
+            res
+        )
+    }
+
     function getGroupRankings(req, res) {
         aux.promisesAsyncImplementation(
-            pgScores.countPointsInGroup(req.params.group_id),
+            servicesPlugins.countPointsInGroup(req.params.group_id),
             res
         );
     }
