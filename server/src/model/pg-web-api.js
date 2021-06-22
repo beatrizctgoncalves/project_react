@@ -117,7 +117,7 @@ module.exports = function(express, services, servicesPlugins, aux) {
 
     function getProjectsOfTool(req, res) {
         aux.promisesAsyncImplementation(
-            servicesPlugins.getProjectsOfTool(req.params.tool_name,req.body.userId),
+            servicesPlugins.getProjectsOfTool(req.params.tool_name,req.body.username),
             res
         )
     }
