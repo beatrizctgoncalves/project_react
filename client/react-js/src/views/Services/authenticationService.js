@@ -19,7 +19,5 @@ export async function signUpFetch(options) {
         .then(resp => {
             console.log(resp)
             return resp.message
-        }).catch(err => {
-            console.log(err)
         })
 }

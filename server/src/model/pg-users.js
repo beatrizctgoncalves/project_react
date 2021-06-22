@@ -20,6 +20,7 @@ module.exports = function (express, services, aux, authization) {
                 }
                 res.statusCode = err.status
                 res.json({ error: myError })
+               
             }
             next()
         })

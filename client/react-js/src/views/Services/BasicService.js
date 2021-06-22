@@ -6,7 +6,7 @@ export async function getUserGroups(owner) {
     return   makeRequest(uri)
                 .then(resp =>{
                     console.log(resp)
-                    return resp.message
+                    return resp
                 })
 }
 
@@ -16,7 +16,7 @@ export   async function getSpecificGroup(id){
     return   makeRequest(uri)
                 .then(resp =>{
                     console.log(resp)
-                    return resp.message
+                    return resp
                 })
 }
 
@@ -28,7 +28,7 @@ export   async function addMemberToGroup(groupId,member){
     return   makeRequest(uri,{},"POST")
                 .then(resp =>{
                     console.log(resp)
-                    return resp.message
+                    return resp
                 })
 }
 
@@ -38,7 +38,7 @@ export   async function deleteGroup(groupId){
     return   makeRequest(uri,{},"DELETE")
                 .then(resp =>{
                     console.log(resp)
-                    return resp.message
+                    return resp
                 })
 }
 
@@ -49,7 +49,7 @@ export   async function createGroup(newGroup){
     return   makeRequest(uri,newGroup,"POST")
                 .then(resp =>{
                     console.log(resp)
-                    return resp.message
+                    return resp
                 })
 }
 
