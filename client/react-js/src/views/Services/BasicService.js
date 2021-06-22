@@ -21,7 +21,9 @@ export   async function getSpecificGroup(id){
 }
 
 export   async function addMemberToGroup(groupId,member){
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/member/${member}`
+    
+    console.log(member)
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/members/${member}`
     
     return   makeRequest(uri,{},"POST")
                 .then(resp =>{

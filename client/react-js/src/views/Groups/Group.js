@@ -44,9 +44,13 @@ function Group(props) {
        
 
         function handleAddMembers(){
-            addMemberToGroup(newMember)
-            .then(resp =>{
-                setAddMembers(false)
+            console.log(newMember)
+            addMemberToGroup(id,newMember)
+            .then(resp =>{   
+                let aux = group;
+                 aux.members.push(newMember)
+                setGroup(aux)
+                 setAddMembers(false) 
             })
         }
     
