@@ -18,9 +18,8 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                 .then(user => user.info.filter(i => i.type == toolName)[0])
                 .then(info => {
                     Atoken = info.AToken
-                    return api.getUserId(info.username)
+                    return api.getProjectsFromUsername(info.username,Atoken)
                 })
-                .then(uId => api.getProjectsFromUser(uId,Atoken))
                 .then(projects => {
                     return pgResponses.setSuccessList(
                         pgResponses.OK,
