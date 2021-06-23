@@ -24,7 +24,7 @@ function database(pgResponses, requests) {
         getUserGroups: function (owner) {
             return requests.makeFetchElastic(requests.index.groups.concat(`_search?q=owner:${owner}`), requests.arrayMethods.POST, null)
                 .then(body => {
-                    if(body.hits && body.hits.hits.length) {
+                    if (body.hits && body.hits.hits.length) {
                         return body.hits.hits.map(hit => {
                             hit._source.id = hit._id;
                             return hit._source;
@@ -39,7 +39,7 @@ function database(pgResponses, requests) {
         getGroupDetails: function (id) {
             return requests.makeFetchElastic(requests.index.groups.concat(`_doc/${id}`), requests.arrayMethods.GET, null)
                 .then(body => {
-                    if(body.found) {
+                    if (body.found) {
                         body._source.id = body._id;
                         return body._source;
                     } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG);
@@ -50,7 +50,7 @@ function database(pgResponses, requests) {
         deleteGroup: function (group_id) {
             return requests.makeFetchElastic(requests.index.groups.concat(`_doc/${group_id}?refresh=true`), requests.arrayMethods.DELETE, null)
                 .then(body => {
-                    if(body.result === 'deleted') return body._id
+                    if (body.result === 'deleted') return body._id
                     else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG)
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
@@ -66,10 +66,10 @@ function database(pgResponses, requests) {
                     }
                 }
             });
-            
+
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
                 .then(body => {
-                    if(body.result == 'updated') {
+                    if (body.result == 'updated') {
                         return body._id;
                     } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG);
                 })
@@ -159,7 +159,7 @@ function database(pgResponses, requests) {
                     }
                 }
             });
-            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`),arrayMethods.POST,requestBody)
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), arrayMethods.POST, requestBody)
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
@@ -185,6 +185,15 @@ function database(pgResponses, requests) {
 
         getRankings: function () {
             //TODO
+        },
+
+        removeGroup: function (group_id) {
+            return requests.makeFetchElastic(requests.index.users.concat(`_doc/${group_id}`), requests.arrayMethods.DELETE, null)
+                .then(body => {
+                    if (body.result === 'deleted') return body.username;
+                    else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);
+                })
+                .catch(error => pgResponses.resolveErrorElastic(error));
         }
     }
     return dt;
