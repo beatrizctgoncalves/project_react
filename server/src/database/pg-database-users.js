@@ -20,17 +20,14 @@ function database(pgResponses, requests) {
         getUser: function (username) {
             return requests.makeFetchElastic(requests.index.users.concat(`_search?q=username:${username}`), requests.arrayMethods.GET, null)
                 .then(body => {
-                    if (body.hits && body.hits.hits.length) return body.hits.hits.map(hit => hit._source)[0];
-                    else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
-                })
-                .catch(error => pgResponses.resolveErrorElastic(error))
-        },
-
-        getUserId: function (username) {
-            return requests.makeFetchElastic(requests.index.users.concat(`_search?q=username:${username}`), requests.arrayMethods.GET, null)
-                .then(body => {
-                    if (body.hits && body.hits.hits.length) return body.hits.hits.map(hit => hit._id)
-                    else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
+                    if (body.hits && body.hits.hits.length) {
+                        return body.hits.hits.map(hit => {
+                            hit._source.id = hit._id;
+                            return hit._source[0];
+                        })
+                    } else {
+                        return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
+                    }
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
         },
@@ -46,13 +43,15 @@ function database(pgResponses, requests) {
                 }
             });
 
-            return this.getUserId(username)
-                .then(id => {
-                    return requests.makeFetchElastic(requests.index.users.concat(`_update/${id}`), requests.arrayMethods.POST, requestBody)
+            return this.getUser(username)
+                .then(userObj => {
+                    return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {
                             if (body.result == 'updated') {
                                 return body._id;
-                            } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
+                            } else {
+                                return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
+                            }
                         })
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
@@ -77,11 +76,26 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
+        removeUserNotification: function (user_id, notification_index) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline": "ctx._source.notifications.remove(params.notification)",
+                    "params": {
+                        "notification": notification_index
+                    }
+                }
+            });
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${user_id}`), arrayMethods.POST, requestBody)
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
         deleteUser: function (username) {
-            return this.getUserId(username)
-                .then(id => requests.makeFetchElastic(requests.index.users.concat(`_doc/${id}`), requests.arrayMethods.DELETE, null))
+            return this.getUser(username)
+                .then(userObj => requests.makeFetchElastic(requests.index.users.concat(`_doc/${userObj.id}`), requests.arrayMethods.DELETE, null))
                 .then(body => {
-                    if (body.result === 'deleted') return body.username
+                    if (body.result === 'deleted') return body.username;
                     else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))

@@ -150,9 +150,9 @@ function services(database, databaseUsers, pgResponses) {
                 })
         },
 
-        addMemberToGroup: function (group_id, member, manager) {
-            return databaseUsers.getUserId(member) //check if the user exists
-                .then(memberId => {
+        addMemberNotification: function (group_id, member, manager) { //add the notification to the user
+            return databaseUsers.getUser(member) //check if the user exists
+                .then(memberObj => {
                     return database.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
                             const userExists = groupObj.members.findIndex(m => m.user === member)
@@ -162,13 +162,13 @@ function services(database, databaseUsers, pgResponses) {
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return databaseUsers.addNotificationToUser(group, memberId, manager)
+                            return databaseUsers.addNotificationToUser(group_id, memberObj.id, manager)
                                 .then(() => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,
                                         pgResponses.index.api,
                                         pgResponses.index.groups,
-                                        group
+                                        group_id
                                     )
                                 })
                         })

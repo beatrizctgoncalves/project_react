@@ -48,7 +48,8 @@ module.exports = {
     index: {
         api: '/api/g5/pluggable/gamification',
         groups: '/groups/',
-        users: '/users/g5/pluggable/gamification'
+        users: '/users/g5/pluggable/gamification',
+        notifications: '/notifications/'
     },
 
     setSuccessUri: function(status, index, groups, id) {
