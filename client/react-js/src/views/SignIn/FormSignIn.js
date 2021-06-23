@@ -20,9 +20,9 @@ function FormSignIn() {
         window.sessionStorage.setItem('username', userToLogin.username);
         window.location.assign('/groups')
       })
-      .catch(error => {
-        console.log(error)
-        setError({ errorMessage: error, shouldShow: true })
+      .catch(err => {
+        console.log(err)
+        setError({ errorMessage: err.body, shouldShow: true })
 
       })
   }

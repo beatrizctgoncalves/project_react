@@ -1,7 +1,32 @@
 'use strict'
 
 function services(databaseGroup, databaseUsers, pgResponses) {
-    const serv = {       
+    const serv = {    
+        
+        getProjectsOfTool: function(toolName, userId){
+            let api = undefined
+            try{
+                api = require("./plugins/" + toolName + "/api")()
+            }catch(error){
+                return pgResponses.setError(
+                    pgResponses.NOT_FOUND,
+                    "Tool is not implemented in this server"
+                )
+            }
+            let Atoken = undefined
+            return databaseUsers.getUser(userId)
+                .then(user => user.info.filter(i => i.type == toolName)[0])
+                .then(info => {
+                    Atoken = info.AToken
+                    return api.getProjectsFromUsername(info.username,Atoken)
+                })
+                .then(projects => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        projects
+                    )
+                })
+        },
 
         countPointsInGroup: function(groupId) { //TODO
             let usersInfoMap = new Map()
@@ -42,14 +67,11 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                 return Promise.all(promisses)
             })
             .then(() => SprintScores = MergeProjectsInSprint(SprintScores))
-            .then(() => console.log(SprintScores))
             .then(() => {
-                return pgResponses.setSuccessUri(
+                return pgResponses.setSuccessList(
                     pgResponses.OK,
-                    'groups/',
-                    "",
-                    ""
-                )   
+                    SprintScores
+                )
             })
         }
 
@@ -58,29 +80,27 @@ function services(databaseGroup, databaseUsers, pgResponses) {
 }
 
 function auxFunc(memberInfoMapGitlab, title){
-    let toRet = {SprintTitle:title, Scores: new Map()}
+    let toRet = {SprintTitle:title, Scores: []}
 
     memberInfoMapGitlab.forEach(info => {
-        toRet.Scores.set(info.AppUsername,info.Points)
+        toRet.Scores.push({AppUsername:info.AppUsername, Points:info.Points})
     })
-
     return toRet
 }
 
 function MergeProjectsInSprint(SprintScores){
     let toRet = []
-
     SprintScores.forEach(sprintScore => {
         let value = toRet.find(v => v.SprintTitle == sprintScore.SprintTitle)
         if (!value){
             toRet.push(sprintScore)
         }else{
-            Array.from(sprintScore.Scores, ([user, points]) => {
-                if(value.Scores.has(user)){
-                    let p = value.Scores.get(user)
-                    value.Scores.set(user,p + points)
+            sprintScore.Scores.forEach(Score => {
+                let p = value.Scores.find(v => v.AppUsername == Score.AppUsername)
+                if(p){
+                    p.Points += Score.Points
                 }else{
-                    value.Scores.set(user, points)
+                    value.Scores.push({ AppUsername: Score.AppUsername, Points: Score.Points })
                 }
             })
         }

@@ -2,6 +2,7 @@ import React, { useEffect,useState,useParams } from 'react'
 import Box from '@material-ui/core/Box';
 import { addMemberToGroup, getSpecificGroup } from '../Services/BasicService.js';
 import Button from '@material-ui/core/Button';
+import Alert from 'react-bootstrap/Alert'
 
 
 function Group(props) {
@@ -13,14 +14,18 @@ function Group(props) {
     const[toAddMembers,setAddMembers] = useState(false)
 
     const[newMember,setNewMember] = useState("")
+    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     useEffect(()=>{
         
         console.log(id)
        
         getSpecificGroup(id).then(resp =>{
-            console.log(resp)
-            setGroup(resp)
+            console.log(resp.message)
+            setGroup(resp.message)
+        }).catch(err=>{
+            console.log(err)
+            setError({ errorMessage: err.body, shouldShow: true });
         })
         
     },[])
@@ -33,12 +38,10 @@ function Group(props) {
 
     
     function handleToEditChange(){
-        
            if(toAddMembers){
             setAddMembers(false)
            }
            else setAddMembers(true)
-
         }
 
        
@@ -51,6 +54,9 @@ function Group(props) {
                  aux.members.push(newMember)
                 setGroup(aux)
                  setAddMembers(false) 
+            }).catch(err => {
+                console.log(err)
+                setError({ errorMessage: err.body, shouldShow: true });
             })
         }
     
@@ -63,6 +69,12 @@ function Group(props) {
                 <h2 class="text-center mt-0">Your Groups</h2>
                 <hr class="divider" />
                 <div class="row text-center">
+                {
+                error.shouldShow &&
+                <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
+                    {error.errorMessage}
+                </Alert>
+                }
                     <h3>{group.description}</h3>
                     <ul>
                         <li>{group.name}</li>

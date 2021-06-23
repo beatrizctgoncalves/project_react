@@ -7,6 +7,8 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { loginFetch, signUpFetch } from '../Services/authenticationService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ChangeEvent, useEffect, useState } from 'react'
 
 
@@ -24,11 +26,24 @@ function FormSignUp() {
     function handleSignUpClick() {
         signUpFetch(userToCreate)
             .then(resp => window.location.assign('/sign-in'))
-            .catch(err => setError({ errorMessage: error, shouldShow: true }))
+            .catch(err => {
+                console.log(err.body)
+                setError({ errorMessage: err.body, shouldShow: true })
+                toast.error(err.body,{
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    })
+            } )
     }
 
     return (
         <div>
+            <ToastContainer/>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField

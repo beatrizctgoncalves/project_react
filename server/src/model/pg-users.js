@@ -11,6 +11,7 @@ module.exports = function (express, services, aux, authization) {
 
     router.post('/signup', signUp);
     router.post('/signin', async (req, res, next) => {
+        console.log("__________________________________________________")
         await authenticate.usingLocal(req, res, err => {
             if (err) {
                 const myError = {
@@ -19,6 +20,7 @@ module.exports = function (express, services, aux, authization) {
                 }
                 res.statusCode = err.status
                 res.json({ error: myError })
+               
             }
             next()
         })

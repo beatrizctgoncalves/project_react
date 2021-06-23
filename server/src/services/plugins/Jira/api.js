@@ -59,6 +59,18 @@ function apiJira() {
                 .catch(error => pgResponses.resolveErrorApis(error));
         },
 
+        getProjectsFromUsername: function(userName, AToken) {
+            return makeFetch(`${URL}/rest/api/3/project`, arrayMethods.GET, null, AToken)
+            .then(body => body.map(project =>{
+                return {
+                    "id": project.id,
+                    "name": project.name
+                }
+            }))    
+            .catch(error => pgResponses.resolveErrorApis(error))
+                .catch(error => pgResponses.resolveErrorApis(error));
+        },
+
         getIssues: function(Pid, AToken) {
             return makeFetch(`${URL}/rest/api/2/search?jql=project=${Pid}`, arrayMethods.GET, null, AToken)
                 .then(body => {

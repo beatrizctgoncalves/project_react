@@ -18,41 +18,6 @@ export async function signUpFetch(options) {
     return makeRequest(uri, options, 'POST')
         .then(resp => {
             console.log(resp)
-            return resp
-        }).catch(err => {
-            console.log(err)
+            return resp.message
         })
 }
-
-/*      
-
-                            {toAddMembers? 
-                            <>
-                            <label><h3>Insert New Members</h3></label>
-                             <input
-                                type="text" 
-                                name = "newMember"
-                                className="form-control" 
-                                placeholder="Enter new Member" 
-                                value={newMember}
-                                onChange= {handleMember}
-                            /> 
-               
-                <Button  className="button1" onClick = {handleAddMembers}> Add Member </Button>
-
-            </>:""}
-                        
-                        
-                        <Button onClick = {handleToEditChange}>{toAddMembers?"-":"Add Members"} </Button>
-                        
-                        
-                        
-                        
-                        
-                         function handleAddMembers(){
-            addMemberToGroup(newMember)
-            .then(resp =>{
-                setAddMembers(false)
-            })
-
-        }*/ 

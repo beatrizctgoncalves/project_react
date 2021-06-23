@@ -4,6 +4,11 @@ import Box from '@material-ui/core/Box';
 import { Link } from 'react-router-dom';
 import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
 import Button from '@material-ui/core/Button';
+import Alert from 'react-bootstrap/Alert'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 
 
@@ -18,14 +23,28 @@ function Groups() {
    
     const owner = window.sessionStorage.getItem("username")
     const [newGroup,setNewGroup] = useState({owner:owner})
+    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     useEffect(()=>{
         
         console.log(owner)
         getUserGroups(owner).then(resp =>{
-            console.log(resp)
-            setGroups(resp)
+            console.log(resp.message)
+            setGroups(resp.message)
 
+
+        }).catch(err=>{
+            console.log(err)
+            setError({ errorMessage: err.body, shouldShow: true });
+            toast.error(err.body,{
+                position: "top-left",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                })
 
         })
     },[])
@@ -44,6 +63,7 @@ function Groups() {
 
         }).catch(err => {
             console.log(err)
+            setError({ errorMessage: err.body, shouldShow: true });
         })
 
     }
@@ -54,16 +74,20 @@ function Groups() {
         console.log("creating Group")
         createGroup(newGroup)
             .then(resp => {
-                getSpecificGroup(resp.id)
+                getSpecificGroup(resp.message.id)
                     .then(group => {
                         let aux = groups
-                        aux.push(group)
+                        aux.push(group.message)
                          setGroups(aux)
                          setToCreate(false)
                     })
                     
         })
-        .catch(err => console.log(err) )
+        .catch(err => {
+            console.log(err)
+            setError({ errorMessage: err.body, shouldShow: true });
+            toast.error(err.body)
+        } )
 
     }
 
@@ -76,28 +100,33 @@ function Groups() {
     }
 
     function handleToEditChange(){
-    
-   
         if(edit){
             setEdit(false)
         }
         else setEdit(true)
-     
- 
      }
 
 
      function handleToCreate(){
-    
-   
         if(toCreate){
             setToCreate(false)
         }
         else setToCreate(true)
-     
- 
      }
 
+     
+
+    function notify(){
+    toast("Wow so easy!",{
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        })
+     }
 
 
   
@@ -108,6 +137,8 @@ function Groups() {
                 <h2 class="text-center mt-0">Your Groups</h2>
                 <hr class="divider" />
                 <div class="row text-center">
+            
+                <ToastContainer/>
 
                     {edit?
                     <>

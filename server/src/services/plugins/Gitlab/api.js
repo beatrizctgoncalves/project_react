@@ -42,7 +42,7 @@ function apiGitlab() {
                 .catch(error => pgResponses.resolveErrorApis(error))
         },
         
-        getProjectsFromUser: function(Uid, AToken) {
+        getProjectsFromUserId: function(Uid, AToken) {
             return makeRequest(`users/${Uid}/projects?access_token=${AToken}`)
             .then(body => body.map(project =>{
                 return {
@@ -56,7 +56,12 @@ function apiGitlab() {
             }))    
             .catch(error => pgResponses.resolveErrorApis(error))
         },
-        
+
+        getProjectsFromUsername: function(userName, AToken) {
+            return this.getUserId(userName)
+                .then(uId => this.getProjectsFromUserId(uId,AToken))
+        },
+
         getIssues: function(PId, AToken) {
             return makeRequest(`projects/${PId}/issues?access_token=${AToken}`)
                 .then(issues => issues.map(issue => {
