@@ -185,6 +185,15 @@ function database(pgResponses, requests) {
 
         getRankings: function () {
             //TODO
+        },
+
+        removeGroup: function (group_id) {
+            return requests.makeFetchElastic(requests.index.users.concat(`_doc/${group_id}`), requests.arrayMethods.DELETE, null)
+                .then(body => {
+                    if (body.result === 'deleted') return body.username;
+                    else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);
+                })
+                .catch(error => pgResponses.resolveErrorElastic(error));
         }
     }
     return dt;

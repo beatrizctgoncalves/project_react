@@ -124,22 +124,18 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
         },
 
         deleteUser: function (username) {
-            /**
-             * TODO
-             * delete this user from all groups
-             */
             return this.deleteFromAuthization(username)
+                .then(() => databaseUsers.deleteUser(username))
+                .then(() => databaseGroups.getUserGroups(username))
+                .then(groups => groups.map(g => databaseGroups.removeGroup(g.id)))
+                .then(result => Promise.all(result))
                 .then(() => {
-                    console.log("DELETE SERVICE");
-                    return databaseUsers.deleteUser(username)
-                        .then(user_name => {
-                            return pgResponses.setSuccessUri(
-                                pgResponses.OK,
-                                pgResponses.index.users,
-                                user_name,
-                                ""
-                            )
-                        })
+                    return pgResponses.setSuccessUri(
+                        pgResponses.OK,
+                        pgResponses.index.users,
+                        username,
+                        ""
+                    )
                 })
         }
     }
