@@ -1,6 +1,6 @@
 import React, { useEffect,useState,useParams } from 'react'
 import Box from '@material-ui/core/Box';
-import { addMemberToGroup, getSpecificGroup } from '../Services/BasicService.js';
+import { addMemberToGroup, editGroup, getSpecificGroup } from '../Services/BasicService.js';
 import Button from '@material-ui/core/Button';
 import Alert from 'react-bootstrap/Alert'
 
@@ -12,9 +12,13 @@ function Group(props) {
     const {id}  = props.match.params
 
     const[toAddMembers,setAddMembers] = useState(false)
+    const[toEdit,setToEdist] = useState(false)
+
 
     const[newMember,setNewMember] = useState("")
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
+
+    const[values,setValues] = useState({})
 
     useEffect(()=>{
         
@@ -30,6 +34,13 @@ function Group(props) {
         
     },[])
 
+    const handleChange = (event) =>{ 
+        console.log(event.target.value)
+        console.log(values)
+        const {name, value} = event.target
+        setValues({ ...values,  [name]: value })
+    }
+
 
     const handleMember= event => {
         console.log(event.target.value)
@@ -37,12 +48,20 @@ function Group(props) {
     }
 
     
-    function handleToEditChange(){
+    function handleToAddChange(){
            if(toAddMembers){
             setAddMembers(false)
            }
            else setAddMembers(true)
         }
+
+
+        function handleToEditChange(){
+            if(toEdit){
+             setToEdist(false)
+            }
+            else setToEdist(true)
+         }
 
        
 
@@ -58,6 +77,22 @@ function Group(props) {
                 console.log(err)
                 setError({ errorMessage: err.body, shouldShow: true });
             })
+        }
+
+
+        function handleToEditGroup(){
+            editGroup(id,values)
+            .then(resp => {
+                getSpecificGroup(resp.message.id).then(resp =>{
+                    console.log(resp.message)
+                    setGroup(resp.message)
+                }).catch(err=>{
+                    console.log(err)
+                    setError({ errorMessage: err.body, shouldShow: true });
+                })
+                
+            })
+          
         }
     
 
@@ -96,13 +131,63 @@ function Group(props) {
                                 value={newMember}
                                 onChange= {handleMember}
                             /> 
+
                
                 <Button  className="button1" onClick = {handleAddMembers}> Add Member </Button>
 
             </>:""}
+                                  
                         
+                        <Button onClick = {handleToAddChange}>{toAddMembers?"-":"Add Members"} </Button>
+                        <h3>Sprints</h3>
+                        <ul>
+                            {group.sprints?group.sprints.map(sprint=>{
+                                 console.log("sprint")
+                                console.log(sprint)
+                            return <li>{sprint.title}</li>
+                             }):""}
+                        </ul>
+
+                        <Button onClick = {handleToEditChange}>{toEdit?"-":"Update"} </Button>
+
+
                         
-                        <Button onClick = {handleToEditChange}>{toAddMembers?"-":"Add Members"} </Button>
+                    {toEdit?
+                    <>
+                <h3>Update Group</h3>
+                <label>Name</label>
+                <br/>
+                    <input 
+                    className = "form-control"
+                    type="text"
+                    name = "name"  
+                    placeholder="Enter Group name"
+                    onChange={handleChange}
+                   
+                    />
+                    <br/>
+                    <label>Description</label>
+                    <br/>
+                    <input
+                        className = "form-control"
+                        type="text" 
+                        name = "description"
+                        onChange={handleChange}
+                        placeholder="Enter project Description" 
+                        
+                    />
+                    <br/>
+        
+                    <br/>
+                    <Button   type="button" className="button1" onClick = {handleToEditGroup}>Update</Button>
+                    <br/>  
+
+                    </>
+                    
+                    
+                    
+                    :""}
+                        
                           
                         
                         

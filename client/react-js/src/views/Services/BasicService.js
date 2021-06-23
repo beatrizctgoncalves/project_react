@@ -54,4 +54,15 @@ export   async function createGroup(newGroup){
 }
 
 
+export   async function editGroup(groupId,newGroup){
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`
+    
+    return   makeRequest(uri,newGroup,"PUT")
+                .then(resp =>{
+                    console.log(resp)
+                    return resp
+                })
+}
+
+
 
