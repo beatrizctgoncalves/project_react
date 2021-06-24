@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(express, services, servicesPlugins, aux) {
+module.exports = function (express, services, servicesPlugins, aux) {
     if (!services) {
         throw "Invalid services object";
     }
@@ -9,25 +9,25 @@ module.exports = function(express, services, servicesPlugins, aux) {
     router.post('/groups', createGroup); //create group
     router.get('/groups/owner/:owner', getUserGroups); //get user's groups
     router.get('/groups/:group_id', getGroupDetails); //get details of a specific group
-    
+
     router.delete('/groups/:group_id', deleteGroup); //delete a group
-    router.put('/groups/:group_id', editGroup); //update group
+    router.patch('/groups/:group_id', editGroup); //update group
 
     router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
     router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
     router.delete('/groups/:group_id/project/:project_id', removeProjectFromGroup); //Remove a specific project from a group
+    router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
-    router.post(`/groups/:group_id/members/:username`, addMemberNotification); //Add a specific user to a group
-    router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
+    router.post(`/groups/:group_id/members`, addMemberNotification); //Add a specific user to a group
     router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
 
-    router.get('/tools/:tool_name/projects',getProjectsOfTool)
+    router.get('/tools/:tool_name/projects', getProjectsOfTool)
 
     router.get('/rankings', getRankings); //TODO get all rankings
-    
+
     return router;
 
     function createGroup(req, res) {
@@ -95,7 +95,7 @@ module.exports = function(express, services, servicesPlugins, aux) {
 
     function addMemberNotification(req, res) { //Implementation of the route to add a user to a specific group
         aux.promisesAsyncImplementation(
-            services.addMemberNotification(req.params.group_id, req.params.username, req.body.manager),
+            services.addMemberNotification(req.params.group_id, req.body.username, req.body.manager),
             res
         );
     }
@@ -116,7 +116,7 @@ module.exports = function(express, services, servicesPlugins, aux) {
 
     function getProjectsOfTool(req, res) {
         aux.promisesAsyncImplementation(
-            servicesPlugins.getProjectsOfTool(req.params.tool_name,req.body.username),
+            servicesPlugins.getProjectsOfTool(req.params.tool_name, req.body.username),
             res
         )
     }

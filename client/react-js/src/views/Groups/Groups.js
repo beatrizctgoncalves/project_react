@@ -7,220 +7,214 @@ import Button from '@material-ui/core/Button';
 import Alert from 'react-bootstrap/Alert'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
-
+import GoBack from '../Components/GoBack';
 
 
 function Groups() {
-
-    const[groups,setGroups] = useState([])
-    const[edit,setEdit] = useState(false)
+    const [groups, setGroups] = useState([])
+    const [edit, setEdit] = useState(false)
 
     const [toCreate, setToCreate] = useState(false)
 
-
-   
     const owner = window.sessionStorage.getItem("username")
-    const [newGroup,setNewGroup] = useState({owner:owner})
+    const [newGroup, setNewGroup] = useState({ owner: owner })
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
-    useEffect(()=>{
-        
-        console.log(owner)
-        getUserGroups(owner).then(resp =>{
-            console.log(resp.message)
-            setGroups(resp.message)
-
-
-        }).catch(err=>{
-            console.log(err)
-            setError({ errorMessage: err.body, shouldShow: true });
-            toast.error(err.body,{
-                position: "top-left",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
+    useEffect(() => {
+        getUserGroups(owner).then(resp => setGroups(resp.message))
+            .catch(err => {
+                setError({ errorMessage: err.body, shouldShow: true });
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
                 })
-
-        })
-    },[])
-
-    function handleGroupDelete(groupId){
-        deleteGroup(groupId)
-        .then(resp => {
-            
-            let aux =  groups.filter(group =>{
-                if(group.id !== groupId ){
-                    return group
-                }
             })
-            setGroups(aux)
-            setEdit(false)
+    }, [])
 
-        }).catch(err => {
-            console.log(err)
-            setError({ errorMessage: err.body, shouldShow: true });
-        })
-
+    function handleGroupDelete(groupId) {
+        deleteGroup(groupId)
+            .then(resp => {
+                let aux = groups.filter(group => {
+                    if (group.id !== groupId) {
+                        return group
+                    }
+                })
+                setGroups(aux)
+                setEdit(false)
+            })
+            .catch(err => {
+                setError({ errorMessage: err.body, shouldShow: true });
+            })
     }
 
-
-
-    function handleGroupCreate(){
-        console.log("creating Group")
+    function handleGroupCreate() {
         createGroup(newGroup)
             .then(resp => {
                 getSpecificGroup(resp.message.id)
                     .then(group => {
                         let aux = groups
                         aux.push(group.message)
-                         setGroups(aux)
-                         setToCreate(false)
+                        setGroups(aux)
+                        setToCreate(false)
                     })
-                    
-        })
-        .catch(err => {
-            console.log(err)
-            setError({ errorMessage: err.body, shouldShow: true });
-            toast.error(err.body)
-        } )
-
+            })
+            .catch(err => {
+                setError({ errorMessage: err.body, shouldShow: true });
+                toast.error(err.body)
+            })
     }
 
-
-    const handleChange = (event) =>{ 
-        console.log(event.target.value)
-        console.log(newGroup)
-        const {name, value} = event.target
-        setNewGroup({ ...newGroup,  [name]: value })
+    const handleChange = (event) => {
+        const { name, value } = event.target
+        setNewGroup({ ...newGroup, [name]: value })
     }
 
-    function handleToEditChange(){
-        if(edit){
+    function handleToEditChange() {
+        if (edit) {
             setEdit(false)
         }
-        else setEdit(true)
-     }
+        else {
+            setEdit(true)
+        }
+    }
 
-
-     function handleToCreate(){
-        if(toCreate){
+    function handleToCreate() {
+        if (toCreate) {
             setToCreate(false)
         }
-        else setToCreate(true)
-     }
+        else {
+            setToCreate(true)
+        }
+    }
 
-     
-
-    function notify(){
-    toast("Wow so easy!",{
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+    function notify() {
+        toast("Wow so easy!", {
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
         })
-     }
-
-
-  
+    }
 
     return (
-        <section class="page-section">
-            <div class="container px-2 px-lg-5">
-                <h2 class="text-center mt-0">Your Groups</h2>
-                <hr class="divider" />
-                <div class="row text-center">
-            
-                <ToastContainer/>
+        <section className="page-section">
+            <div className="container px-2 px-lg-5">
+                <h2 className="text-center mt-0">Your Groups</h2>
+                <hr className="divider" />
 
-                    {edit?
-                    <>
-                       <ul>
-                        {groups?groups.map(group=>{
-                            return(
-                                <li key = {group.name}><Link to={`/groups/${group.id}`}>{group.name}</Link>
-                                    <Button  onClick={handleGroupDelete.bind(null,group.id)} >Delete</Button>
-                                </li>
-                            
-                           )
-                           }):""}
-                    </ul> 
-                    
-                    </>
-                    :
-                    <>
+                <div className="container px-4 px-lg-5 mt-5">
+                    <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                        {groups ? groups.map(group => {
+                            return (
+                                <div className="col mb-5">
+                                    <div className="card h-100">
+                                        <div className="card-body p-4">
+                                            <div className="text-center">
+                                                <h3 className="h4 mb-2" key={group.name}>
+                                                    <Link color="inherit" to={`/groups/${group.id}`}>{group.name} </Link>
+                                                </h3>
+                                                {group.description}
+                                            </div>
+                                        </div>
 
-                    <div>
-
-                    <ul>
-                        {groups?groups.map(group=>{
-                            return(
-                                <li key = {group.name}><Link to={`/groups/${group.id}`}>{group.name}</Link>
-                                </li>
-                            
-                           )
-                           }):""}
-                    </ul> 
-                 </div>
-                    
-                    
-                    </>}
-
-                    <Button   type="button" className="button1" onClick = {handleToEditChange}>{edit?"-":"Delete"}</Button>
-
-                    {toCreate?
-                    <>
-                <h3>Create Group</h3>
-                <label>Name</label>
-                <br/>
-                    <input 
-                    className = "form-control"
-                    type="text"
-                    name = "name"  
-                    placeholder="Enter Group name"
-                    onChange={handleChange}
-                   
-                    />
-                    <br/>
-                    <label>Description</label>
-                    <br/>
-                    <input
-                        className = "form-control"
-                        type="text" 
-                        name = "description"
-                        onChange={handleChange}
-                        placeholder="Enter project Description" 
-                        
-                    />
-                    <br/>
-        
-                    <br/>
-                    <Button   type="button" className="button1" onClick = {handleGroupCreate}>Create</Button>
-                    <br/>  
-
-                    </>
-                    
-                    
-                    
-                    :""}
-                    <Button   type="button" className="button1" onClick = {handleToCreate}>{toCreate?"-":"Create"}</Button>
-                  
-
+                                        <div className="row gx-4 gx-lg-5 justify-content-center">
+                                            <div className="col-lg-8 text-center">
+                                                <Link className="btn btn-outline-dark mt-auto" type="button" to={`/groups/${group.id}/edit`}>
+                                                    <i className="bi bi-pencil-fill"></i>
+                                                </Link>
+                                                <button className="btn btn-outline-dark mt-auto" type="button" onClick={handleGroupDelete.bind(null, group.id)}>
+                                                    <i className="bi bi-trash-fill"></i>
+                                                </button>
+                                                <br/><br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        }) : ""}
+                    </div>
                 </div>
-            
+
+                <div className="row gx-4 gx-lg-5 justify-content-center">
+                    <div className="col-lg-8 text-center">
+                        {toCreate ?
+                            <div className="container px-4 px-lg-2 mt-2">
+                                <div className="row gx-2 gx-lg-2 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
+                                    <div className="col mb-5">
+                                        <div className="card h-100">
+                                            <div className="card-body p-4">
+                                                <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                                    <div className="text-center">
+                                                        <h3 className="h4 mb-2">Create New Group</h3>
+                                                        <br />
+                                                        <input
+                                                            variant="outlined"
+                                                            margin="normal"
+                                                            className="form-control"
+                                                            required
+                                                            fullWidth
+                                                            type="text"
+                                                            name="name"
+                                                            placeholder="Enter Group Name"
+                                                            onChange={handleChange}
+                                                        />
+                                                        <br />
+                                                        <input
+                                                            variant="outlined"
+                                                            margin="normal"
+                                                            className="form-control"
+                                                            required
+                                                            fullWidth
+                                                            type="text"
+                                                            name="description"
+                                                            onChange={handleChange}
+                                                            placeholder="Enter Group Description"
+                                                        />
+                                                        <br /><br />
+
+                                                        <Button
+                                                            type="button"
+                                                            className="button1"
+                                                            fullWidth
+                                                            variant="contained"
+                                                            color="primary"
+                                                            onClick={handleGroupCreate}
+                                                        >
+                                                            Create Group
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            : ""}
+                        <button className="btn btn-groups btn-xl" type="button" onClick={handleToCreate}>
+                            <i className="bi bi-plus-circle-fill">         </i>
+                            {toCreate ? "" : "Create Group"}
+                        </button>
+                        <Box mt={4}>
+                            <GoBack />
+                        </Box>
+                    </div>
+                </div>
+            </div>
+
             <Box mt={8}>
                 <Footer />
             </Box>
-           </div> 
-        </section>
+        </section >
     )
 }
+
 
 export default Groups;

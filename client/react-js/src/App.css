@@ -208,8 +208,7 @@ sup {
 }
 
 a {
-  color: #274e81e1;
-  text-decoration: underline;
+  color: #000000e1;
 }
 a:hover {
   color: #274e81e1;
@@ -2948,14 +2947,74 @@ textarea.form-control-lg {
   opacity: 0.65;
 }
 
+.btn-groups {
+  background-color: #fff;
+  box-shadow: 0 0 0 0.10rem #000;
+  color: #000;
+  margin: 10px;
+}
+.btn-groups:hover {
+  color: #274e81e1;
+  background-color: #fff;
+  box-shadow: 0 0 0 0.10rem #274e81e1;
+}
+.btn-check:focus + .btn-groups, .btn-groups:focus {
+  color: #274e81e1;
+  background-color: #fff;
+  box-shadow: 0 0 0 0.10rem #274e81e1;
+}
+.btn-check:checked + .btn-groups, .btn-check:active + .btn-groups, .btn-groups:active, .btn-groups.active, .show > .btn-groups.dropdown-toggle {
+  color: #274e81e1;
+  background-color: #fff;
+  box-shadow: 0 0 0 0.10rem #274e81e1;
+}
+.btn-check:checked + .btn-groups:focus, .btn-check:active + .btn-groups:focus, .btn-groups:active:focus, .btn-groups.active:focus, .show > .btn-groups.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.10rem #274e81e1;
+}
+.btn-groups:disabled, .btn-groups.disabled {
+  color: #274e81e1;
+  background-color: #fff;
+  box-shadow: 0 0 0 0.10rem #274e81e1;
+}
+
+.btn-goback {
+  color: #212529;
+  background-color: #fff;
+  margin: 10px;
+}
+.btn-goback:hover {
+  background-color: #fff;
+  box-shadow: 0 0 0 0.25rem #212529;
+  color: #212529;
+}
+.btn-check:focus + .btn-goback, .btn-goback:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 0.25rem #212529;
+  color: #212529;
+}
+.btn-check:checked + .btn-goback, .btn-check:active + .btn-goback, .btn-goback:active, .btn-goback.active, .show > .btn-goback.dropdown-toggle {
+  background-color: #fff;
+  box-shadow: 0 0 0 0.25rem #212529;
+  color: #212529;
+}
+.btn-check:checked + .btn-goback:focus, .btn-check:active + .btn-goback:focus, .btn-goback:active:focus, .btn-goback.active:focus, .show > .btn-goback.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem #212529;
+}
+.btn-goback:disabled, .btn-goback.disabled {
+  background-color: #fff;
+  box-shadow: 0 0 0 0.25rem #212529;
+  color: #212529;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #274e81e1;
   border-color: #274e81e1;
+  margin: 2px;
 }
 .btn-primary:hover {
   background-color: #ffffff;
-  border-color: #ffffff;
+  border-color: #274e81e1;
   color: #274e81e1;
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
@@ -3142,7 +3201,8 @@ textarea.form-control-lg {
 .btn-light {
   color: #000;
   background-color: #f8f9fa;
-  border-color: #f8f9fa;
+  border-color: #000;
+  margin: 2px;
 }
 .btn-light:hover {
   color: #f9fafb;
@@ -3377,6 +3437,7 @@ textarea.form-control-lg {
 .btn-outline-dark {
   color: #212529;
   border-color: #212529;
+  margin: 8px;
 }
 .btn-outline-dark:hover {
   color: #fff;

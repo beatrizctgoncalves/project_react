@@ -38,9 +38,9 @@ function Profile() {
                 <img src="https://thumbs.dreamstime.com/b/programmer-linear-icon-technologist-freelancer-thin-line-illustration-contour-symbol-vector-isolated-outline-drawing-programmer-197065655.jpg" 
                 width="auto" height="150"></img>
                 <br/>
-                <div class="container px-4 px-lg-5">
-                    <h2 class="text-center mt-0">Username</h2>
-                    <hr class="divider"/>
+                <div className="container px-4 px-lg-5">
+                    <h2 className="text-center mt-0">Username</h2>
+                    <hr className="divider"/>
                 </div>
                 <div className={classes.div}>
                     <Grid container spacing={2} align="center">
@@ -61,10 +61,10 @@ function Profile() {
                     <br/>
                     <Grid container spacing={2} align="center">
                         <Grid item xs={12} sm={6}>
-                            <a class="btn btn-profile btn-xl" href="/edit-profile">Edit Profile</a>
+                            <a className="btn btn-profile btn-xl" href="/edit-profile">Edit Profile</a>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <a class="btn btn-profile btn-xl" href="/groups">My Groups</a>
+                            <a className="btn btn-profile btn-xl" href="/groups">My Groups</a>
                         </Grid>
                     </Grid>                    
                 </div>

@@ -2,55 +2,65 @@ const { request, makeRequest, getRequest, DEFAULT_OPTIONS } = require('./Request
 
 export async function getUserGroups(owner) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/owner/${owner}`
-    
-    return   makeRequest(uri)
-                .then(resp =>{
-                    console.log(resp)
-                    return resp
-                })
+
+    return makeRequest(uri)
+        .then(resp => {
+            return resp
+        })
 }
 
-export   async function getSpecificGroup(id){
+export async function getSpecificGroup(id) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${id}`
-    
-    return   makeRequest(uri)
-                .then(resp =>{
-                    console.log(resp)
-                    return resp
-                })
+
+    return makeRequest(uri)
+        .then(resp => {
+            return resp
+        })
 }
 
-export   async function addMemberToGroup(groupId,member){
-    
-    console.log(member)
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/members/${member}`
-    
-    return   makeRequest(uri,{},"POST")
-                .then(resp =>{
-                    console.log(resp)
-                    return resp
-                })
+export async function addMemberToGroup(groupId, member) {
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/members`
+
+    return makeRequest(uri, { member }, "POST")
+        .then(resp => {
+            return resp
+        })
 }
 
-export   async function deleteGroup(groupId){
+export async function addProjectToGroup(groupId, projectId) {
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/projects`
+
+    return makeRequest(uri, { projectId }, "POST")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function deleteGroup(groupId) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`
-    
-    return   makeRequest(uri,{},"DELETE")
-                .then(resp =>{
-                    console.log(resp)
-                    return resp
-                })
+
+    return makeRequest(uri, {}, "DELETE")
+        .then(resp => {
+            return resp
+        })
 }
 
+export async function editGroup(groupId, updatedGroup) {
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`
 
-export   async function createGroup(newGroup){
+    return makeRequest(uri, { updatedGroup }, "PATCH")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function createGroup(newGroup) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups`
-    
-    return   makeRequest(uri,newGroup,"POST")
-                .then(resp =>{
-                    console.log(resp)
-                    return resp
-                })
+
+    return makeRequest(uri, newGroup, "POST")
+        .then(resp => {
+            return resp
+        })
 }
 
 

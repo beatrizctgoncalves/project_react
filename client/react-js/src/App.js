@@ -14,6 +14,7 @@ import Group from './views/Groups/Group';
 import Terms from './views/GeneralPages/Terms';
 import Privacy from './views/GeneralPages/Privacy';
 import EditProfile from './views/Profile/EditProfile';
+import EditGroup from './views/Groups/EditGroup';
 
 
 function App() {
@@ -56,13 +57,13 @@ function App() {
           </Route>
 
           <Route
-            exact path='/contact'
+            exact path='/contacts'
           >
             <Contact />
           </Route>
 
           <Route
-            exact path='/about'
+            exact path='/about-us'
           >
             <About />
           </Route>
@@ -75,6 +76,11 @@ function App() {
           <Route
             exact path='/edit-profile'
             render={(props) => <EditProfile {...props} />}
+          />
+
+          <Route
+            exact path="/groups/:id/edit"
+            render={(props) => <EditGroup {...props} />}
           />
 
           <Route

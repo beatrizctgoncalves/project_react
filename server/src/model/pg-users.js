@@ -11,7 +11,6 @@ module.exports = function (express, services, aux, authization) {
 
     router.post('/signup', signUp);
     router.post('/signin', async (req, res, next) => {
-        console.log("__________________________________________________")
         await authenticate.usingLocal(req, res, err => {
             if (err) {
                 const myError = {
@@ -20,13 +19,12 @@ module.exports = function (express, services, aux, authization) {
                 }
                 res.statusCode = err.status
                 res.json({ error: myError })
-               
             }
-            next()
+            next();
         })
     }, signIn);
     router.post('/logout', authenticate.logout, logOut);
-    
+
     router.get(`/notifications/:username`, getUserNotifications); //Get all user's notifications
     router.post(`/notifications/:username/groups/:group_id`, addMemberToGroup); //Add a specific user to a group
     router.delete(`/notifications/:username/groups/:group_id`, removeUserNotification);
@@ -40,24 +38,23 @@ module.exports = function (express, services, aux, authization) {
 
     function signUp(req, res) {
         aux.promisesAsyncImplementation(
-            services.createUser(req.body.username, req.body.password, req.body.name, req.body.surname, req.body.email),
+            services.createUser(req),
             res
         );
     }
 
     function signIn(req, res) {
         if (req.isAuthenticated()) {
-            res.json({message : "Successfull SignIn"})
+            res.json({ message: "Successfull SignIn" })
 
         } else {
-            res.json({message : "Something wrong with SignIn"})
-           // res.send("Something wrong with SignIn")
+            res.json({ message: "Something went wrong with SignIn" })
         }
     }
 
     function logOut(req, res) {
         if (!req.isAuthenticated()) {
-            res.send("Successfull logOut")
+            res.send("Successfull logout")
         } else {
             res.send("Something wrong with logout")
         }

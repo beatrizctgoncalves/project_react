@@ -5,10 +5,10 @@ import Box from '@material-ui/core/Box';
 
 function Terms() {
     return (
-        <section class="page-section">
-            <div class="container px-4 px-lg-5">
-                <h2 class="text-center mt-0">Terms Of Use</h2>
-                <hr class="divider" />
+        <section className="page-section">
+            <div className="container px-4 px-lg-5">
+                <h2 className="text-center mt-0">Terms Of Use</h2>
+                <hr className="divider" />
                 
             </div>
 

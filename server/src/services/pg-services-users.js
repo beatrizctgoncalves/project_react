@@ -2,8 +2,15 @@
 
 function services(databaseUsers, databaseGroups, pgResponses, authization) {
     const authUser = authization.user
+
     const serv = {
-        createUser: function (username, password, name, surname, email) { //TODO
+        createUser: function (request) {
+            const username = request.body.username;
+            const password = request.body.password;
+            const name = request.body.name;
+            const surname = request.body.surname;
+            const email = request.body.email;
+
             var regExp = /[a-zA-Z]/g;
             if (!regExp.test(username)) {  //verify if username is a string
                 return pgResponses.setError(
@@ -11,20 +18,21 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                     pgResponses.BAD_REQUEST_MSG
                 )
             }
+
             return authUser.create(username, password)
                 .then(databaseUsers.createUser(username, name, surname, email))
                 .then(() => {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,
                         pgResponses.index.users,
-                        username,
-                        ""
+                        "/",
+                        username
                     )
                 })
                 .catch(err => {
-                    if (!err.body) err.body = err.errors[0].message
+                    if (!err.body) err.body = err.errors[0].message;
                     else this.deleteFromAuthization(username);
-                    return pgResponses.setError(err.status, err.body)
+                    return pgResponses.setError(err.status, err.body);
                 })
         },
 
@@ -89,7 +97,6 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                             pgResponses.NOT_FOUND_USER_MSG
                         );
                     }
-                    console.log(userObj)
                     return databaseUsers.removeUserNotification(userObj.id, notification_index) //remove the user by index
                         .then(() => {
                             return pgResponses.setSuccessUri(
@@ -118,8 +125,8 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
             return this.getUserAuthization(username)
                 .then(user => authUser.delete(user.body.id))
                 .catch(err => {
-                    if (!err.body) err.body = err.error.errors[0].message;
-                    return pgResponses.setError(err.status, err.body);
+                    if (!err.body) return err.body = err.error.errors[0].message;
+                    else return pgResponses.setError(err.status, err.body);
                 })
         },
 
