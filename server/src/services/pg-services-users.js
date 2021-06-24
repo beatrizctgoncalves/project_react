@@ -9,7 +9,6 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
             const password = request.body.password;
             const name = request.body.name;
             const surname = request.body.surname;
-            const email = request.body.email;
 
             var regExp = /[a-zA-Z]/g;
             if (!regExp.test(username)) {  //verify if username is a string
@@ -20,7 +19,7 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
             }
 
             return authUser.create(username, password)
-                .then(databaseUsers.createUser(username, name, surname, email))
+                .then(databaseUsers.createUser(username, name, surname))
                 .then(() => {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,
@@ -74,6 +73,25 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                                 ""
                             )
                         })
+                })
+        },
+
+        updateUserAvatar: function (username, updatedAvatar) {
+            if (updatedAvatar.substr(updatedAvatar.length - 4) != '.png') {  //verify if avatar is a valid link
+                return pgResponses.setError(
+                    pgResponses.BAD_REQUEST,
+                    pgResponses.BAD_REQUEST_AVATAR_MSG
+                )
+            }
+
+            return databaseUsers.updateUserAvatar(username, updatedAvatar)
+                .then(user_name => {
+                    return pgResponses.setSuccessUri(
+                        pgResponses.OK,
+                        pgResponses.index.users,
+                        user_name,
+                        ""
+                    )
                 })
         },
 

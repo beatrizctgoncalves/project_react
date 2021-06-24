@@ -87,18 +87,6 @@ function FormSignUp() {
                         variant="outlined"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        onChange={handleChange}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
                         name="password"
                         label="Password"
                         type="password"
@@ -110,7 +98,8 @@ function FormSignUp() {
                 <Grid item xs={12}>
                     <FormControlLabel
                         control={<Checkbox value="allowExtraEmails" color="primary" />}
-                        label="I want to receive inspiration, marketing promotions and updates via email."
+                        label="I accept the terms and conditions."
+                        required
                     />
                 </Grid>
             </Grid>

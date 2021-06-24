@@ -7,14 +7,14 @@ module.exports = {
             { "resource": "g5", "action": "GET" },
             { "resource": "g5", "action": "POST" },
             { "resource": "g5", "action": "DELETE" },
-            { "resource": "g5", "action": "PUT" },
+            { "resource": "g5", "action": "PATCH" },
         ],
         "grants": {
             "Colaborator": [
                 { "resource": "g5", "action": "GET" },
                 { "resource": "g5", "action": "POST" },
                 { "resource": "g5", "action": "DELETE" },
-                { "resource": "g5", "action": "PUT" },
+                { "resource": "g5", "action": "PATCH" },
 
             ]
         }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../Components/Footer.js';
 import Box from '@material-ui/core/Box';
 import { Link } from 'react-router-dom';
-import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
+import { getUserNotifications } from '../Services/BasicService';
 import Button from '@material-ui/core/Button';
 import Alert from 'react-bootstrap/Alert'
 import { toast } from 'react-toastify';
@@ -10,8 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import GoBack from '../Components/GoBack';
 
 
-function Groups() {
-    const [groups, setGroups] = useState([])
+function Notifications() {
+    const [groups, setNotifications] = useState([])
     const [edit, setEdit] = useState(false)
 
     const [toCreate, setToCreate] = useState(false)
@@ -21,7 +21,8 @@ function Groups() {
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     useEffect(() => {
-        getUserGroups(owner).then(resp => setGroups(resp.message))
+        getUserNotifications(owner)
+            .then(resp => setNotifications(resp.message))
             .catch(err => {
                 setError({ errorMessage: err.body, shouldShow: true });
                 toast.error(err.body, {
@@ -36,7 +37,7 @@ function Groups() {
             })
     }, [])
 
-    function handleGroupDelete(groupId) {
+    function handleNotificationReject(groupId) {
         deleteGroup(groupId)
             .then(resp => {
                 let aux = groups.filter(group => {
@@ -52,7 +53,7 @@ function Groups() {
             })
     }
 
-    function handleGroupCreate() {
+    function handleNotificationAccept() {
         createGroup(newGroup)
             .then(resp => {
                 getSpecificGroup(resp.message.id)
@@ -122,7 +123,7 @@ function Groups() {
                                                 <Link className="btn btn-outline-dark mt-auto" type="button" to={`/groups/${group.id}/edit`}>
                                                     <i className="bi bi-pencil-fill"></i>
                                                 </Link>
-                                                <button className="btn btn-outline-dark mt-auto" type="button" onClick={handleGroupDelete.bind(null, group.id)}>
+                                                <button className="btn btn-outline-dark mt-auto" type="button" onClick={"handleGroupDelete.bind(null, group.id)"}>
                                                     <i className="bi bi-trash-fill"></i>
                                                 </button>
                                                 <br /><br />
@@ -153,7 +154,7 @@ function Groups() {
                                                 type="text"
                                                 name="name"
                                                 placeholder="Enter Group Name"
-                                                onChange={handleChange}
+                                                onChange={"handleChange"}
                                             />
                                             <br />
                                             <input
@@ -164,7 +165,7 @@ function Groups() {
                                                 fullWidth
                                                 type="text"
                                                 name="description"
-                                                onChange={handleChange}
+                                                onChange={"handleChange"}
                                                 placeholder="Enter Group Description"
                                             />
                                             <br /><br />
@@ -175,7 +176,7 @@ function Groups() {
                                                 fullWidth
                                                 variant="contained"
                                                 color="primary"
-                                                onClick={handleGroupCreate}
+                                                onClick={"handleGroupCreate"}
                                             >
                                                 Create Group
                                             </Button>
@@ -184,7 +185,7 @@ function Groups() {
                                 </div>
                             </div>
                             : ""}
-                        <button className="btn btn-groups btn-xl" type="button" onClick={handleToCreate}>
+                        <button className="btn btn-groups btn-xl" type="button" onClick={"handleToCreate"}>
                             <i className="bi bi-plus-circle-fill">         </i>
                             {toCreate ? "" : "Create Group"}
                         </button>
@@ -203,4 +204,4 @@ function Groups() {
 }
 
 
-export default Groups;
+export default Notifications;

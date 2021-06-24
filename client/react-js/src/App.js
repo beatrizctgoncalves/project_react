@@ -1,20 +1,14 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Head from './views/Components/Head';
-import Navbar from './views/Components/Navbar';
+import { Navbar, Head } from './views/Components';
 import Home from './views/HomePage/Home';
-import Profile from './views/Profile/Profile';
+import { Profile, EditProfile } from './views/Profile';
 import SignUp from './views/SignUp/SignUp';
 import SignIn from './views/SignIn/SignIn';
-import Contact from './views/GeneralPages/ContactUs';
-import About from './views/GeneralPages/AboutUs';
-import Groups from './views/Groups/Groups';
-import Group from './views/Groups/Group';
-import Terms from './views/GeneralPages/Terms';
-import Privacy from './views/GeneralPages/Privacy';
-import EditProfile from './views/Profile/EditProfile';
-import EditGroup from './views/Groups/EditGroup';
+import { Groups, Group, EditGroup } from './views/Groups';
+import { Terms, Privacy, Contact, About } from './views/GeneralPages';
+import Notifications from './views/Notifications/Notifications';
 
 
 function App() {
@@ -74,8 +68,13 @@ function App() {
           />
 
           <Route
-            exact path='/edit-profile'
+            exact path='/profile/edit'
             render={(props) => <EditProfile {...props} />}
+          />
+
+          <Route
+            exact path='/notifications'
+            render={(props) => <Notifications {...props} />}
           />
 
           <Route

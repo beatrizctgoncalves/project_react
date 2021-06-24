@@ -8,6 +8,7 @@ function database(pgResponses, requests) {
                 "username": username,
                 "name": name,
                 "surname": surname,
+                "avatar": "https://thumbs.dreamstime.com/b/programmer-linear-icon-technologist-freelancer-thin-line-illustration-contour-symbol-vector-isolated-outline-drawing-programmer-197065655.jpg",
                 "info": [],
                 "notifications": []
             });
@@ -23,7 +24,7 @@ function database(pgResponses, requests) {
                     if (body.hits && body.hits.hits.length) {
                         return body.hits.hits.map(hit => {
                             hit._source.id = hit._id;
-                            return hit._source[0];
+                            return hit._source;
                         })
                     } else {
                         return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
@@ -40,6 +41,30 @@ function database(pgResponses, requests) {
                         "if(params.email != null) ctx._source.email = params.email; " +
                         "if(params.info != null) ctx._source.info = params.info;",
                     "params": updatedInfo
+                }
+            });
+
+            return this.getUser(username)
+                .then(userObj => {
+                    return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
+                        .then(body => {
+                            if (body.result == 'updated') {
+                                return body._id;
+                            } else {
+                                return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
+                            }
+                        })
+                })
+                .catch(error => pgResponses.resolveErrorElastic(error))
+        },
+
+        updateUser: function (username, updatedAvatar) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "source": "ctx._source.avatar = params.updatedAvatar;",
+                    "params": {
+                        "updatedAvatar": updatedAvatar
+                    }
                 }
             });
 

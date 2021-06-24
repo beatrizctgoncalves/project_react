@@ -20,7 +20,8 @@ function Group(props) {
     const [newProject, setNewProject] = useState("")
 
     useEffect(() => {
-        getSpecificGroup(id).then(resp => setGroup(resp.message))
+        getSpecificGroup(id)
+            .then(resp => setGroup(resp.message))
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }, [])
 

@@ -1,7 +1,43 @@
 const { request, makeRequest, getRequest, DEFAULT_OPTIONS } = require('./Requests').requests;
 
+export async function getUser(username) {
+    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
+
+    return makeRequest(uri)
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function updateUserAvatar(username, updatedAvatar) {
+    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
+
+    return makeRequest(uri, { updatedAvatar }, "PATCH")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function getUserNotifications(username) {
+    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
+
+    return makeRequest(uri)
+        .then(resp => {
+            return resp
+        })
+}
+
 export async function getUserGroups(owner) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/owner/${owner}`
+
+    return makeRequest(uri)
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function logout() {
+    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/logout`
 
     return makeRequest(uri)
         .then(resp => {

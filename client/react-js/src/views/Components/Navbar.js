@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { logout } from '../Services/BasicService';
+
 
 function Navbar() {
     const username = window.sessionStorage.getItem("username")
+    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
+
+    function handleLogout() {
+        logout()
+            .then(resp => {
+                window.location.replace('/');
+            })
+            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+    }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark fixed-top py-3" id="mainNav">
@@ -17,18 +28,19 @@ function Navbar() {
 
                         {username ?
                             <>
-                                <div class="dropdown">
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div className="dropdown">
+                                    <button className="btn-drop">
                                         {username}
-                                    </a>
+                                        <i className="bi bi-arrow-down"></i>                                        
+                                    </button>
 
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <li className="nav-item"><a className="nav-link" href="/profile">Profile</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    <ul className="dropdown-content">
+                                        <li><a className="dropdown-item" href="/profile">Profile</a></li>
+                                        <li><a className="dropdown-item" href="/notifications">Notifications</a></li>
+                                        <li><a className="dropdown-item" href="/groups">Groups</a></li>
                                     </ul>
                                 </div>
-                                <li className="nav-item"><a className="nav-link" href="/logout">Logout</a></li>
+                                <li className="nav-item"><a className="nav-link" onClick={handleLogout}>Logout</a></li>
                             </>
                             :
                             <>
