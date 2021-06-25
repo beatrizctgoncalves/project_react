@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 
 
 function GoBack() {
@@ -7,12 +8,16 @@ function GoBack() {
     }
 
     return (
-        <div className="row gx-4 gx-lg-5 justify-content-center">
-            <div className="col-lg-8 text-center">
-                <button className="btn btn-goback btn-xl" type="button" onClick={goBack}>
-                    Go Back
-                </button>
-            </div>
+        <div>
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                onClick={goBack}
+            >
+                Go Back
+            </Button>
         </div>
     );
 }

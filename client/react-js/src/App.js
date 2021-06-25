@@ -1,13 +1,20 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Navbar, Head } from './views/Components';
+import Head from './views/Components/Head';
+import Navbar from './views/Components/Navbar';
 import Home from './views/HomePage/Home';
-import { Profile, EditProfile } from './views/Profile';
+import Profile from './views/Profile/Profile';
+import EditProfile from './views/Profile/EditProfile';
 import SignUp from './views/SignUp/SignUp';
 import SignIn from './views/SignIn/SignIn';
-import { Groups, Group, EditGroup } from './views/Groups';
-import { Terms, Privacy, Contact, About } from './views/GeneralPages';
+import Groups from './views/Groups/Groups';
+import Group from './views/Groups/Group';
+import EditGroup from './views/Groups/EditGroup';
+import About from './views/GeneralPages/AboutUs';
+import Contact from './views/GeneralPages/ContactUs';
+import Privacy from './views/GeneralPages/Privacy';
+import Terms from './views/GeneralPages/Terms';
 import Notifications from './views/Notifications/Notifications';
 
 

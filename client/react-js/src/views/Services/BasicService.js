@@ -27,6 +27,15 @@ export async function getUserNotifications(username) {
         })
 }
 
+export async function removeUserNotification(username, group_id) {
+    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification//notifications/${username}/groups/${group_id}`
+
+    return makeRequest(uri, {}, "DELETE")
+        .then(resp => {
+            return resp
+        })
+}
+
 export async function getUserGroups(owner) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/owner/${owner}`
 

@@ -6,7 +6,68 @@ import Alert from 'react-bootstrap/Alert'
 import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
 import { Link } from 'react-router-dom';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { green, purple } from '@material-ui/core/colors';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import { Typography, CardHeader } from '@material-ui/core';
 
+
+const ColorButton = withStyles((theme) => ({
+    root: {
+        color: theme.palette.getContrastText(purple[500]),
+        backgroundColor: green[500],
+        fontFamily: [
+            "Merriweather Sans",
+            '-apple-system',
+            'BlinkMacSystemFont',
+            "Segoe UI",
+            'Roboto',
+            "Helvetica Neue",
+            'Arial',
+            "Noto Sans",
+            'sans-serif',
+            "Apple Color Emoji",
+            "Segoe UI Emoji",
+            "Segoe UI Symbol",
+        ].join(','),
+        '&:hover': {
+            backgroundColor: green[700],
+        },
+        margin: '4px'
+    },
+}))(Button);
+
+
+const useStyles = makeStyles((theme) => ({
+    margin: {
+        margin: theme.spacing(1),
+    },
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: '#274e81e1',
+    },
+    div: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+    cardHeader: {
+        backgroundColor:
+            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
+    },
+}));
 
 function Group(props) {
     const [group, setGroup] = useState({})
@@ -54,7 +115,7 @@ function Group(props) {
         setNewProject(event.target.value)
     }
 
-    function handleToEditProjjectsChange() {
+    function handleToEditProjectsChange() {
         if (toAddProjects) {
             setAddProjects(false)
         } else {
@@ -73,164 +134,149 @@ function Group(props) {
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }
 
+    const classes = useStyles();
+
     return (
-        <section className="page-section">
-            <div className="container px-2 px-lg-5">
-                <h2 className="text-center mt-0">Your Group Details</h2>
-                <hr className="divider" />
-                <div className="row text-center">
-                    {
-                        error.shouldShow &&
-                        <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
-                            {error.errorMessage}
-                        </Alert>
-                    }
-
-                    <div className="container px-4 px-lg-2 mt-2">
-                        <div className="row gx-2 gx-lg-2 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
-                            <div className="col mb-5">
-                                <div className="card h-100">
-                                    <div className="card-body p-4">
-                                        <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                            <div className="text-center">
-                                                <p className="h3 mb-2">{group.name}</p>
-                                                <Link className="btn btn-outline-dark mt-auto" type="button" to={`/groups/${group.id}/edit`}>
-                                                    <i className="bi bi-pencil-fill"></i>
-                                                </Link>
-
-                                                <br /><br />
-                                                <h5>{group.description}</h5>
-                                                <br />
-                                                <p className="lead">Owner:</p>
-                                                <li>{group.owner}</li>
-                                                <br /><br />
-
-                                                <p className="lead">Members:</p>
-                                                {group.members ? group.members.map(username => {
-                                                    return <li>{username}</li>
-                                                }) : ""}
-                                                <br /><br />
-
-                                                <p className="lead">Projects:</p>
-                                                {group.projects ? group.projects.map(project => {
-                                                    return <li>{project}</li>
-                                                }) : ""}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <br /><br />
+                <div className="container px-4 px-lg-5">
+                    <h2 className="text-center mt-0">Your Group Details</h2>
+                    <hr className="divider" />
                 </div>
+                {
+                    error.shouldShow &&
+                    <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
+                        {error.errorMessage}
+                    </Alert>
+                }
 
-                {toAddMembers ?
-                    <div className="container px-4 px-lg-2 mt-2">
-                        <div className="row gx-2 gx-lg-2 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
-                            <div className="col mb-5">
-                                <div className="card h-100">
-                                    <div className="card-body p-4">
-                                        <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                            <div className="text-center">
-                                                <h3 className="h4 mb-2">Insert New Members</h3>
-                                                <br />
-                                                <input
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    type="text"
-                                                    name="newMember"
-                                                    className="form-control"
-                                                    placeholder="Enter new Member"
-                                                    value={newMember}
-                                                    onChange={handleMember}
-                                                />
-                                                <br /><br />
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Card align="center">
+                            <CardHeader
+                                title={group.name}
+                                subheader={<Link to={`/groups/${group.id}/edit`}><i className="bi bi-pencil-fill" /></Link>}
+                                titleTypographyProps={{ align: 'center' }}
+                                subheaderTypographyProps={{ align: 'center' }}
+                                className={classes.cardHeader}
+                            />
+                            <CardContent>
+                                <div className={classes.cardPricing}>
+                                    <Typography component="h2" variant="h5" color="textPrimary">
+                                        {group.description}
+                                    </Typography>
+                                    <br />
 
-                                                <Button
-                                                    type="button"
-                                                    className="button1"
-                                                    fullWidth
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={handleAddMembers}
-                                                >
-                                                    Add Member
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Typography variant="h6" color="textSecondary">
+                                        Owner: {group.owner}
+                                    </Typography>
+                                    <br />
+
+                                    <Typography variant="h6" color="textSecondary">
+                                        Members:
+                                    </Typography>
+                                    {group.members ? group.members.map((member) => (
+                                        <Typography component="p" variant="subtitle1" align="center" key={member}>
+                                            {member}
+                                        </Typography>
+                                    )) : ""}
+                                    <br />
+
+                                    <Typography variant="h6" color="textSecondary">
+                                        Projects:
+                                    </Typography>
+                                    {group.projects ? group.projects.map((project) => (
+                                        <Typography component="p" variant="subtitle1" align="center" key={project}>
+                                            {project}
+                                        </Typography>
+                                    )) : ""}
                                 </div>
-                            </div>
-                        </div>
-                    </div> : ""}
+                            </CardContent>
 
-                <div className="row gx-4 gx-lg-5 justify-content-center">
-                    <div className="col-lg-8 text-center">
-                        <button className="btn btn-groups btn-xl" type="button" onClick={handleToEditMembersChange}>
-                            <i className="bi bi-person-plus-fill">   </i>
-                            {toAddMembers ? "" : "Add Members"}
-                        </button>
+                            <CardContent>
+                                {toAddMembers ?
+                                    <Box mt={4}>
+                                        <h3 className="h4 mb-2">Insert New Members</h3>
+                                        <br />
+                                        <input
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            type="text"
+                                            name="newMember"
+                                            className="form-control"
+                                            placeholder="Enter new Member"
+                                            value={newMember}
+                                            onChange={handleMember}
+                                        />
+                                        <br />
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.margin}
+                                            onClick={handleAddMembers}
+                                        >
+                                            Add Member
+                                        </Button>
+                                    </Box> : ""}
 
-                        {toAddProjects ?
-                            <div className="container px-4 px-lg-2 mt-2">
-                                <div className="row gx-2 gx-lg-2 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
-                                    <div className="col mb-5">
-                                        <div className="card h-100">
-                                            <div className="card-body p-4">
-                                                <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                                    <div className="text-center">
-                                                        <h3 className="h4 mb-2">Insert New Projects</h3>
-                                                        <br />
-                                                        <input
-                                                            variant="outlined"
-                                                            margin="normal"
-                                                            required
-                                                            fullWidth
-                                                            type="text"
-                                                            name="newProject"
-                                                            className="form-control"
-                                                            placeholder="Enter New Project Identifier"
-                                                            value={newProject}
-                                                            onChange={handleProject}
-                                                        />
-                                                        <br /><br />
+                                <Box mt={4}>
+                                    <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
+                                        <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                                        {toAddMembers ? "" : "Add Members"}
+                                    </ColorButton>
 
-                                                        <Button
-                                                            type="button"
-                                                            className="button1"
-                                                            fullWidth
-                                                            variant="contained"
-                                                            color="primary"
-                                                            onClick={handleAddProjects}
-                                                        >
-                                                            Add Project
-                                                        </Button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> : ""}
+                                    {toAddProjects ?
+                                        <Box mt={4}>
+                                            <h3 className="h4 mb-2">Insert New Projects</h3>
+                                            <br />
+                                            <input
+                                                variant="outlined"
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                type="text"
+                                                name="newProject"
+                                                className="form-control"
+                                                placeholder="Enter New Project Identifier"
+                                                value={newProject}
+                                                onChange={handleProject}
+                                            />
+                                            <br />
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.margin}
+                                                onClick={handleAddProjects}
+                                            >
+                                                Add Project
+                                            </Button>
+                                        </Box> : ""}
+                                    <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
+                                        <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
+                                        {toAddProjects ? "" : "Add Projects"}
+                                    </ColorButton>
+                                </Box>
 
-                        <button className="btn btn-groups btn-xl" type="button" onClick={handleToEditProjjectsChange}>
-                            <i className="bi bi-patch-plus-fill">    </i>
-                            {toAddProjects ? "" : "Add Projects"}
-                        </button>
-                    </div>
-                </div>
-                <br />
-                <Box mt={4}>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+
+                <Box mt={5}>
                     <GoBack />
                 </Box>
+                
+                <Box mt={5}>
+                    <br /><br />
+                    <Footer />
+                    <br />
+                </Box>
             </div>
-
-            <Box mt={8}>
-                <Footer />
-            </Box>
-        </section>
+        </Container >
     )
 }
 

@@ -1,9 +1,10 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import React, { useState } from 'react';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,77 +27,127 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function FormSignUp() {
+function FormProfile() {
+    const [gitlab, setGitlab] = useState(false)
+
+    function handleGitlab() {
+        if (gitlab) {
+            setGitlab(false)
+        }
+        else {
+            setGitlab(true)
+        }
+    }
+
+    const [jira, setJira] = useState(false)
+
+    function handleJira() {
+        if (jira) {
+            setJira(false)
+        }
+        else {
+            setJira(true)
+        }
+    }
+
     const classes = useStyles();
 
     return (
-        <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
+        <React.Fragment>
+            <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        autoComplete="fname"
-                        name="firstName"
-                        variant="outlined"
                         required
-                        fullWidth
                         id="firstName"
-                        label="First Name"
-                        autoFocus
+                        name="firstName"
+                        label="First name"
+                        fullWidth
+                        autoComplete="given-name"
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        variant="outlined"
                         required
-                        fullWidth
                         id="lastName"
-                        label="Last Name"
                         name="lastName"
-                        autoComplete="lname"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="outlined"
-                        required
+                        label="Last name"
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        autoComplete="family-name"
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
-                </Grid>
+                <br /><br /><br /><br /><br />
+                <Typography variant="h6" gutterBottom>
+                    Addicional Information:
+                </Typography>
+
+                {gitlab ?
+                    <>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                id="username"
+                                name="username"
+                                label="Username"
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                id="atoken"
+                                name="atoken"
+                                label="AToken"
+                                fullWidth
+                            />
+                        </Grid>
+                    </>
+                    : ""}
+                <button className="btn btn-groups btn-xl" type="button" onClick={handleGitlab}>
+                    <i className="bi bi-patch-plus-fill">    </i>
+                    {gitlab ? "" : "Project Gitlab"}
+                </button>
+
+                {jira ?
+                    <>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                id="email"
+                                name="email"
+                                label="Email"
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                id="atoken"
+                                name="atoken"
+                                label="AToken"
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                id="url"
+                                name="url"
+                                label="URL"
+                                fullWidth
+                            />
+                        </Grid>
+                    </>
+                    : ""}
+                <button className="btn btn-groups btn-xl" type="button" onClick={handleJira}>
+                    <i className="bi bi-patch-plus-fill">    </i>
+                    {jira ? "" : "Project Jira"}
+                </button>
             </Grid>
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-            >
-                Save
-            </Button>
-            <Grid container justify="flex-end">
-                <Grid item xs>
-                    <Link href="#" variant="body2">
-                        Forgot password?
-                    </Link>
-                </Grid>
-            </Grid>
-        </form>
+        </React.Fragment>
     )
 }
 
-export default FormSignUp;
+export default FormProfile;

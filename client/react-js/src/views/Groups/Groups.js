@@ -174,7 +174,7 @@ function Groups() {
                                                 className="button1"
                                                 fullWidth
                                                 variant="contained"
-                                                color="primary"
+                                                color="secondary"
                                                 onClick={handleGroupCreate}
                                             >
                                                 Create Group
@@ -184,10 +184,22 @@ function Groups() {
                                 </div>
                             </div>
                             : ""}
-                        <button className="btn btn-groups btn-xl" type="button" onClick={handleToCreate}>
-                            <i className="bi bi-plus-circle-fill">         </i>
-                            {toCreate ? "" : "Create Group"}
-                        </button>
+                        <div className="row gx-4 gx-lg-5 justify-content-center">
+                            <div className="col-lg-4 text-center">
+                                <br /><br />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleToCreate}
+                                >
+                                    <i className="bi bi-plus-circle-fill">&nbsp;&nbsp;</i>
+                                    {toCreate ? "" : "Create Group"}
+                                </Button>
+                            </div>
+                        </div>
+
                         <Box mt={4}>
                             <GoBack />
                         </Box>

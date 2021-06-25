@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../Components/Footer.js';
 import Box from '@material-ui/core/Box';
 import { Link } from 'react-router-dom';
-import { getUserNotifications } from '../Services/BasicService';
+import { getUserNotifications, removeUserNotification } from '../Services/BasicService';
 import Button from '@material-ui/core/Button';
 import Alert from 'react-bootstrap/Alert'
 import { toast } from 'react-toastify';
@@ -11,17 +11,16 @@ import GoBack from '../Components/GoBack';
 
 
 function Notifications() {
-    const [groups, setNotifications] = useState([])
+    const [notifications, setNotifications] = useState([])
     const [edit, setEdit] = useState(false)
 
     const [toCreate, setToCreate] = useState(false)
 
-    const owner = window.sessionStorage.getItem("username")
-    const [newGroup, setNewGroup] = useState({ owner: owner })
+    const username = window.sessionStorage.getItem("username")
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     useEffect(() => {
-        getUserNotifications(owner)
+        getUserNotifications(username)
             .then(resp => setNotifications(resp.message))
             .catch(err => {
                 setError({ errorMessage: err.body, shouldShow: true });
@@ -38,14 +37,14 @@ function Notifications() {
     }, [])
 
     function handleNotificationReject(groupId) {
-        deleteGroup(groupId)
+        removeUserNotification(username, groupId)
             .then(resp => {
-                let aux = groups.filter(group => {
-                    if (group.id !== groupId) {
-                        return group
+                let aux = notifications.filter(notification => {
+                    if (notification.group_id !== groupId) {
+                        return notification
                     }
                 })
-                setGroups(aux)
+                setNotifications(aux)
                 setEdit(false)
             })
             .catch(err => {
@@ -54,35 +53,9 @@ function Notifications() {
     }
 
     function handleNotificationAccept() {
-        createGroup(newGroup)
-            .then(resp => {
-                getSpecificGroup(resp.message.id)
-                    .then(group => {
-                        let aux = groups
-                        aux.push(group.message)
-                        setGroups(aux)
-                        setToCreate(false)
-                    })
-            })
-            .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
-                toast.error(err.body)
-            })
+        //TODO
     }
 
-    const handleChange = (event) => {
-        const { name, value } = event.target
-        setNewGroup({ ...newGroup, [name]: value })
-    }
-
-    function handleToCreate() {
-        if (toCreate) {
-            setToCreate(false)
-        }
-        else {
-            setToCreate(true)
-        }
-    }
 
     function notify() {
         toast("Wow so easy!", {
@@ -100,19 +73,19 @@ function Notifications() {
     return (
         <section className="page-section">
             <div className="container px-2 px-lg-5">
-                <h2 className="text-center mt-0">Your Groups</h2>
+                <h2 className="text-center mt-0">Your Notifications</h2>
                 <hr className="divider" />
 
                 <div className="container px-4 px-lg-5 mt-5">
                     <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                        {groups ? groups.map(group => {
+                        {notifications ? notifications.map(group => {
                             return (
                                 <div className="col mb-5">
                                     <div className="card h-100">
                                         <div className="card-body p-4">
                                             <div className="text-center">
                                                 <h3 className="h4 mb-2" key={group.name}>
-                                                    <Link color="inherit" to={`/groups/${group.id}`}>{group.name} </Link>
+                                                    <Link color="inherit" to={`/notifications/${group.id}`}>{group.name} </Link>
                                                 </h3>
                                                 {group.description}
                                             </div>
@@ -120,7 +93,7 @@ function Notifications() {
 
                                         <div className="row gx-4 gx-lg-5 justify-content-center">
                                             <div className="col-lg-8 text-center">
-                                                <Link className="btn btn-outline-dark mt-auto" type="button" to={`/groups/${group.id}/edit`}>
+                                                <Link className="btn btn-outline-dark mt-auto" type="button" to={`/notifications/${group.id}/edit`}>
                                                     <i className="bi bi-pencil-fill"></i>
                                                 </Link>
                                                 <button className="btn btn-outline-dark mt-auto" type="button" onClick={"handleGroupDelete.bind(null, group.id)"}>
