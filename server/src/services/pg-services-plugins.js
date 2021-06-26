@@ -4,6 +4,7 @@ function services(databaseGroup, databaseUsers, pgResponses) {
     const serv = {    
         
         getProjectsOfTool: function(toolName, userId){
+            console.log("getProjectsTool")
             let api = undefined
             try{
                 api = require("./plugins/" + toolName + "/api")()
@@ -15,7 +16,9 @@ function services(databaseGroup, databaseUsers, pgResponses) {
             }
             let Atoken = undefined
             return databaseUsers.getUser(userId)
-                .then(user => user.info.filter(i => i.type == toolName)[0])
+                .then(user =>{console.log(user.info)
+                    user.info.filter(i => i.type == toolName)[0]
+                } )
                 .then(info => {
                     Atoken = info.AToken
                     return api.getProjectsFromUsername(info.username,Atoken)

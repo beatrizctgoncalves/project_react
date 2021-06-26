@@ -24,6 +24,7 @@ function database(pgResponses, requests) {
                     if (body.hits && body.hits.hits.length) {
                         return body.hits.hits.map(hit => {
                             hit._source.id = hit._id;
+                            console.log(hit._source)
                             return hit._source;
                         })
                     } else {

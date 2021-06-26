@@ -11,6 +11,7 @@ module.exports = {
             .catch(err => {
                 //Error response
                 res.statusCode = err.status
+                console.log(err)
                 res.json({ error: err })
             });
     }

@@ -16,15 +16,13 @@ const request = (url, init) => fetch(url, init)
                 body: jsonResponse.error.body
             })
             error.status = resp.status
+            console.log(error.status)
             if (error.status === 403) {
                 window.location.assign('/')
             }
             console.log(error.status)
             return error
-      
-
-       
-    }).catch(err => console.log(err))
+    })
 
 
 const getRequest = url => request(url, DEFAULT_OPTIONS('GET'));

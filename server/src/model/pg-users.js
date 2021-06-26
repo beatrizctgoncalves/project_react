@@ -55,9 +55,10 @@ module.exports = function (express, services, aux, authization) {
 
     function logOut(req, res) {
         if (!req.isAuthenticated()) {
-            res.send("Successfull logout")
+            res.json({ message: "Successfull logout SignIn" })
         } else {
-            res.send("Something wrong with logout")
+            
+            res.json({ message: "Something wrong with logout" })
         }
     }
 

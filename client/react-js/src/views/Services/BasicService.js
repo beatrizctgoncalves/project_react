@@ -56,9 +56,12 @@ export async function getUserGroups(owner) {
 
 export async function logout() {
     const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/logout`
+    console.log("logOut fetch")
 
-    return makeRequest(uri)
+
+    return makeRequest(uri,{},"POST")
         .then(resp => {
+            console.log(resp)
             return resp
         })
 }
@@ -112,6 +115,19 @@ export async function createGroup(newGroup) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups`
 
     return makeRequest(uri, newGroup, "POST")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function getToolProjects(tool,username) {
+    //TODO
+    const uri = `http://localhost:8081/api/g5/pluggable/gamification/tools/${tool}/projects`
+    const body = {
+        username : username
+    }
+
+    return makeRequest(uri, body, "GET")
         .then(resp => {
             return resp
         })
