@@ -59,6 +59,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     function editGroup(req, res) {
+        console.log(req.body.name)
         aux.promisesAsyncImplementation(
             services.editGroup(req.params.group_id, req.body.name, req.body.description),
             res

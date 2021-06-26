@@ -1,4 +1,4 @@
-const { request, makeRequest, getRequest, DEFAULT_OPTIONS } = require('./Requests').requests;
+const { makeRequest } = require('./Requests').requests;
 
 
 export async function loginFetch(usernameInput, passwordInput) {

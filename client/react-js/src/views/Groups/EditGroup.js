@@ -1,55 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Components/Footer.js';
-import Box from '@material-ui/core/Box';
-import { Link } from 'react-router-dom';
-import { editGroup, getSpecificGroup } from '../Services/BasicService';
-import Button from '@material-ui/core/Button';
+import { getSpecificGroup } from '../Services/BasicService';
 import Alert from 'react-bootstrap/Alert'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoBack from '../Components/GoBack';
+import Form from './FormEditGroup';
+import { makeStyles } from '@material-ui/core/styles';
+import { Container, CssBaseline, Grid, Box } from '@material-ui/core';
 
+
+const useStyles = makeStyles((theme) => ({
+    margin: {
+        margin: theme.spacing(1),
+    },
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: '#274e81e1',
+    },
+    div: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+    cardHeader: {
+        backgroundColor:
+            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
+    },
+    cardGroup: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'baseline',
+        marginBottom: theme.spacing(2),
+    },
+    listItem: {
+        padding: theme.spacing(1, 2),
+    }
+}));
 
 function EditGroup(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
 
-    const [updatedGroup, setUpdatedGroup] = useState({})
-
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
-
-    const [groups, setGroups] = useState([])
-    const [edit, setEdit] = useState(false)
-
-    const [toEdit, setToEdit] = useState(false)
 
 
     useEffect(() => {
-        getSpecificGroup(id).then(resp => setGroup(resp.message))
+        getSpecificGroup(id)
+            .then(resp => setGroup(resp.message))
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }, [])
 
-    function handleGroupEdit() {
-        editGroup(id, updatedGroup)
-            .then(resp => {
-                getSpecificGroup(resp.message.id)
-                    .then(group => {
-                        let aux = groups
-                        aux.push(group.message)
-                        setGroups(aux)
-                        setToEdit(false)
-                    })
-            })
-            .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
-                toast.error(err.body)
-            })
-    }
-
-    const handleChange = (event) => {
-        const { name, value } = event.target
-        setUpdatedGroup({ ...updatedGroup, [name]: value })
-    }
 
     function notify() {
         toast("Wow so easy!", {
@@ -63,77 +72,40 @@ function EditGroup(props) {
         })
     }
 
+    const classes = useStyles();
     return (
-        <section className="page-section">
-            <div className="container px-2 px-lg-5">
-                <h2 className="text-center mt-0">Editing Group</h2>
-                <hr className="divider" />
-
-                <div className="row gx-4 gx-lg-5 justify-content-center">
-                    <div className="col-lg-8 text-center">
-                        <div className="container px-4 px-lg-2 mt-2">
-                            <div className="row gx-2 gx-lg-2 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
-                                <div className="col mb-5">
-                                    <div className="card h-100">
-                                        <div className="card-body p-4">
-                                            <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                                <div className="text-center">
-                                                    <h3 className="h4 mb-2">{group.name}</h3>
-                                                    <br />
-                                                    <input
-                                                        variant="outlined"
-                                                        margin="normal"
-                                                        className="form-control"
-                                                        required
-                                                        fullWidth
-                                                        type="text"
-                                                        name="name"
-                                                        placeholder="Enter New Group Name"
-                                                        onChange={handleChange}
-                                                    />
-                                                    <br />
-                                                    <input
-                                                        variant="outlined"
-                                                        margin="normal"
-                                                        className="form-control"
-                                                        required
-                                                        fullWidth
-                                                        type="text"
-                                                        name="description"
-                                                        onChange={handleChange}
-                                                        placeholder="Enter New Group Description"
-                                                    />
-                                                    <br /><br />
-
-                                                    <Button
-                                                        type="button"
-                                                        className="button1"
-                                                        fullWidth
-                                                        variant="contained"
-                                                        color="primary"
-                                                        onClick={handleGroupEdit}
-                                                    >
-                                                        Save Changes
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <Box mt={4}>
-                            <GoBack />
-                        </Box>
-                    </div>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <br /><br />
+                <div className="container px-4 px-lg-2">
+                    <h2 className="text-center mt-0">Editing Group {group.name}...</h2>
+                    <hr className="divider" />
                 </div>
-            </div>
+                {
+                    error.shouldShow &&
+                    <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
+                        {error.errorMessage}
+                    </Alert>
+                }
+                <br />
 
-            <Box mt={8}>
-                <Footer />
-            </Box>
-        </section >
+                <Grid container spacing={3}>
+                    <Grid item xs={12} className={classes.div}>
+                        <Form {...props}/>
+                    </Grid>
+                </Grid>
+
+                <Box mt={4}>
+                    <br /><br />
+                    <GoBack />
+                </Box>
+
+                <Box mt={8}>
+                    <Footer />
+                </Box>
+            </div >
+        </Container>
     )
 }
 

@@ -20,7 +20,6 @@ function FormSignIn() {
       .catch(err => {
         console.log(err)
         setError({ errorMessage: err.body, shouldShow: true })
-
       })
   }
 

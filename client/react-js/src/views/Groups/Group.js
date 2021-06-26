@@ -1,19 +1,12 @@
 import React, { useEffect, useState, useParams } from 'react'
-import Box from '@material-ui/core/Box';
 import { addMemberToGroup, getSpecificGroup, addProjectToGroup } from '../Services/BasicService.js';
-import Button from '@material-ui/core/Button';
 import Alert from 'react-bootstrap/Alert'
 import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
 import { Link } from 'react-router-dom';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { green, purple } from '@material-ui/core/colors';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { Typography, CardHeader } from '@material-ui/core';
+import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box } from '@material-ui/core';
 
 
 const ColorButton = withStyles((theme) => ({
@@ -67,15 +60,24 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor:
             theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
     },
+    cardGroup: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'baseline',
+        marginBottom: theme.spacing(0),
+    },
+    listItem: {
+        padding: theme.spacing(1, 1),
+    }
 }));
 
 function Group(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
+    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const [toAddMembers, setAddMembers] = useState(false)
     const [newMember, setNewMember] = useState("")
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const [toAddProjects, setAddProjects] = useState(false)
     const [newProject, setNewProject] = useState("")
@@ -134,6 +136,11 @@ function Group(props) {
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }
 
+
+    function handleSeeSprints() {
+        window.location.replace(`/groups/${id}/sprints`)
+    }
+
     const classes = useStyles();
 
     return (
@@ -151,6 +158,7 @@ function Group(props) {
                         {error.errorMessage}
                     </Alert>
                 }
+                <br />
 
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
@@ -163,35 +171,50 @@ function Group(props) {
                                 className={classes.cardHeader}
                             />
                             <CardContent>
-                                <div className={classes.cardPricing}>
-                                    <Typography component="h2" variant="h5" color="textPrimary">
-                                        {group.description}
-                                    </Typography>
-                                    <br />
+                                <Typography component="h2" variant="h5" color="textPrimary">
+                                    {group.description}
+                                </Typography>
+                                <br />
 
+                                <div className={classes.cardGroup}>
                                     <Typography variant="h6" color="textSecondary">
-                                        Owner: {group.owner}
+                                        The Owner of this Group is {group.owner}.
                                     </Typography>
-                                    <br />
+                                    <br /><br />
+                                </div>
 
-                                    <Typography variant="h6" color="textSecondary">
-                                        Members:
-                                    </Typography>
-                                    {group.members ? group.members.map((member) => (
-                                        <Typography component="p" variant="subtitle1" align="center" key={member}>
-                                            {member}
+                                <div className={classes.cardGroup}>
+                                    <ul className={classes.listItem}>
+                                        <Typography variant="body1">
+                                            Members
                                         </Typography>
-                                    )) : ""}
-                                    <br />
 
-                                    <Typography variant="h6" color="textSecondary">
-                                        Projects:
-                                    </Typography>
-                                    {group.projects ? group.projects.map((project) => (
-                                        <Typography component="p" variant="subtitle1" align="center" key={project}>
-                                            {project}
+                                        <div>
+                                            {group.members ? group.members.map((member) => (
+                                                <ul className={classes.listItem} key={member}>
+                                                    <Typography variant="body2" color="textSecondary">
+                                                        {member}
+                                                    </Typography><br />
+                                                </ul>
+                                            )) : ""}
+                                        </div>
+                                    </ul>
+
+                                    <ul className={classes.listItem}>
+                                        <Typography variant="body1">
+                                            Projects
                                         </Typography>
-                                    )) : ""}
+
+                                        <div>
+                                            {group.projects ? group.projects.map((project) => (
+                                                <ul className={classes.listItem} key={project}>
+                                                    <Typography variant="body2" color="textSecondary">
+                                                        {project}
+                                                    </Typography><br />
+                                                </ul>
+                                            )) : ""}
+                                        </div>
+                                    </ul>
                                 </div>
                             </CardContent>
 
@@ -213,21 +236,21 @@ function Group(props) {
                                             onChange={handleMember}
                                         />
                                         <br />
-                                        <Button
+                                        <ColorButton
                                             variant="contained"
                                             color="primary"
                                             className={classes.margin}
                                             onClick={handleAddMembers}
                                         >
                                             Add Member
-                                        </Button>
+                                        </ColorButton>
                                     </Box> : ""}
 
                                 <Box mt={4}>
-                                    <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
+                                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
                                         <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
                                         {toAddMembers ? "" : "Add Members"}
-                                    </ColorButton>
+                                    </Button>
 
                                     {toAddProjects ?
                                         <Box mt={4}>
@@ -246,19 +269,24 @@ function Group(props) {
                                                 onChange={handleProject}
                                             />
                                             <br />
-                                            <Button
+                                            <ColorButton
                                                 variant="contained"
                                                 color="primary"
                                                 className={classes.margin}
                                                 onClick={handleAddProjects}
                                             >
                                                 Add Project
-                                            </Button>
+                                            </ColorButton>
                                         </Box> : ""}
-                                    <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
+                                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
                                         <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
                                         {toAddProjects ? "" : "Add Projects"}
-                                    </ColorButton>
+                                    </Button>
+
+                                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleSeeSprints}>
+                                        <i class="bi bi-eyeglasses">&nbsp;&nbsp;</i>
+                                        Sprints
+                                    </Button>
                                 </Box>
 
                             </CardContent>
@@ -269,7 +297,7 @@ function Group(props) {
                 <Box mt={5}>
                     <GoBack />
                 </Box>
-                
+
                 <Box mt={5}>
                     <br /><br />
                     <Footer />

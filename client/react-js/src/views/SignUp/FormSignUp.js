@@ -5,11 +5,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import { loginFetch, signUpFetch } from '../Services/authenticationService';
+import { signUpFetch } from '../Services/authenticationService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useState } from 'react'
 
 
 function FormSignUp() {

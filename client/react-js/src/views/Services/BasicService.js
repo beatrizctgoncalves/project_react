@@ -1,9 +1,18 @@
-const { request, makeRequest, getRequest, DEFAULT_OPTIONS } = require('./Requests').requests;
+const { makeRequest } = require('./Requests').requests;
 
 export async function getUser(username) {
     const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
 
     return makeRequest(uri)
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function deleteUser(username) {
+    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
+
+    return makeRequest(uri, {}, 'DELETE')
         .then(resp => {
             return resp
         })

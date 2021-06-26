@@ -1,14 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Components/Footer.js';
-import Box from '@material-ui/core/Box';
-import { Link } from 'react-router-dom';
+import { Button, Container, CssBaseline, Grid, GridList, GridListTile, Box, Card, CardHeader, CardContent, Link } from '@material-ui/core';
 import { getUserNotifications, removeUserNotification } from '../Services/BasicService';
-import Button from '@material-ui/core/Button';
 import Alert from 'react-bootstrap/Alert'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoBack from '../Components/GoBack';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { green, purple } from '@material-ui/core/colors';
 
+
+const ColorButton = withStyles((theme) => ({
+    root: {
+        color: theme.palette.getContrastText(purple[500]),
+        backgroundColor: green[500],
+        fontFamily: [
+            "Merriweather Sans",
+            '-apple-system',
+            'BlinkMacSystemFont',
+            "Segoe UI",
+            'Roboto',
+            "Helvetica Neue",
+            'Arial',
+            "Noto Sans",
+            'sans-serif',
+            "Apple Color Emoji",
+            "Segoe UI Emoji",
+            "Segoe UI Symbol",
+        ].join(','),
+        '&:hover': {
+            backgroundColor: green[700],
+        },
+        margin: '4px'
+    },
+}))(Button);
+
+const useStyles = makeStyles((theme) => ({
+    margin: {
+        margin: theme.spacing(1),
+    },
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: '#274e81e1',
+    },
+    div: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+    cardHeader: {
+        backgroundColor:
+            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
+    }
+}));
 
 function Notifications() {
     const [notifications, setNotifications] = useState([])
@@ -36,11 +88,11 @@ function Notifications() {
             })
     }, [])
 
-    function handleNotificationReject(groupId) {
-        removeUserNotification(username, groupId)
+    function handleNotificationReject(notificationId) {
+        removeUserNotification(username, notificationId)
             .then(resp => {
                 let aux = notifications.filter(notification => {
-                    if (notification.group_id !== groupId) {
+                    if (notification.notification_id !== notificationId) {
                         return notification
                     }
                 })
@@ -69,6 +121,58 @@ function Notifications() {
         })
     }
 
+    const classes = useStyles();
+
+    return (
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <br /><br />
+                <div className="container px-4 px-lg-5">
+                    <h2 className="text-center mt-0">Your Notifications</h2>
+                    <hr className="divider" />
+                </div>
+                {
+                    error.shouldShow &&
+                    <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
+                        {error.errorMessage}
+                    </Alert>
+                }
+                <br />
+
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        {notifications ? notifications.map(notification => {
+                            return (
+                                <GridListTile cols={1}>
+                                    <Card align="center">
+                                        <CardHeader
+                                            title={notification.manager}
+                                            subtitle={notification.manager}
+                                            subtitleTypographyProps={{ align: 'center' }}
+                                            titleTypographyProps={{ align: 'center' }}
+                                            className={classes.cardHeader}
+                                        />
+                                        <CardContent>
+                                            <ColorButton variant="contained" color="primary" className={classes.margin} onClick={'handleEdit.bind(null, group.id)'}>
+                                                <i class="bi bi-check-lg"></i>
+                                            </ColorButton>
+                                            <ColorButton variant="contained" color="primary" className={classes.margin} onClick={'handleGroupDelete.bind(null, group.id)'}>
+                                                <i className="bi bi-trash-fill"></i>
+                                            </ColorButton>
+                                        </CardContent>
+                                    </Card>
+                                </GridListTile>
+                            )
+                        }) : ""}
+                    </Grid>
+                </Grid>
+            </div>
+        </Container>
+    )
+
+
+
 
     return (
         <section className="page-section">
@@ -78,25 +182,25 @@ function Notifications() {
 
                 <div className="container px-4 px-lg-5 mt-5">
                     <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                        {notifications ? notifications.map(group => {
+                        {notifications ? notifications.map(notification => {
                             return (
                                 <div className="col mb-5">
                                     <div className="card h-100">
                                         <div className="card-body p-4">
                                             <div className="text-center">
-                                                <h3 className="h4 mb-2" key={group.name}>
-                                                    <Link color="inherit" to={`/notifications/${group.id}`}>{group.name} </Link>
+                                                <h3 className="h4 mb-2" key={notification.name}>
+                                                    <Link color="inherit" to={`/notifications/${notification.id}`}>{notification.name} </Link>
                                                 </h3>
-                                                {group.description}
+                                                {notification.description}
                                             </div>
                                         </div>
 
                                         <div className="row gx-4 gx-lg-5 justify-content-center">
                                             <div className="col-lg-8 text-center">
-                                                <Link className="btn btn-outline-dark mt-auto" type="button" to={`/notifications/${group.id}/edit`}>
+                                                <Link className="btn btn-outline-dark mt-auto" type="button" to={`/notifications/${notification.id}/edit`}>
                                                     <i className="bi bi-pencil-fill"></i>
                                                 </Link>
-                                                <button className="btn btn-outline-dark mt-auto" type="button" onClick={"handleGroupDelete.bind(null, group.id)"}>
+                                                <button className="btn btn-outline-dark mt-auto" type="button" onClick={"handlenotificationDelete.bind(null, notification.id)"}>
                                                     <i className="bi bi-trash-fill"></i>
                                                 </button>
                                                 <br /><br />
@@ -116,7 +220,7 @@ function Notifications() {
                                 <div className="row gx-2 gx-lg-2 row-cols-2 row-cols-md-3 row-cols-xl-2 justify-content-center">
                                     <div className="col mb-5 card h-100 card-body p-4">
                                         <div className="card-footer p-4 pt-0 border-top-0 bg-transparent text-center">
-                                            <h3 className="h4 mb-2">Create New Group</h3>
+                                            <h3 className="h4 mb-2">Create New notification</h3>
                                             <br />
                                             <input
                                                 variant="outlined"
@@ -126,7 +230,7 @@ function Notifications() {
                                                 fullWidth
                                                 type="text"
                                                 name="name"
-                                                placeholder="Enter Group Name"
+                                                placeholder="Enter notification Name"
                                                 onChange={"handleChange"}
                                             />
                                             <br />
@@ -139,7 +243,7 @@ function Notifications() {
                                                 type="text"
                                                 name="description"
                                                 onChange={"handleChange"}
-                                                placeholder="Enter Group Description"
+                                                placeholder="Enter notification Description"
                                             />
                                             <br /><br />
 
@@ -149,18 +253,18 @@ function Notifications() {
                                                 fullWidth
                                                 variant="contained"
                                                 color="primary"
-                                                onClick={"handleGroupCreate"}
+                                                onClick={"handlenotificationCreate"}
                                             >
-                                                Create Group
+                                                Create notification
                                             </Button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             : ""}
-                        <button className="btn btn-groups btn-xl" type="button" onClick={"handleToCreate"}>
+                        <button className="btn btn-notifications btn-xl" type="button" onClick={"handleToCreate"}>
                             <i className="bi bi-plus-circle-fill">         </i>
-                            {toCreate ? "" : "Create Group"}
+                            {toCreate ? "" : "Create notification"}
                         </button>
                         <Box mt={4}>
                             <GoBack />
