@@ -17,7 +17,6 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                     pgResponses.BAD_REQUEST_MSG
                 )
             }
-
             return authUser.create(username, password)
                 .then(databaseUsers.createUser(username, name, surname))
                 .then(() => {
@@ -59,12 +58,11 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
         updateUser: function (username, updatedInfo) {
             return databaseUsers.getUser(username)
                 .then(user => {
-                    console.log(user)
                     user.info.forEach(info => {
                         if (!updatedInfo.info.find(i => i.type == info.type))
                             updatedInfo.info.push(info)
                     })
-                    return databaseUsers.updateUser(user.username, updatedInfo)
+                    return databaseUsers.updateUser(username, updatedInfo)
                         .then(user_name => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,

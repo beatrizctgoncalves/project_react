@@ -47,11 +47,7 @@ function apiGitlab() {
             .then(body => body.map(project =>{
                 return {
                     "id": project.id,
-                    "owner_name": project.owner.username,
-                    "owner_id": project.owner.id,
-                    "description": project.description,
-                    "avatar": project.avatar_url,
-                    "type": "Gitlab"
+                    "title": project.name
                 }
             }))    
             .catch(error => pgResponses.resolveErrorApis(error))
