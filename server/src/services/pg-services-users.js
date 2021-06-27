@@ -68,7 +68,7 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
             return databaseUsers.getUser(username)
                 .then(user => {
                     user.info.map(info => {
-                        if (!updatedInfo.info.find(i => i.type == info.type))
+                        if (updatedInfo.info && !updatedInfo.info.find(i => i.type == info.type))
                             updatedInfo.info.push(info)
                     })
                     return databaseUsers.updateUser(username, updatedInfo)
