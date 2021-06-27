@@ -202,7 +202,7 @@ function Member(props) {
                                             {group.projects ? group.projects.map((project) => (
                                                 <ul className={classes.listItem} key={project}>
                                                     <Typography variant="body2" color="textSecondary">
-                                                        {project}
+                                                        {project.title}
                                                     </Typography><br />
                                                 </ul>
                                             )) : ""}
