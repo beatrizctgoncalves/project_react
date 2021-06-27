@@ -3,7 +3,6 @@ import Footer from '../Components/Footer.js';
 import { Link } from 'react-router-dom';
 import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
 import { Button, Container, CssBaseline, Grid, GridList, GridListTile, Box, Card, CardHeader, CardContent } from '@material-ui/core';
-import Alert from 'react-bootstrap/Alert'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoBack from '../Components/GoBack';

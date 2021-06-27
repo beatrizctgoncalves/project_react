@@ -84,14 +84,7 @@ export async function addMemberToGroup(groupId, member) {
         })
 }
 
-export async function addProjectToGroup(groupId, projectId) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/projects`
 
-    return makeRequest(uri, { projectId }, "POST")
-        .then(resp => {
-            return resp
-        })
-}
 
 export async function deleteGroup(groupId) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`
@@ -121,13 +114,25 @@ export async function createGroup(newGroup) {
 }
 
 export async function getToolProjects(tool,username) {
-    //TODO
-    const uri = `http://localhost:8081/api/g5/pluggable/gamification/tools/${tool}/projects`
+   
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/tools/${tool}/projects/${username}`
+    
+    return makeRequest(uri)
+        .then(resp => {
+            console.log(resp)
+            return resp
+        })
+}
+
+export async function addProjectToGroup(groupId, projectId,type) {
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/projects`
+
     const body = {
-        username : username
+        Pid: projectId,
+        type: type
     }
 
-    return makeRequest(uri, body, "GET")
+    return makeRequest(uri, body, "POST")
         .then(resp => {
             return resp
         })

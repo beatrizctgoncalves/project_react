@@ -16,6 +16,7 @@ import Contact from './views/GeneralPages/ContactUs';
 import Privacy from './views/GeneralPages/Privacy';
 import Terms from './views/GeneralPages/Terms';
 import Notifications from './views/Notifications/Notifications';
+import ToolsProjects from './views/ToolsProjects/ToolsProjects';
 
 
 function App() {
@@ -93,6 +94,10 @@ function App() {
           <Route
             exact path="/groups/:id"
             render={(props) => window.sessionStorage.getItem('username') ? <Group {...props} /> : <Redirect to="/sign-in" />}
+          />
+          <Route
+            exact path="/groups/:id/tools/:tool"
+            render={(props) => window.sessionStorage.getItem('username') ? <ToolsProjects {...props}/>: <Redirect to="/sign-in" />}
           />
 
           <Route

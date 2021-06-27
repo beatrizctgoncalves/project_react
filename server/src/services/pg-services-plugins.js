@@ -16,10 +16,10 @@ function services(databaseGroup, databaseUsers, pgResponses) {
             }
             let Atoken = undefined
             return databaseUsers.getUser(userId)
-                .then(user =>{console.log(user.info)
-                    user.info.filter(i => i.type == toolName)[0]
-                } )
+                .then(user =>  user.info.filter(i => i.type == toolName)[0])
                 .then(info => {
+                    console.log("info")
+                    console.log(info)
                     Atoken = info.AToken
                     return api.getProjectsFromUsername(info.username,Atoken)
                 })

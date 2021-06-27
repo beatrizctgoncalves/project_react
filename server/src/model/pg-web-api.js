@@ -24,7 +24,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
 
-    router.get('/tools/:tool_name/projects', getProjectsOfTool)
+    router.get('/tools/:tool_name/projects/:username', getProjectsOfTool)
 
     router.get('/rankings', getRankings); //TODO get all rankings
 
@@ -117,7 +117,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     function getProjectsOfTool(req, res) {
         aux.promisesAsyncImplementation(
-            servicesPlugins.getProjectsOfTool(req.params.tool_name, req.body.username),
+            servicesPlugins.getProjectsOfTool(req.params.tool_name, req.params.username),
             res
         )
     }
