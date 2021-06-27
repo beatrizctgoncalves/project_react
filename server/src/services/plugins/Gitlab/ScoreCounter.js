@@ -9,7 +9,7 @@ module.exports = {
         Array.from(userInfoMap, ([key, value]) => {
             value.info.forEach(info => {
                 if(info.type == "Gitlab")
-                    memberInfoMapGitlab.set(info.username, {"AppUsername" : key, "Points" : 0 })
+                    memberInfoMapGitlab.set(info.accountId, {"AppUsername" : key, "Points" : 0 })
             })
         })
 
@@ -24,7 +24,6 @@ module.exports = {
                             Points -=5
                         issue.assignees.forEach(assignee => {
                             if(memberInfoMapGitlab.has(assignee)){
-                                console.log(Points)
                                 let aux = memberInfoMapGitlab.get(assignee)
                                 aux.Points += Points
                                 memberInfoMapGitlab.set(assignee,aux)
