@@ -19,7 +19,10 @@ module.exports = function (express, services, servicesPlugins, aux) {
     router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
-    router.post(`/groups/:group_id/members`, addMemberNotification); //Add a specific user to a group
+    router.post(`/groups/:group_id/members`, addMemberToGroup); //Add a specific user to a group
+
+    //router.post(`/groups/:group_id/members`, addMemberNotification); //Add a specific user to a group
+
     router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
@@ -93,13 +96,20 @@ module.exports = function (express, services, servicesPlugins, aux) {
         );
     }
 
-    function addMemberNotification(req, res) { //Implementation of the route to add a user to a specific group
+    function addMemberToGroup(req, res) { //Implementation of the route to add a user to a specific group
+        aux.promisesAsyncImplementation(
+            services.addMemberToGroup(req.params.group_id, req.body.username),
+            res
+        );
+    }
+
+    /*function addMemberNotification(req, res) { //Implementation of the route to add a user to a specific group
         console.log(req.body)
         aux.promisesAsyncImplementation(
             services.addMemberNotification(req.params.group_id, req.body.username, req.body.manager),
             res
         );
-    }
+    }*/
 
     function addSprintToGroup(req, res) { //Implementation of the route to add a user to a specific group
         aux.promisesAsyncImplementation(

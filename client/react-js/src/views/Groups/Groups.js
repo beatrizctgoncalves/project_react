@@ -82,8 +82,6 @@ function Groups() {
         getUserGroups(owner)
             .then(resp => setGroups(resp.message))
             .catch(err => {
-                console.log("err")
-                console.log(err)
                 setError({ errorMessage: err.body, shouldShow: true });
                 toast.error(err.body, {
                     position: "top-left",

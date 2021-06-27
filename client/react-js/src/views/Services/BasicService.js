@@ -63,16 +63,23 @@ export async function getSpecificGroup(id) {
         })
 }
 
-export async function addMemberToGroup(groupId, newMember, owner) {
+export async function addMemberToGroup(groupId, newMember) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/members`
 
-    return makeRequest(uri, { username: newMember, manager: owner }, "POST")
+    return makeRequest(uri, { username: newMember }, "POST")
         .then(resp => {
             return resp
         })
 }
 
+export async function removeMemberFromGroup(groupId, username) {
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/members/${username}`
 
+    return makeRequest(uri, {}, 'DELETE')
+        .then(resp => {
+            return resp
+        })
+}
 
 export async function deleteGroup(groupId) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`

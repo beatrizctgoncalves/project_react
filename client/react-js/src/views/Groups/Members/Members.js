@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useParams } from 'react'
-import { addMemberToGroup, getSpecificGroup, addProjectToGroup } from '../../Services/BasicService.js';
+import React, { useEffect, useState } from 'react'
+import { addMemberToGroup, getSpecificGroup, removeMemberFromGroup } from '../../Services/BasicService.js';
 import Alert from 'react-bootstrap/Alert'
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
-import { Link } from 'react-router-dom';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { green, purple } from '@material-ui/core/colors';
 import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box } from '@material-ui/core';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const ColorButton = withStyles((theme) => ({
@@ -70,16 +70,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Member(props) {
+
+function Members(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
+    const [edit, setEdit] = useState(false)
 
     const [toAddMembers, setAddMembers] = useState(false)
     const [newMember, setNewMember] = useState("")
-
-    const [toAddProjects, setAddProjects] = useState(false)
-    const [newProject, setNewProject] = useState("")
 
     useEffect(() => {
         getSpecificGroup(id)
@@ -87,6 +86,22 @@ function Member(props) {
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }, [])
 
+
+    function handleMemberDelete(member) {
+        removeMemberFromGroup(id, member)
+            .then(resp => {
+                let aux = group.members.filter(m => {
+                    if (m != member) {
+                        return m
+                    }
+                })
+                setGroup(aux)
+                setEdit(false)
+            })
+            .catch(err => {
+                setError({ errorMessage: err.body, shouldShow: true });
+            })
+    }
 
     const handleMember = event => {
         setNewMember(event.target.value)
@@ -101,39 +116,17 @@ function Member(props) {
     }
 
     function handleAddMembers() {
-        addMemberToGroup(id, newMember, group.owner)
+        addMemberToGroup(id, newMember)
             .then(resp => {
-                setAddMembers(false)
+                getSpecificGroup(group.id)
+                    .then(groupObj => {
+                        let aux = groupObj.message.members
+                        aux.push(newMember)
+                        setGroup(aux)
+                        setAddMembers(false)
+                    })
             })
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }
-
-
-    const handleProject = event => {
-        setNewProject(event.target.value)
-    }
-
-    function handleToEditProjectsChange() {
-        if (toAddProjects) {
-            setAddProjects(false)
-        } else {
-            setAddProjects(true)
-        }
-    }
-
-    function handleAddProjects() {
-        addProjectToGroup(id, newProject)
-            .then(resp => {
-                let aux = group;
-                aux.members.push(newProject)
-                setGroup(aux)
-                setAddProjects(false)
-            })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }
-
-    function handleSeeSprints() {
-        window.location.replace(`/groups/${id}/sprints`)
     }
 
     const classes = useStyles();
@@ -147,12 +140,7 @@ function Member(props) {
                     <h2 className="text-center mt-0">{group.name}</h2>
                     <hr className="divider" />
                 </div>
-                {
-                    error.shouldShow &&
-                    <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
-                        {error.errorMessage}
-                    </Alert>
-                }
+                <ToastContainer />
                 <br />
 
                 <Grid container spacing={3}>
@@ -163,52 +151,23 @@ function Member(props) {
                                 titleTypographyProps={{ align: 'center' }}
                                 className={classes.cardHeader}
                             />
+
                             <CardContent>
-                                <Typography component="h2" variant="h5" color="textPrimary">
-                                    {group.description}
-                                </Typography>
-                                <br />
+                                {group.members ? group.members.map(member =>
+                                    <div className={classes.cardGroup} key={member}>
+                                        <Grid item xs={6}>
+                                            <Typography variant="h6" color="textSecondary">
+                                                {member}
+                                            </Typography>
+                                        </Grid>
 
-                                <div className={classes.cardGroup}>
-                                    <Typography variant="h6" color="textSecondary">
-                                        The Owner of this Group is {group.owner}.
-                                    </Typography>
-                                    <br /><br />
-                                </div>
-
-                                <div className={classes.cardGroup}>
-                                    <ul className={classes.listItem}>
-                                        <Typography variant="body1">
-                                            <Link to={`/groups/${group.id}/members`}>Members</Link>
-                                        </Typography>
-
-                                        <div>
-                                            {group.members ? group.members.map((member) => (
-                                                <ul className={classes.listItem} key={member}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        {member}
-                                                    </Typography><br />
-                                                </ul>
-                                            )) : ""}
-                                        </div>
-                                    </ul>
-
-                                    <ul className={classes.listItem}>
-                                        <Typography variant="body1">
-                                            <Link to={`/groups/${group.id}/projects`}>Projects</Link>
-                                        </Typography>
-
-                                        <div>
-                                            {group.projects ? group.projects.map((project) => (
-                                                <ul className={classes.listItem} key={project}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        {project}
-                                                    </Typography><br />
-                                                </ul>
-                                            )) : ""}
-                                        </div>
-                                    </ul>
-                                </div>
+                                        <Grid item xs={6}>
+                                            <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleMemberDelete.bind(null, member)}>
+                                                <i className="bi bi-trash-fill"></i>
+                                            </ColorButton>
+                                        </Grid>
+                                    </div>
+                                ) : ""}
                             </CardContent>
 
                             <CardContent>
@@ -244,42 +203,6 @@ function Member(props) {
                                         <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
                                         {toAddMembers ? "" : "Add Members"}
                                     </Button>
-
-                                    {toAddProjects ?
-                                        <Box mt={4}>
-                                            <h3 className="h4 mb-2">Insert New Projects</h3>
-                                            <br />
-                                            <input
-                                                variant="outlined"
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                type="text"
-                                                name="newProject"
-                                                className="form-control"
-                                                placeholder="Enter New Project Identifier"
-                                                value={newProject}
-                                                onChange={handleProject}
-                                            />
-                                            <br />
-                                            <ColorButton
-                                                variant="contained"
-                                                color="primary"
-                                                className={classes.margin}
-                                                onClick={handleAddProjects}
-                                            >
-                                                Add Project
-                                            </ColorButton>
-                                        </Box> : ""}
-                                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
-                                        <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
-                                        {toAddProjects ? "" : "Add Projects"}
-                                    </Button>
-
-                                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleSeeSprints}>
-                                        <i className="bi bi-eyeglasses">&nbsp;&nbsp;</i>
-                                        Sprints
-                                    </Button>
                                 </Box>
 
                             </CardContent>
@@ -301,4 +224,4 @@ function Member(props) {
     )
 }
 
-export default Member
+export default Members

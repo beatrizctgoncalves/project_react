@@ -25,9 +25,9 @@ module.exports = function (express, services, aux, authization) {
     }, signIn);
     router.post('/logout', authenticate.logout, logOut);
 
-    router.get(`/notifications/:username`, getUserNotifications); //Get all user's notifications
-    router.post(`/notifications/:username/groups/:group_id`, addMemberToGroup); //Add a specific user to a group
-    router.delete(`/notifications/:username/groups/:group_id`, removeUserNotification);
+    //router.get(`/notifications/:username`, getUserNotifications); //Get all user's notifications
+    //router.post(`/notifications/:username/groups/:group_id`, addMemberToGroup); //Add a specific user to a group
+    //router.delete(`/notifications/:username/groups/:group_id`, removeUserNotification);
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
@@ -61,6 +61,7 @@ module.exports = function (express, services, aux, authization) {
         }
     }
 
+    /*
     function getUserNotifications(req, res) { //Implementation of the route to get all notifications of a user
         aux.promisesAsyncImplementation(
             services.getUserNotifications(req.params.username),
@@ -81,6 +82,7 @@ module.exports = function (express, services, aux, authization) {
             res
         );
     }
+*/
 
     function getUser(req, res) {
         aux.promisesAsyncImplementation(
@@ -90,7 +92,6 @@ module.exports = function (express, services, aux, authization) {
     }
 
     function updateUser(req, res) {
-        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.updateUser(req.params.username, req.body.updatedInfo),
             res
