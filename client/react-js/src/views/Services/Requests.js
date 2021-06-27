@@ -12,16 +12,17 @@ const request = (url, init) => fetch(url, init)
                 return jsonResponse
             }
             console.log(jsonResponse)
+            const error = Promise.reject({
+                status: jsonResponse.error.status,
+                body: jsonResponse.error.body
+            })
             //const error = new Error(jsonResponse.error)
             error.status = resp.status
             console.log(error.status)
             if (error.status === 403) {
                 window.location.assign('/')
             }
-            const error = Promise.reject({
-                status: jsonResponse.error.status,
-                body: jsonResponse.error.body
-            })
+           
             console.log(error.status)
             return error
     })

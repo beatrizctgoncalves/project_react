@@ -162,14 +162,15 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(userObj => {
                     return databaseGroups.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            const userExists = groupObj.members.findIndex(m => m.user === username)
+                            const userExists = groupObj.members.findIndex(m => m === username)
                             if (userExists != -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return databaseGroups.addMemberToGroup(group_id, username) //add user
+                            return databaseUsers.addGroupToUser(username,group_id)
+                                .then(databaseGroups.addMemberToGroup(group_id, username)) //add user
                                 .then(group => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,

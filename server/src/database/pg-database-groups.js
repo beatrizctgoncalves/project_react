@@ -43,7 +43,7 @@ function database(pgResponses, requests) {
                         body._source.id = body._id;
                         return body._source;
                     } else {
-                        return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG);
+                        return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);
                     }
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))

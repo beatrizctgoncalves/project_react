@@ -55,6 +55,25 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                 })
         },
 
+        
+        getUserMemberGroups: function (username) {
+            return databaseUsers.getUser(username)
+            .then(user => user.groupsMember)
+            .then(groupsMember => {
+                let promisses = []
+                groupsMember.forEach(groupMember => {
+                    promisses.push(databaseGroups.getGroupDetails(groupMember))
+                })
+                return Promise.all(promisses)
+            })
+            .then(groups => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        groups
+                    )
+                })
+        },
+
         updateUser: function (username, updatedInfo) {
             if (updatedInfo.updatedAvatar) {  //verify if avatar is a valid link
                 if (updatedInfo.updatedAvatar.substr(updatedInfo.updatedAvatar.length - 4) != '.png') {  //verify if avatar is a valid link
@@ -68,7 +87,7 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
             return databaseUsers.getUser(username)
                 .then(user => {
                     user.info.map(info => {
-                        if (!updatedInfo.info.find(i => i.type == info.type))
+                        if (updatedInfo.info && !updatedInfo.info.find(i => i.type == info.type))
                             updatedInfo.info.push(info)
                     })
                     return databaseUsers.updateUser(username, updatedInfo)

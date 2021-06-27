@@ -10,6 +10,7 @@ function database(pgResponses, requests) {
                 "surname": surname,
                 "avatar": "https://thumbs.dreamstime.com/b/programmer-linear-icon-technologist-freelancer-thin-line-illustration-contour-symbol-vector-isolated-outline-drawing-programmer-197065655.jpg",
                 "info": [],
+                "groupsMember": [],
                 "notifications": []
             });
 
@@ -24,7 +25,6 @@ function database(pgResponses, requests) {
                     if (body.hits && body.hits.hits.length) {
                         return body.hits.hits.map(hit => {
                             hit._source.id = hit._id;
-                            console.log(hit._source)
                             return hit._source;
                         })[0]
                     } else {
@@ -41,6 +41,7 @@ function database(pgResponses, requests) {
                         "if(params.surname != null) ctx._source.surname = params.surname; " +
                         "if(params.info != null) ctx._source.info = params.info;" +
                         "if(params.avatar != null) ctx._source.avatar = params.avatar;" +
+                        "if(params.groupsMember != null) ctx._source.groupsMember = params.groupsMember;" +
                         "if(params.notifications != null) ctx._source.notifications = params.notifications;",
                     "params": updatedInfo
                 }
@@ -50,7 +51,31 @@ function database(pgResponses, requests) {
                 .then(userObj => {
                     return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {
-                            console.log(userObj.avatar)
+                            if (body.result == 'updated') {
+                                return body._id;
+                            } else {
+                                return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
+                            }
+                        })
+                })
+                .catch(error => pgResponses.resolveErrorElastic(error))
+        },
+
+        addGroupToUser: function (username, groupId) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline":  "ctx._source.groupsMember.add(params.groupId) ",
+                    "params":{
+                        "groupId": groupId
+                    }
+                }
+            });
+
+            return this.getUser(username)
+                .then(userObj => {
+                    return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
+                        .then(body => {
                             if (body.result == 'updated') {
                                 return body._id;
                             } else {

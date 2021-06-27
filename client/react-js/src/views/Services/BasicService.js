@@ -134,5 +134,17 @@ export async function addProjectToGroup(groupId, projectId, type) {
 }
 
 
+export async function getRankings(groupId) {
+    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/rankings`
+
+    return makeRequest(uri)
+        .then(resp => {
+            return resp
+        })
+}
+
+
+
+
 
 
