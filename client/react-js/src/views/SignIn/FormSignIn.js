@@ -15,7 +15,7 @@ function FormSignIn() {
       .then(resp => {
         console.log(resp)
         window.sessionStorage.setItem('username', userToLogin.username);
-        window.location.assign('/groups')
+        window.location.assign('/')
       })
       .catch(err => {
         console.log(err)

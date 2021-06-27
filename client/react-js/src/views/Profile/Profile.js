@@ -4,14 +4,40 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Typography, CardHeader, TextField } from '@material-ui/core';
+import { green, purple } from '@material-ui/core/colors';
 
+
+const ColorButton = withStyles((theme) => ({
+    root: {
+        color: theme.palette.getContrastText(purple[500]),
+        backgroundColor: green[500],
+        fontFamily: [
+            "Merriweather Sans",
+            '-apple-system',
+            'BlinkMacSystemFont',
+            "Segoe UI",
+            'Roboto',
+            "Helvetica Neue",
+            'Arial',
+            "Noto Sans",
+            'sans-serif',
+            "Apple Color Emoji",
+            "Segoe UI Emoji",
+            "Segoe UI Symbol",
+        ].join(','),
+        '&:hover': {
+            backgroundColor: green[700],
+        },
+        margin: '4px'
+    },
+}))(Button);
 
 const useStyles = makeStyles((theme) => ({
     margin: {
@@ -79,6 +105,11 @@ function Profile() {
         setNewAvatar(event.target.value)
     }
 
+
+    function handleAdditionalInfo() {
+        window.location.assign(`/profile/edit/info`)
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -129,7 +160,7 @@ function Profile() {
                                         <Box>
                                             <Button onClick={handleToEditAvatarChange}>
                                                 {/*`${user.avatar}`*/}
-                                                <img src={`google.png`}
+                                                <img src={`${user.avatar}`}
                                                     width="auto" height="150" className={classes.avatar}></img>
                                             </Button>
                                         </Box>
@@ -141,25 +172,37 @@ function Profile() {
                                 className={classes.cardHeader}
                             />
                             <CardContent>
-                                <Typography component="h2" variant="h5" color="textPrimary">
+                                <Typography component="h2" variant="h4" color="textPrimary">
                                     {user.name} {user.surname}
                                 </Typography>
                                 <br />
 
-                                <Typography variant="h6" color="textSecondary">
+                                <Typography variant="h5" color="primary">
                                     Additional Information
                                 </Typography>
-                                {user.info ? user.info.map((info) => (
-                                    <Typography component="p" variant="subtitle1" align="center" key={info}>
-                                        {info.type}
+
+                                {user.info && user.info.length != 0 ? user.info.map(info => (
+                                    <Typography variant="body2" color="textSecondary" align="center" key={info}>
+                                        {info}
                                     </Typography>
-                                )) : ""}
+                                )) :
+                                    <Box mt={2}>
+                                        <Typography variant="body1" color="textSecondary" align="center">
+                                            You do not have any additional <br /> information added yet!
+                                        </Typography>
+                                        <br />
+                                        <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleAdditionalInfo}>
+                                            <i className="bi bi-plus-lg">&nbsp;&nbsp;</i>
+                                            Add Now
+                                        </ColorButton>
+                                    </Box>
+                                }
                             </CardContent>
 
                             <CardContent>
-                                <Box mt={4}>
+                                <Box mt={0}>
                                     <Button variant="contained" color="primary" className={classes.margin} href={'/profile/edit'}>
-                                        <i className="bi bi-pencil-fill" />
+                                        <i className="bi bi-pencil-fill"></i>
                                     </Button>
                                 </Box>
                             </CardContent>

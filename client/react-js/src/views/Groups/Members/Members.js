@@ -120,8 +120,8 @@ function Members(props) {
             .then(resp => {
                 getSpecificGroup(group.id)
                     .then(groupObj => {
-                        let aux = groupObj.message.members
-                        aux.push(newMember)
+                        let aux = groupObj.message
+                        aux.members.push(newMember)
                         setGroup(aux)
                         setAddMembers(false)
                     })

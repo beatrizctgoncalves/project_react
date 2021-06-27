@@ -53,26 +53,6 @@ const useStyles = makeStyles((theme) => ({
 function FormProfile() {
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
-    const [gitlab, setGitlab] = useState(false)
-    function handleGitlab() {
-        if (gitlab) {
-            setGitlab(false)
-        }
-        else {
-            setGitlab(true)
-        }
-    }
-
-    const [jira, setJira] = useState(false)
-    function handleJira() {
-        if (jira) {
-            setJira(false)
-        }
-        else {
-            setJira(true)
-        }
-    }
-
     const username = window.sessionStorage.getItem("username")
     const [updatedUser, setUpdatedUser] = useState({})
     function handleEdit() {
@@ -90,23 +70,28 @@ function FormProfile() {
         setUpdatedUser({ ...updatedUser, name: event.target.value })
     }
 
-    const handleSurname = event => {
+    const handleSurname = (event) => {
         setUpdatedUser({ ...updatedUser, surname: event.target.value })
     }
 
-/*
-    const [profile, setProfile] = useState([])
-    function handleDelete() {
-        deleteUser(username)
-            .then(resp => getUser(username))
-            .then(resp => {
-                setProfile(profile)
-                setEdit(false)
-            })
-            .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
-            })
-    }*/
+
+    /*
+        const [profile, setProfile] = useState([])
+        function handleDelete() {
+            deleteUser(username)
+                .then(resp => getUser(username))
+                .then(resp => {
+                    setProfile(profile)
+                    setEdit(false)
+                })
+                .catch(err => {
+                    setError({ errorMessage: err.body, shouldShow: true });
+                })
+        }*/
+
+    function handleAdditionalInfo() {
+        window.location.assign(`/profile/edit/info`)
+    }
 
     const classes = useStyles();
 
@@ -120,6 +105,7 @@ function FormProfile() {
                         label="First name"
                         fullWidth
                         autoComplete="given-name"
+                        onChange={handleName}
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -129,98 +115,30 @@ function FormProfile() {
                         label="Last name"
                         fullWidth
                         autoComplete="family-name"
+                        onChange={handleSurname}
                     />
                 </Grid>
+                <br /><br /><br /><br />
+                <Grid item xs={12}>
+                    <Button
+                        type="button"
+                        className="button1"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        onClick={handleEdit}
+                    >
+                        Save
+                    </Button>
+                </Grid>
 
-                <br /><br /><br /><br /><br />
                 <Grid item xs={12} align='center'>
-                    <Typography variant="h6" color="textSecondary">
-                        Additional Information
-                    </Typography>
-                    <hr className="divider" />
-
-                    <Box mt={4}>
-                        {gitlab ?
-                            <>
-                                <Grid item xs={12}>
-                                    <h3 className="h4 mb-2">About Gitlab</h3>
-                                    <TextField
-                                        id="username"
-                                        name="username"
-                                        label="Username"
-                                        fullWidth
-                                        onChange={handleName}
-                                    />
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="atoken"
-                                        name="atoken"
-                                        label="AToken"
-                                        fullWidth
-                                        onChange={handleSurname}
-                                    />
-                                </Grid>
-                                <br /><br />
-                            </>
-                            : ""}
-                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleGitlab}>
+                    <Box mt={6}>
+                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleAdditionalInfo}>
                             <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
-                            {gitlab ? "" : "About Gitlab"}
+                            Additional Information
                         </Button>
 
-                        {jira ?
-                            <Box mt={5}>
-                                <Grid item xs={12}>
-                                    <h3 className="h4 mb-2">About Jira</h3>
-                                    <TextField
-                                        id="email"
-                                        name="email"
-                                        label="Email"
-                                        fullWidth
-                                    />
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="atoken"
-                                        name="atoken"
-                                        label="AToken"
-                                        fullWidth
-                                    />
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="url"
-                                        name="url"
-                                        label="URL"
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <br /><br />
-                            </Box>
-                            : ""}
-                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleJira}>
-                            <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
-                            {jira ? "" : "About Jira"}
-                        </Button>
-                        
-                        <br /><br /><br /><br />
-                        <Button
-                            type="button"
-                            className="button1"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={handleEdit}
-                        >
-                            Save
-                        </Button>
-                    </Box>
-
-                    <Box mt={9}>
                         <ColorButton variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
                             <i className="bi bi-trash-fill">&nbsp;&nbsp;</i>
                             Delete Profile Definitively

@@ -21,7 +21,7 @@ export async function deleteUser(username) {
 export async function updateUser(username, updatedUser) {
     const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
 
-    return makeRequest(uri, updatedUser, "PATCH")
+    return makeRequest(uri, { updatedInfo: updatedUser }, "PATCH")
         .then(resp => {
             return resp
         })
@@ -108,10 +108,10 @@ export async function createGroup(newGroup) {
         })
 }
 
-export async function getToolProjects(tool,username) {
-   
+export async function getToolProjects(tool, username) {
+
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/tools/${tool}/projects/${username}`
-    
+
     return makeRequest(uri)
         .then(resp => {
             console.log(resp)
@@ -119,7 +119,7 @@ export async function getToolProjects(tool,username) {
         })
 }
 
-export async function addProjectToGroup(groupId, projectId,type) {
+export async function addProjectToGroup(groupId, projectId, type) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/projects`
 
     const body = {

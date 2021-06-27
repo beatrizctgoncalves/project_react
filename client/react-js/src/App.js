@@ -6,6 +6,7 @@ import Navbar from './views/Components/Navbar';
 import Home from './views/GeneralPages/Home';
 import Profile from './views/Profile/Profile';
 import EditProfile from './views/Profile/EditProfile';
+import EditInfo from './views/Profile/EditInfo';
 import SignUp from './views/SignUp/SignUp';
 import SignIn from './views/SignIn/SignIn';
 import Groups from './views/Groups/Groups';
@@ -56,8 +57,8 @@ function App() {
           <Route
             exact path='/sign-in'
           >
-             {window.sessionStorage.getItem('username') ? <Redirect to="/groups" /> :<SignIn /> }
-            
+            {window.sessionStorage.getItem('username') ? <Redirect to="/groups" /> : <SignIn />}
+
           </Route>
 
           <Route
@@ -74,12 +75,17 @@ function App() {
 
           <Route
             exact path='/profile'
-            render={(props) =>  window.sessionStorage.getItem('username') ? <Profile {...props} /> : <Redirect to="/sign-in" />}
+            render={(props) => window.sessionStorage.getItem('username') ? <Profile {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
             exact path='/profile/edit'
             render={(props) => window.sessionStorage.getItem('username') ? <EditProfile {...props} /> : <Redirect to="/sign-in" />}
+          />
+
+          <Route
+            exact path='/profile/edit/info'
+            render={(props) => window.sessionStorage.getItem('username') ? <EditInfo {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
@@ -89,7 +95,7 @@ function App() {
 
           <Route
             exact path="/groups/:id/edit"
-            render={(props) => window.sessionStorage.getItem('username') ? <EditGroup {...props} />: <Redirect to="/sign-in" />}
+            render={(props) => window.sessionStorage.getItem('username') ? <EditGroup {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
@@ -98,7 +104,7 @@ function App() {
           />
           <Route
             exact path="/groups/:id/tools/:tool"
-            render={(props) => window.sessionStorage.getItem('username') ? <ToolsProjects {...props}/>: <Redirect to="/sign-in" />}
+            render={(props) => window.sessionStorage.getItem('username') ? <ToolsProjects {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
@@ -109,8 +115,8 @@ function App() {
           <Route
             exact path='/groups'
           >
-            {sessionStorage.getItem('username') ? <Groups /> :<SignIn /> }
-            
+            {sessionStorage.getItem('username') ? <Groups /> : <SignIn />}
+
           </Route>
 
         </Switch>
