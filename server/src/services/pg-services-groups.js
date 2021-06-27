@@ -34,24 +34,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
-        getUserMemberGroups: function (username) {
-            return databaseUsers.getUser(username)
-            .then(user => user.groupsMember)
-            .then(groupsMember => {
-                let promisses = []
-                groupsMember.forEach(groupMember => {
-                    promisses.push(databaseGroups.getGroupDetails(groupMember))
-                })
-                return Promise.all(promisses)
-            })
-            .then(groups => {
-                    return pgResponses.setSuccessList(
-                        pgResponses.OK,
-                        groups
-                    )
-                })
-        },
-
         getGroupDetails: function (group_id) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(group => {

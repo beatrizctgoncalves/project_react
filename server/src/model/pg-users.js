@@ -30,6 +30,7 @@ module.exports = function (express, services, aux, authization) {
     //router.delete(`/notifications/:username/groups/:group_id`, removeUserNotification);
 
     router.get('/:username', getUser);
+    router.get('/:username/groups/member', getUserMemberGroups); //get user's groups which he is member and not owner
     router.patch('/:username', updateUser);
     router.delete('/:username', deleteUser);
 
@@ -87,6 +88,13 @@ module.exports = function (express, services, aux, authization) {
     function getUser(req, res) {
         aux.promisesAsyncImplementation(
             services.getUser(req.params.username),
+            res
+        );
+    }
+
+    function getUserMemberGroups(req, res) {
+        aux.promisesAsyncImplementation(
+            services.getUserMemberGroups(req.params.username),
             res
         );
     }
