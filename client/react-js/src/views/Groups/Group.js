@@ -162,6 +162,7 @@ function Group(props) {
                 })
             })
     }
+    
 
 
     function handleToEditProjectsChange() {
@@ -175,7 +176,7 @@ function Group(props) {
     }
    
     function handleSeeSprints() {
-        window.location.replace(`/groups/${id}/sprints`)
+        window.location.replace(`/groups/${id}/rankings`)
     }
 
     const classes = useStyles();
@@ -316,7 +317,7 @@ function Group(props) {
 
                                     <Button variant="contained" color="primary" className={classes.margin} onClick={handleSeeSprints}>
                                         <i className="bi bi-eyeglasses">&nbsp;&nbsp;</i>
-                                        Sprints
+                                        Rankings
                                     </Button>
                                 </Box>
 

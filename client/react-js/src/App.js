@@ -18,7 +18,7 @@ import Terms from './views/GeneralPages/Terms';
 import Notifications from './views/Notifications/Notifications';
 import Members from './views/Groups/Members/Members';
 import ToolsProjects from './views/ToolsProjects/ToolsProjects';
-
+import Sprint from './views/Sprint/SprintView';
 
 function App() {
   return (
@@ -102,9 +102,14 @@ function App() {
           />
 
           <Route
-            exact path="/groups/:id/members"
-            render={(props) => <Members {...props} />}
+            exact path="/groups/:id/rankings"
+            render={(props) => window.sessionStorage.getItem('username') ?<Sprint {...props} />:<Redirect to="/sign-in" />}
           />
+
+            <Route
+            exact path="/groups/:id/members"
+            render={(props) => window.sessionStorage.getItem('username') ? <Members {...props} />: <Redirect to="/sign-in" />}
+          />  
 
           <Route
             exact path='/groups'

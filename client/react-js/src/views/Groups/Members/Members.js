@@ -91,7 +91,7 @@ function Members(props) {
         removeMemberFromGroup(id, member)
             .then(resp => {
                 let aux = group.members.filter(m => {
-                    if (m != member) {
+                    if (m !== member) {
                         return m
                     }
                 })
@@ -120,8 +120,9 @@ function Members(props) {
             .then(resp => {
                 getSpecificGroup(group.id)
                     .then(groupObj => {
-                        let aux = groupObj.message.members
-                        aux.push(newMember)
+                        console.log(groupObj)
+                        let aux = groupObj.message
+                        aux.members.push(newMember)
                         setGroup(aux)
                         setAddMembers(false)
                     })
