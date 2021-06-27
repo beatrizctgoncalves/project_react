@@ -53,7 +53,7 @@ function database(pgResponses, requests) {
             return requests.makeFetchElastic(requests.index.groups.concat(`_doc/${group_id}?refresh=true`), requests.arrayMethods.DELETE, null)
                 .then(body => {
                     if (body.result === 'deleted') return body._id
-                    else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG)
+                    else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG)
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
         },
@@ -73,7 +73,7 @@ function database(pgResponses, requests) {
                 .then(body => {
                     if (body.result == 'updated') {
                         return body._id;
-                    } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG);
+                    } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
         },

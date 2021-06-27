@@ -64,7 +64,7 @@ function apiJira() {
             .then(body => body.map(project =>{
                 return {
                     "id": project.id,
-                    "name": project.name
+                    "title": project.name
                 }
             }))    
             .catch(error => pgResponses.resolveErrorApis(error))

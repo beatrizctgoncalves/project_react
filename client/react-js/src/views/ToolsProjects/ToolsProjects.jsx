@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { addProjectToGroup, getToolProjects } from '../Services/BasicService';
+import { addProjectToGroup, getToolProjects,getSpecificGroup } from '../Services/BasicService';
 import { ToastContainer, toast } from 'react-toastify';
 import { Button,Container, GridList,CssBaseline, GridListTile, Card, CardHeader, CardContent } from '@material-ui/core';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -72,6 +72,7 @@ function ToolsProjects(props){
     const { tool } = props.match.params
     const { id } = props.match.params
     const[availableProjects,setavailableProjects] = useState([])
+    const [group, setGroup] = useState({})
 
 
     useEffect(()=>{
@@ -92,13 +93,36 @@ function ToolsProjects(props){
             })
 
         })
+
+
+    },[])
+
+
+    useEffect(()=>{
+        getSpecificGroup(id)
+        .then(resp => setGroup(resp.message))
+        .catch(err => {
+            console.log(err)
+            toast.error(err.body, {
+                position: "top-left",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
+
+            //setError({ errorMessage: err.body, shouldShow: true })
+        })
     },[])
 
 
 
     function handleAddProjectToGroup(projId){
-        
-        console.log(id)
+        const user_index = group.projects.findIndex(p => p.id === projId)  
+        if (user_index === -1) { 
+            console.log(id)
         console.log(projId)
         console.log(tool)
         addProjectToGroup(id,projId,tool)
@@ -117,6 +141,21 @@ function ToolsProjects(props){
                 })
 
             })
+        }
+        else{
+            toast("this project already exists", {
+                position: "top-left",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            })
+        }
+      
+        
+        
 
     }
     const classes = useStyles();

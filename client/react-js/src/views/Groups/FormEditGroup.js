@@ -11,10 +11,6 @@ function FormEditGroup(props) {
 
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
-    const [groups, setGroups] = useState([])
-
-    const [toEdit, setToEdit] = useState(false)
-
     function handleGroupEdit() {
         editGroup(id, updatedGroup)
             .then(resp => {

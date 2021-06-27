@@ -151,7 +151,7 @@ function Profile() {
                                 </Typography>
                                 {user.info ? user.info.map((info) => (
                                     <Typography component="p" variant="subtitle1" align="center" key={info}>
-                                        {info}
+                                        {info.type}
                                     </Typography>
                                 )) : ""}
                             </CardContent>
