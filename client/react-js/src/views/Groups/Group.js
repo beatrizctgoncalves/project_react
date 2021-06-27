@@ -79,7 +79,6 @@ function Group(props) {
     const [newMember, setNewMember] = useState("")
 
     const [toAddProjects, setAddProjects] = useState(false)
-    const [newProject, setNewProject] = useState("")
     const owner = window.sessionStorage.getItem("username")
 
 
@@ -167,10 +166,6 @@ function Group(props) {
     }
 
 
-    const handleProject = event => {
-        setNewProject(event.target.value)
-    }
-
     function handleToEditProjectsChange() {
         if (toAddProjects) {
             setAddProjects(false)
@@ -180,31 +175,7 @@ function Group(props) {
         }
 
     }
-    /*
-
-    function handleAddProjects() {
-        addProjectToGroup(id, newProject)
-            .then(resp => {
-                let aux = group;
-                aux.members.push(newProject)
-                setGroup(aux)
-                setAddProjects(false)
-            })
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
-    }
-    */
-
+   
     function handleSeeSprints() {
         window.location.replace(`/groups/${id}/sprints`)
     }
