@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { logout } from '../Services/BasicService';
+import { logout } from '../Services/authenticationService';
 
 
 function Navbar() {
@@ -14,7 +14,6 @@ function Navbar() {
                 window.sessionStorage.removeItem("username");
                 console.log(window.sessionStorage.getItem("username")?"yes":"no")
                 window.location.replace('/');
-                
             })
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }

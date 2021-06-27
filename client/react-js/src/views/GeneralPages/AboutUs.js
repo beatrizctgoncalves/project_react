@@ -44,7 +44,7 @@ function About() {
                     <GridListTile cols={1} spacing={2}>
                         <Card align="center">
                             <br />
-                            <i class="bi-check-circle-fill fs-1 text-primary"></i>
+                            <i className="bi-check-circle-fill fs-1 text-primary"></i>
                             <Typography component="h4" variant="bolt" align="center" color="primary">Up to Date</Typography>
                             <CardContent>
                                 <Typography component="p" variant="subtitle1" align="center">

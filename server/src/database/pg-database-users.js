@@ -39,7 +39,6 @@ function database(pgResponses, requests) {
                 "script": {
                     "source": "if(params.name != null) ctx._source.name = params.name; " +
                         "if(params.surname != null) ctx._source.surname = params.surname; " +
-                        "if(params.email != null) ctx._source.email = params.email; " +
                         "if(params.info != null) ctx._source.info = params.info;" +
                         "if(params.avatar != null) ctx._source.avatar = params.avatar;" +
                         "if(params.notifications != null) ctx._source.notifications = params.notifications;",
@@ -51,6 +50,7 @@ function database(pgResponses, requests) {
                 .then(userObj => {
                     return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {
+                            console.log(userObj.avatar)
                             if (body.result == 'updated') {
                                 return body._id;
                             } else {

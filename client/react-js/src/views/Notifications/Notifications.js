@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Components/Footer.js';
-import { Button, Container, CssBaseline, Grid, GridList, GridListTile, Box, Card, CardHeader, CardContent, Link } from '@material-ui/core';
-import { getUserNotifications, removeUserNotification } from '../Services/BasicService';
+import { Button, Container, CssBaseline, Grid, GridListTile, Box, Card, CardHeader, CardContent, Link } from '@material-ui/core';
+import { getUserNotifications, removeUserNotification, getSpecificGroup } from '../Services/BasicService';
 import Alert from 'react-bootstrap/Alert'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -88,11 +88,11 @@ function Notifications() {
             })
     }, [])
 
-    function handleNotificationReject(notificationId) {
-        removeUserNotification(username, notificationId)
+    function handleNotificationReject(id) {
+        removeUserNotification(username, id)
             .then(resp => {
                 let aux = notifications.filter(notification => {
-                    if (notification.notification_id !== notificationId) {
+                    if (notification.group_id !== id) {
                         return notification
                     }
                 })
@@ -104,8 +104,13 @@ function Notifications() {
             })
     }
 
-    function handleNotificationAccept() {
+    function handleNotificationAccept(id) {
         //TODO
+    }
+
+    function handleGroupName(id) {
+        getSpecificGroup(id)
+            .then(resp => setNotifications(resp.message.id))
     }
 
 
@@ -148,16 +153,16 @@ function Notifications() {
                                     <Card align="center">
                                         <CardHeader
                                             title={notification.manager}
-                                            subtitle={notification.manager}
+                                            subtitle={handleGroupName.bind(null, notification.group_id)}
                                             subtitleTypographyProps={{ align: 'center' }}
                                             titleTypographyProps={{ align: 'center' }}
                                             className={classes.cardHeader}
                                         />
                                         <CardContent>
-                                            <ColorButton variant="contained" color="primary" className={classes.margin} onClick={'handleEdit.bind(null, group.id)'}>
-                                                <i class="bi bi-check-lg"></i>
+                                            <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleNotificationAccept.bind(null, notification.group_id)}>
+                                                <i className="bi bi-check-lg"></i>
                                             </ColorButton>
-                                            <ColorButton variant="contained" color="primary" className={classes.margin} onClick={'handleGroupDelete.bind(null, group.id)'}>
+                                            <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleNotificationReject.bind(null, notification.group_id)}>
                                                 <i className="bi bi-trash-fill"></i>
                                             </ColorButton>
                                         </CardContent>

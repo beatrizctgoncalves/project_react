@@ -31,7 +31,6 @@ module.exports = function (express, services, aux, authization) {
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
-    router.patch('/:username/avatar', updateUserAvatar);
     router.delete('/:username', deleteUser);
 
     return router;
@@ -91,15 +90,9 @@ module.exports = function (express, services, aux, authization) {
     }
 
     function updateUser(req, res) {
+        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.updateUser(req.params.username, req.body.updatedInfo),
-            res
-        );
-    }
-
-    function updateUserAvatar(req, res) {
-        aux.promisesAsyncImplementation(
-            services.updateUserAvatar(req.params.username, req.body.updatedAvatar),
             res
         );
     }

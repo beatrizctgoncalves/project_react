@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import { signUpFetch } from '../Services/authenticationService';
+import { signUpFetch, loginFetch } from '../Services/authenticationService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react'
@@ -16,8 +16,6 @@ function FormSignUp() {
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const handleChange = (event) => {
-        console.log(event.target.value)
-        console.log(userToCreate)
         const { name, value } = event.target
         setUserToCreate({ ...userToCreate, [name]: value })
     }
@@ -26,7 +24,6 @@ function FormSignUp() {
         signUpFetch(userToCreate)
             .then(resp => window.location.assign('/sign-in'))
             .catch(err => {
-                console.log(err.body)
                 setError({ errorMessage: err.body, shouldShow: true })
                 toast.error(err.body,{
                     position: "top-left",

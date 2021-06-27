@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUser, updateUserAvatar } from '../Services/BasicService.js';
+import { getUser, updateUser } from '../Services/BasicService.js';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Footer from '../Components/Footer.js';
@@ -68,7 +68,7 @@ function Profile() {
     }
 
     function handleUpateAvatar() {
-        updateUserAvatar(username, newAvatar)
+        updateUser(username, { avatar: newAvatar })
             .then(resp => {
                 user.avatar = newAvatar;
                 setNewAvatar(user.avatar)
@@ -80,7 +80,6 @@ function Profile() {
     const handleURL = event => {
         setNewAvatar(event.target.value)
     }
-
 
     return (
         <Container component="main" maxWidth="xs">
@@ -108,10 +107,10 @@ function Profile() {
                                                     margin="normal"
                                                     required
                                                     fullWidth
-                                                    id="username"
-                                                    label="Username"
-                                                    name="username"
-                                                    autoComplete="username"
+                                                    id="url"
+                                                    label="URL (.png)"
+                                                    name="url"
+                                                    autoComplete="url"
                                                     autoFocus
                                                     onChange={handleURL}
                                                 />
@@ -131,13 +130,14 @@ function Profile() {
                                             </Box> : ""}
                                         <Box>
                                             <Button onClick={handleToEditAvatarChange}>
-                                                <img src={`${user.avatar}`}
+                                                {/*`${user.avatar}`*/}
+                                                <img src={`google.png`}
                                                     width="auto" height="150" className={classes.avatar}></img>
                                             </Button>
                                         </Box>
                                     </>
                                 }
-                                subheader={user.username}
+                                subheader={username}
                                 titleTypographyProps={{ align: 'center' }}
                                 subheaderTypographyProps={{ align: 'center' }}
                                 className={classes.cardHeader}

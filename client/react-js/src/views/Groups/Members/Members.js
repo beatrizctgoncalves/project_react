@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { addMemberToGroup, getSpecificGroup, addProjectToGroup,getUser } from '../Services/BasicService.js';
-import Footer from '../Components/Footer.js';
-import GoBack from '../Components/GoBack';
+import React, { useEffect, useState, useParams } from 'react'
+import { addMemberToGroup, getSpecificGroup, addProjectToGroup } from '../../Services/BasicService.js';
+import Alert from 'react-bootstrap/Alert'
+import Footer from '../../Components/Footer';
+import GoBack from '../../Components/GoBack';
 import { Link } from 'react-router-dom';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { ToastContainer, toast } from 'react-toastify';
 import { green, purple } from '@material-ui/core/colors';
 import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box } from '@material-ui/core';
 
@@ -70,68 +70,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Group(props) {
+function Member(props) {
     const [group, setGroup] = useState({})
-    const [user, setUser] = useState({})
     const { id } = props.match.params
+    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const [toAddMembers, setAddMembers] = useState(false)
     const [newMember, setNewMember] = useState("")
 
     const [toAddProjects, setAddProjects] = useState(false)
     const [newProject, setNewProject] = useState("")
-    const owner = window.sessionStorage.getItem("username")
-
-
-
-    
 
     useEffect(() => {
         getSpecificGroup(id)
             .then(resp => setGroup(resp.message))
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-
-                //setError({ errorMessage: err.body, shouldShow: true })
-            })
+            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }, [])
-
-    useEffect(()=>{
-           
-            getUser(owner)
-            .then(resp => {
-                console.log(resp.message)
-                
-                setUser(resp.message)
-            })
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-    
-            })
-        
-    }
-    ,[])
-
-
-
 
 
     const handleMember = event => {
@@ -142,7 +96,6 @@ function Group(props) {
         if (toAddMembers) {
             setAddMembers(false)
         } else {
-            console.log()
             setAddMembers(true)
         }
     }
@@ -152,18 +105,7 @@ function Group(props) {
             .then(resp => {
                 setAddMembers(false)
             })
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
+            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }
 
 
@@ -176,11 +118,8 @@ function Group(props) {
             setAddProjects(false)
         } else {
             setAddProjects(true)
-            console.log(user)
         }
-
     }
-    /*
 
     function handleAddProjects() {
         addProjectToGroup(id, newProject)
@@ -190,20 +129,8 @@ function Group(props) {
                 setGroup(aux)
                 setAddProjects(false)
             })
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
+            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }
-    */
 
     function handleSeeSprints() {
         window.location.replace(`/groups/${id}/sprints`)
@@ -217,20 +144,23 @@ function Group(props) {
             <div className={classes.paper}>
                 <br /><br />
                 <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">Your Group Details</h2>
+                    <h2 className="text-center mt-0">{group.name}</h2>
                     <hr className="divider" />
                 </div>
-                <ToastContainer />
+                {
+                    error.shouldShow &&
+                    <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
+                        {error.errorMessage}
+                    </Alert>
+                }
                 <br />
 
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Card align="center">
                             <CardHeader
-                                title={group.name}
-                                subheader={<Link to={`/groups/${group.id}/edit`}><i className="bi bi-pencil-fill" /></Link>}
+                                title={'Members'}
                                 titleTypographyProps={{ align: 'center' }}
-                                subheaderTypographyProps={{ align: 'center' }}
                                 className={classes.cardHeader}
                             />
                             <CardContent>
@@ -272,7 +202,7 @@ function Group(props) {
                                             {group.projects ? group.projects.map((project) => (
                                                 <ul className={classes.listItem} key={project}>
                                                     <Typography variant="body2" color="textSecondary">
-                                                        {project.title}
+                                                        {project}
                                                     </Typography><br />
                                                 </ul>
                                             )) : ""}
@@ -319,26 +249,27 @@ function Group(props) {
                                         <Box mt={4}>
                                             <h3 className="h4 mb-2">Insert New Projects</h3>
                                             <br />
-                                            <ul className={classes.listItem}>
-                                                <Typography variant="body1">
-                                                    Projects
-                                                </Typography>
-
-                                        <div>
-                                            {user.info ? user.info.map((info) => (
-                                                <ul className={classes.listItem} key={info}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        <Link to ={`/groups/${id}/tools/${info.type}`}>{info.type}</Link>
-                                                    </Typography><br />
-                                                </ul>
-                                            )) : ""}
-                                        </div>
-                                    </ul>
-                                            
-                                            
-                                            
+                                            <input
+                                                variant="outlined"
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                type="text"
+                                                name="newProject"
+                                                className="form-control"
+                                                placeholder="Enter New Project Identifier"
+                                                value={newProject}
+                                                onChange={handleProject}
+                                            />
                                             <br />
-                                        
+                                            <ColorButton
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.margin}
+                                                onClick={handleAddProjects}
+                                            >
+                                                Add Project
+                                            </ColorButton>
                                         </Box> : ""}
                                     <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
                                         <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
@@ -370,18 +301,4 @@ function Group(props) {
     )
 }
 
-export default Group
-/*
-<input
-                                                variant="outlined"
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                type="text"
-                                                name="newProject"
-                                                className="form-control"
-                                                placeholder="Enter New Project Identifier"
-                                                value={newProject}
-                                                onChange={handleProject}
-                                            />
-                                            */
+export default Member
