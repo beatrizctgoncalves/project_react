@@ -42,7 +42,9 @@ function database(pgResponses, requests) {
                     if (body.found) {
                         body._source.id = body._id;
                         return body._source;
-                    } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);
+                    } else {
+                        return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG);
+                    }
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
         },
@@ -159,7 +161,7 @@ function database(pgResponses, requests) {
                     }
                 }
             });
-            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), arrayMethods.POST, requestBody)
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },

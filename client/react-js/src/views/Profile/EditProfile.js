@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
 function EditProfile() {
     const username = window.sessionStorage.getItem("username")
    

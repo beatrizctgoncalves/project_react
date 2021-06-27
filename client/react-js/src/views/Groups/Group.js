@@ -99,8 +99,6 @@ function Group(props) {
                     draggable: true,
                     progress: undefined,
                 })
-
-                //setError({ errorMessage: err.body, shouldShow: true })
             })
     }, [])
 
@@ -228,7 +226,7 @@ function Group(props) {
                                                 <ul className={classes.listItem} key={member}>
                                                     <Typography variant="body2" color="textSecondary">
                                                         {member}
-                                                    </Typography><br />
+                                                    </Typography>
                                                 </ul>
                                             )) : ""}
                                         </div>

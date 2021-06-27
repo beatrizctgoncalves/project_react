@@ -2,7 +2,8 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { green, purple } from '@material-ui/core/colors';
 import { Typography, Box, Button, TextField, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
-import { deleteUser, getUser } from '../Services/BasicService.js';
+import { deleteUser, getUser, updateUser } from '../Services/BasicService.js';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const ColorButton = withStyles((theme) => ({
@@ -72,9 +73,29 @@ function FormProfile() {
         }
     }
 
-    const [profile, setProfile] = useState([])
-    const [edit, setEdit] = useState(false)
     const username = window.sessionStorage.getItem("username")
+    const [updatedUser, setUpdatedUser] = useState({})
+    function handleEdit() {
+        updateUser(username, updatedUser)
+            .then(resp => {
+                window.location.assign(`/profile`)
+            })
+            .catch(err => {
+                setError({ errorMessage: err.body, shouldShow: true });
+                toast.error(err.body)
+            })
+    }
+
+    const handleName = (event) => {
+        setUpdatedUser({ ...updatedUser, name: event.target.value })
+    }
+
+    const handleSurname = event => {
+        setUpdatedUser({ ...updatedUser, surname: event.target.value })
+    }
+
+/*
+    const [profile, setProfile] = useState([])
     function handleDelete() {
         deleteUser(username)
             .then(resp => getUser(username))
@@ -85,7 +106,7 @@ function FormProfile() {
             .catch(err => {
                 setError({ errorMessage: err.body, shouldShow: true });
             })
-    }
+    }*/
 
     const classes = useStyles();
 
@@ -128,6 +149,7 @@ function FormProfile() {
                                         name="username"
                                         label="Username"
                                         fullWidth
+                                        onChange={handleName}
                                     />
                                 </Grid>
 
@@ -137,6 +159,7 @@ function FormProfile() {
                                         name="atoken"
                                         label="AToken"
                                         fullWidth
+                                        onChange={handleSurname}
                                     />
                                 </Grid>
                                 <br /><br />
@@ -191,14 +214,14 @@ function FormProfile() {
                             fullWidth
                             variant="contained"
                             color="primary"
-                            onClick={'handleUpateAvatar'}
+                            onClick={handleEdit}
                         >
                             Save
                         </Button>
                     </Box>
 
                     <Box mt={9}>
-                        <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleDelete}>
+                        <ColorButton variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
                             <i className="bi bi-trash-fill">&nbsp;&nbsp;</i>
                             Delete Profile Definitively
                         </ColorButton>

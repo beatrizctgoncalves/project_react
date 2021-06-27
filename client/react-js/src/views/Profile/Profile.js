@@ -48,9 +48,7 @@ function Profile() {
 
     useEffect(() => {
         getUser(username)
-            .then(resp => {
-                setUser(resp.message)
-            })
+            .then(resp => setUser(resp.message))
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }, [])
 
