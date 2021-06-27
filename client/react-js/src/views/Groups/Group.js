@@ -74,8 +74,9 @@ const useStyles = makeStyles((theme) => ({
 
 function Group(props) {
     const [group, setGroup] = useState({})
+    const [user,setUser] = useState({})
     const { id } = props.match.params
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
+  //  const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const [toAddMembers, setAddMembers] = useState(false)
     const [newMember, setNewMember] = useState("")
@@ -102,6 +103,12 @@ function Group(props) {
                 //setError({ errorMessage: err.body, shouldShow: true })
             })
     }, [])
+
+    useEffect(()=>{
+        getUser()
+
+
+    },[])
 
 
     const handleMember = event => {
@@ -245,7 +252,7 @@ function Group(props) {
                                             {group.projects ? group.projects.map((project) => (
                                                 <ul className={classes.listItem} key={project}>
                                                     <Typography variant="body2" color="textSecondary">
-                                                        {project}
+                                                        {project.title}
                                                     </Typography><br />
                                                 </ul>
                                             )) : ""}

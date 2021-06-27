@@ -7,7 +7,7 @@ const request = (url, init) => fetch(url, init)
             console.log(resp)
           
             const jsonResponse = await resp.json()
-            
+            console.log(jsonResponse)
             if (resp.ok) {
                 return jsonResponse
             }
