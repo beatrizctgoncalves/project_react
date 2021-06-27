@@ -48,7 +48,9 @@ function Profile() {
 
     useEffect(() => {
         getUser(username)
-            .then(resp => setUser(resp.message[0]))
+            .then(resp => {
+                setUser(resp.message)
+            })
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }, [])
 
@@ -151,7 +153,7 @@ function Profile() {
                                 </Typography>
                                 {user.info ? user.info.map((info) => (
                                     <Typography component="p" variant="subtitle1" align="center" key={info}>
-                                        {info}
+                                        {info.type}
                                     </Typography>
                                 )) : ""}
                             </CardContent>
