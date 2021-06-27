@@ -4,7 +4,6 @@ function services(databaseGroup, databaseUsers, pgResponses) {
     const serv = {    
         
         getProjectsOfTool: function(toolName, userId){
-            console.log("getProjectsTool")
             let api = undefined
             try{
                 api = require("./plugins/" + toolName + "/api")()
@@ -14,15 +13,9 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                     "Tool is not implemented in this server"
                 )
             }
-            let Atoken = undefined
             return databaseUsers.getUser(userId)
                 .then(user =>  user.info.filter(i => i.type == toolName)[0])
-                .then(info => {
-                    console.log("info")
-                    console.log(info)
-                    Atoken = info.AToken
-                    return api.getProjectsFromUsername(info.username,Atoken)
-                })
+                .then(info => api.getProjectsFromUsername(info.username,info.AToken))
                 .then(projects => {
                     return pgResponses.setSuccessList(
                         pgResponses.OK,

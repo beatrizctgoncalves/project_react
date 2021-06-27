@@ -90,7 +90,6 @@ module.exports = function (express, services, aux, authization) {
     }
 
     function updateUser(req, res) {
-        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.updateUser(req.params.username, req.body.updatedInfo),
             res

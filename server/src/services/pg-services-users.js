@@ -56,8 +56,8 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
         },
 
         updateUser: function (username, updatedInfo) {
-            if (updatedAvatar) {  //verify if avatar is a valid link
-                if (updatedAvatar.substr(updatedAvatar.length - 4) != '.png') {  //verify if avatar is a valid link
+            if (updatedInfo.updatedAvatar) {  //verify if avatar is a valid link
+                if (updatedInfo.updatedAvatar.substr(updatedInfo.updatedAvatar.length - 4) != '.png') {  //verify if avatar is a valid link
                     return pgResponses.setError(
                         pgResponses.BAD_REQUEST,
                         pgResponses.BAD_REQUEST_AVATAR_MSG
