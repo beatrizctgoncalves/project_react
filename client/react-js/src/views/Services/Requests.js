@@ -4,27 +4,27 @@ const produceInit = (body, met) => ({ ...DEFAULT_OPTIONS(met), body: JSON.string
 
 const request = (url, init) => fetch(url, init)
     .then(async resp => {
-            const jsonResponse = await resp.json()
             console.log(resp)
+          
+            const jsonResponse = await resp.json()
+            console.log(jsonResponse)
             if (resp.ok) {
                 return jsonResponse
             }
             console.log(jsonResponse)
             //const error = new Error(jsonResponse.error)
+            error.status = resp.status
+            console.log(error.status)
+            if (error.status === 403) {
+                window.location.assign('/')
+            }
             const error = Promise.reject({
                 status: jsonResponse.error.status,
                 body: jsonResponse.error.body
             })
-            error.status = resp.status
-            if (error.status === 403) {
-                window.location.assign('/')
-            }
             console.log(error.status)
             return error
-      
-
-       
-    }).catch(err => console.log(err))
+    })
 
 
 const getRequest = url => request(url, DEFAULT_OPTIONS('GET'));

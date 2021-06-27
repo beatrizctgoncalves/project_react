@@ -3,8 +3,7 @@ import Footer from '../Components/Footer.js';
 import { Link } from 'react-router-dom';
 import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
 import { Button, Container, CssBaseline, Grid, GridList, GridListTile, Box, Card, CardHeader, CardContent } from '@material-ui/core';
-import Alert from 'react-bootstrap/Alert'
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoBack from '../Components/GoBack';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -83,6 +82,8 @@ function Groups() {
         getUserGroups(owner)
             .then(resp => setGroups(resp.message))
             .catch(err => {
+                console.log("err")
+                console.log(err)
                 setError({ errorMessage: err.body, shouldShow: true });
                 toast.error(err.body, {
                     position: "top-left",
@@ -147,17 +148,6 @@ function Groups() {
         window.location.replace(`/groups/${id}/edit`)
     }
 
-    function notify() {
-        toast("Wow so easy!", {
-            position: "top-left",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        })
-    }
 
     const classes = useStyles();
     return (
@@ -169,12 +159,8 @@ function Groups() {
                     <h2 className="text-center mt-0">Your Groups</h2>
                     <hr className="divider" />
                 </div>
-                {
-                    error.shouldShow &&
-                    <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
-                        {error.errorMessage}
-                    </Alert>
-                }
+                <ToastContainer/>
+                 
                 <br />
 
                 <GridList cellHeight={160} className={classes.gridList} cols={5}>

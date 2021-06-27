@@ -90,10 +90,17 @@ function services(database, databaseUsers, pgResponses) {
         addProjectToGroup: function (group_id, Pid, type) {
             //TODO needs "Other" type
             const x = require("./plugins/" + type + "/api")()
-
             return database.getGroupDetails(group_id)
                 .then(groupObj => databaseUsers.getUser(groupObj.owner))
-                .then(user => user.info.filter(tool => tool.type = type)[0])
+                .then(user => {
+                    let toRet
+                    user.info.forEach(tool => {
+                        if(tool.type == type) {
+                            toRet = tool
+                        }
+                    })
+                    return toRet
+                })
                 .then(tool => x.validateProject(Pid, tool.AToken))
                 .then(validatedObj => {
                     return database.getGroupDetails(group_id)

@@ -7,9 +7,12 @@ function Navbar() {
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     function handleLogout() {
+        console.log("logOut handle enter")
+
         logout()
             .then(resp => {
-                window.sessionStorage.removeItem('username');
+                window.sessionStorage.removeItem("username");
+                console.log(window.sessionStorage.getItem("username")?"yes":"no")
                 window.location.replace('/');
             })
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))

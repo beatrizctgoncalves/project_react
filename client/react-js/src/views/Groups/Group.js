@@ -5,6 +5,7 @@ import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
 import { Link } from 'react-router-dom';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { ToastContainer, toast } from 'react-toastify';
 import { green, purple } from '@material-ui/core/colors';
 import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box } from '@material-ui/core';
 
@@ -73,18 +74,31 @@ const useStyles = makeStyles((theme) => ({
 function Group(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const [toAddMembers, setAddMembers] = useState(false)
     const [newMember, setNewMember] = useState("")
 
     const [toAddProjects, setAddProjects] = useState(false)
     const [newProject, setNewProject] = useState("")
+    
 
     useEffect(() => {
         getSpecificGroup(id)
             .then(resp => setGroup(resp.message))
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+
+                //setError({ errorMessage: err.body, shouldShow: true })
+            })
     }, [])
 
 
@@ -105,7 +119,18 @@ function Group(props) {
             .then(resp => {
                 setAddMembers(false)
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
 
@@ -129,7 +154,18 @@ function Group(props) {
                 setGroup(aux)
                 setAddProjects(false)
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
     function handleSeeSprints() {
@@ -147,12 +183,7 @@ function Group(props) {
                     <h2 className="text-center mt-0">Your Group Details</h2>
                     <hr className="divider" />
                 </div>
-                {
-                    error.shouldShow &&
-                    <Alert variant={'warning'} onClose={() => setError(false)} dismissible>
-                        {error.errorMessage}
-                    </Alert>
-                }
+                <ToastContainer />
                 <br />
 
                 <Grid container spacing={3}>
@@ -204,7 +235,7 @@ function Group(props) {
                                             {group.projects ? group.projects.map((project) => (
                                                 <ul className={classes.listItem} key={project}>
                                                     <Typography variant="body2" color="textSecondary">
-                                                        {project}
+                                                        {project.title}
                                                     </Typography><br />
                                                 </ul>
                                             )) : ""}

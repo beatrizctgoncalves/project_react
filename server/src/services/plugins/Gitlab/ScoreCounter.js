@@ -24,6 +24,7 @@ module.exports = {
                             Points -=5
                         issue.assignees.forEach(assignee => {
                             if(memberInfoMapGitlab.has(assignee)){
+                                console.log(Points)
                                 let aux = memberInfoMapGitlab.get(assignee)
                                 aux.Points += Points
                                 memberInfoMapGitlab.set(assignee,aux)

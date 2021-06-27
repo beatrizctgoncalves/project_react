@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUser, updateUserAvatar } from '../Services/BasicService.js';
+import { getUser, updateUser } from '../Services/BasicService.js';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Footer from '../Components/Footer.js';
@@ -48,9 +48,7 @@ function Profile() {
 
     useEffect(() => {
         getUser(username)
-            .then(resp => {
-                setUser(resp.message[0])
-            })
+            .then(resp => setUser(resp.message[0]))
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }, [])
 
@@ -58,15 +56,6 @@ function Profile() {
 
     const [newAvatar, setNewAvatar] = useState("")
     const [toUpdateAvatar, setUpdatedAvatar] = useState(false)
-
-
-    useEffect(() => {
-        getUser(username)
-            .then(resp => {
-                setUser(resp.message[0])
-            })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }, [])
 
     function handleToEditAvatarChange() {
         if (toUpdateAvatar) {
@@ -77,8 +66,7 @@ function Profile() {
     }
 
     function handleUpateAvatar() {
-        console.log(newAvatar)
-        updateUserAvatar(username, newAvatar)
+        updateUser(username, { avatar: newAvatar })
             .then(resp => {
                 user.avatar = newAvatar;
                 setNewAvatar(user.avatar)
@@ -140,13 +128,14 @@ function Profile() {
                                             </Box> : ""}
                                         <Box>
                                             <Button onClick={handleToEditAvatarChange}>
-                                                <img src={`${user.avatar}`}
+                                                {/*`${user.avatar}`*/}
+                                                <img src={`google.png`}
                                                     width="auto" height="150" className={classes.avatar}></img>
                                             </Button>
                                         </Box>
                                     </>
                                 }
-                                subheader={user.username}
+                                subheader={username}
                                 titleTypographyProps={{ align: 'center' }}
                                 subheaderTypographyProps={{ align: 'center' }}
                                 className={classes.cardHeader}
@@ -170,7 +159,7 @@ function Profile() {
                             <CardContent>
                                 <Box mt={4}>
                                     <Button variant="contained" color="primary" className={classes.margin} href={'/profile/edit'}>
-                                        <i className="bi bi-pencil-fill"/>
+                                        <i className="bi bi-pencil-fill" />
                                     </Button>
                                 </Box>
                             </CardContent>

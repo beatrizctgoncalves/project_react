@@ -31,7 +31,6 @@ module.exports = function (express, services, aux, authization) {
 
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
-    router.patch('/:username/avatar', updateUserAvatar);
     router.delete('/:username', deleteUser);
 
     return router;
@@ -55,9 +54,10 @@ module.exports = function (express, services, aux, authization) {
 
     function logOut(req, res) {
         if (!req.isAuthenticated()) {
-            res.send("Successfull logout")
+            res.json({ message: "Successfull logout SignIn" })
         } else {
-            res.send("Something wrong with logout")
+            
+            res.json({ message: "Something wrong with logout" })
         }
     }
 
@@ -90,15 +90,9 @@ module.exports = function (express, services, aux, authization) {
     }
 
     function updateUser(req, res) {
+        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.updateUser(req.params.username, req.body.updatedInfo),
-            res
-        );
-    }
-
-    function updateUserAvatar(req, res) {
-        aux.promisesAsyncImplementation(
-            services.updateUserAvatar(req.params.username, req.body.updatedAvatar),
             res
         );
     }
