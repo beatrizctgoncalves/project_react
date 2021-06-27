@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useParams } from 'react'
-import { addMemberToGroup, getSpecificGroup, addProjectToGroup } from '../Services/BasicService.js';
+import { addMemberToGroup, getSpecificGroup, addProjectToGroup } from '../../Services/BasicService.js';
 import Alert from 'react-bootstrap/Alert'
-import Footer from '../Components/Footer.js';
-import GoBack from '../Components/GoBack';
+import Footer from '../../Components/Footer';
+import GoBack from '../../Components/GoBack';
 import { Link } from 'react-router-dom';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { green, purple } from '@material-ui/core/colors';
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Group(props) {
+function Member(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
@@ -144,7 +144,7 @@ function Group(props) {
             <div className={classes.paper}>
                 <br /><br />
                 <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">Your Group Details</h2>
+                    <h2 className="text-center mt-0">{group.name}</h2>
                     <hr className="divider" />
                 </div>
                 {
@@ -159,10 +159,8 @@ function Group(props) {
                     <Grid item xs={12}>
                         <Card align="center">
                             <CardHeader
-                                title={group.name}
-                                subheader={<Link to={`/groups/${group.id}/edit`}><i className="bi bi-pencil-fill" /></Link>}
+                                title={'Members'}
                                 titleTypographyProps={{ align: 'center' }}
-                                subheaderTypographyProps={{ align: 'center' }}
                                 className={classes.cardHeader}
                             />
                             <CardContent>
@@ -303,4 +301,4 @@ function Group(props) {
     )
 }
 
-export default Group
+export default Member

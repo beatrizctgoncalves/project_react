@@ -77,6 +77,7 @@ function Profile() {
     }
 
     function handleUpateAvatar() {
+        console.log(newAvatar)
         updateUserAvatar(username, newAvatar)
             .then(resp => {
                 user.avatar = newAvatar;
@@ -89,7 +90,6 @@ function Profile() {
     const handleURL = event => {
         setNewAvatar(event.target.value)
     }
-
 
     return (
         <Container component="main" maxWidth="xs">
@@ -117,10 +117,10 @@ function Profile() {
                                                     margin="normal"
                                                     required
                                                     fullWidth
-                                                    id="username"
-                                                    label="Username"
-                                                    name="username"
-                                                    autoComplete="username"
+                                                    id="url"
+                                                    label="URL (.png)"
+                                                    name="url"
+                                                    autoComplete="url"
                                                     autoFocus
                                                     onChange={handleURL}
                                                 />
@@ -170,7 +170,7 @@ function Profile() {
                             <CardContent>
                                 <Box mt={4}>
                                     <Button variant="contained" color="primary" className={classes.margin} href={'/profile/edit'}>
-                                        <i className="bi bi-pencil-fill" />
+                                        <i className="bi bi-pencil-fill"/>
                                     </Button>
                                 </Box>
                             </CardContent>

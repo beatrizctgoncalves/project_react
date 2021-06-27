@@ -59,7 +59,6 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     function editGroup(req, res) {
-        console.log(req.body.name)
         aux.promisesAsyncImplementation(
             services.editGroup(req.params.group_id, req.body.name, req.body.description),
             res
@@ -95,6 +94,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     function addMemberNotification(req, res) { //Implementation of the route to add a user to a specific group
+        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.addMemberNotification(req.params.group_id, req.body.username, req.body.manager),
             res

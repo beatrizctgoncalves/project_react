@@ -54,15 +54,6 @@ export async function getUserGroups(owner) {
         })
 }
 
-export async function logout() {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/logout`
-
-    return makeRequest(uri)
-        .then(resp => {
-            return resp
-        })
-}
-
 export async function getSpecificGroup(id) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${id}`
 
@@ -72,10 +63,10 @@ export async function getSpecificGroup(id) {
         })
 }
 
-export async function addMemberToGroup(groupId, member) {
+export async function addMemberToGroup(groupId, newMember, owner) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/members`
 
-    return makeRequest(uri, { member }, "POST")
+    return makeRequest(uri, { username: newMember, manager: owner }, "POST")
         .then(resp => {
             return resp
         })
@@ -102,7 +93,7 @@ export async function deleteGroup(groupId) {
 export async function editGroup(groupId, updatedGroup) {
     const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`
 
-    return makeRequest(uri, { updatedGroup }, "PATCH")
+    return makeRequest(uri, updatedGroup, "PATCH")
         .then(resp => {
             return resp
         })

@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Head from './views/Components/Head';
 import Navbar from './views/Components/Navbar';
-import Home from './views/HomePage/Home';
+import Home from './views/GeneralPages/Home';
 import Profile from './views/Profile/Profile';
 import EditProfile from './views/Profile/EditProfile';
 import SignUp from './views/SignUp/SignUp';
@@ -16,6 +16,7 @@ import Contact from './views/GeneralPages/ContactUs';
 import Privacy from './views/GeneralPages/Privacy';
 import Terms from './views/GeneralPages/Terms';
 import Notifications from './views/Notifications/Notifications';
+import Members from './views/Groups/Members/Members';
 
 
 function App() {
@@ -92,6 +93,11 @@ function App() {
           <Route
             exact path="/groups/:id"
             render={(props) => <Group {...props} />}
+          />
+
+          <Route
+            exact path="/groups/:id/members"
+            render={(props) => <Members {...props} />}
           />
 
           <Route

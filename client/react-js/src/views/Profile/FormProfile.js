@@ -94,7 +94,6 @@ function FormProfile() {
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        required
                         id="firstName"
                         name="firstName"
                         label="First name"
@@ -104,7 +103,6 @@ function FormProfile() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        required
                         id="lastName"
                         name="lastName"
                         label="Last name"
@@ -126,7 +124,6 @@ function FormProfile() {
                                 <Grid item xs={12}>
                                     <h3 className="h4 mb-2">About Gitlab</h3>
                                     <TextField
-                                        required
                                         id="username"
                                         name="username"
                                         label="Username"
@@ -136,7 +133,6 @@ function FormProfile() {
 
                                 <Grid item xs={12}>
                                     <TextField
-                                        required
                                         id="atoken"
                                         name="atoken"
                                         label="AToken"
@@ -156,7 +152,6 @@ function FormProfile() {
                                 <Grid item xs={12}>
                                     <h3 className="h4 mb-2">About Jira</h3>
                                     <TextField
-                                        required
                                         id="email"
                                         name="email"
                                         label="Email"
@@ -166,7 +161,6 @@ function FormProfile() {
 
                                 <Grid item xs={12}>
                                     <TextField
-                                        required
                                         id="atoken"
                                         name="atoken"
                                         label="AToken"
@@ -176,7 +170,6 @@ function FormProfile() {
 
                                 <Grid item xs={12}>
                                     <TextField
-                                        required
                                         id="url"
                                         name="url"
                                         label="URL"
@@ -189,6 +182,18 @@ function FormProfile() {
                         <Button variant="contained" color="primary" className={classes.margin} onClick={handleJira}>
                             <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
                             {jira ? "" : "About Jira"}
+                        </Button>
+                        
+                        <br /><br /><br /><br />
+                        <Button
+                            type="button"
+                            className="button1"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={'handleUpateAvatar'}
+                        >
+                            Save
                         </Button>
                     </Box>
 
