@@ -90,8 +90,9 @@ function Groups() {
 
 
     const classes = useStyles();
+
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="lg">
             <CssBaseline />
             <div className={classes.paper}>
                 <br /><br />
@@ -102,7 +103,7 @@ function Groups() {
                 <ToastContainer />
                 <br />
 
-                <Grid container spacing={3}>
+                <Grid container spacing={3} justify='center'>
                     {groups ? groups.map(group => {
                         return (
                             <Grid item xs={4} key={group.id}>
@@ -131,8 +132,9 @@ function Groups() {
                     }) : ""}
                 </Grid>
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
+                <br />
+                <Grid container spacing={3} justify='center'>
+                    <Grid item xs={12} md={6}>
                         {toCreate ?
                             <Box mt={5} align='center'>
                                 <h3 className="h4 mb-2">Create New Group</h3>

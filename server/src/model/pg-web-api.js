@@ -7,9 +7,11 @@ module.exports = function (express, services, servicesPlugins, aux) {
     const router = express.Router();
 
     router.post('/groups', createGroup); //create group
-    router.get('/groups/owner/:owner', getUserGroups); //get user's groups
-    router.get('/groups/:group_id', getGroupDetails); //get details of a specific group
 
+    router.get('/groups/owner/:owner', getUserGroups); //get user's groups
+    router.get('/groups/member/:username', getUserMemberGroups); //get user's groups which he is member and not owner
+
+    router.get('/groups/:group_id', getGroupDetails); //get details of a specific group
     router.delete('/groups/:group_id', deleteGroup); //delete a group
     router.patch('/groups/:group_id', editGroup); //update group
 
@@ -41,6 +43,13 @@ module.exports = function (express, services, servicesPlugins, aux) {
     function getUserGroups(req, res) {
         aux.promisesAsyncImplementation(
             services.getUserGroups(req.params.owner),
+            res
+        );
+    }
+
+    function getUserMemberGroups(req, res) {
+        aux.promisesAsyncImplementation(
+            services.getUserMemberGroups(req.params.username),
             res
         );
     }

@@ -19,7 +19,7 @@ import Terms from './views/GeneralPages/Terms';
 import Notifications from './views/Notifications/Notifications';
 import Members from './views/Groups/Members/Members';
 import ToolsProjects from './views/Groups/Projects/ToolsProjects';
-import Sprint from './views/Groups/Sprint/SprintView';
+import Sprints from './views/Groups/Sprint/SprintView';
 import Projects from './views/Groups/Projects/Projects';
 import UserProfile from './views/Profile/UserProfile';
 
@@ -123,9 +123,14 @@ function App() {
           <Route
             exact path="/groups/:id/projects"
             render={(props) => window.sessionStorage.getItem('username') ? <Projects {...props} /> : <Redirect to="/sign-in" />}
-          />{/*TODO*/}
+          />
 
           <Route
+            exact path="/groups/:id/sprints"
+            render={(props) => window.sessionStorage.getItem('username') ? <Sprints {...props} /> : <Redirect to="/sign-in" />}
+          />
+
+{/*          <Route
             exact path="/groups/:id/rankings"
             render={(props) => window.sessionStorage.getItem('username') ? <Sprint {...props} /> : <Redirect to="/sign-in" />}
           />{/*TODO*/}

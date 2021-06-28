@@ -90,12 +90,13 @@ function database(pgResponses, requests) {
                             "ownerId": information.owner_id,
                             "title": information.title,
                             "description": information.description,
-                            // "avatar": information.avatar,
+                            "avatar": information.avatar,
                             "type": information.type
                         }
                     }
                 }
             });
+
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
                 .then(resp => {
                     if(resp.error) throw resp

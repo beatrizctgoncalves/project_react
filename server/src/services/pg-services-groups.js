@@ -19,8 +19,24 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                         pgResponses.index.groups,
                         groups
                     )
+                })
+        },
 
-
+        getUserMemberGroups: function (username) {
+            return databaseUsers.getUser(username)
+                .then(user => user.groupsMember)
+                .then(groupsMember => {
+                    let promisses = []
+                    groupsMember.forEach(groupMember => {
+                        promisses.push(databaseGroups.getGroupDetails(groupMember))
+                    })
+                    return Promise.all(promisses)
+                })
+                .then(groups => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        groups
+                    )
                 })
         },
 
@@ -88,7 +104,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         },
 
         addProjectToGroup: function (group_id, Pid, type) {
-            //TODO needs "Other" type
             const x = require("./plugins/" + type + "/api")()
             return databaseGroups.getGroupDetails(group_id)
                 .then(groupObj => databaseUsers.getUser(groupObj.owner))
@@ -170,7 +185,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return databaseUsers.addGroupToUser(username,group_id)
+                            return databaseUsers.addGroupToUser(username, group_id)
                                 .then(databaseGroups.addMemberToGroup(group_id, username)) //add user
                                 .then(group => {
                                     return pgResponses.setSuccessUri(
