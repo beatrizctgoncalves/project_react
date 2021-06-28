@@ -25,7 +25,7 @@ export async function deleteUser(username) {
 export async function updateUser(username, updatedUser) {
     const uri = `${username}`
 
-    return makeRequest(urls.users.concat(uri), { updatedInfo: { info: [updatedUser] } }, "PATCH")
+    return makeRequest(urls.users.concat(uri), { updatedInfo: updatedUser }, "PATCH")
         .then(resp => {
             return resp
         })

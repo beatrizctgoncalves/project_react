@@ -63,7 +63,7 @@ function Sprint(props) {
     function handleAddSprints() {
         addSprintToGroup(id, newSprint)
             .then(resp => {
-                getSpecificGroup(group.id)
+                getSpecificGroup(id)
                     .then(groupObj => {
                         let aux = groupObj.message
                         aux.sprints.push(newSprint)
