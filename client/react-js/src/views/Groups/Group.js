@@ -141,7 +141,7 @@ function Group(props) {
                                     <Typography variant="h6" color="textSecondary">
                                         The Owner of this Group is {group.owner}.
                                     </Typography>
-                                    <br /><br />
+                                    <br />
                                 </div>
 
                                 <div className={classes.cardGroup}>
@@ -190,31 +190,30 @@ function Group(props) {
                                     </ul>
                                 </div>
 
-                                <div className={classes.cardGroup}>
-                                    <ul className={classes.listItem}>
-                                        <Typography variant="body1">
-                                            Sprints
-                                        </Typography>
+                                <ul className={classes.listItem}>
+                                    <Typography variant="body1">
+                                        Sprints
+                                    </Typography>
 
-                                        <div>
-                                            {group.sprints && group.sprints.length != 0 ? group.sprints.map((member) => (
-                                                <ul className={classes.listItem} key={member}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        {member}
-                                                    </Typography>
-                                                </ul>
-                                            )) :
-                                                <ul className={classes.listItem}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        You do not have any Sprints!
-                                                    </Typography>
-                                                </ul>
-                                            }
-                                        </div>
-                                    </ul>
-                                </div>
+                                    <div>
+                                        {group.sprints && group.sprints.length != 0 ? group.sprints.map((member) => (
+                                            <ul className={classes.listItem} key={member}>
+                                                <Typography variant="body2" color="textSecondary">
+                                                    {member}
+                                                </Typography>
+                                            </ul>
+                                        )) :
+                                            <ul className={classes.listItem}>
+                                                <Typography variant="body2" color="textSecondary">
+                                                    You do not have any Sprints!
+                                                </Typography>
+                                            </ul>
+                                        }
+                                    </div>
+                                </ul>
 
-                                <ButtonLime className={classes.margin} onClick={handleSeeSprints}>
+                                <br />
+                                <ButtonLime onClick={handleSeeSprints}>
                                     <i className="bi bi-trophy-fill">&nbsp;&nbsp;</i>
                                     Rankings
                                 </ButtonLime>
@@ -222,7 +221,7 @@ function Group(props) {
 
                             <CardContent>
                                 {toAddMembers ?
-                                    <Box mt={4}>
+                                    <Box mt={0}>
                                         <h3 className="h4 mb-2">Insert New Members</h3>
                                         <br />
                                         <input
@@ -245,7 +244,6 @@ function Group(props) {
                                             Add Member
                                         </ButtonGreen>
                                     </Box> : ""}
-
                                 <Box mt={0}>
                                     <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
                                         <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
@@ -253,26 +251,31 @@ function Group(props) {
                                     </Button>
 
                                     {toAddProjects ?
-                                        <Box mt={4}>
+                                        <Box mt={3}>
                                             <h3 className="h4 mb-2">Projects</h3>
-                                            <ul className={classes.listItem}>
-                                                <div>
+
+                                            <div>
+                                                <ul className={classes.listItem}>
                                                     {user.info ? user.info.map(i =>
+                                                        <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
+                                                            {i.type}
+                                                        </ButtonGreen>
+                                                    ) :
                                                         <ul className={classes.listItem}>
-                                                            <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
-                                                                {i.type}
-                                                            </ButtonGreen>
+                                                            <Typography variant="body2" color="textSecondary">
+                                                                You do not have any Sprints!
+                                                            </Typography>
                                                         </ul>
-                                                    ) : ""}
-                                                </div>
-                                            </ul>
-                                        </Box> : ""}
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </Box>
+                                        : ""}
                                     <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
                                         <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
                                         {toAddProjects ? "" : "Add Projects"}
                                     </Button>
                                 </Box>
-
                             </CardContent>
                         </Card>
                     </Grid>

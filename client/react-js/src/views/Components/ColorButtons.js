@@ -107,6 +107,7 @@ export const ButtonGrey = withStyles((theme) => ({
     root: {
         color: theme.palette.getContrastText(purple[500]),
         backgroundColor: grey[500],
+
         fontFamily: [
             "Merriweather Sans",
             '-apple-system',
@@ -121,6 +122,7 @@ export const ButtonGrey = withStyles((theme) => ({
             "Segoe UI Emoji",
             "Segoe UI Symbol",
         ].join(','),
+        padding: '4px 4px',
         '&:hover': {
             backgroundColor: grey[700],
         },

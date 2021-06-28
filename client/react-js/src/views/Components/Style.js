@@ -114,6 +114,6 @@ export const useStyles = makeStyles((theme) => ({
         opacity: 1
     },
     listItem: {
-        padding: theme.spacing(1, 2),
+        padding: theme.spacing(0, 2),
     }
 }));

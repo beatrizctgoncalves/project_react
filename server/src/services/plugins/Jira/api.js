@@ -36,6 +36,7 @@ function apiJira() {
     const jira = {
         validateProject: function(Pid, AToken) {
             let project = {}
+            console.log(AToken)
             return makeFetch(`${URL}/rest/api/3/project/${Pid}`, arrayMethods.GET, null, AToken)
                 .then(body => {
                     project = {
@@ -43,8 +44,9 @@ function apiJira() {
                         "owner_name": "",
                         "owner_id": "",
                         "description": body.description,
-                        "avatar": body.avatarUrls,
-                        "type": "Jira"
+                        "avatar": body.avatarUrls[Object.keys(body.avatarUrls)[0]],
+                        "type": "Jira",
+                        "title": body.name
                     }
                     return this.getUserById(body.lead.accountId, AToken)
                 })

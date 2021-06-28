@@ -3,7 +3,7 @@ import { getUser, getSpecificGroup, removeProjectFromGroup } from '../../Service
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { useStyles } from '../../Components/Style';
-import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box } from '@material-ui/core';
+import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box, GridList, GridListTile, Link } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen, ButtonRed } from '../../Components/ColorButtons';
 
@@ -78,76 +78,95 @@ function Projects(props) {
             <div className={classes.paper}>
                 <br /><br />
                 <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">{group.name}</h2>
+                    <h2 className="text-center mt-0">{group.name} - Projects</h2>
                     <hr className="divider" />
                 </div>
                 <ToastContainer />
                 <br />
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Card align="center">
-                            <CardHeader
-                                title={'Projects'}
-                                titleTypographyProps={{ align: 'center' }}
-                                className={classes.cardHeader}
-                            />
+                <GridList cellHeight={220} className={classes.gridList} cols={4}>
+                    {group.projects && group.projects != 0 ? group.projects.map(project => {
+                        return (
+                            <GridListTile cols={1} key={project.id}>
+                                <Card align="center">
+                                    <CardHeader
+                                        title={project.avatar}
+                                        subheader={project.title}
+                                        titleTypographyProps={{ align: 'center' }}
+                                        subheaderTypographyProps={{ align: 'center' }}
+                                        className={classes.cardHeader}
+                                    />
 
-                            <CardContent>
-                                {group.projects && group.projects != 0 ? group.projects.map(project =>
-                                    <div className={classes.cardGroup} key={project.id}>
-                                        <Grid item xs={6}>
-                                            <Typography variant="h6" color="textSecondary">
-                                                {project.title}
-                                            </Typography>
-                                        </Grid>
+                                    <CardContent>
+                                        <div className={classes.cardGroup} key={project.id}>
+                                            <ul className={classes.listItem}>
+                                                <Typography variant="body1" color='primary'>
+                                                    Type
+                                                </Typography>
 
-                                        <Grid item xs={6}>
-                                            <ButtonRed variant="contained" className={classes.margin} onClick={handleProjectDelete.bind(null, project.id)}>
-                                                <i className="bi bi-trash-fill"></i>
-                                            </ButtonRed>
-                                        </Grid>
-                                    </div>
-                                ) :
-                                    <div className={classes.cardGroup}>
-                                        <Grid item xs={12}>
-                                            <Typography variant="h6" color="textSecondary">
-                                                You do not have any Projects!<br />
-                                                Start adding!
-                                            </Typography>
-                                        </Grid>
-                                    </div>
-                                }
-                            </CardContent>
-
-                            <CardContent>
-                                {toAddProjects ?
-                                    <Box mt={4}>
-                                        <h3 className="h4 mb-2">Projects</h3>
-                                        <ul className={classes.listItem}>
-                                            <div>
-                                                {user.info ? user.info.map(i =>
-                                                    <ul className={classes.listItem}>
-                                                        <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
-                                                            {i.type}
-                                                        </ButtonGreen>
+                                                <div>
+                                                    <ul className={classes.listItem} key={project.id}>
+                                                        <Typography variant="body2" color="textSecondary">
+                                                            {project.type}
+                                                        </Typography>
                                                     </ul>
-                                                ) : ""}
-                                            </div>
-                                        </ul>
-                                    </Box> : ""}
+                                                </div>
+                                            </ul>
 
-                                <Box mt={4}>
-                                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
-                                        <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
-                                        {toAddProjects ? "" : "Add Projects"}
-                                    </Button>
-                                </Box>
+                                            <ul className={classes.listItem}>
+                                                <Typography variant="body1" color='primary'>
+                                                    Owner
+                                                </Typography>
 
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Grid>
+                                                <div>
+                                                    <ul className={classes.listItem} key={project.id}>
+                                                        <Typography variant="body2" color="textSecondary">
+                                                            {project.owner_name}
+                                                        </Typography>
+                                                    </ul>
+                                                </div>
+                                            </ul>
+                                        </div>
+
+                                        <ButtonRed variant="contained" onClick={handleProjectDelete.bind(null, project.id)}>
+                                            <i className="bi bi-trash-fill"></i>
+                                        </ButtonRed>
+                                    </CardContent>
+                                </Card>
+                            </GridListTile>
+                        )
+                    }) :
+                        < div className={classes.cardGroup}>
+                            <Grid item xs={12}>
+                                <Typography variant="h6" color="textSecondary">
+                                    You do not have any Projects.<br />
+                                    Start adding!
+                                </Typography>
+                            </Grid>
+                        </div>
+                    }
+                </GridList>
+
+                {toAddProjects ?
+                    <Box mt={0} align='center'>
+                        <h3 className="h4 mb-2">Projects</h3>
+                        <ul className={classes.listItem}>
+                            <div>
+                                {user.info ? user.info.map(i =>
+                                    <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
+                                        {i.type}
+                                    </ButtonGreen>
+                                ) : ""}
+                            </div>
+                        </ul>
+                    </Box> : ""}
+
+                <Box mt={0} align='center'>
+                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
+                        <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                        {toAddProjects ? "" : "Add Project"}
+                    </Button>
+                </Box>
 
                 <Box mt={5}>
                     <GoBack />

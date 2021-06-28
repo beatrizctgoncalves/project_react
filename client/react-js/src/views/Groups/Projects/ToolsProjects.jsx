@@ -57,9 +57,6 @@ function ToolsProjects(props) {
     function handleAddProjectToGroup(projId) {
         const user_index = group.projects.findIndex(p => p.id === projId)
         if (user_index === -1) {
-            console.log(id)
-            console.log(projId)
-            console.log(tool)
             addProjectToGroup(id, projId, tool)
                 .then(resp => {
                     window.location.replace(`/groups/${id}`)
@@ -74,7 +71,6 @@ function ToolsProjects(props) {
                         draggable: true,
                         progress: undefined,
                     })
-
                 })
         } else {
             toast("this project already exists", {
@@ -109,9 +105,11 @@ function ToolsProjects(props) {
                             <GridListTile cols={1}>
                                 <Card align="center">
                                     <CardHeader
-                                        title={project.title}
+                                        title={project.avatar}
                                         key={project.id}
+                                        subheader={project.title}
                                         titleTypographyProps={{ align: 'center' }}
+                                        subheaderTypographyProps={{ align: 'center' }}
                                         className={classes.cardHeader}
                                     />
                                     <CardContent>

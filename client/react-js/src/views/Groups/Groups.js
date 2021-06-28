@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../Components/Footer.js';
 import { Link } from 'react-router-dom';
 import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
-import { Button, Container, CssBaseline, Grid, GridList, GridListTile, Box, Card, CardHeader, CardContent } from '@material-ui/core';
+import { Button, Container, CssBaseline, Grid, Typography, Box, Card, CardHeader } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoBack from '../Components/GoBack';
@@ -102,34 +102,39 @@ function Groups() {
                 <ToastContainer />
                 <br />
 
-                <GridList cellHeight={160} className={classes.gridList} cols={5}>
+                <Grid container spacing={3}>
                     {groups ? groups.map(group => {
                         return (
-                            <GridListTile cols={1}>
+                            <Grid item xs={4} key={group.id}>
                                 <Card align="center">
                                     <CardHeader
-                                        title={<Link color="inherit" to={`/groups/${group.id}`}>{group.name}</Link>}
-                                        titleTypographyProps={{ align: 'center' }}
+                                        subheader={<Link color="inherit" to={`/groups/${group.id}`}>{group.name}</Link>}
+                                        subheaderTypographyProps={{ align: 'center' }}
                                         className={classes.cardHeader}
                                     />
-                                    <CardContent>
+                                    <Box mt={1}>
                                         <ButtonGrey variant="contained" className={classes.margin} onClick={handleEdit.bind(null, group.id)}>
-                                            <i className="bi bi-pencil-fill"></i>
+                                            <Typography variant="body2">
+                                                <i className="bi bi-pencil-fill"></i>
+                                            </Typography>
                                         </ButtonGrey>
                                         <ButtonRed variant="contained" className={classes.margin} onClick={handleGroupDelete.bind(null, group.id)}>
-                                            <i className="bi bi-trash-fill"></i>
+                                            <Typography variant="body2">
+                                                <i className="bi bi-trash-fill"></i>
+                                            </Typography>
                                         </ButtonRed>
-                                    </CardContent>
+                                    </Box>
+                                    <Box mt={1}></Box>
                                 </Card>
-                            </GridListTile>
+                            </Grid>
                         )
                     }) : ""}
-                </GridList>
+                </Grid>
 
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         {toCreate ?
-                            <Box mt={4} align='center'>
+                            <Box mt={5} align='center'>
                                 <h3 className="h4 mb-2">Create New Group</h3>
                                 <br />
                                 <input
@@ -137,7 +142,6 @@ function Groups() {
                                     margin="normal"
                                     className="form-control"
                                     required
-                                    fullWidth
                                     type="text"
                                     name="name"
                                     placeholder="Enter Group Name"
@@ -149,7 +153,6 @@ function Groups() {
                                     margin="normal"
                                     className="form-control"
                                     required
-                                    fullWidth
                                     type="text"
                                     name="description"
                                     onChange={handleChange}
