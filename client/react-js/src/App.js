@@ -22,6 +22,7 @@ import ToolsProjects from './views/Groups/Projects/ToolsProjects';
 import Sprints from './views/Groups/Sprint/SprintView';
 import Projects from './views/Groups/Projects/Projects';
 import UserProfile from './views/Profile/UserProfile';
+import MemberGroup from './views/Groups/GroupMember';
 
 
 function App() {
@@ -130,7 +131,7 @@ function App() {
             render={(props) => window.sessionStorage.getItem('username') ? <Sprints {...props} /> : <Redirect to="/sign-in" />}
           />
 
-{/*          <Route
+          {/*          <Route
             exact path="/groups/:id/rankings"
             render={(props) => window.sessionStorage.getItem('username') ? <Sprint {...props} /> : <Redirect to="/sign-in" />}
           />{/*TODO*/}
@@ -138,6 +139,11 @@ function App() {
           <Route
             exact path="/groups/:id/members"
             render={(props) => window.sessionStorage.getItem('username') ? <Members {...props} /> : <Redirect to="/sign-in" />}
+          />
+
+          <Route
+            exact path="/groups/belong/to/member"
+            render={(props) => window.sessionStorage.getItem('username') ? <MemberGroup {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route

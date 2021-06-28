@@ -58,6 +58,15 @@ export async function getUserGroups(owner) {
         })
 }
 
+export async function getUserMemberGroups(member) {
+    const uri = `groups/member/${member}`
+
+    return makeRequest(urls.groups.concat(uri))
+        .then(resp => {
+            return resp
+        })
+}
+
 export async function getSpecificGroup(id) {
     const uri = `groups/${id}`
 
