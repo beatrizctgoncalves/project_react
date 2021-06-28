@@ -1,13 +1,36 @@
 import React from 'react';
 import Footer from '../Components/Footer.js';
-import { Container, CssBaseline, GridList, GridListTile, Box, Link, Typography, Card, CardHeader, CardContent } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Box, Link } from '@material-ui/core';
 import { useStyles } from '../Components/Style';
+import CardContact from '../Components/CardContact.js';
 
 
 function ContactUs() {
+    const featuredPosts = [
+        {
+            title: <Link to={`https://github.com/beatrizctgoncalves`}>Beatriz Gonçalves</Link>,
+            icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
+                alt="Card image cap"></img>,
+            description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
+        },
+        {
+            title: <Link to={`https://github.com/A44866`}>Maksym</Link>,
+            icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
+                alt="Card image cap"></img>,
+            description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
+        },
+        {
+            title: <Link to={`https://github.com/pinto6`}>Miguel Pinto</Link>,
+            icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
+                alt="Card image cap"></img>,
+            description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
+        }
+    ];
+
     const classes = useStyles();
+
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="lg">
             <CssBaseline />
             <div className={classes.paper}>
                 <br /><br />
@@ -17,65 +40,17 @@ function ContactUs() {
                 </div>
                 <br />
 
-                <GridList cellHeight={320} className={classes.gridListContacts} cols={3}>
-                    <GridListTile cols={1}>
-                        <Card align="center">
-                            <CardHeader
-                                title={<img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                                    alt="Card image cap"></img>}
-                                subheader={<Link to={`https://github.com/beatrizctgoncalves`}>Beatriz Gonçalves</Link>}
-                                titleTypographyProps={{ align: 'center' }}
-                                subheaderTypographyProps={{ align: 'center' }}
-                            />
-                            <CardContent>
-                                <Typography component="h3" variant="h6" color="textPrimary">
-                                    Engineering student at ISEL
-                                </Typography>
-                                (Instituto Politécnico Engenharia de Lisboa)
-                            </CardContent>
-                        </Card>
-                    </GridListTile>
+                <main>
+                    <Grid container spacing={4}>
+                        {featuredPosts.map((post) => (
+                            <CardContact key={post.title} post={post} />
+                        ))}
+                    </Grid>
 
-                    <GridListTile cols={1}>
-                        <Card align="center">
-                            <CardHeader
-                                title={<img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                                    alt="Card image cap"></img>}
-                                subheader={<Link to={`https://github.com/A44866`}>Maksym</Link>}
-                                titleTypographyProps={{ align: 'center' }}
-                                subheaderTypographyProps={{ align: 'center' }}
-                            />
-                            <CardContent>
-                                <Typography component="h3" variant="h6" color="textPrimary">
-                                    Engineering student at ISEL
-                                </Typography>
-                                (Instituto Politécnico Engenharia de Lisboa)
-                            </CardContent>
-                        </Card>
-                    </GridListTile>
-
-                    <GridListTile cols={1}>
-                        <Card align="center">
-                            <CardHeader
-                                title={<img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                                    alt="Card image cap"></img>}
-                                subheader={<Link to={`https://github.com/pinto6`}>Miguel Pinto</Link>}
-                                titleTypographyProps={{ align: 'center' }}
-                                subheaderTypographyProps={{ align: 'center' }}
-                            />
-                            <CardContent>
-                                <Typography component="h3" variant="h6" color="textPrimary">
-                                    Engineering student at ISEL
-                                </Typography>
-                                (Instituto Politécnico Engenharia de Lisboa)
-                            </CardContent>
-                        </Card>
-                    </GridListTile>
-                </GridList>
-
-                <Box mt={8}>
-                    <Footer />
-                </Box>
+                    <Box mt={8}>
+                        <Footer />
+                    </Box>
+                </main>
             </div>
         </Container>
     )
