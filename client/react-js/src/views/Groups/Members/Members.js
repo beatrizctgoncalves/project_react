@@ -95,7 +95,7 @@ function Members(props) {
                             />
 
                             <CardContent>
-                                {group.members ? group.members.map(member =>
+                                {group.members && group.members != 0 ? group.members.map(member =>
                                     <div className={classes.cardGroup} key={member}>
                                         <Grid item xs={6}>
                                             <ButtonUser color="inherit" onClick={handleUserProfile.bind(null, member)}>
@@ -109,7 +109,16 @@ function Members(props) {
                                             </ButtonRed>
                                         </Grid>
                                     </div>
-                                ) : ""}
+                                ) :
+                                    <div className={classes.cardGroup}>
+                                        <Grid item xs={12}>
+                                            <Typography variant="h6" color="textSecondary">
+                                                You do not have any Members!<br />
+                                                Start adding!
+                                            </Typography>
+                                        </Grid>
+                                    </div>
+                                }
                             </CardContent>
 
                             <CardContent>

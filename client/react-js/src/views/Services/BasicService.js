@@ -122,6 +122,15 @@ export async function getToolProjects(tool, username) {
         })
 }
 
+export async function addSprintToGroup(groupId, body) {
+    const uri = `groups/${groupId}/projects`
+
+    return makeRequest(urls.groups.concat(uri), body, "POST")
+        .then(resp => {
+            return resp
+        })
+}
+
 export async function addProjectToGroup(groupId, projectId, type) {
     const uri = `groups/${groupId}/projects`
 

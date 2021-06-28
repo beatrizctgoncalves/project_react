@@ -89,12 +89,12 @@ function App() {
           />
 
           <Route
-            exact path='/profile/edit'
+            exact path='/profile/:username/edit'
             render={(props) => window.sessionStorage.getItem('username') ? <EditProfile {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
-            exact path='/profile/edit/info'
+            exact path='/profile/:username/edit/info'
             render={(props) => window.sessionStorage.getItem('username') ? <EditInfo {...props} /> : <Redirect to="/sign-in" />}
           />
 

@@ -17,7 +17,6 @@ function Projects(props) {
     const [edit, setEdit] = useState(false)
 
     const [toAddProjects, setAddProjects] = useState(false)
-    const [newProject, setNewProject] = useState("")
 
     const owner = window.sessionStorage.getItem("username")
 
@@ -29,9 +28,7 @@ function Projects(props) {
 
     useEffect(() => {
         getUser(owner)
-            .then(resp => {
-                setUser(resp.message)
-            })
+            .then(resp => setUser(resp.message))
             .catch(err => {
                 console.log(err)
                 toast.error(err.body, {
@@ -43,9 +40,7 @@ function Projects(props) {
                     draggable: true,
                     progress: undefined,
                 })
-
             })
-
     }, [])
 
 
@@ -99,7 +94,7 @@ function Projects(props) {
                             />
 
                             <CardContent>
-                                {group.projects ? group.projects.map(project =>
+                                {group.projects && group.projects != 0 ? group.projects.map(project =>
                                     <div className={classes.cardGroup} key={project.id}>
                                         <Grid item xs={6}>
                                             <Typography variant="h6" color="textSecondary">
@@ -115,7 +110,7 @@ function Projects(props) {
                                     </div>
                                 ) :
                                     <div className={classes.cardGroup}>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={12}>
                                             <Typography variant="h6" color="textSecondary">
                                                 You do not have any Projects!<br />
                                                 Start adding!

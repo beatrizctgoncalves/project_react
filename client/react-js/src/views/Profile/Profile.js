@@ -143,7 +143,7 @@ function Profile() {
 
                             <CardContent>
                                 <Box mt={0}>
-                                    <Button variant="contained" color="primary" className={classes.margin} href={'/profile/edit'}>
+                                    <Button variant="contained" color="primary" className={classes.margin} href={`/profile/${user.username}/edit`}>
                                         <i className="bi bi-pencil-fill"></i>
                                     </Button>
                                 </Box>
