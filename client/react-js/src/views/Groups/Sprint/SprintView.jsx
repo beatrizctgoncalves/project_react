@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { addSprintToGroup, getSpecificGroup } from '../../Services/BasicService.js';
+import { addSprintToGroup, getSpecificGroup, getRankings } from '../../Services/BasicService.js';
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { useStyles } from '../../Components/Style';
 import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box, TextField } from '@material-ui/core';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../../Components/ColorButtons';
 
 
@@ -15,12 +15,29 @@ function Sprint(props) {
 
     const [toAddSprints, setAddSprints] = useState(false)
     const [newSprint, setNewSprint] = useState("")
+    const[sprints,setSprints] = useState([])
 
-    useEffect(() => {
-        getSpecificGroup(id)
-            .then(resp => setGroup(resp.message))
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }, [])
+    useEffect(()=>{
+        getRankings(id)
+            .then(resp =>{
+                setSprints(resp.message)
+            }).catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+
+            })
+
+
+
+    },[])
 
 
     const handleTitle = event => {
@@ -46,7 +63,7 @@ function Sprint(props) {
     function handleAddSprints() {
         addSprintToGroup(id, newSprint)
             .then(resp => {
-                getSpecificGroup(group.id)
+                getSpecificGroup(id)
                     .then(groupObj => {
                         let aux = groupObj.message
                         aux.sprints.push(newSprint)
@@ -75,17 +92,24 @@ function Sprint(props) {
                     <Grid item xs={12}>
                         <Card align="center">
                             <CardHeader
-                                title={'Sprints'}
+                                title={'Rankings'}
                                 titleTypographyProps={{ align: 'center' }}
                                 className={classes.cardHeader}
                             />
 
                             <CardContent>
-                                {group.sprints && group.sprints != 0 ? group.sprints.map(sprint =>
+                                {sprints ? sprints.map(sprint =>
                                     <div className={classes.cardGroup} key={sprint}>
                                         <Grid item xs={12}>
                                             <Typography variant="h6" color="textSecondary">
-                                                {sprint}
+                                                {sprint.SprintTitle}
+                                                <br/>
+                                                <ul>
+                                                    {sprint.Scores && sprint.Scores != 0 ? sprint.Scores.map(score => {
+                                                        console.log(score)
+                                                        return(<li key = {score}>{score.AppUsername} = {score.Points}</li>)
+                                                    }):"" }
+                                                </ul>
                                             </Typography>
                                         </Grid>
                                     </div>

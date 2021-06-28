@@ -196,10 +196,10 @@ function Group(props) {
                                     </Typography>
 
                                     <div>
-                                        {group.sprints && group.sprints.length != 0 ? group.sprints.map((member) => (
-                                            <ul className={classes.listItem} key={member}>
+                                        {group.sprints && group.sprints.length != 0 ? group.sprints.map((sprint) => (
+                                            <ul className={classes.listItem} key={sprint}>
                                                 <Typography variant="body2" color="textSecondary">
-                                                    {member}
+                                                    {sprint.title}
                                                 </Typography>
                                             </ul>
                                         )) :

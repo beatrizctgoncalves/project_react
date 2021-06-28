@@ -87,17 +87,20 @@ function database(pgResponses, requests) {
                         "projects": {
                             "id": information.id,
                             "owner_name": information.owner_name,
-                            "owner_id": information.owner_id,
+                            "ownerId": information.owner_id,
                             "title": information.title,
                             "description": information.description,
-                            "avatar": information.avatar,
+                            // "avatar": information.avatar,
                             "type": information.type
                         }
                     }
                 }
             });
-
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
@@ -114,6 +117,10 @@ function database(pgResponses, requests) {
                 }
             });
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
@@ -129,6 +136,10 @@ function database(pgResponses, requests) {
                 }
             });
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
@@ -144,6 +155,10 @@ function database(pgResponses, requests) {
                 }
             });
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
@@ -163,6 +178,10 @@ function database(pgResponses, requests) {
                 }
             });
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
@@ -182,6 +201,10 @@ function database(pgResponses, requests) {
                 }
             });
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
@@ -192,6 +215,10 @@ function database(pgResponses, requests) {
 
         removeGroup: function (group_id) {
             return requests.makeFetchElastic(requests.index.users.concat(`_doc/${group_id}`), requests.arrayMethods.DELETE, null)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
                 .then(body => {
                     if (body.result === 'deleted') return body.username;
                     else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);

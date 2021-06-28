@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function FormProfile() {
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const username = window.sessionStorage.getItem("username")
     const [updatedUser, setUpdatedUser] = useState({})
@@ -36,7 +35,6 @@ function FormProfile() {
                 window.location.assign(`/profile`)
             })
             .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
                 toast.error(err.body)
             })
     }

@@ -13,7 +13,8 @@ function FormProfile() {
     const username = window.sessionStorage.getItem("username")
     const [updatedUserGitlab, setUpdatedUserGitlab] = useState({})
     function handleEditGitlab() {
-        updateUser(username, updatedUserGitlab)
+        const info = { info: [updatedUserGitlab] }
+        updateUser(username, info)
             .then(resp => {
                 window.location.assign(`/profile`)
             })

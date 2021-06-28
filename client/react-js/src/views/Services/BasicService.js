@@ -25,7 +25,7 @@ export async function deleteUser(username) {
 export async function updateUser(username, updatedUser) {
     const uri = `${username}`
 
-    return makeRequest(urls.users.concat(uri), { updatedInfo: { info: [updatedUser] } }, "PATCH")
+    return makeRequest(urls.users.concat(uri), { updatedInfo: updatedUser }, "PATCH")
         .then(resp => {
             return resp
         })
@@ -123,7 +123,7 @@ export async function getToolProjects(tool, username) {
 }
 
 export async function addSprintToGroup(groupId, body) {
-    const uri = `groups/${groupId}/projects`
+    const uri = `groups/${groupId}/sprints`
 
     return makeRequest(urls.groups.concat(uri), body, "POST")
         .then(resp => {
