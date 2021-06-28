@@ -123,7 +123,7 @@ export async function getToolProjects(tool, username) {
 }
 
 export async function addSprintToGroup(groupId, body) {
-    const uri = `groups/${groupId}/projects`
+    const uri = `groups/${groupId}/sprints`
 
     return makeRequest(urls.groups.concat(uri), body, "POST")
         .then(resp => {

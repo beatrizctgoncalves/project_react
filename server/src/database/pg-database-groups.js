@@ -90,7 +90,7 @@ function database(pgResponses, requests) {
                             "ownerId": information.owner_id,
                             "title": information.title,
                             "description": information.description,
-                            "avatar": information.avatar,
+                            // "avatar": information.avatar,
                             "type": information.type
                         }
                     }
