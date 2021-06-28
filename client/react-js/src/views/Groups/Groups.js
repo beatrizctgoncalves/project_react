@@ -6,67 +6,9 @@ import { Button, Container, CssBaseline, Grid, GridList, GridListTile, Box, Card
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoBack from '../Components/GoBack';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { grey, purple } from '@material-ui/core/colors';
+import { ButtonGrey, ButtonRed } from '../Components/ColorButtons';
+import { useStyles } from '../Components/Style';
 
-
-const ColorButton = withStyles((theme) => ({
-    root: {
-        color: theme.palette.getContrastText(purple[500]),
-        backgroundColor: grey[500],
-        fontFamily: [
-            "Merriweather Sans",
-            '-apple-system',
-            'BlinkMacSystemFont',
-            "Segoe UI",
-            'Roboto',
-            "Helvetica Neue",
-            'Arial',
-            "Noto Sans",
-            'sans-serif',
-            "Apple Color Emoji",
-            "Segoe UI Emoji",
-            "Segoe UI Symbol",
-        ].join(','),
-        '&:hover': {
-            backgroundColor: grey[700],
-        },
-        margin: '4px'
-    },
-}))(Button);
-
-
-const useStyles = makeStyles((theme) => ({
-    gridList: {
-        width: 1000,
-        height: 300,
-    },
-    margin: {
-        margin: theme.spacing(1),
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: '#274e81e1',
-    },
-    div: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
-        fontSize: '20'
-    }
-}));
 
 function Groups() {
     const [groups, setGroups] = useState([])
@@ -157,8 +99,7 @@ function Groups() {
                     <h2 className="text-center mt-0">Your Groups</h2>
                     <hr className="divider" />
                 </div>
-                <ToastContainer/>
-                 
+                <ToastContainer />
                 <br />
 
                 <GridList cellHeight={160} className={classes.gridList} cols={5}>
@@ -172,12 +113,12 @@ function Groups() {
                                         className={classes.cardHeader}
                                     />
                                     <CardContent>
-                                        <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleEdit.bind(null, group.id)}>
+                                        <ButtonGrey variant="contained" className={classes.margin} onClick={handleEdit.bind(null, group.id)}>
                                             <i className="bi bi-pencil-fill"></i>
-                                        </ColorButton>
-                                        <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleGroupDelete.bind(null, group.id)}>
+                                        </ButtonGrey>
+                                        <ButtonRed variant="contained" className={classes.margin} onClick={handleGroupDelete.bind(null, group.id)}>
                                             <i className="bi bi-trash-fill"></i>
-                                        </ColorButton>
+                                        </ButtonRed>
                                     </CardContent>
                                 </Card>
                             </GridListTile>

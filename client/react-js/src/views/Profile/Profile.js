@@ -1,70 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { getUser, updateUser } from '../Services/BasicService.js';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { Typography, CardHeader, TextField } from '@material-ui/core';
-import { green, purple } from '@material-ui/core/colors';
+import { useStyles } from '../Components/Style';
+import { ButtonGreen } from '../Components/ColorButtons';
+import { Typography, CardHeader, TextField, Card, CssBaseline, CardContent, Grid, Container, Button, Box } from '@material-ui/core';
 
-
-const ColorButton = withStyles((theme) => ({
-    root: {
-        color: theme.palette.getContrastText(purple[500]),
-        backgroundColor: green[500],
-        fontFamily: [
-            "Merriweather Sans",
-            '-apple-system',
-            'BlinkMacSystemFont',
-            "Segoe UI",
-            'Roboto',
-            "Helvetica Neue",
-            'Arial',
-            "Noto Sans",
-            'sans-serif',
-            "Apple Color Emoji",
-            "Segoe UI Emoji",
-            "Segoe UI Symbol",
-        ].join(','),
-        '&:hover': {
-            backgroundColor: green[700],
-        },
-        margin: '4px'
-    },
-}))(Button);
-
-const useStyles = makeStyles((theme) => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: '#274e81e1',
-    },
-    div: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
-    }
-}));
 
 function Profile() {
     const username = window.sessionStorage.getItem("username")
@@ -159,7 +100,6 @@ function Profile() {
                                             </Box> : ""}
                                         <Box>
                                             <Button onClick={handleToEditAvatarChange}>
-                                                {/*`${user.avatar}`*/}
                                                 <img src={`${user.avatar}`}
                                                     width="auto" height="150" className={classes.avatar}></img>
                                             </Button>
@@ -182,19 +122,21 @@ function Profile() {
                                 </Typography>
 
                                 {user.info && user.info.length != 0 ? user.info.map(info => (
-                                    <Typography variant="body2" color="textSecondary" align="center" key={info}>
-                                        {info}
-                                    </Typography>
+                                    <Box mt={2}>
+                                        <Typography variant="h6" color="textSecondary">
+                                            {info.type}
+                                        </Typography>
+                                    </Box>
                                 )) :
                                     <Box mt={2}>
                                         <Typography variant="body1" color="textSecondary" align="center">
                                             You do not have any additional <br /> information added yet!
                                         </Typography>
                                         <br />
-                                        <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleAdditionalInfo}>
+                                        <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleAdditionalInfo}>
                                             <i className="bi bi-plus-lg">&nbsp;&nbsp;</i>
                                             Add Now
-                                        </ColorButton>
+                                        </ButtonGreen>
                                     </Box>
                                 }
                             </CardContent>

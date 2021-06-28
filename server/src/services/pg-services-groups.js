@@ -125,16 +125,18 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
-        removeProjectFromGroup: function (group_id, id) {
+        removeProjectFromGroup: function (group_id, project_id) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(groupObj => {
-                    const project_index = groupObj.projects.findIndex(p => p.id === id)
+                    console.log("KKKKKKKKK")
+                    const project_index = groupObj.projects.findIndex(p => p.id === project_id)
                     if (project_index === -1) {
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
                             pgResponses.NOT_FOUND_PROJECT_MSG
                         );
                     }
+                    console.log(project_index)
                     return databaseGroups.removeProjectFromGroup(group_id, project_index)
                         .then(id => {
                             return pgResponses.setSuccessUri(
@@ -208,6 +210,29 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },*/
 
+        removeMemberFromGroup: function (group_id, username) {
+            return databaseGroups.getGroupDetails(group_id) //check if the group exists
+                .then(groupObj => {
+                    const user_index = groupObj.members.findIndex(member => member === username)  //get the user's index
+                    if (user_index === -1) { //the user doesnt exist in the group
+                        return pgResponses.setError(
+                            pgResponses.NOT_FOUND,
+                            pgResponses.NOT_FOUND_USER_MSG
+                        );
+                    }
+
+                    return databaseGroups.removeMemberFromGroup(group_id, user_index) //remove the user by index
+                        .then(group => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                pgResponses.index.api,
+                                pgResponses.index.groups,
+                                group
+                            )
+                        })
+                })
+        },
+
         addSprintToGroup: function (group_id, title, beginDate, endDate) {
             return databaseGroups.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {
@@ -230,30 +255,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
-        removeMemberFromGroup: function (group_id, username) {
-            return databaseGroups.getGroupDetails(group_id) //check if the group exists
-                .then(groupObj => {
-                    const user_index = groupObj.members.findIndex(member => member === username)  //get the user's index
-                    if (user_index === -1) { //the user doesnt exist in the group
-                        return pgResponses.setError(
-                            pgResponses.NOT_FOUND,
-                            pgResponses.NOT_FOUND_USER_MSG
-                        );
-                    }
-
-                    return databaseGroups.removeMemberFromGroup(group_id, user_index) //remove the user by index
-                        .then(group => {
-                            return pgResponses.setSuccessUri(
-                                pgResponses.OK,
-                                pgResponses.index.api,
-                                pgResponses.index.groups,
-                                group
-                            )
-                        })
-                })
-        }/*,
-
-        getGroupRankings: function(group_id, url, email, token) {
+        /*getGroupRankings: function(group_id, url, email, token) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(groupObj => groupObj.projects.map(p => apiJira.getIssues(url, email, token, p.key)))
                 .then(issuesObj => Promise.all(issuesObj))

@@ -1,31 +1,8 @@
 import React from 'react'
 import Footer from '../Components/Footer.js';
-import { makeStyles } from '@material-ui/core/styles';
 import { Container, CssBaseline, Box, GridList, GridListTile, Typography, Card, CardContent } from '@material-ui/core';
+import { useStyles } from '../Components/Style';
 
-
-const useStyles = makeStyles((theme) => ({
-    gridList: {
-        width: 1000,
-        height: 320,
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
-    },
-    cardGroup: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'baseline',
-        marginBottom: theme.spacing(4),
-    }
-}));
 
 function About() {
     const classes = useStyles();

@@ -103,6 +103,7 @@ function database(pgResponses, requests) {
         },
 
         removeProjectFromGroup: function (group_id, project_index) {
+            console.log(project_index)
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",
@@ -132,6 +133,21 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
+        removeMemberFromGroup: function (group_id, user_index) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline": "ctx._source.members.remove(params.user)",
+                    "params": {
+                        "user": user_index
+                    }
+                }
+            });
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
         addSprintToGroup: function (group_id, title, beginDate, endDate) {
             var requestBody = JSON.stringify({
                 "script": {
@@ -143,21 +159,6 @@ function database(pgResponses, requests) {
                             "beginDate": beginDate,
                             "endDate": endDate
                         }
-                    }
-                }
-            });
-            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
-                .then(body => body._id)
-                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
-        },
-
-        removeMemberFromGroup: function (group_id, user_index) {
-            var requestBody = JSON.stringify({
-                "script": {
-                    "lang": "painless",
-                    "inline": "ctx._source.members.remove(params.user)",
-                    "params": {
-                        "user": user_index
                     }
                 }
             });

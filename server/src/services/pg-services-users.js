@@ -55,7 +55,6 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                 })
         },
 
-        
         getUserMemberGroups: function (username) {
             return databaseUsers.getUser(username)
             .then(user => user.groupsMember)
@@ -83,7 +82,7 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                     )
                 }
             }
-            
+
             return databaseUsers.getUser(username)
                 .then(user => {
                     user.info.map(info => {

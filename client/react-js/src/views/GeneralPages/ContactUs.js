@@ -1,21 +1,8 @@
 import React from 'react';
 import Footer from '../Components/Footer.js';
-import { makeStyles } from '@material-ui/core/styles';
 import { Container, CssBaseline, GridList, GridListTile, Box, Link, Typography, Card, CardHeader, CardContent } from '@material-ui/core';
+import { useStyles } from '../Components/Style';
 
-
-const useStyles = makeStyles((theme) => ({
-    gridList: {
-        width: 1000,
-        height: 370,
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    }
-}));
 
 function ContactUs() {
     const classes = useStyles();
@@ -30,7 +17,7 @@ function ContactUs() {
                 </div>
                 <br />
 
-                <GridList cellHeight={320} className={classes.gridList} cols={3}>
+                <GridList cellHeight={320} className={classes.gridListContacts} cols={3}>
                     <GridListTile cols={1}>
                         <Card align="center">
                             <CardHeader

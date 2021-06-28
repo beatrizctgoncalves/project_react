@@ -1,28 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, TextField, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
 import { updateUser } from '../Services/BasicService.js';
 import { toast } from 'react-toastify';
-
-
-const useStyles = makeStyles((theme) => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    div: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    }
-}));
+import { ButtonGreen } from '../Components/ColorButtons';
+import { useStyles } from '../Components/Style';
 
 
 function FormProfile() {
@@ -133,10 +114,10 @@ function FormProfile() {
                                 <br /><br />
                             </>
                             : ""}
-                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleGitlab}>
-                            <i class="bi bi-plus-lg">&nbsp;&nbsp;</i>
+                        <ButtonGreen className={classes.margin} onClick={handleGitlab}>
+                            <i className="bi bi-plus-lg">&nbsp;&nbsp;</i>
                             {gitlab ? "" : "About Gitlab"}
-                        </Button>
+                        </ButtonGreen>
 
                         {jira ?
                             <Box mt={5}>
@@ -178,10 +159,10 @@ function FormProfile() {
                                 <br /><br />
                             </Box>
                             : ""}
-                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleJira}>
-                            <i class="bi bi-plus-lg">&nbsp;&nbsp;</i>
+                        <ButtonGreen className={classes.margin} onClick={handleJira}>
+                            <i className="bi bi-plus-lg">&nbsp;&nbsp;</i>
                             {jira ? "" : "About Jira"}
-                        </Button>
+                        </ButtonGreen>
                     </Box>
                 </Grid>
             </Grid>

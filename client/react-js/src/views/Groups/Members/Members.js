@@ -1,74 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { addMemberToGroup, getSpecificGroup, removeMemberFromGroup } from '../../Services/BasicService.js';
-import Alert from 'react-bootstrap/Alert'
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { green, purple } from '@material-ui/core/colors';
 import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box } from '@material-ui/core';
-import { ToastContainer, toast } from 'react-toastify';
-
-
-const ColorButton = withStyles((theme) => ({
-    root: {
-        color: theme.palette.getContrastText(purple[500]),
-        backgroundColor: green[500],
-        fontFamily: [
-            "Merriweather Sans",
-            '-apple-system',
-            'BlinkMacSystemFont',
-            "Segoe UI",
-            'Roboto',
-            "Helvetica Neue",
-            'Arial',
-            "Noto Sans",
-            'sans-serif',
-            "Apple Color Emoji",
-            "Segoe UI Emoji",
-            "Segoe UI Symbol",
-        ].join(','),
-        '&:hover': {
-            backgroundColor: green[700],
-        },
-        margin: '4px'
-    },
-}))(Button);
-
-const useStyles = makeStyles((theme) => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: '#274e81e1',
-    },
-    div: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
-    },
-    cardGroup: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'baseline',
-        marginBottom: theme.spacing(0),
-    },
-    listItem: {
-        padding: theme.spacing(1, 1),
-    }
-}));
+import { ToastContainer } from 'react-toastify';
+import { useStyles } from '../../Components/Style';
+import { ButtonRed, ButtonGreen, ButtonUser } from '../../Components/ColorButtons';
 
 
 function Members(props) {
@@ -129,6 +66,11 @@ function Members(props) {
             .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
     }
 
+    function handleUserProfile(member) {
+        window.location.replace(`/profile/${member}`)
+    }
+
+
     const classes = useStyles();
 
     return (
@@ -156,15 +98,15 @@ function Members(props) {
                                 {group.members ? group.members.map(member =>
                                     <div className={classes.cardGroup} key={member}>
                                         <Grid item xs={6}>
-                                            <Typography variant="h6" color="textSecondary">
+                                            <ButtonUser color="inherit" onClick={handleUserProfile.bind(null, member)}>
                                                 {member}
-                                            </Typography>
+                                            </ButtonUser>
                                         </Grid>
 
                                         <Grid item xs={6}>
-                                            <ColorButton variant="contained" color="primary" className={classes.margin} onClick={handleMemberDelete.bind(null, member)}>
+                                            <ButtonRed variant="contained" className={classes.margin} onClick={handleMemberDelete.bind(null, member)}>
                                                 <i className="bi bi-trash-fill"></i>
-                                            </ColorButton>
+                                            </ButtonRed>
                                         </Grid>
                                     </div>
                                 ) : ""}
@@ -188,14 +130,13 @@ function Members(props) {
                                             onChange={handleMember}
                                         />
                                         <br />
-                                        <ColorButton
+                                        <ButtonGreen
                                             variant="contained"
-                                            color="primary"
                                             className={classes.margin}
                                             onClick={handleAddMembers}
                                         >
                                             Add Member
-                                        </ColorButton>
+                                        </ButtonGreen>
                                     </Box> : ""}
 
                                 <Box mt={4}>

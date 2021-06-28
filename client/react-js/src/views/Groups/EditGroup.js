@@ -5,46 +5,10 @@ import Alert from 'react-bootstrap/Alert'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoBack from '../Components/GoBack';
+import { useStyles } from '../Components/Style';
 import Form from './FormEditGroup';
-import { makeStyles } from '@material-ui/core/styles';
 import { Container, CssBaseline, Grid, Box } from '@material-ui/core';
 
-
-const useStyles = makeStyles((theme) => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: '#274e81e1',
-    },
-    div: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
-    },
-    cardGroup: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'baseline',
-        marginBottom: theme.spacing(2),
-    },
-    listItem: {
-        padding: theme.spacing(1, 2),
-    }
-}));
 
 function EditGroup(props) {
     const [group, setGroup] = useState({})
@@ -92,7 +56,7 @@ function EditGroup(props) {
 
                 <Grid container spacing={3}>
                     <Grid item xs={12} className={classes.div}>
-                        <Form {...props}/>
+                        <Form {...props} />
                     </Grid>
                 </Grid>
 

@@ -1,31 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Container, Box, CssBaseline, Grid, Typography } from '@material-ui/core';
 import Footer from '../Components/Footer';
-import Form from './FormEditInfo';
+import Form from './FormInfo';
 import GoBack from '../Components/GoBack';
-
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: '#274e81e1',
-        alignItems: 'center'
-    },
-    div: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2)
-    }
-}));
+import { useStyles } from '../Components/Style';
 
 
 function EditProfile() {
@@ -38,7 +16,7 @@ function EditProfile() {
             <CssBaseline />
             <div className={classes.paper}>
                 <br /><br />
-                <div className="container px-4 px-lg-5">
+                <div className="container px-2 px-lg-4">
                     <h2 className="text-center mt-0">Editing {username}...</h2>
                     <hr className="divider" />
                 </div>

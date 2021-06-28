@@ -1,118 +1,121 @@
 const { makeRequest } = require('./Requests').requests;
+const urls =  {
+    groups: 'http://localhost:8081/server/api/g5/pluggable/gamification/',
+    users: 'http://localhost:8081/server/users/g5/pluggable/gamification/'
+}
 
 export async function getUser(username) {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
+    const uri = `${username}`
 
-    return makeRequest(uri)
+    return makeRequest(urls.users.concat(uri))
         .then(resp => {
             return resp
         })
 }
 
 export async function deleteUser(username) {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
+    const uri = `${username}`
 
-    return makeRequest(uri, {}, 'DELETE')
+    return makeRequest(urls.users.concat(uri), {}, 'DELETE')
         .then(resp => {
             return resp
         })
 }
 
 export async function updateUser(username, updatedUser) {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
+    const uri = `${username}`
 
-    return makeRequest(uri, { updatedInfo: updatedUser }, "PATCH")
+    return makeRequest(urls.users.concat(uri), { updatedInfo: { info: [updatedUser] } }, "PATCH")
         .then(resp => {
             return resp
         })
 }
 
 export async function getUserNotifications(username) {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/${username}`
+    const uri = `${username}`
 
-    return makeRequest(uri)
+    return makeRequest(urls.users.concat(uri))
         .then(resp => {
             return resp
         })
 }
 
 export async function removeUserNotification(username, group_id) {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification//notifications/${username}/groups/${group_id}`
+    const uri = `/notifications/${username}/groups/${group_id}`
 
-    return makeRequest(uri, {}, "DELETE")
+    return makeRequest(urls.users.concat(uri), {}, "DELETE")
         .then(resp => {
             return resp
         })
 }
 
 export async function getUserGroups(owner) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/owner/${owner}`
+    const uri = `groups/owner/${owner}`
 
-    return makeRequest(uri)
+    return makeRequest(urls.groups.concat(uri))
         .then(resp => {
             return resp
         })
 }
 
 export async function getSpecificGroup(id) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${id}`
+    const uri = `groups/${id}`
 
-    return makeRequest(uri)
+    return makeRequest(urls.groups.concat(uri))
         .then(resp => {
             return resp
         })
 }
 
 export async function addMemberToGroup(groupId, newMember) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/members`
+    const uri = `groups/${groupId}/members`
 
-    return makeRequest(uri, { username: newMember }, "POST")
+    return makeRequest(urls.groups.concat(uri), { username: newMember }, "POST")
         .then(resp => {
             return resp
         })
 }
 
 export async function removeMemberFromGroup(groupId, username) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/members/${username}`
+    const uri = `groups/${groupId}/members/${username}`
 
-    return makeRequest(uri, {}, 'DELETE')
+    return makeRequest(urls.groups.concat(uri), {}, 'DELETE')
         .then(resp => {
             return resp
         })
 }
 
 export async function deleteGroup(groupId) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`
+    const uri = `groups/${groupId}`
 
-    return makeRequest(uri, {}, "DELETE")
+    return makeRequest(urls.groups.concat(uri), {}, "DELETE")
         .then(resp => {
             return resp
         })
 }
 
 export async function editGroup(groupId, updatedGroup) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}`
+    const uri = `groups/${groupId}`
 
-    return makeRequest(uri, updatedGroup, "PATCH")
+    return makeRequest(urls.groups.concat(uri), updatedGroup, "PATCH")
         .then(resp => {
             return resp
         })
 }
 
 export async function createGroup(newGroup) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups`
+    const uri = `groups`
 
-    return makeRequest(uri, newGroup, "POST")
+    return makeRequest(urls.groups.concat(uri), newGroup, "POST")
         .then(resp => {
             return resp
         })
 }
 
 export async function getToolProjects(tool, username) {
+    const uri = `tools/${tool}/projects/${username}`
 
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/tools/${tool}/projects/${username}`
-
-    return makeRequest(uri)
+    return makeRequest(urls.groups.concat(uri))
         .then(resp => {
             console.log(resp)
             return resp
@@ -120,31 +123,33 @@ export async function getToolProjects(tool, username) {
 }
 
 export async function addProjectToGroup(groupId, projectId, type) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/projects`
+    const uri = `groups/${groupId}/projects`
 
     const body = {
         Pid: projectId,
         type: type
     }
 
-    return makeRequest(uri, body, "POST")
+    return makeRequest(urls.groups.concat(uri), body, "POST")
         .then(resp => {
             return resp
         })
 }
 
+export async function removeProjectFromGroup(groupId, projectId) {
+    const uri = `groups/${groupId}/projects/${projectId}`
+
+    return makeRequest(urls.groups.concat(uri), {}, "DELETE")
+        .then(resp => {
+            return resp
+        })
+}
 
 export async function getRankings(groupId) {
-    const uri = `http://localhost:8081/server/api/g5/pluggable/gamification/groups/${groupId}/rankings`
+    const uri = `groups/${groupId}/rankings`
 
-    return makeRequest(uri)
+    return makeRequest(urls.groups.concat(uri))
         .then(resp => {
             return resp
         })
 }
-
-
-
-
-
-

@@ -15,23 +15,21 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
     router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
-    router.delete('/groups/:group_id/project/:project_id', removeProjectFromGroup); //Remove a specific project from a group
+    router.delete('/groups/:group_id/projects/:project_id', removeProjectFromGroup); //Remove a specific project from a group
     router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
     router.post(`/groups/:group_id/members`, addMemberToGroup); //Add a specific user to a group
-
+    router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
     //router.post(`/groups/:group_id/members`, addMemberNotification); //Add a specific user to a group
 
-    router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
-
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
+    router.get('/rankings', getRankings); //TODO get all rankings
 
     router.get('/tools/:tool_name/projects/:username', getProjectsOfTool)
 
-    router.get('/rankings', getRankings); //TODO get all rankings
-
     return router;
+
 
     function createGroup(req, res) {
         aux.promisesAsyncImplementation(
@@ -83,6 +81,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     function removeProjectFromGroup(req, res) {
+        console.log(req.params)
         aux.promisesAsyncImplementation(
             services.removeProjectFromGroup(req.params.group_id, req.params.project_id),
             res

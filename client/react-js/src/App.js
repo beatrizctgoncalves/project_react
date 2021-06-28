@@ -18,8 +18,11 @@ import Privacy from './views/GeneralPages/Privacy';
 import Terms from './views/GeneralPages/Terms';
 import Notifications from './views/Notifications/Notifications';
 import Members from './views/Groups/Members/Members';
-import ToolsProjects from './views/ToolsProjects/ToolsProjects';
-import Sprint from './views/Sprint/SprintView';
+import ToolsProjects from './views/Groups/Projects/ToolsProjects';
+import Sprint from './views/Groups/Sprint/SprintView';
+import Projects from './views/Groups/Projects/Projects';
+import UserProfile from './views/Profile/UserProfile';
+
 
 function App() {
   return (
@@ -73,9 +76,16 @@ function App() {
             <About />
           </Route>
 
+
+          {/*PROFILE*/}
           <Route
             exact path='/profile'
             render={(props) => window.sessionStorage.getItem('username') ? <Profile {...props} /> : <Redirect to="/sign-in" />}
+          />
+
+          <Route
+            exact path='/profile/:username'
+            render={(props) => window.sessionStorage.getItem('username') ? <UserProfile {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
@@ -93,6 +103,8 @@ function App() {
             render={(props) => window.sessionStorage.getItem('username') ? <Notifications {...props} /> : <Redirect to="/sign-in" />}
           />
 
+
+          {/*GROUPS*/}
           <Route
             exact path="/groups/:id/edit"
             render={(props) => window.sessionStorage.getItem('username') ? <EditGroup {...props} /> : <Redirect to="/sign-in" />}
@@ -102,26 +114,31 @@ function App() {
             exact path="/groups/:id"
             render={(props) => window.sessionStorage.getItem('username') ? <Group {...props} /> : <Redirect to="/sign-in" />}
           />
+
           <Route
             exact path="/groups/:id/tools/:tool"
             render={(props) => window.sessionStorage.getItem('username') ? <ToolsProjects {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
-            exact path="/groups/:id/rankings"
-            render={(props) => window.sessionStorage.getItem('username') ?<Sprint {...props} />:<Redirect to="/sign-in" />}
-          />
+            exact path="/groups/:id/projects"
+            render={(props) => window.sessionStorage.getItem('username') ? <Projects {...props} /> : <Redirect to="/sign-in" />}
+          />{/*TODO*/}
 
-            <Route
+          <Route
+            exact path="/groups/:id/rankings"
+            render={(props) => window.sessionStorage.getItem('username') ? <Sprint {...props} /> : <Redirect to="/sign-in" />}
+          />{/*TODO*/}
+
+          <Route
             exact path="/groups/:id/members"
-            render={(props) => window.sessionStorage.getItem('username') ? <Members {...props} />: <Redirect to="/sign-in" />}
-          />  
+            render={(props) => window.sessionStorage.getItem('username') ? <Members {...props} /> : <Redirect to="/sign-in" />}
+          />
 
           <Route
             exact path='/groups'
           >
             {sessionStorage.getItem('username') ? <Groups /> : <SignIn />}
-
           </Route>
 
         </Switch>

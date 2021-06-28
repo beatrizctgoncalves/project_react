@@ -1,35 +1,10 @@
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { green, purple } from '@material-ui/core/colors';
-import { Typography, Box, Button, TextField, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { ButtonGreen } from '../Components/ColorButtons';
+import { Box, Button, TextField, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
 import { deleteUser, getUser, updateUser } from '../Services/BasicService.js';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
-
-const ColorButton = withStyles((theme) => ({
-    root: {
-        color: theme.palette.getContrastText(purple[500]),
-        backgroundColor: green[500],
-        fontFamily: [
-            "Merriweather Sans",
-            '-apple-system',
-            'BlinkMacSystemFont',
-            "Segoe UI",
-            'Roboto',
-            "Helvetica Neue",
-            'Arial',
-            "Noto Sans",
-            'sans-serif',
-            "Apple Color Emoji",
-            "Segoe UI Emoji",
-            "Segoe UI Symbol",
-        ].join(','),
-        '&:hover': {
-            backgroundColor: green[700],
-        },
-        margin: '4px'
-    },
-}))(Button);
 
 const useStyles = makeStyles((theme) => ({
     margin: {
@@ -139,10 +114,10 @@ function FormProfile() {
                             Additional Information
                         </Button>
 
-                        <ColorButton variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
+                        <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
                             <i className="bi bi-trash-fill">&nbsp;&nbsp;</i>
                             Delete Profile Definitively
-                        </ColorButton>
+                        </ButtonGreen>
                     </Box>
                 </Grid>
             </Grid>
