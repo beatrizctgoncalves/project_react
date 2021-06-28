@@ -103,7 +103,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
                 .then(tool => x.validateProject(Pid, tool.AToken))
                 .then(validatedObj => {
-                    console.log(validatedObj)
                     return databaseGroups.getGroupDetails(group_id)
                         .then(groupObj => {
                             const projectExists = groupObj.projects.findIndex(p => p.id == Pid && p.type == type)
