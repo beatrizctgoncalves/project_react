@@ -65,7 +65,7 @@ function FormProfile() {
         }*/
 
     function handleAdditionalInfo() {
-        window.location.assign(`/profile/edit/info`)
+        window.location.assign(`/profile/${username}/edit/info`)
     }
 
     const classes = useStyles();
