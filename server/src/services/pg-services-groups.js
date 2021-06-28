@@ -103,6 +103,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
                 .then(tool => x.validateProject(Pid, tool.AToken))
                 .then(validatedObj => {
+                    console.log(validatedObj)
                     return databaseGroups.getGroupDetails(group_id)
                         .then(groupObj => {
                             const projectExists = groupObj.projects.findIndex(p => p.id == Pid && p.type == type)
@@ -128,7 +129,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         removeProjectFromGroup: function (group_id, project_id) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(groupObj => {
-                    console.log("KKKKKKKKK")
                     const project_index = groupObj.projects.findIndex(p => p.id === project_id)
                     if (project_index === -1) {
                         return pgResponses.setError(

@@ -26,13 +26,14 @@ export const useStyles = makeStyles((theme) => ({
         backgroundColor:
             theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
     },
-    gridList: {
-        width: 1000,
-        height: 320,
+    card: {
+        display: 'flex',
     },
-    gridListContacts: {
-        width: 1000,
-        height: 370,
+    cardDetails: {
+        flex: 1,
+    },
+    cardMedia: {
+        width: 160,
     },
     form: {
         width: '100%', // Fix IE 11 issue.
