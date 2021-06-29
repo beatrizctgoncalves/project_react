@@ -219,8 +219,8 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             pgResponses.NOT_FOUND_USER_MSG
                         );
                     }
-
-                    return databaseGroups.removeMemberFromGroup(group_id, user_index) //remove the user by index
+                    return databaseUsers.removeMemberGroup(username,group_id)
+                        .then(databaseGroups.removeMemberFromGroup(group_id, user_index)) //remove the user by index
                         .then(group => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
