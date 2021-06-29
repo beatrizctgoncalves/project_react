@@ -115,7 +115,34 @@ function database(pgResponses, requests) {
                     }
                 }
             });
-            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${user_id}`), arrayMethods.POST, requestBody)
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${user_id}`), requests.arrayMethods.POST, requestBody)
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
+        removeMemberGroup: function (username, groupId) { //TODO
+            let requestBody = undefined
+            return this.getUser(username)
+                .then(userObj => {
+                    const group_index = userObj.groupsMember.findIndex(group => group === groupId)  //get the groups's index
+                    if (group_index === -1) { //the user doesnt exist in the group
+                        return pgResponses.setError(
+                            pgResponses.NOT_FOUND,
+                            pgResponses.NOT_FOUND_USER_MSG
+                        );
+                    }
+                    requestBody = JSON.stringify({
+                        "script": {
+                            "lang": "painless",
+                            "inline": "ctx._source.groupsMember.remove(params.groupId)",
+                            "params": {
+                                "groupId": group_index
+                            }
+                        }
+                    });
+                    return userObj.id
+                })
+                .then(userId => requests.makeFetchElastic(requests.index.users.concat(`_update/${userId}`), requests.arrayMethods.POST, requestBody))
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
