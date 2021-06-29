@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { getUser, getSpecificGroup, removeProjectFromGroup } from '../../Services/BasicService.js';
+import { getUser, getSpecificGroup } from '../../Services/BasicService.js';
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { useStyles } from '../../Components/Style';
-import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box, GridList, GridListTile, Link } from '@material-ui/core';
+import { Typography, Container, CssBaseline, Grid, Button, Box, Card, CardContent } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
-import { ButtonGreen, ButtonRed } from '../../Components/ColorButtons';
+import { ButtonGreen } from '../../Components/ColorButtons';
+import GridProject from './GridProjects.js';
 
 
 function Projects(props) {
@@ -14,10 +15,8 @@ function Projects(props) {
 
     const { id } = props.match.params
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
-    const [edit, setEdit] = useState(false)
 
     const [toAddProjects, setAddProjects] = useState(false)
-
     const owner = window.sessionStorage.getItem("username")
 
     useEffect(() => {
@@ -44,20 +43,6 @@ function Projects(props) {
     }, [])
 
 
-    function handleProjectDelete(projectId) {
-        removeProjectFromGroup(id, projectId)
-            .then(resp => {
-                let aux = group.projects.filter(project => {
-                    if (project.id !== projectId) {
-                        return project
-                    }
-                })
-                setGroup(aux)
-                setEdit(false)
-            })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }
-
     function handleToProjects(type) {
         window.location.replace(`/groups/${id}/tools/${type}`)
     }
@@ -73,7 +58,7 @@ function Projects(props) {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="lg">
             <CssBaseline />
             <div className={classes.paper}>
                 <br /><br />
@@ -84,84 +69,40 @@ function Projects(props) {
                 <ToastContainer />
                 <br />
 
-                <GridList cellHeight={220} className={classes.gridList} cols={4}>
-                    {group.projects && group.projects != 0 ? group.projects.map(project => {
-                        return (
-                            <GridListTile cols={1} key={project.id}>
+                <Grid container spacing={3} justify='center'>
+                    {group.projects && group.projects != 0 ? group.projects.map(project =>
+                        <GridProject key={project.id} project={project} groupId={id} />
+                    ) :
+                        <div className={classes.cardGroup}>
+                            <Grid item xs={12}>
                                 <Card align="center">
-                                    <CardHeader
-                                        title={project.avatar}
-                                        subheader={project.title}
-                                        titleTypographyProps={{ align: 'center' }}
-                                        subheaderTypographyProps={{ align: 'center' }}
-                                        className={classes.cardHeader}
-                                    />
-
-                                    <CardContent>
-                                        <div className={classes.cardGroup} key={project.id}>
-                                            <ul className={classes.listItem}>
-                                                <Typography variant="body1" color='primary'>
-                                                    Type
-                                                </Typography>
-
-                                                <div>
-                                                    <ul className={classes.listItem} key={project.id}>
-                                                        <Typography variant="body2" color="textSecondary">
-                                                            {project.type}
-                                                        </Typography>
-                                                    </ul>
-                                                </div>
-                                            </ul>
-
-                                            <ul className={classes.listItem}>
-                                                <Typography variant="body1" color='primary'>
-                                                    Owner
-                                                </Typography>
-
-                                                <div>
-                                                    <ul className={classes.listItem} key={project.id}>
-                                                        <Typography variant="body2" color="textSecondary">
-                                                            {project.owner_name}
-                                                        </Typography>
-                                                    </ul>
-                                                </div>
-                                            </ul>
-                                        </div>
-
-                                        <ButtonRed variant="contained" onClick={handleProjectDelete.bind(null, project.id)}>
-                                            <i className="bi bi-trash-fill"></i>
-                                        </ButtonRed>
+                                    <CardContent className={classes.cardHeader}>
+                                        <Typography variant="h6" color="textSecondary">
+                                            You do not have any Projects.<br />
+                                            Start adding!
+                                        </Typography>
                                     </CardContent>
                                 </Card>
-                            </GridListTile>
-                        )
-                    }) :
-                        < div className={classes.cardGroup}>
-                            <Grid item xs={12}>
-                                <Typography variant="h6" color="textSecondary">
-                                    You do not have any Projects.<br />
-                                    Start adding!
-                                </Typography>
                             </Grid>
                         </div>
                     }
-                </GridList>
+                </Grid>
 
-                {toAddProjects ?
-                    <Box mt={0} align='center'>
-                        <h3 className="h4 mb-2">Projects</h3>
-                        <ul className={classes.listItem}>
-                            <div>
-                                {user.info ? user.info.map(i =>
-                                    <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
-                                        {i.type}
-                                    </ButtonGreen>
-                                ) : ""}
-                            </div>
-                        </ul>
-                    </Box> : ""}
+                <Box mt={8} align='center'>
+                    {toAddProjects ?
+                        <>
+                            <h3 className="h4 mb-2">Projects</h3>
+                            <ul className={classes.listItem}>
+                                <div>
+                                    {user.info ? user.info.map(i =>
+                                        <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
+                                            {i.type}
+                                        </ButtonGreen>
+                                    ) : ""}
+                                </div>
+                            </ul>
+                        </> : ""}
 
-                <Box mt={0} align='center'>
                     <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
                         <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
                         {toAddProjects ? "" : "Add Project"}

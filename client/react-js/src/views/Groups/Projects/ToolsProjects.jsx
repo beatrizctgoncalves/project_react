@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { addProjectToGroup, getToolProjects, getSpecificGroup } from '../../Services/BasicService';
 import { ToastContainer, toast } from 'react-toastify';
-import { Container, GridList, CssBaseline, GridListTile, Card, CardHeader, CardContent, Box } from '@material-ui/core';
+import { Container, CssBaseline, Card, CardHeader, Grid, Box } from '@material-ui/core';
 import Footer from '../../Components/Footer.js';
 import GoBack from '../../Components/GoBack';
 import { ButtonGreen } from '../../Components/ColorButtons'
@@ -60,7 +60,8 @@ function ToolsProjects(props) {
             addProjectToGroup(id, projId, tool)
                 .then(resp => {
                     window.location.replace(`/groups/${id}`)
-                }).catch(err => {
+                })
+                .catch(err => {
                     console.log(err)
                     toast.error(err.body, {
                         position: "top-left",
@@ -88,7 +89,7 @@ function ToolsProjects(props) {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="lg">
             <CssBaseline />
             <div className={classes.paper}>
                 <br /><br />
@@ -99,10 +100,10 @@ function ToolsProjects(props) {
                 <ToastContainer />
                 <br />
 
-                <GridList cellHeight={200} className={classes.gridList} cols={3}>
+                <Grid container spacing={3} justify='center'>
                     {availableProjects ? availableProjects.map(project => {
                         return (
-                            <GridListTile cols={1}>
+                            <Grid item xs={4} key={group.id}>
                                 <Card align="center">
                                     <CardHeader
                                         title={project.avatar}
@@ -112,18 +113,20 @@ function ToolsProjects(props) {
                                         subheaderTypographyProps={{ align: 'center' }}
                                         className={classes.cardHeader}
                                     />
-                                    <CardContent>
+
+                                    <Box mt={1}>
                                         <ButtonGreen className={classes.margin} onClick={handleAddProjectToGroup.bind(null, project.id)}>
                                             <i className="bi bi-plus-lg"></i>
                                         </ButtonGreen>
-                                    </CardContent>
+                                    </Box>
+                                    <Box mt={1}></Box>
                                 </Card>
-                            </GridListTile>
+                            </Grid>
                         )
                     }) : ""}
-                </GridList>
+                </Grid>
 
-                <Box mt={0}>
+                <Box mt={8}>
                     <GoBack />
                 </Box>
 

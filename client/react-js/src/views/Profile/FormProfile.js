@@ -48,22 +48,21 @@ function FormProfile() {
     }
 
 
-    /*
-        const [profile, setProfile] = useState([])
-        function handleDelete() {
-            deleteUser(username)
-                .then(resp => getUser(username))
-                .then(resp => {
-                    setProfile(profile)
-                    setEdit(false)
-                })
-                .catch(err => {
-                    setError({ errorMessage: err.body, shouldShow: true });
-                })
-        }*/
+    /*const [profile, setProfile] = useState([])
+    function handleDelete() {
+        deleteUser(username)
+            .then(resp => getUser(username))
+            .then(resp => {
+                setProfile(profile)
+                setEdit(false)
+            })
+            .catch(err => {
+                setError({ errorMessage: err.body, shouldShow: true });
+            })
+    }*/
 
     function handleAdditionalInfo() {
-        window.location.assign(`/profile/edit/info`)
+        window.location.assign(`/profile/${username}/edit/info`)
     }
 
     const classes = useStyles();

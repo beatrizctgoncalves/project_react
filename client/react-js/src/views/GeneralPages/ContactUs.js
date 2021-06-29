@@ -8,19 +8,19 @@ import CardContact from '../Components/CardContact.js';
 function ContactUs() {
     const featuredPosts = [
         {
-            title: <Link to={`https://github.com/beatrizctgoncalves`}>Beatriz Gonçalves</Link>,
+            title: <Link href={`https://github.com/beatrizctgoncalves`}>Beatriz Gonçalves</Link>,
             icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
                 alt="Card image cap"></img>,
             description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
         },
         {
-            title: <Link to={`https://github.com/A44866`}>Maksym</Link>,
+            title: <Link href={`https://github.com/A44866`}>Maksym</Link>,
             icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
                 alt="Card image cap"></img>,
             description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
         },
         {
-            title: <Link to={`https://github.com/pinto6`}>Miguel Pinto</Link>,
+            title: <Link href={`https://github.com/pinto6`}>Miguel Pinto</Link>,
             icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
                 alt="Card image cap"></img>,
             description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',

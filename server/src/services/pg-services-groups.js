@@ -19,8 +19,23 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                         pgResponses.index.groups,
                         groups
                     )
+                })
+        },
 
-
+        getUserMemberGroups: function (username) {
+            return databaseUsers.getUser(username)
+                .then(user => user.groupsMember)
+                .then(groupsMember => {
+                    let promisses = []
+                    groupsMember.map(groupMember => promisses.push(databaseGroups.getGroupDetails(groupMember)))
+                    return promisses
+                })
+                .then(promisses => Promise.all(promisses))
+                .then(groups => {
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        groups
+                    )
                 })
         },
 
@@ -88,13 +103,12 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         },
 
         addProjectToGroup: function (group_id, Pid, type) {
-            //TODO needs "Other" type
             const x = require("./plugins/" + type + "/api")()
             return databaseGroups.getGroupDetails(group_id)
                 .then(groupObj => databaseUsers.getUser(groupObj.owner))
                 .then(user => {
                     let toRet
-                    user.info.forEach(tool => {
+                    user.info.map(tool => {
                         if (tool.type == type) {
                             toRet = tool
                         }
@@ -170,7 +184,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                                     pgResponses.FORBIDDEN_MSG
                                 )
                             }
-                            return databaseUsers.addGroupToUser(username,group_id)
+                            return databaseUsers.addGroupToUser(username, group_id)
                                 .then(databaseGroups.addMemberToGroup(group_id, username)) //add user
                                 .then(group => {
                                     return pgResponses.setSuccessUri(

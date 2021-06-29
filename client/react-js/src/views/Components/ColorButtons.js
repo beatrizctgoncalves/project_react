@@ -126,8 +126,7 @@ export const ButtonGrey = withStyles((theme) => ({
             backgroundColor: grey[700],
         },
         margin: '4px',
-        padding: '4px 4px',
-        width: '2px'
+        padding: '4px 4px'
     },
 }))(Button);
 

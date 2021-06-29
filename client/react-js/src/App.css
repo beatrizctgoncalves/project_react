@@ -3914,6 +3914,7 @@ textarea.form-control-lg {
   cursor: default;
 }
 
+
 .nav-tabs {
   border-bottom: 1px solid #dee2e6;
 }
@@ -3982,6 +3983,7 @@ textarea.form-control-lg {
 }
 
 .navbar {
+  overflow: hidden;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -3990,6 +3992,7 @@ textarea.form-control-lg {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+
 .navbar > .container,
 .navbar > .container-fluid,
 .navbar > .container-sm,
@@ -4031,6 +4034,7 @@ textarea.form-control-lg {
 }
 
 .navbar-collapse {
+  overflow: hidden;
   flex-basis: 100%;
   flex-grow: 1;
   align-items: center;
@@ -4047,7 +4051,7 @@ textarea.form-control-lg {
 }
 @media (prefers-reduced-motion: reduce) {
   .navbar-toggler {
-    transition: none;
+    transition: inherit;
   }
 }
 .navbar-toggler:hover {
@@ -11011,6 +11015,7 @@ header.masthead h1, header.masthead .h1 {
     font-size: 3.5rem;
   }
 }
+
 
 #portfolio .container-fluid, #portfolio .container-sm, #portfolio .container-md, #portfolio .container-lg, #portfolio .container-xl, #portfolio .container-xxl {
   max-width: 1920px;

@@ -19,9 +19,11 @@ import Terms from './views/GeneralPages/Terms';
 import Notifications from './views/Notifications/Notifications';
 import Members from './views/Groups/Members/Members';
 import ToolsProjects from './views/Groups/Projects/ToolsProjects';
-import Sprint from './views/Groups/Sprint/SprintView';
+import Sprints from './views/Groups/Sprint/Sprints';
 import Projects from './views/Groups/Projects/Projects';
 import UserProfile from './views/Profile/UserProfile';
+import MemberGroup from './views/Groups/GroupMember';
+import Rankings from './views/Groups/Rankings/Rankings';
 
 
 function App() {
@@ -123,16 +125,26 @@ function App() {
           <Route
             exact path="/groups/:id/projects"
             render={(props) => window.sessionStorage.getItem('username') ? <Projects {...props} /> : <Redirect to="/sign-in" />}
-          />{/*TODO*/}
+          />
+
+          <Route
+            exact path="/groups/:id/sprints"
+            render={(props) => window.sessionStorage.getItem('username') ? <Sprints {...props} /> : <Redirect to="/sign-in" />}
+          />
 
           <Route
             exact path="/groups/:id/rankings"
-            render={(props) => window.sessionStorage.getItem('username') ? <Sprint {...props} /> : <Redirect to="/sign-in" />}
+            render={(props) => window.sessionStorage.getItem('username') ? <Rankings {...props} /> : <Redirect to="/sign-in" />}
           />{/*TODO*/}
 
           <Route
             exact path="/groups/:id/members"
             render={(props) => window.sessionStorage.getItem('username') ? <Members {...props} /> : <Redirect to="/sign-in" />}
+          />
+
+          <Route
+            exact path="/groups/belong/to/member"
+            render={(props) => window.sessionStorage.getItem('username') ? <MemberGroup {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route

@@ -58,11 +58,21 @@ export async function getUserGroups(owner) {
         })
 }
 
+export async function getUserMemberGroups(member) {
+    const uri = `groups/member/${member}`
+
+    return makeRequest(urls.groups.concat(uri))
+        .then(resp => {
+            return resp
+        })
+}
+
 export async function getSpecificGroup(id) {
     const uri = `groups/${id}`
 
     return makeRequest(urls.groups.concat(uri))
         .then(resp => {
+            console.log(resp)
             return resp
         })
 }
@@ -72,6 +82,7 @@ export async function addMemberToGroup(groupId, newMember) {
 
     return makeRequest(urls.groups.concat(uri), { username: newMember }, "POST")
         .then(resp => {
+            
             return resp
         })
 }
