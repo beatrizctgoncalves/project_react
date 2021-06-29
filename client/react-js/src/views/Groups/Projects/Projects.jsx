@@ -17,7 +17,6 @@ function Projects(props) {
     const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const [toAddProjects, setAddProjects] = useState(false)
-
     const owner = window.sessionStorage.getItem("username")
 
     useEffect(() => {

@@ -27,7 +27,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(user => user.groupsMember)
                 .then(groupsMember => {
                     let promisses = []
-                    groupsMember.forEach(groupMember => {
+                    groupsMember.map(groupMember => {
                         promisses.push(databaseGroups.getGroupDetails(groupMember))
                     })
                     return Promise.all(promisses)
@@ -109,7 +109,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(groupObj => databaseUsers.getUser(groupObj.owner))
                 .then(user => {
                     let toRet
-                    user.info.forEach(tool => {
+                    user.info.map(tool => {
                         if (tool.type == type) {
                             toRet = tool
                         }

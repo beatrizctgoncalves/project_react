@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getUser, updateUser } from '../Services/BasicService.js';
 import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
-import { useStyles } from '../Components/Style';
+import { useStyles} from '../Components/Style';
 import { ButtonGreen } from '../Components/ColorButtons';
 import { Typography, CardHeader, TextField, Card, CssBaseline, CardContent, Grid, Container, Button, Box } from '@material-ui/core';
 
@@ -46,9 +46,8 @@ function Profile() {
         setNewAvatar(event.target.value)
     }
 
-
     function handleAdditionalInfo() {
-        window.location.assign(`/profile/edit/info`)
+        window.location.assign(`/profile/${username}/edit/info`)
     }
 
     return (
@@ -143,7 +142,7 @@ function Profile() {
 
                             <CardContent>
                                 <Box mt={0}>
-                                    <Button variant="contained" color="primary" className={classes.margin} href={`/profile/${user.username}/edit`}>
+                                    <Button variant="contained" color="primary" className={classes.margin} href={`/profile/${username}/edit`}>
                                         <i className="bi bi-pencil-fill"></i>
                                     </Button>
                                 </Box>
