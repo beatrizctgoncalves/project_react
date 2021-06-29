@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { addMemberToGroup, getSpecificGroup } from '../../Services/BasicService.js';
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
-import { Container, CssBaseline, Grid, Box, Button, Typography } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Box, Button, Typography, Card, CardContent } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { useStyles } from '../../Components/Style';
 import CardMembers from './CardMembers.js';
@@ -91,16 +91,18 @@ function Members(props) {
                     {group.members && group.members != 0 ? group.members.map(member =>
                         <CardMembers key={member} member={member} groupId={id} />
                     ) :
-                        <Grid item xs={4}>
-                            <div className={classes.cardGroup}>
-                                <Grid item xs={12}>
-                                    <Typography variant="h6" color="textSecondary">
-                                        You do not have any Members.<br />
-                                        Start adding!
-                                    </Typography>
-                                </Grid>
-                            </div>
-                        </Grid>
+                        <div className={classes.cardGroup}>
+                            <Grid item xs={12}>
+                                <Card align="center">
+                                    <CardContent className={classes.cardHeader}>
+                                        <Typography variant="h6" color="textSecondary">
+                                            You do not have any Members.<br />
+                                            Start adding!
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </div>
                     }
                 </Grid>
 

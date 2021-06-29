@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { removeProjectFromGroup } from '../../Services/BasicService.js';
 import { useStyles } from '../../Components/Style';
-import { Typography, CardHeader, Card, CardContent, Grid, Box } from '@material-ui/core';
+import { Typography, CardHeader, Card, CardContent, Grid } from '@material-ui/core';
 import { ButtonRed } from '../../Components/ColorButtons';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function GridProject(props) {
     const { project, groupId } = props
     const [edit, setEdit] = useState(false)
     const [group, setGroup] = useState({})
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     function handleProjectDelete(projectId) {
         removeProjectFromGroup(groupId, projectId)
@@ -22,13 +22,26 @@ function GridProject(props) {
                 setGroup(aux)
                 setEdit(false)
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
     const classes = useStyles();
 
     return (
         <Grid item xs={4} key={project.id}>
+            <ToastContainer/>
+            
             <Card align="center">
                 <CardHeader
                     title={project.title}

@@ -27,11 +27,10 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(user => user.groupsMember)
                 .then(groupsMember => {
                     let promisses = []
-                    groupsMember.map(groupMember => {
-                        promisses.push(databaseGroups.getGroupDetails(groupMember))
-                    })
-                    return Promise.all(promisses)
+                    groupsMember.map(groupMember => promisses.push(databaseGroups.getGroupDetails(groupMember)))
+                    return promisses
                 })
+                .then(promisses => Promise.all(promisses))
                 .then(groups => {
                     return pgResponses.setSuccessList(
                         pgResponses.OK,

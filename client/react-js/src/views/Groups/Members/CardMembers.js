@@ -10,6 +10,8 @@ function CardMembers(props) {
     const { member, groupId } = props
     const [edit, setEdit] = useState(false)
 
+    const owner = window.sessionStorage.getItem("username")
+
     const [group, setGroup] = useState({})
     const [user, setUser] = useState({})
 
@@ -107,9 +109,11 @@ function CardMembers(props) {
                     </Typography>
 
                     <Box mt={2}>
-                        <ButtonRed variant="contained" className={classes.margin} onClick={handleMemberDelete.bind(null, user.username)}>
-                            <i className="bi bi-trash-fill"></i>
-                        </ButtonRed>
+                        {user.username != owner ?
+                            <ButtonRed variant="contained" className={classes.margin} onClick={handleMemberDelete.bind(null, user.username)}>
+                                <i className="bi bi-trash-fill"></i>
+                            </ButtonRed>
+                            : ""}
                     </Box>
                 </CardContent>
             </Card>

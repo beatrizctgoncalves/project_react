@@ -60,89 +60,20 @@ function Group(props) {
             })
     }, [])
 
-    const handleTitle = event => {
-        setNewSprint({ ...newSprint, title: event.target.value })
-    }
-
-    const handleBeginDate = event => {
-        setNewSprint({ ...newSprint, beginDate: event.target.value })
-    }
-
-    const handleEndDate = event => {
-        setNewSprint({ ...newSprint, endDate: event.target.value })
-    }
-
     function handleToEditSprintsChange() {
-        if (toAddSprints) {
-            setAddSprints(false)
-        } else {
-            setAddSprints(true)
-        }
-    }
-
-    function handleAddSprints() {
-        addSprintToGroup(id, newSprint)
-            .then(resp => {
-                getSpecificGroup(id)
-                    .then(groupObj => {
-                        let aux = groupObj.message
-                        aux.sprints.push(newSprint)
-                        setGroup(aux)
-                        setAddSprints(false)
-                    })
-            })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }
-
-
-    const handleMember = event => {
-        setNewMember(event.target.value)
+        window.location.replace(`/groups/${group.id}/sprints`)
     }
 
     function handleToEditMembersChange() {
-        if (toAddMembers) {
-            setAddMembers(false)
-        } else {
-            console.log()
-            setAddMembers(true)
-        }
+        window.location.replace(`/groups/${group.id}/members`)
     }
-
-    function handleAddMembers() {
-        addMemberToGroup(id, newMember, group.owner)
-            .then(resp => {
-                setAddMembers(false)
-            })
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
-    }
-
 
     function handleToEditProjectsChange() {
-        if (toAddProjects) {
-            setAddProjects(false)
-        } else {
-            setAddProjects(true)
-            console.log(user)
-        }
+        window.location.replace(`/groups/${group.id}/projects`)
     }
 
     function handleToRankings() {
         window.location.replace(`/groups/${id}/rankings`)
-    }
-
-    function handleToProjects(type) {
-        window.location.replace(`/groups/${id}/tools/${type}`)
     }
 
     const classes = useStyles();
@@ -185,7 +116,7 @@ function Group(props) {
                                 <div className={classes.cardGroup}>
                                     <ul className={classes.listItem}>
                                         <Typography variant="body1">
-                                            <Link to={`/groups/${group.id}/members`}>Members</Link>
+                                            <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>Members</Button>
                                         </Typography>
 
                                         <div>
@@ -207,7 +138,7 @@ function Group(props) {
 
                                     <ul className={classes.listItem}>
                                         <Typography variant="body1">
-                                            <Link to={`/groups/${group.id}/projects`}>Projects</Link>
+                                            <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>Projects</Button>
                                         </Typography>
 
                                         <div>
@@ -230,7 +161,7 @@ function Group(props) {
 
                                 <ul className={classes.listItem}>
                                     <Typography variant="body1">
-                                        <Link to={`/groups/${group.id}/sprints`}>Sprints</Link>
+                                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>Sprints</Button>
                                     </Typography>
 
                                     <div>
@@ -255,143 +186,6 @@ function Group(props) {
                                     <i className="bi bi-trophy-fill">&nbsp;&nbsp;</i>
                                     Rankings
                                 </ButtonLime>
-                            </CardContent>
-
-                            <CardContent>
-                                {toAddMembers ?
-                                    <Box mt={0}>
-                                        <h3 className="h4 mb-2">Insert New Members</h3>
-                                        <br />
-                                        <input
-                                            variant="outlined"
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            type="text"
-                                            name="newMember"
-                                            className="form-control"
-                                            placeholder="Enter new Member"
-                                            value={newMember}
-                                            onChange={handleMember}
-                                        />
-                                        <br />
-                                        <ButtonGreen
-                                            className={classes.margin}
-                                            onClick={handleAddMembers}
-                                        >
-                                            Add Member
-                                        </ButtonGreen>
-                                    </Box> : ""}
-                                <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
-                                    <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
-                                    {toAddMembers ? "" : "Add Member"}
-                                </Button>
-
-                                {toAddProjects ?
-                                    <Box mt={3}>
-                                        <h3 className="h4 mb-2">Projects</h3>
-
-                                        <div>
-                                            <ul className={classes.listItem}>
-                                                {user.info ? user.info.map(i =>
-                                                    <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
-                                                        {i.type}
-                                                    </ButtonGreen>
-                                                ) :
-                                                    <ul className={classes.listItem}>
-                                                        <Typography variant="body2" color="textSecondary">
-                                                            You do not have any Projects!
-                                                        </Typography>
-                                                    </ul>
-                                                }
-                                            </ul>
-                                        </div>
-                                    </Box>
-                                    : ""}
-                                <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
-                                    <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
-                                    {toAddProjects ? "" : "Add Project"}
-                                </Button>
-
-
-                                {toAddSprints ?
-                                    <Box mt={4}>
-                                        <h3 className="h4 mb-2">Insert New Sprint</h3>
-
-                                        <Grid item xs={6} align='center'>
-                                            <TextField
-                                                type="text"
-                                                id="title"
-                                                name="title"
-                                                required
-                                                fullWidth
-                                                label="Title"
-                                                onChange={handleTitle}
-                                            />
-                                        </Grid>
-                                        <br />
-
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={6}>
-                                                <Typography variant="h6" color="textSecondary">
-                                                    Begin Date:
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <input
-                                                    type="date"
-                                                    id="beginDate"
-                                                    name="beginDate"
-                                                    max="2050-12-31"
-                                                    min="2020-06-27"
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    className="form-control"
-                                                    placeholder="2021-06-10"
-                                                    onChange={handleBeginDate}
-                                                />
-                                            </Grid>
-                                        </Grid>
-
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={6}>
-                                                <Typography variant="h6" color="textSecondary">
-                                                    End Date:
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <input
-                                                    type="date"
-                                                    id="endDate"
-                                                    name="endDate"
-                                                    max="2050-12-31"
-                                                    min="2020-06-27"
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    className="form-control"
-                                                    placeholder="2021-06-10"
-                                                    onChange={handleEndDate}
-                                                />
-                                            </Grid>
-                                        </Grid>
-
-                                        <br />
-                                        <ButtonGreen
-                                            variant="contained"
-                                            className={classes.margin}
-                                            onClick={handleAddSprints}
-                                        >
-                                            Add Sprint
-                                        </ButtonGreen>
-                                    </Box> : ""}
-                                <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>
-                                    <i className="bi bi-list-check">&nbsp;&nbsp;</i>
-                                    {toAddSprints ? "" : "Add Sprint"}
-                                </Button>
                             </CardContent>
                         </Card>
                     </Grid>

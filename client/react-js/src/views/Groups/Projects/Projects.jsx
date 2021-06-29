@@ -3,7 +3,7 @@ import { getUser, getSpecificGroup } from '../../Services/BasicService.js';
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { useStyles } from '../../Components/Style';
-import { Typography, Container, CssBaseline, Grid, Button, Box } from '@material-ui/core';
+import { Typography, Container, CssBaseline, Grid, Button, Box, Card, CardContent } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../../Components/ColorButtons';
 import GridProject from './GridProjects.js';
@@ -73,12 +73,16 @@ function Projects(props) {
                     {group.projects && group.projects != 0 ? group.projects.map(project =>
                         <GridProject key={project.id} project={project} groupId={id} />
                     ) :
-                        < div className={classes.cardGroup}>
+                        <div className={classes.cardGroup}>
                             <Grid item xs={12}>
-                                <Typography variant="h6" color="textSecondary">
-                                    You do not have any Projects.<br />
-                                    Start adding!
-                                </Typography>
+                                <Card align="center">
+                                    <CardContent className={classes.cardHeader}>
+                                        <Typography variant="h6" color="textSecondary">
+                                            You do not have any Projects.<br />
+                                            Start adding!
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
                             </Grid>
                         </div>
                     }

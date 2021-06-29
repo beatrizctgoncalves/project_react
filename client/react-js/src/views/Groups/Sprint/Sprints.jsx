@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { addSprintToGroup, getSpecificGroup, getRankings } from '../../Services/BasicService.js';
+import { addSprintToGroup, getSpecificGroup } from '../../Services/BasicService.js';
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { useStyles } from '../../Components/Style';
-import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box, TextField, Link } from '@material-ui/core';
+import { Typography, Container, Card, CardContent, CssBaseline, Grid, Button, Box, TextField } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../../Components/ColorButtons';
+import CardSprint from './CardSprint.jsx';
 
 
 function Sprint(props) {
@@ -15,26 +16,6 @@ function Sprint(props) {
 
     const [toAddSprints, setAddSprints] = useState(false)
     const [newSprint, setNewSprint] = useState("")
-    const [sprints, setSprints] = useState([])
-
-    useEffect(() => {
-        getRankings(id)
-            .then(resp => {
-                setSprints(resp.message)
-            })
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
-    }, [])
 
     useEffect(() => {
         getSpecificGroup(id)
@@ -80,7 +61,6 @@ function Sprint(props) {
                 getSpecificGroup(id)
                     .then(groupObj => {
                         let aux = groupObj.message
-                        aux.sprints.push(newSprint)
                         setGroup(aux)
                         setAddSprints(false)
                     })
@@ -91,7 +71,7 @@ function Sprint(props) {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="lg">
             <CssBaseline />
             <div className={classes.paper}>
                 <br /><br />
@@ -102,150 +82,107 @@ function Sprint(props) {
                 <ToastContainer />
                 <br />
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Card align="center">
-                            <CardHeader
-                                title={'Rankings'}
-                                titleTypographyProps={{ align: 'center' }}
-                                className={classes.cardHeader}
-                            />
-
-                            <CardContent>
-                                {sprints ? sprints.map(sprint =>
-                                    <div className={classes.cardGroup} key={sprint}>
-                                        <Grid item xs={12}>
-                                            <Typography variant="h5" color="primary">
-                                                {sprint.SprintTitle}
-                                            </Typography>
-                                            <br />
-
-                                            <Grid container spacing={4}>
-                                                {sprint.Scores && sprint.Scores != 0 ? sprint.Scores.map(score =>
-                                                    <Grid item xs={4}>
-                                                        <Typography variant="body1">
-                                                            {score.AppUsername}
-                                                        </Typography>
-
-                                                        <ul className={classes.listItem}>
-                                                            <Typography variant="body2" color="textSecondary">
-                                                                {score.Points}
-                                                            </Typography>
-                                                        </ul>
-                                                    </Grid>
-                                                ) :
-                                                    <div className={classes.cardGroup}>
-                                                        <Grid item xs={12}>
-                                                            <Typography variant="h6" color="textSecondary">
-                                                                This Group do not have any Scores.<br />
-                                                                Start finishing Sprints!
-                                                            </Typography>
-                                                        </Grid>
-                                                    </div>
-                                                }
-                                            </Grid>
-                                        </Grid>
-                                    </div>
-                                ) :
-                                    <div className={classes.cardGroup}>
-                                        <Grid item xs={12}>
-                                            <Typography variant="h6" color="textSecondary">
-                                                You do not have any Sprints.<br />
-                                                Start adding!
-                                            </Typography>
-                                        </Grid>
-                                    </div>
-                                }
-                            </CardContent>
-
-                            <CardContent>
-                                {toAddSprints ?
-                                    <Box mt={0}>
-                                        <h3 className="h4 mb-2">Insert New Sprint</h3>
-                                        <br />
-
-                                        <Grid item xs={6} align='center'>
-                                            <TextField
-                                                type="text"
-                                                id="title"
-                                                name="title"
-                                                required
-                                                fullWidth
-                                                label="Title"
-                                                onChange={handleTitle}
-                                            />
-                                        </Grid>
-                                        <br />
-
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={6}>
-                                                <Typography variant="h6" color="textSecondary">
-                                                    Begin Date:
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <input
-                                                    type="date"
-                                                    id="beginDate"
-                                                    name="beginDate"
-                                                    max="2050-12-31"
-                                                    min="2020-06-27"
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    className="form-control"
-                                                    placeholder="2021-06-10"
-                                                    onChange={handleBeginDate}
-                                                />
-                                            </Grid>
-                                        </Grid>
-
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={6}>
-                                                <Typography variant="h6" color="textSecondary">
-                                                    End Date:
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <input
-                                                    type="date"
-                                                    id="endDate"
-                                                    name="endDate"
-                                                    max="2050-12-31"
-                                                    min="2020-06-27"
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    className="form-control"
-                                                    placeholder="2021-06-10"
-                                                    onChange={handleEndDate}
-                                                />
-                                            </Grid>
-                                        </Grid>
-
-                                        <br />
-                                        <ButtonGreen
-                                            variant="contained"
-                                            className={classes.margin}
-                                            onClick={handleAddSprints}
-                                        >
-                                            Add Sprint
-                                        </ButtonGreen>
-                                    </Box> : ""}
-
-                                <Box mt={0}>
-                                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>
-                                        <i className="bi bi-plus-lg">&nbsp;&nbsp;</i>
-                                        {toAddSprints ? "" : "Add Sprints"}
-                                    </Button>
-                                </Box>
-
-                            </CardContent>
-                        </Card>
-                    </Grid>
+                <Grid container spacing={2} justify='center'>
+                    {group.sprints && group.sprints != 0 ? group.sprints.map(sprint =>
+                        <CardSprint key={sprint.title} sprint={sprint} />
+                    ) :
+                        <div className={classes.cardGroup}>
+                            <Grid item xs={12}>
+                                <Card align="center">
+                                    <CardContent className={classes.cardHeader}>
+                                        <Typography variant="h6" color="textSecondary">
+                                            You do not have any Sprints.<br />
+                                            Start adding!
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        </div>
+                    }
                 </Grid>
+
+                <Box mt={6} align='center'>
+                    {toAddSprints ?
+                        <Box mt={0}>
+                            <h3 className="h4 mb-2">Insert New Sprint</h3>
+                            <br />
+
+                            <Grid item xs={6} align='center'>
+                                <TextField
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    required
+                                    fullWidth
+                                    label="Title"
+                                    onChange={handleTitle}
+                                />
+                            </Grid>
+                            <br />
+
+                            <Grid container spacing={1}>
+                                <Grid item xs={6}>
+                                    <Typography variant="h6" color="textSecondary">
+                                        Begin Date:
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <input
+                                        type="date"
+                                        id="beginDate"
+                                        name="beginDate"
+                                        max="2050-12-31"
+                                        min="2020-06-27"
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        className="form-control"
+                                        placeholder="2021-06-10"
+                                        onChange={handleBeginDate}
+                                    />
+                                </Grid>
+                            </Grid>
+
+                            <Grid container spacing={1}>
+                                <Grid item xs={6}>
+                                    <Typography variant="h6" color="textSecondary">
+                                        End Date:
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <input
+                                        type="date"
+                                        id="endDate"
+                                        name="endDate"
+                                        max="2050-12-31"
+                                        min="2020-06-27"
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        className="form-control"
+                                        placeholder="2021-06-10"
+                                        onChange={handleEndDate}
+                                    />
+                                </Grid>
+                            </Grid>
+
+                            <br />
+                            <ButtonGreen
+                                variant="contained"
+                                className={classes.margin}
+                                onClick={handleAddSprints}
+                            >
+                                Add Sprint
+                            </ButtonGreen>
+                        </Box> : ""}
+
+                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>
+                        <i className="bi bi-plus-lg">&nbsp;&nbsp;</i>
+                        {toAddSprints ? "" : "Add Sprint"}
+                    </Button>
+                </Box>
 
                 <Box mt={5}>
                     <GoBack />

@@ -18,13 +18,11 @@ function Groups() {
 
     const owner = window.sessionStorage.getItem("username")
     const [newGroup, setNewGroup] = useState({ owner: owner })
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     useEffect(() => {
         getUserGroups(owner)
             .then(resp => setGroups(resp.message))
             .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -50,7 +48,15 @@ function Groups() {
                 setEdit(false)
             })
             .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             })
     }
 
@@ -66,8 +72,15 @@ function Groups() {
                     })
             })
             .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
-                toast.error(err.body)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             })
     }
 
