@@ -72,6 +72,7 @@ export async function getSpecificGroup(id) {
 
     return makeRequest(urls.groups.concat(uri))
         .then(resp => {
+            console.log(resp)
             return resp
         })
 }
@@ -81,6 +82,7 @@ export async function addMemberToGroup(groupId, newMember) {
 
     return makeRequest(urls.groups.concat(uri), { username: newMember }, "POST")
         .then(resp => {
+            
             return resp
         })
 }

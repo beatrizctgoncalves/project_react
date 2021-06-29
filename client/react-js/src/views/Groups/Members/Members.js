@@ -3,7 +3,7 @@ import { addMemberToGroup, getSpecificGroup, removeMemberFromGroup } from '../..
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box } from '@material-ui/core';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer,toast } from 'react-toastify';
 import { useStyles } from '../../Components/Style';
 import { ButtonRed, ButtonGreen, ButtonUser } from '../../Components/ColorButtons';
 
@@ -11,8 +11,8 @@ import { ButtonRed, ButtonGreen, ButtonUser } from '../../Components/ColorButton
 function Members(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
-    const [edit, setEdit] = useState(false)
+    
+    
 
     const [toAddMembers, setAddMembers] = useState(false)
     const [newMember, setNewMember] = useState("")
@@ -20,23 +20,47 @@ function Members(props) {
     useEffect(() => {
         getSpecificGroup(id)
             .then(resp => setGroup(resp.message))
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }, [])
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
+    }, [id])
 
 
     function handleMemberDelete(member) {
         removeMemberFromGroup(id, member)
             .then(resp => {
-                let aux = group.members.filter(m => {
+                let aux = group
+                aux.members = aux.members.filter(m => {
                     if (m !== member) {
                         return m
                     }
                 })
-                setGroup(aux)
-                setEdit(false)
+                console.log(aux)
+
+                setGroup(...aux)
+                
+                
             })
             .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             })
     }
 
@@ -55,15 +79,27 @@ function Members(props) {
     function handleAddMembers() {
         addMemberToGroup(id, newMember)
             .then(resp => {
-                getSpecificGroup(group.id)
+                getSpecificGroup(id)
                     .then(groupObj => {
+                        console.log(groupObj)
                         let aux = groupObj.message
-                        aux.members.push(newMember)
+                        console.log(aux)
                         setGroup(aux)
                         setAddMembers(false)
                     })
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
     function handleUserProfile(member) {
