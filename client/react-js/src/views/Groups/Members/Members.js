@@ -3,7 +3,7 @@ import { addMemberToGroup, getSpecificGroup } from '../../Services/BasicService.
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { Container, CssBaseline, Grid, Box, Button, Typography } from '@material-ui/core';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { useStyles } from '../../Components/Style';
 import CardMembers from './CardMembers.js';
 import { ButtonGreen } from '../../Components/ColorButtons.js';
@@ -12,7 +12,6 @@ import { ButtonGreen } from '../../Components/ColorButtons.js';
 function Members(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const [toAddMembers, setAddMembers] = useState(false)
     const [newMember, setNewMember] = useState("")
@@ -20,8 +19,19 @@ function Members(props) {
     useEffect(() => {
         getSpecificGroup(id)
             .then(resp => setGroup(resp.message))
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }, [])
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
+    }, [id])
 
 
     const handleMember = event => {
@@ -39,15 +49,27 @@ function Members(props) {
     function handleAddMembers() {
         addMemberToGroup(id, newMember)
             .then(resp => {
-                getSpecificGroup(group.id)
+                getSpecificGroup(id)
                     .then(groupObj => {
+                        console.log(groupObj)
                         let aux = groupObj.message
-                        aux.members.push(newMember)
+                        console.log(aux)
                         setGroup(aux)
                         setAddMembers(false)
                     })
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
 
@@ -69,14 +91,16 @@ function Members(props) {
                     {group.members && group.members != 0 ? group.members.map(member =>
                         <CardMembers key={member} member={member} groupId={id} />
                     ) :
-                        <div className={classes.cardGroup}>
-                            <Grid item xs={12}>
-                                <Typography variant="h6" color="textSecondary">
-                                    You do not have any Members.<br />
-                                    Start adding!
-                                </Typography>
-                            </Grid>
-                        </div>
+                        <Grid item xs={4}>
+                            <div className={classes.cardGroup}>
+                                <Grid item xs={12}>
+                                    <Typography variant="h6" color="textSecondary">
+                                        You do not have any Members.<br />
+                                        Start adding!
+                                    </Typography>
+                                </Grid>
+                            </div>
+                        </Grid>
                     }
                 </Grid>
 

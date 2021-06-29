@@ -13,8 +13,6 @@ function CardMembers(props) {
     const [group, setGroup] = useState({})
     const [user, setUser] = useState({})
 
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
-
     useEffect(() => {
         getUser(member)
             .then(resp => setUser(resp.message))
@@ -44,21 +42,44 @@ function CardMembers(props) {
                 setGroup(aux)
                 setEdit(false)
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
+
 
     function handleMemberDelete(member) {
         removeMemberFromGroup(groupId, member)
             .then(resp => {
-                let aux = group.members.filter(m => {
+                let aux = group
+                aux.members = aux.members.filter(m => {
                     if (m !== member) {
                         return m
                     }
                 })
-                setGroup(aux)
-                setEdit(false)
+                setGroup(...aux)
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
     function handleUserProfile(member) {
