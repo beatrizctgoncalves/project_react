@@ -29,6 +29,7 @@ function FormProfile() {
     const handleAToken = event => {
         setUpdatedUserGitlab({ ...updatedUserGitlab, AToken: event.target.value })
     }
+
     const [gitlab, setGitlab] = useState(false)
     function handleGitlab() {
         if (gitlab) {
@@ -40,9 +41,16 @@ function FormProfile() {
     }
 
     //Jira
-    const [updatedUserJira, setUpdatedUserJira] = useState({})
+    let [updatedUserJira, setUpdatedUserJira] = useState({})
     function handleEditJira() {
-        updateUser(username, updatedUserJira)
+        updatedUserJira = {
+            'type': 'Jira',
+            'accountId': updatedUserJira.accountId,
+            'Atoken': updatedUserJira.email + ':' + updatedUserJira.AToken,
+        }
+        const info = { info: [updatedUserJira] }
+
+        updateUser(username, info)
             .then(resp => {
                 window.location.assign(`/profile`)
             })
@@ -55,8 +63,12 @@ function FormProfile() {
         setUpdatedUserJira({ ...updatedUserJira, accountId: event.target.value })
     }
     const handleAT = event => {
-        setUpdatedUserJira({ ...updatedUserJira, AToken: event.target.value, type: 'Jira' })
+        setUpdatedUserJira({ ...updatedUserJira, AToken: event.target.value })
     }
+    const handleEmail = event => {
+        setUpdatedUserJira({ ...updatedUserJira, email: event.target.value })
+    }
+
     const [jira, setJira] = useState(false)
     function handleJira() {
         if (jira) {
@@ -131,6 +143,17 @@ function FormProfile() {
                                         label="Account Identifier"
                                         fullWidth
                                         onChange={handleAccountId}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        id="email"
+                                        name="email"
+                                        label="Email"
+                                        fullWidth
+                                        onChange={handleEmail}
                                     />
                                 </Grid>
 

@@ -104,7 +104,7 @@ function Projects(props) {
                         </> : ""}
 
                     <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
-                        <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                        <i className="bi bi-plus">&nbsp;&nbsp;</i>
                         {toAddProjects ? "" : "Add Project"}
                     </Button>
                 </Box>

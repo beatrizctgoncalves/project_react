@@ -1,5 +1,5 @@
 const { makeRequest } = require('./Requests').requests;
-const urls =  {
+const urls = {
     groups: 'http://localhost:8081/server/api/g5/pluggable/gamification/',
     users: 'http://localhost:8081/server/users/g5/pluggable/gamification/'
 }
@@ -82,7 +82,7 @@ export async function addMemberToGroup(groupId, newMember) {
 
     return makeRequest(urls.groups.concat(uri), { username: newMember }, "POST")
         .then(resp => {
-            
+
             return resp
         })
 }

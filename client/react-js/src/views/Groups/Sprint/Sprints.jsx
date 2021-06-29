@@ -76,7 +76,7 @@ function Sprint(props) {
             <div className={classes.paper}>
                 <br /><br />
                 <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">{group.name}</h2>
+                    <h2 className="text-center mt-0">{group.name} - Sprints</h2>
                     <hr className="divider" />
                 </div>
                 <ToastContainer />

@@ -88,7 +88,7 @@ function Home() {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <hr color="#fff" />
+                            <hr className="divider" />
                         </Grid>
 
                         <Grid item xs={12}>
