@@ -9,7 +9,6 @@ function database(pgResponses, requests) {
                 "name": name,
                 "surname": surname,
                 "avatar": "http://mundocarreira.com.br/wp-content/uploads/2015/08/1-profissional-multifuncional.jpg",
-                "info": [],
                 "groupsMember": [],
                 "notifications": []
             });

@@ -3,7 +3,7 @@
 function services(databaseGroup, databaseUsers, pgResponses) {
     const serv = {    
         
-        getProjectsOfTool: function(toolName, userId){
+        getProjectsOfTool: function(toolName, PURL, userId){
             let api = undefined
             try{
                 api = require("./plugins/" + toolName + "/api")()
@@ -15,7 +15,7 @@ function services(databaseGroup, databaseUsers, pgResponses) {
             }
             return databaseUsers.getUser(userId)
                 .then(user =>  user.info.filter(i => i.type == toolName)[0])
-                .then(info => api.getProjectsFromUsername(info.accountId,info.AToken))
+                .then(info => api.getProjectsFromUsername(PURL, info.accountId, info.AToken))
                 .then(projects => {
                     return pgResponses.setSuccessList(
                         pgResponses.OK,
@@ -25,38 +25,33 @@ function services(databaseGroup, databaseUsers, pgResponses) {
         },
 
         countPointsInGroup: function(groupId) { //TODO
-            let usersInfoMap = new Map()
             let projects = []
             let sprints = []            
             let SprintScores = []
             let owner = undefined
             return databaseGroup.getGroupDetails(groupId)
             .then(group => {
-                let membersInfo = []
-                projects = group.projects.map(project => { 
-                    return {
-                        "id": project.id,
-                        "type": project.type
-                    }
-                })
+                projects = group.projects
                 sprints = group.sprints
                 owner = group.owner
-                group.members.forEach(member =>{
-                    membersInfo.push(databaseUsers.getUser(member)
-                        .then(user => usersInfoMap.set(user.username,{
-                            "info" : user.info,
-                            "Points" : 0
-                        }))
-                    )  
-                })
-                return Promise.all(membersInfo)
             })
             .then(() => {
                 let promisses = []
                 sprints.forEach(sprint => {
                     projects.forEach(project => { 
+                        let usersInfoMap = new Map()
+                        usersInfoMap.set(owner,{
+                            "info" : project.ownerCredentials,
+                            "Points" : 0
+                        })
+                        project.memberCredentials.forEach(mC => {
+                            usersInfoMap.set(mC.AppUsername,{
+                                "info" : mC,
+                                "Points" : 0
+                            })
+                        })
                         const x = require("./plugins/" + project.type + "/ScoreCounter")
-                        promisses.push(x.countPoints(project.id, usersInfoMap, owner, sprint.beginDate, sprint.endDate)
+                        promisses.push(x.countPoints(project.URL, project.id, usersInfoMap, owner, sprint.beginDate, sprint.endDate)
                             .then(memberInfoMap => SprintScores.push(auxFunc(memberInfoMap, sprint.title)))
                     )})
                 })

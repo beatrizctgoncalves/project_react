@@ -78,6 +78,40 @@ function database(pgResponses, requests) {
                 .catch(error => pgResponses.resolveErrorElastic(error))
         },
 
+        addMemberInfoToProject: function (group_id, project_index, username, memberCredentials) {
+            return this.getGroupDetails(group_id)
+                .then(group => {
+                    let projects = group.projects
+                    let memberCredentialsIndex = projects[project_index].memberCredentials.findIndex(mC => mC.AppUsername == username)
+                    
+                    if(memberCredentialsIndex != -1){
+                        projects[project_index].memberCredentials[memberCredentialsIndex] = memberCredentials
+                    }
+                    else{
+                        projects[project_index].memberCredentials.push(memberCredentials)
+                    }
+                    return projects
+                })
+                .then(projects => {
+                    var requestBody = JSON.stringify({
+                        "script": {
+                            "lang": "painless",
+                            "inline": `ctx._source.projects = params.projects`,
+                            "params": {
+                                "projects": projects
+                            }
+                        }
+                    });
+                    return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                })
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
         addProjectToGroup: function (group_id, information) {
             var requestBody = JSON.stringify({
                 "script": {
@@ -91,7 +125,10 @@ function database(pgResponses, requests) {
                             "title": information.title,
                             "description": information.description,
                             "avatar": information.avatar,
-                            "type": information.type
+                            "type": information.type,
+                            "URL": information.URL,
+                            "ownerCredentials": information.ownerCredentials,
+                            "memberCredentials": information.memberCredentials
                         }
                     }
                 }
@@ -107,7 +144,6 @@ function database(pgResponses, requests) {
         },
 
         removeProjectFromGroup: function (group_id, project_index) {
-            console.log(project_index)
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",

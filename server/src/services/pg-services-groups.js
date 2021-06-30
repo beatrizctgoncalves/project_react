@@ -102,20 +102,9 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
-        addProjectToGroup: function (group_id, Pid, type) {
+        addProjectToGroup: function (group_id, Pid, PURL, ownerCredentials, type) {
             const x = require("./plugins/" + type + "/api")()
-            return databaseGroups.getGroupDetails(group_id)
-                .then(groupObj => databaseUsers.getUser(groupObj.owner))
-                .then(user => {
-                    let toRet
-                    user.info.map(tool => {
-                        if (tool.type == type) {
-                            toRet = tool
-                        }
-                    })
-                    return toRet
-                })
-                .then(tool => x.validateProject(Pid, tool.AToken))
+            return x.validateProject(PURL, Pid, ownerCredentials)
                 .then(validatedObj => {
                     return databaseGroups.getGroupDetails(group_id)
                         .then(groupObj => {
@@ -186,6 +175,32 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             }
                             return databaseUsers.addGroupToUser(username, group_id)
                                 .then(databaseGroups.addMemberToGroup(group_id, username)) //add user
+                                .then(group => {
+                                    return pgResponses.setSuccessUri(
+                                        pgResponses.OK,
+                                        pgResponses.index.api,
+                                        pgResponses.index.groups,
+                                        group
+                                    )
+                                })
+                        })
+                })
+        },
+
+        addMemberInfoToProject: function (group_id, project_URL, project_id, username, memberCredentials) {
+            return databaseUsers.getUser(username) //check if the user exists
+                .then(userObj => {
+                    return databaseGroups.getGroupDetails(group_id) //check if the group exists
+                        .then(groupObj => {
+                            const project_index = groupObj.projects.findIndex(p => p.id == project_id && p.URL == project_URL)
+                            const userExists = groupObj.members.findIndex(m => m === username)
+                            if (userExists == -1 || project_index == -1) {  //check if the user already exists in the group
+                                return pgResponses.setError(
+                                    pgResponses.FORBIDDEN,
+                                    pgResponses.FORBIDDEN_MSG
+                                )
+                            }
+                            return databaseGroups.addMemberInfoToProject(group_id, project_index, username, memberCredentials)
                                 .then(group => {
                                     return pgResponses.setSuccessUri(
                                         pgResponses.OK,

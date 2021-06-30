@@ -22,6 +22,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
     router.post(`/groups/:group_id/members`, addMemberToGroup); //Add a specific user to a group
+    router.post(`/groups/:group_id/projects/:project_id/:username/credentials`, addMemberInfoToProject); //Add a specific user to a group
     router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
     //router.post(`/groups/:group_id/members`, addMemberNotification); //Add a specific user to a group
 
@@ -84,7 +85,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     function addProjectToGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.type),
+            services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.URL, req.body.ownerCredentials, req.body.type),
             res
         );
     }
@@ -107,6 +108,13 @@ module.exports = function (express, services, servicesPlugins, aux) {
     function addMemberToGroup(req, res) { //Implementation of the route to add a user to a specific group
         aux.promisesAsyncImplementation(
             services.addMemberToGroup(req.params.group_id, req.body.username),
+            res
+        );
+    }
+
+    function addMemberInfoToProject(req, res){
+        aux.promisesAsyncImplementation(
+            services.addMemberInfoToProject(req.params.group_id, req.body.project_URL, req.params.project_id, req.params.username, req.body.memberCredentials),
             res
         );
     }

@@ -1,18 +1,15 @@
 'use strict'
 
 module.exports = {
-    countPoints: function(Pid, userInfoMap, owner, beginDate, endDate) {
+    countPoints: function(PURL, Pid, userInfoMap, owner, beginDate, endDate) {
         const ApiJira = require("./api")()
-        let AToken = userInfoMap.get(owner).info
-        AToken = AToken.filter(info => info.type == "Jira")[0].AToken
+        console.log(userInfoMap)
+        let AToken = userInfoMap.get(owner).info.AToken
         let memberInfoMapJira = new Map()
         Array.from(userInfoMap, ([key, value]) => {
-            value.info.forEach(info => {
-                if(info.type == "Jira")
-                    memberInfoMapJira.set(info.accountId, {"AppUsername" : key, "Points" : 0 })
-            })
+            memberInfoMapJira.set(value.info.accountId, {"AppUsername" : key, "Points" : 0 })
         })
-        return ApiJira.getIssues(Pid,AToken)
+        return ApiJira.getIssues(PURL, Pid, AToken)
             .then(issues => {
                 issues.forEach(issue => {
                     if(checkDate(issue.created_at, beginDate, endDate)){
