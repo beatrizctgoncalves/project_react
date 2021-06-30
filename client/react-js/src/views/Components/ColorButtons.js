@@ -158,31 +158,3 @@ export const ButtonHome1 = withStyles((theme) => ({
         height: '50px'
     },
 }))(Button);
-
-export const ButtonHome2 = withStyles((theme) => ({
-    root: {
-        color: grey[50],
-        backgroundColor: grey[400],
-        fontWeight: 'bold',
-        fontFamily: [
-            "Merriweather Sans",
-            '-apple-system',
-            'BlinkMacSystemFont',
-            "Segoe UI",
-            'Roboto',
-            "Helvetica Neue",
-            'Arial',
-            "Noto Sans",
-            'sans-serif',
-            "Apple Color Emoji",
-            "Segoe UI Emoji",
-            "Segoe UI Symbol",
-        ].join(','),
-        '&:hover': {
-            backgroundColor: grey[700],
-            color: grey[50]
-        },
-        margin: '4px',
-        height: '50px'
-    },
-}))(Button);

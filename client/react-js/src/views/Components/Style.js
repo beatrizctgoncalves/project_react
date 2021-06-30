@@ -16,6 +16,14 @@ export const useStyles = makeStyles((theme) => ({
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
+  image: {
+    backgroundImage: 'url(https://i.pinimg.com/originals/63/ce/df/63cedf1ab084e5bae13c62c61011ef0c.jpg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
