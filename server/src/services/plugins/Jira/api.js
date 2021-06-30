@@ -11,7 +11,7 @@ var arrayMethods = {
     DELETE: 'DELETE'
 }
 
-function makeFetch(uri, method, body, AToken) {
+function makeFetch(PURL, uri, method, body, AToken) {
     let headers = {
         'Accept': 'application/json'
     }
@@ -34,10 +34,9 @@ function makeFetch(uri, method, body, AToken) {
 
 function apiJira() {
     const jira = {
-        validateProject: function(Pid, AToken) {
+        validateProject: function(PURL, Pid, ownerCredentials) {
             let project = {}
-            console.log(AToken)
-            return makeFetch(`${URL}/rest/api/3/project/${Pid}`, arrayMethods.GET, null, AToken)
+            return makeFetch(`${PURL}/rest/api/3/project/${Pid}`, arrayMethods.GET, null, ownerCredentials.AToken)
                 .then(body => {
                     project = {
                         "id": body.id,
@@ -46,23 +45,26 @@ function apiJira() {
                         "description": body.description,
                         "avatar":  body.avatarUrls,
                         "type": "Jira",
-                        "title": body.name
+                        "title": body.name,
+                        "URL": PURL,
+                        "ownerCredentials": ownerCredentials,
+                        "memberCredentials": []
                     }
-                    return this.getUserById(body.lead.accountId, AToken)
+                    return this.getUserById(PURL, body.lead.accountId, ownerCredentials.AToken)
                 })
                 .then(id => project.owner_name = id)
                 .then(() => project)
                 .catch(error => pgResponses.resolveErrorApis(error));
         },
 
-        getUserById: function(UId, AToken) {
-            return makeFetch(`${URL}/rest/api/3/user?accountId=${UId}`, arrayMethods.GET, null, AToken)
+        getUserById: function(PURL, UId, AToken) {
+            return makeFetch(`${PURL}/rest/api/3/user?accountId=${UId}`, arrayMethods.GET, null, AToken)
                 .then(body => body.emailAddress)
                 .catch(error => pgResponses.resolveErrorApis(error));
         },
 
-        getProjectsFromUsername: function(userName, AToken) {
-            return makeFetch(`${URL}/rest/api/3/project`, arrayMethods.GET, null, AToken)
+        getProjectsFromUsername: function(PURL, userName, AToken) {
+            return makeFetch(`${PURL}/rest/api/3/project`, arrayMethods.GET, null, AToken)
             .then(body => body.map(project =>{
                 return {
                     "id": project.id,
@@ -73,8 +75,8 @@ function apiJira() {
                 .catch(error => pgResponses.resolveErrorApis(error));
         },
 
-        getIssues: function(Pid, AToken) {
-            return makeFetch(`${URL}/rest/api/2/search?jql=project=${Pid}`, arrayMethods.GET, null, AToken)
+        getIssues: function(PURL, Pid, AToken) {
+            return makeFetch(`${PURL}/rest/api/2/search?jql=project=${Pid}`, arrayMethods.GET, null, AToken)
                 .then(body => {
                     let arrayIssues = []
                     body.issues.forEach(issue => arrayIssues.push({

@@ -78,21 +78,50 @@ function database(pgResponses, requests) {
                 .catch(error => pgResponses.resolveErrorElastic(error))
         },
 
+        addMemberInfoToProject: function (group_id, projectType, projectURL, username, memberCredentials) {
+            return this.getGroupDetails(group_id)
+                .then(group => {
+                    let projects = group.projects
+                    let projectIndex = projects.findIndex(p => p.type == projectType && p.URL == projectURL)
+                    if(projectIndex == -1){
+                        //TODO
+                    }
+                    let memberCredentialsIndex = projects[projectIndex].memberCredentials.findIndex(mC => mC.AppUsername == username)
+                    if(memberCredentialsIndex != -1){
+                        projects[projectIndex].memberCredentials[memberCredentialsIndex] = memberCredentials
+                    }
+                    else{
+                        projects[projectIndex].memberCredentials[memberCredentialsIndex].push(memberCredentials)
+                    }
+                    return projects
+                })
+                .then(projects => {
+                    var requestBody = JSON.stringify({
+                        "script": {
+                            "lang": "painless",
+                            "inline": `ctx._source.projects = params.projects`,
+                            "params": {
+                                "projects": projects
+                            }
+                        }
+                    });
+                    return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                })
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
         addProjectToGroup: function (group_id, information) {
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",
                     "inline": "ctx._source.projects.add(params.projects)",
                     "params": {
-                        "projects": {
-                            "id": information.id,
-                            "owner_name": information.owner_name,
-                            "ownerId": information.owner_id,
-                            "title": information.title,
-                            "description": information.description,
-                            "avatar": information.avatar,
-                            "type": information.type
-                        }
+                        "projects": information
                     }
                 }
             });

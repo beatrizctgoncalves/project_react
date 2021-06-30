@@ -102,20 +102,9 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
-        addProjectToGroup: function (group_id, Pid, type) {
+        addProjectToGroup: function (group_id, Pid, PURL, ownerCredentials, type) {
             const x = require("./plugins/" + type + "/api")()
-            return databaseGroups.getGroupDetails(group_id)
-                .then(groupObj => databaseUsers.getUser(groupObj.owner))
-                .then(user => {
-                    let toRet
-                    user.info.map(tool => {
-                        if (tool.type == type) {
-                            toRet = tool
-                        }
-                    })
-                    return toRet
-                })
-                .then(tool => x.validateProject(Pid, tool.AToken))
+            return x.validateProject(PURL, Pid, ownerCredentials)
                 .then(validatedObj => {
                     return databaseGroups.getGroupDetails(group_id)
                         .then(groupObj => {

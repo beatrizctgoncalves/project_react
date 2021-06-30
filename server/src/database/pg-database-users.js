@@ -9,7 +9,6 @@ function database(pgResponses, requests) {
                 "name": name,
                 "surname": surname,
                 "avatar": "https://thumbs.dreamstime.com/b/programmer-linear-icon-technologist-freelancer-thin-line-illustration-contour-symbol-vector-isolated-outline-drawing-programmer-197065655.jpg",
-                "info": [],
                 "groupsMember": [],
                 "notifications": []
             });

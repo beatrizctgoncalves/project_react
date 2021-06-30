@@ -84,7 +84,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     function addProjectToGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.type),
+            services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.URL, req.body.ownerCredentials, req.body.type),
             res
         );
     }
