@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 
 function CardProject(props) {
-    const { project, groupId } = props
+    const { project, groupId, groupOwner } = props
     const [edit, setEdit] = useState(false)
     const [group, setGroup] = useState({})
 
@@ -52,13 +52,15 @@ function CardProject(props) {
                     <Typography>
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <ButtonRed size="small" color="primary" onClick={handleProjectDelete.bind(null, project.id)}>
-                        <Typography variant="body2">
-                            <i className="bi bi-trash-fill"></i>
-                        </Typography>
-                    </ButtonRed>
-                </CardActions>
+                {group.owner == groupOwner ?
+                    <CardActions>
+                        <ButtonRed size="small" color="primary" onClick={handleProjectDelete.bind(null, project.id)}>
+                            <Typography variant="body2">
+                                <i className="bi bi-trash-fill"></i>
+                            </Typography>
+                        </ButtonRed>
+                    </CardActions>
+                    : ''}
             </Card>
         </Grid>
     )

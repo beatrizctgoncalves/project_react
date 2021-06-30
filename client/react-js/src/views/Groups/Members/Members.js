@@ -8,8 +8,6 @@ import { useStyles } from '../../Components/Style';
 import CardMembers from './CardMembers.js';
 import { ButtonGreen } from '../../Components/ColorButtons.js';
 import Navbar from '../../Components/Navbar.js';
-import clsx from 'clsx';
-import Paper from '@material-ui/core/Paper';
 
 
 function Members(props) {
@@ -18,6 +16,7 @@ function Members(props) {
 
     const [toAddMembers, setAddMembers] = useState(false)
     const [newMember, setNewMember] = useState("")
+    const username = window.sessionStorage.getItem("username")
 
     useEffect(() => {
         getSpecificGroup(id)
@@ -123,48 +122,50 @@ function Members(props) {
                         }
                     </Grid>
 
-                    <Box pt={5} align='center'>
-                        {toAddMembers ?
-                            <Card>
-                                <Box mt={3} align='center'>
-                                    <Typography variant="h5" color="textPrimary">
-                                        Insert New Member
-                                    </Typography>
-                                    <br />
-                                    <Grid item xs={6} align='center'>
-                                        <TextField
-                                            variant="outlined"
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            type="text"
-                                            name="newMember"
-                                            className="form-control"
-                                            placeholder="Enter new Member"
-                                            value={newMember}
-                                            onChange={handleMember}
-                                        />
-                                    </Grid>
-                                    <br />
+                    {group.owner != username ?
+                        <Box pt={5} align='center'>
+                            {toAddMembers ?
+                                <Card>
+                                    <Box mt={3} align='center'>
+                                        <Typography variant="h5" color="textPrimary">
+                                            Insert New Member
+                                        </Typography>
+                                        <br />
+                                        <Grid item xs={6} align='center'>
+                                            <TextField
+                                                variant="outlined"
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                type="text"
+                                                name="newMember"
+                                                className="form-control"
+                                                placeholder="Enter new Member"
+                                                value={newMember}
+                                                onChange={handleMember}
+                                            />
+                                        </Grid>
+                                        <br />
 
-                                    <ButtonGreen
-                                        variant="contained"
-                                        className={classes.margin}
-                                        onClick={handleAddMembers}
-                                    >
-                                        Add Member
-                                    </ButtonGreen>
-                                </Box>
-                                <br />
-                            </Card> : ""}
+                                        <ButtonGreen
+                                            variant="contained"
+                                            className={classes.margin}
+                                            onClick={handleAddMembers}
+                                        >
+                                            Add Member
+                                        </ButtonGreen>
+                                    </Box>
+                                    <br />
+                                </Card> : ""}
 
-                        <Box mt={3} align='center'>
-                            <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
-                                <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
-                                {toAddMembers ? "" : "Add Members"}
-                            </ButtonGreen>
+                            <Box mt={3} align='center'>
+                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
+                                    <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                                    {toAddMembers ? "" : "Add Members"}
+                                </ButtonGreen>
+                            </Box>
                         </Box>
-                    </Box>
+                        : ''}
                 </Container>
 
                 <Box pt={8}>

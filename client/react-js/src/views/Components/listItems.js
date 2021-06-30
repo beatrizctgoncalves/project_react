@@ -7,6 +7,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PersonPin from '@material-ui/icons/PersonPin';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LockOpen from '@material-ui/icons/LockOpen';
 import Close from '@material-ui/icons/Close';
 import Home from '@material-ui/icons/Home';
 import { toast } from 'react-toastify';
@@ -76,7 +77,7 @@ export const mainListItems = (
       <>
         <ListItem button onClick={handleSignIn}>
           <ListItemIcon>
-            <LockOutlinedIcon />
+            <LockOpen />
           </ListItemIcon>
           <ListItemText primary="Sign In" />
         </ListItem>

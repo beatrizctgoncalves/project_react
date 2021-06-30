@@ -22,6 +22,7 @@ import { ButtonGrey, ButtonRed } from '../Components/ColorButtons';
 import GroupsMember from './GroupsMember';
 import Navbar from '../Components/Navbar';
 import GoBack from '../Components/GoBack';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 
 export default function Groups() {
@@ -120,7 +121,6 @@ export default function Groups() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-
                         {/*Groups*/}
                         <Grid item xs={12}>
                             <Paper className={classes.paper}>
@@ -130,6 +130,7 @@ export default function Groups() {
                                         <TableRow>
                                             <TableCell>Name</TableCell>
                                             <TableCell>Description</TableCell>
+                                            <TableCell>View</TableCell>
                                             <TableCell align="right">Edit</TableCell>
                                             <TableCell align="right">Remove</TableCell>
                                         </TableRow>
@@ -143,6 +144,11 @@ export default function Groups() {
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell>{group.description}</TableCell>
+                                                <TableCell>
+                                                    <Link color="inherit" href={`/groups/${group.id}`}>
+                                                        <RemoveRedEye />
+                                                    </Link>
+                                                </TableCell>
                                                 <TableCell align="right">
                                                     <ButtonGrey variant="contained" onClick={handleEdit.bind(null, group.id)}>
                                                         <Typography variant="body2">
@@ -179,7 +185,7 @@ export default function Groups() {
                                 <input
                                     variant="outlined"
                                     margin="normal"
-                                    className="form-control"
+                                    className={classes.formControl}
                                     required
                                     type="text"
                                     name="name"
@@ -190,7 +196,7 @@ export default function Groups() {
                                 <input
                                     variant="outlined"
                                     margin="normal"
-                                    className="form-control"
+                                    className={classes.formControl}
                                     required
                                     type="text"
                                     name="description"
