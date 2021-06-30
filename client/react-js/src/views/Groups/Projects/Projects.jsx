@@ -98,7 +98,7 @@ function Projects(props) {
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} alignItems='center'>
                         {group.projects && group.projects != 0 ? group.projects.map(project =>
-                            <CardProject key={project.id} project={project} groupId={id} />
+                            <CardProject key={project.id} project={project} groupId={id} groupOwner={group.owner} />
                         ) :
                             <Paper className={fixedHeightPaper}>
                                 <Box mt={3} align='center'>
@@ -111,31 +111,33 @@ function Projects(props) {
                         }
                     </Grid>
 
-                    <Box pt={5} align='center'>
-                        {toAddProjects ?
-                            <Paper className={fixedHeightPaper}>
-                                <Box mt={3} align='center'>
-                                    <Typography variant="h5" color="textPrimary">
-                                        Project
-                                    </Typography>
-                                    <br />
-                                    <ul className={classes.listItem}>
-                                        {user.info ? user.info.map(i =>
-                                            <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
-                                                {i.type}
-                                            </ButtonGreen>
-                                        ) : ""}
-                                    </ul>
-                                </Box>
-                            </Paper> : ""}
+                    {group.owner != owner ?
+                        <Box pt={5} align='center'>
+                            {toAddProjects ?
+                                <Paper className={fixedHeightPaper}>
+                                    <Box mt={3} align='center'>
+                                        <Typography variant="h5" color="textPrimary">
+                                            Project
+                                        </Typography>
+                                        <br />
+                                        <ul className={classes.listItem}>
+                                            {user.info ? user.info.map(i =>
+                                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
+                                                    {i.type}
+                                                </ButtonGreen>
+                                            ) : ""}
+                                        </ul>
+                                    </Box>
+                                </Paper> : ""}
 
-                        <Box mt={3} align='center'>
-                            <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
-                                <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
-                                {toAddProjects ? "" : "Add Project"}
-                            </ButtonGreen>
+                            <Box mt={3} align='center'>
+                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
+                                    <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                                    {toAddProjects ? "" : "Add Project"}
+                                </ButtonGreen>
+                            </Box>
                         </Box>
-                    </Box>
+                        : ''}
                 </Container>
 
                 <Box pt={8}>

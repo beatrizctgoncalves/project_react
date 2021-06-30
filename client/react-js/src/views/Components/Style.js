@@ -132,7 +132,7 @@ export const useStyles = makeStyles((theme) => ({
     border: '1px solid #ced4da',
     borderRadius: '0.25rem',
     transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-  },  
+  },
   image: {
     backgroundImage: 'url(https://i.pinimg.com/originals/63/ce/df/63cedf1ab084e5bae13c62c61011ef0c.jpg)',
     backgroundRepeat: 'no-repeat',

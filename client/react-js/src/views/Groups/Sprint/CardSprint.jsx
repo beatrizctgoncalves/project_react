@@ -6,8 +6,7 @@ import { toast } from 'react-toastify';
 
 
 function CardProject(props) {
-    const { sprint, groupId } = props
-    const [edit, setEdit] = useState(false)
+    const { sprint, groupId, groupOwner } = props
     const [group, setGroup] = useState({})
 
     function handleSprintDelete(projectId) {
@@ -58,13 +57,15 @@ function CardProject(props) {
                         </div>
                     </Box>
                 </CardContent>
-                <CardActions>
-                    <ButtonRed size="small" color="primary" onClick={handleSprintDelete.bind(null, sprint.id)}>
-                        <Typography variant="body2">
-                            <i className="bi bi-trash-fill"></i>
-                        </Typography>
-                    </ButtonRed>
-                </CardActions>
+                {group.owner == groupOwner ?
+                    <CardActions>
+                        <ButtonRed size="small" color="primary" onClick={handleSprintDelete.bind(null, sprint.id)}>
+                            <Typography variant="body2">
+                                <i className="bi bi-trash-fill"></i>
+                            </Typography>
+                        </ButtonRed>
+                    </CardActions>
+                    : ''}
             </Card>
         </Grid>
     )

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { removeMemberFromGroup, getUser } from '../../Services/BasicService.js';
-import { Typography, Button, CardMedia, CardActions, Card, CardContent, Grid, Box } from '@material-ui/core';
-import { ToastContainer, toast } from 'react-toastify';
+import { Typography, Button, CardMedia, CardActions, Card, CardContent, Grid } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import { useStyles } from '../../Components/Style';
-import { ButtonRed, ButtonUser } from '../../Components/ColorButtons';
+import { ButtonRed } from '../../Components/ColorButtons';
 
 
 function CardMembers(props) {

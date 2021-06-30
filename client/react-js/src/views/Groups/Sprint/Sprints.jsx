@@ -17,7 +17,7 @@ import { TextField, Card } from '@material-ui/core';
 function Sprint(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
+    const owner = window.sessionStorage.getItem("username")
 
     const [toAddSprints, setAddSprints] = useState(false)
     const [newSprint, setNewSprint] = useState("")
@@ -70,11 +70,21 @@ function Sprint(props) {
                         setAddSprints(false)
                     })
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
     const classes = useStyles();
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
         <div className={classes.root}>
@@ -104,7 +114,7 @@ function Sprint(props) {
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} alignItems='center'>
                         {group.sprints && group.sprints != 0 ? group.sprints.map(sprint =>
-                            <CardSprint key={sprint.title} sprint={sprint} groupId={id} />
+                            <CardSprint key={sprint.title} sprint={sprint} groupId={id} groupOwner={group.owner} />
                         ) :
                             <Grid item xs={12}>
                                 <Card>
@@ -113,102 +123,104 @@ function Sprint(props) {
                                             You do not have any Sprints.<br />
                                             Start adding!
                                         </Typography>
-                                        <br/>
+                                        <br />
                                     </Box>
                                 </Card>
                             </Grid>
                         }
                     </Grid>
 
-                    <Box pt={5} align='center'>
-                        {toAddSprints ?
-                            <Card>
-                                <Box mt={3} align='center'>
-                                    <Typography variant="h5" color="textPrimary">
-                                        Project
-                                    </Typography>
-                                    <br />
+                    {group.owner != owner ?
+                        <Box pt={5} align='center'>
+                            {toAddSprints ?
+                                <Card>
+                                    <Box mt={3} align='center'>
+                                        <Typography variant="h5" color="textPrimary">
+                                            Project
+                                        </Typography>
+                                        <br />
 
-                                    <Grid item xs={6} align='center'>
-                                        <TextField
-                                            type="text"
-                                            id="title"
-                                            name="title"
-                                            required
-                                            fullWidth
-                                            label="Title"
-                                            onChange={handleTitle}
-                                        />
-                                    </Grid>
-                                    <br />
-
-                                    <Grid container spacing={1}>
-                                        <Grid item xs={6}>
-                                            <Typography variant="h6" color="textSecondary">
-                                                Begin Date:
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={5}>
-                                            <input
-                                                type="date"
-                                                id="beginDate"
-                                                name="beginDate"
-                                                max="2050-12-31"
-                                                min="2020-06-27"
-                                                variant="outlined"
-                                                margin="normal"
+                                        <Grid item xs={6} align='center'>
+                                            <TextField
+                                                type="text"
+                                                id="title"
+                                                name="title"
                                                 required
                                                 fullWidth
-                                                className="form-control"
-                                                placeholder="2021-06-10"
-                                                onChange={handleBeginDate}
+                                                label="Title"
+                                                onChange={handleTitle}
                                             />
                                         </Grid>
-                                    </Grid>
+                                        <br />
 
-                                    <Grid container spacing={1}>
-                                        <Grid item xs={6}>
-                                            <Typography variant="h6" color="textSecondary">
-                                                End Date:
-                                            </Typography>
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={6}>
+                                                <Typography variant="h6" color="textSecondary">
+                                                    Begin Date:
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={5}>
+                                                <input
+                                                    type="date"
+                                                    id="beginDate"
+                                                    name="beginDate"
+                                                    max="2050-12-31"
+                                                    min="2020-06-27"
+                                                    variant="outlined"
+                                                    margin="normal"
+                                                    required
+                                                    fullWidth
+                                                    className="form-control"
+                                                    placeholder="2021-06-10"
+                                                    onChange={handleBeginDate}
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={5}>
-                                            <input
-                                                type="date"
-                                                id="endDate"
-                                                name="endDate"
-                                                max="2050-12-31"
-                                                min="2020-06-27"
-                                                variant="outlined"
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                className="form-control"
-                                                placeholder="2021-06-10"
-                                                onChange={handleEndDate}
-                                            />
-                                        </Grid>
-                                    </Grid>
 
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={6}>
+                                                <Typography variant="h6" color="textSecondary">
+                                                    End Date:
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={5}>
+                                                <input
+                                                    type="date"
+                                                    id="endDate"
+                                                    name="endDate"
+                                                    max="2050-12-31"
+                                                    min="2020-06-27"
+                                                    variant="outlined"
+                                                    margin="normal"
+                                                    required
+                                                    fullWidth
+                                                    className="form-control"
+                                                    placeholder="2021-06-10"
+                                                    onChange={handleEndDate}
+                                                />
+                                            </Grid>
+                                        </Grid>
+
+                                        <br />
+                                        <ButtonGreen
+                                            variant="contained"
+                                            className={classes.margin}
+                                            onClick={handleAddSprints}
+                                        >
+                                            Add Sprint
+                                        </ButtonGreen>
+                                    </Box>
                                     <br />
-                                    <ButtonGreen
-                                        variant="contained"
-                                        className={classes.margin}
-                                        onClick={handleAddSprints}
-                                    >
-                                        Add Sprint
-                                    </ButtonGreen>
-                                </Box>
-                                <br />
-                            </Card> : ""}
+                                </Card> : ""}
 
-                        <Box mt={3} align='center'>
-                            <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>
-                                <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
-                                {toAddSprints ? "" : "Add Sprint"}
-                            </ButtonGreen>
+                            <Box mt={3} align='center'>
+                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>
+                                    <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                                    {toAddSprints ? "" : "Add Sprint"}
+                                </ButtonGreen>
+                            </Box>
                         </Box>
-                    </Box>
+                        : ''}
                 </Container>
 
                 <Box pt={8}>

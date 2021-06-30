@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { Box } from '@material-ui/core';
 import Title from '../Components/Title';
 import { getUserMemberGroups } from '../Services/BasicService';
+import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 
 export default function Orders() {
@@ -29,16 +30,20 @@ export default function Orders() {
                             <TableRow>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Description</TableCell>
+                                <TableCell align="right">View</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow key={group.id}>
                                 <TableCell>
-                                    <Link color="inherit" href={`/groups/${group.id}`}>
-                                        {group.name}
-                                    </Link>
+                                    {group.name}
                                 </TableCell>
                                 <TableCell>{group.description}</TableCell>
+                                <TableCell align="right">
+                                    <Link color="inherit" href={`/groups/${group.id}`}>
+                                        <RemoveRedEye />
+                                    </Link>
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </>
