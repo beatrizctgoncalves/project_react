@@ -118,7 +118,18 @@ function database(pgResponses, requests) {
                     "lang": "painless",
                     "inline": "ctx._source.projects.add(params.projects)",
                     "params": {
-                        "projects": information
+                        "projects": {
+                            "id": information.id,
+                            "owner_name": information.owner_name,
+                            "ownerId": information.owner_id,
+                            "title": information.title,
+                            "description": information.description,
+                            "avatar": information.avatar,
+                            "type": information.type,
+                            "URL": information.URL,
+                            "ownerCredentials": information.ownerCredentials,
+                            "memberCredentials": information.memberCredentials
+                        }
                     }
                 }
             });

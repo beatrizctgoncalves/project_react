@@ -11,7 +11,7 @@ var arrayMethods = {
     DELETE: 'DELETE'
 }
 
-function makeFetch(PURL, uri, method, body, AToken) {
+function makeFetch(uri, method, body, AToken) {
     let headers = {
         'Accept': 'application/json'
     }

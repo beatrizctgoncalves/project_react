@@ -1,19 +1,14 @@
 'use strict'
 
 module.exports = {
-    countPoints: function(Pid, userInfoMap, owner, beginDate, endDate) {
+    countPoints: function(PURL, Pid, userInfoMap, owner, beginDate, endDate) {
         const ApiGitlab = require("./api")()
-        let AToken = userInfoMap.get(owner).info
-        AToken = AToken.filter(info => info.type == "Gitlab")[0].AToken
+        let AToken = userInfoMap.get(owner).info.AToken
         let memberInfoMapGitlab = new Map()
         Array.from(userInfoMap, ([key, value]) => {
-            value.info.forEach(info => {
-                if(info.type == "Gitlab")
-                    memberInfoMapGitlab.set(info.accountId, {"AppUsername" : key, "Points" : 0 })
-            })
+            memberInfoMapGitlab.set(value.info.accountId, {"AppUsername" : key, "Points" : 0 })
         })
-
-        return ApiGitlab.getIssues(Pid,AToken)
+        return ApiGitlab.getIssues(PURL, Pid,AToken)
             .then(issues => {
                 issues.forEach(issue => {
                     if(checkDate(issue.created_at, beginDate, endDate)){
