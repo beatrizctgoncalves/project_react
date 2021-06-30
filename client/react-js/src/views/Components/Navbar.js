@@ -18,6 +18,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 function Navbar() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
+    const username = window.sessionStorage.getItem("username")
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -43,11 +44,13 @@ function Navbar() {
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         Pluggable Gamification
                     </Typography>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
+                    {username ?
+                        <IconButton color="inherit">
+                            <Badge badgeContent={4} color="secondary">
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                        : ''}
                 </Toolbar>
             </AppBar>
             <Drawer

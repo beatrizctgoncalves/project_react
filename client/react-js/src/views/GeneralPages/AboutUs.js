@@ -17,8 +17,8 @@ function About() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Typography component="h1" variant="h3" align="center" color="textPrimary">
+                        <Grid item xs={12} align='center'>
+                            <Typography component="h1" variant="h3">
                                 About Our Application
                             </Typography>
                         </Grid>

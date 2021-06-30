@@ -6,23 +6,6 @@ export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  paperSign: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },
@@ -32,14 +15,6 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
-  },
-  image: {
-    backgroundImage: 'url(https://i.pinimg.com/originals/63/ce/df/63cedf1ab084e5bae13c62c61011ef0c.jpg)',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -132,5 +107,38 @@ export const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     padding: theme.spacing(0, 2),
-  }
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  formControl: {
+    display: 'block',
+    width: '100%',
+    padding: '0.375rem 0.75rem',
+    fontSize: '1rem',
+    fontWeight: '400',
+    lineHeight: '1.5',
+    color: '#212529',
+    backgroundColor: '#fff',
+    backgroundClip: 'padding-box',
+    border: '1px solid #ced4da',
+    borderRadius: '0.25rem',
+    transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
+  },  
+  image: {
+    backgroundImage: 'url(https://i.pinimg.com/originals/63/ce/df/63cedf1ab084e5bae13c62c61011ef0c.jpg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
 }));

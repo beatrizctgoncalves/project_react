@@ -178,7 +178,7 @@ export default function Groups() {
                                 <input
                                     variant="outlined"
                                     margin="normal"
-                                    className="form-control"
+                                    className={classes.formControl}
                                     required
                                     type="text"
                                     name="name"
@@ -189,7 +189,7 @@ export default function Groups() {
                                 <input
                                     variant="outlined"
                                     margin="normal"
-                                    className="form-control"
+                                    className={classes.formControl}
                                     required
                                     type="text"
                                     name="description"
