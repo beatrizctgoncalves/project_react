@@ -6,7 +6,10 @@ import { useStyles } from '../../Components/Style';
 import { Typography, Container, CssBaseline, Grid, Button, Box, Card, CardContent } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../../Components/ColorButtons';
-import GridProject from './GridProjects.js';
+import CardProject from './CardProjects.jsx';
+import Navbar from '../../Components/Navbar.js';
+import clsx from 'clsx';
+import Paper from '@material-ui/core/Paper';
 
 
 function Projects(props) {
@@ -14,7 +17,6 @@ function Projects(props) {
     const [user, setUser] = useState({})
 
     const { id } = props.match.params
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const [toAddProjects, setAddProjects] = useState(false)
     const owner = window.sessionStorage.getItem("username")
@@ -22,14 +24,23 @@ function Projects(props) {
     useEffect(() => {
         getSpecificGroup(id)
             .then(resp => setGroup(resp.message))
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }, [])
 
     useEffect(() => {
         getUser(owner)
             .then(resp => setUser(resp.message))
             .catch(err => {
-                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -55,71 +66,89 @@ function Projects(props) {
         }
     }
 
+
     const classes = useStyles();
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
-        <Container component="main" maxWidth="lg">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">{group.name} - Projects</h2>
-                    <hr className="divider" />
-                </div>
-                <ToastContainer />
-                <br />
+            <Navbar />
 
-                <Grid container spacing={3} justify='center'>
-                    {group.projects && group.projects != 0 ? group.projects.map(project =>
-                        <GridProject key={project.id} project={project} groupId={id} />
-                    ) :
-                        <div className={classes.cardGroup}>
-                            <Grid item xs={12}>
-                                <Card align="center">
-                                    <CardContent className={classes.cardHeader}>
-                                        <Typography variant="h6" color="textSecondary">
-                                            You do not have any Projects.<br />
-                                            Start adding!
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        </div>
-                    }
-                </Grid>
+            <ToastContainer />
 
-                <Box mt={8} align='center'>
-                    {toAddProjects ?
-                        <>
-                            <h3 className="h4 mb-2">Projects</h3>
-                            <ul className={classes.listItem}>
-                                <div>
-                                    {user.info ? user.info.map(i =>
-                                        <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
-                                            {i.type}
-                                        </ButtonGreen>
-                                    ) : ""}
-                                </div>
-                            </ul>
-                        </> : ""}
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="sm" component="main" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography component="h1" variant="h3" align="center" color="textPrimary">
+                                Projects
+                            </Typography>
+                        </Grid>
 
-                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
-                        <i className="bi bi-plus">&nbsp;&nbsp;</i>
-                        {toAddProjects ? "" : "Add Project"}
-                    </Button>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" align="center" color="textSecondary" component="p">
+                                {group.name}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Container>
+
+                <Container maxWidth="md" component="main">
+                    <Grid container spacing={4} alignItems='center'>
+                        {group.projects && group.projects != 0 ? group.projects.map(project =>
+                            <CardProject key={project.id} project={project} groupId={id} />
+                        ) :
+                            <Paper className={fixedHeightPaper}>
+                                <Box mt={3} align='center'>
+                                    <Typography variant="h6" color="textSecondary">
+                                        You do not have any Projects.<br />
+                                        Start adding!
+                                    </Typography>
+                                </Box>
+                            </Paper>
+                        }
+                    </Grid>
+
+                    <Box pt={5} align='center'>
+                        {toAddProjects ?
+                            <Paper className={fixedHeightPaper}>
+                                <Box mt={3} align='center'>
+                                    <Typography variant="h5" color="textPrimary">
+                                        Project
+                                    </Typography>
+                                    <br />
+                                    <ul className={classes.listItem}>
+                                        {user.info ? user.info.map(i =>
+                                            <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
+                                                {i.type}
+                                            </ButtonGreen>
+                                        ) : ""}
+                                    </ul>
+                                </Box>
+                            </Paper> : ""}
+
+                        <Box mt={3} align='center'>
+                            <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>
+                                <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                                {toAddProjects ? "" : "Add Project"}
+                            </ButtonGreen>
+                        </Box>
+                    </Box>
+                </Container>
+
+                <Box pt={8}>
+                    <Container maxWidth="xs">
+                        <GoBack />
+                    </Container>
                 </Box>
 
-                <Box mt={5}>
-                    <GoBack />
-                </Box>
-
-                <Box mt={5}>
-                    <br /><br />
+                <Box pt={8}>
                     <Footer />
-                    <br />
                 </Box>
-            </div>
-        </Container >
+            </main>
+        </div>
     )
 }
 

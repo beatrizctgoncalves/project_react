@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { addMemberToGroup, getSpecificGroup } from '../../Services/BasicService.js';
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
-import { Container, CssBaseline, Grid, Box, Button, Typography, Card, CardContent } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Box, TextField, Typography, Card, CardContent } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { useStyles } from '../../Components/Style';
 import CardMembers from './CardMembers.js';
 import { ButtonGreen } from '../../Components/ColorButtons.js';
+import Navbar from '../../Components/Navbar.js';
+import clsx from 'clsx';
+import Paper from '@material-ui/core/Paper';
 
 
 function Members(props) {
@@ -76,80 +79,105 @@ function Members(props) {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="lg">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">{group.name} - Members</h2>
-                    <hr className="divider" />
-                </div>
-                <ToastContainer />
-                <br />
+            <Navbar />
 
-                <Grid container spacing={3} justify='center'>
-                    {group.members && group.members != 0 ? group.members.map(member =>
-                        <CardMembers key={member} member={member} groupId={id} />
-                    ) :
-                        <div className={classes.cardGroup}>
-                            <Grid item xs={12}>
-                                <Card align="center">
-                                    <CardContent className={classes.cardHeader}>
-                                        <Typography variant="h6" color="textSecondary">
-                                            You do not have any Members.<br />
-                                            Start adding!
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        </div>
-                    }
-                </Grid>
+            <ToastContainer />
 
-                <Box mt={4} align='center'>
-                    {toAddMembers ?
-                        <Box mt={4} align='center'>
-                            <h3 className="h4 mb-2">Insert New Members</h3>
-                            <br />
-                            <input
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                type="text"
-                                name="newMember"
-                                className="form-control"
-                                placeholder="Enter new Member"
-                                value={newMember}
-                                onChange={handleMember}
-                            />
-                            <br />
-                            <ButtonGreen
-                                variant="contained"
-                                className={classes.margin}
-                                onClick={handleAddMembers}
-                            >
-                                Add Member
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="sm" component="main" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography component="h1" variant="h3" align="center" color="textPrimary">
+                                Members
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Typography variant="h5" align="center" color="textSecondary" component="p">
+                                {group.name}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Container>
+
+                <Container maxWidth="md" component="main">
+                    <Grid container spacing={4}>
+                        {group.members && group.members != 0 ? group.members.map(member =>
+                            <CardMembers key={member} member={member} groupId={id} groupOwner={group.owner} />
+                        ) :
+                            <div className={classes.cardGroup}>
+                                <Grid item xs={12}>
+                                    <Card align="center">
+                                        <CardContent className={classes.cardHeader}>
+                                            <Typography variant="h6" color="textSecondary">
+                                                You do not have any Members.<br />
+                                                Start adding!
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </div>
+                        }
+                    </Grid>
+
+                    <Box pt={5} align='center'>
+                        {toAddMembers ?
+                            <Card>
+                                <Box mt={3} align='center'>
+                                    <Typography variant="h5" color="textPrimary">
+                                        Insert New Member
+                                    </Typography>
+                                    <br />
+                                    <Grid item xs={6} align='center'>
+                                        <TextField
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            type="text"
+                                            name="newMember"
+                                            className="form-control"
+                                            placeholder="Enter new Member"
+                                            value={newMember}
+                                            onChange={handleMember}
+                                        />
+                                    </Grid>
+                                    <br />
+
+                                    <ButtonGreen
+                                        variant="contained"
+                                        className={classes.margin}
+                                        onClick={handleAddMembers}
+                                    >
+                                        Add Member
+                                    </ButtonGreen>
+                                </Box>
+                                <br />
+                            </Card> : ""}
+
+                        <Box mt={3} align='center'>
+                            <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
+                                <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                                {toAddMembers ? "" : "Add Members"}
                             </ButtonGreen>
-                        </Box> : ""}
+                        </Box>
+                    </Box>
+                </Container>
 
-                    <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
-                        <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
-                        {toAddMembers ? "" : "Add Members"}
-                    </Button>
+                <Box pt={8}>
+                    <Container maxWidth="xs">
+                        <GoBack />
+                    </Container>
                 </Box>
 
-                <Box mt={5}>
-                    <GoBack />
-                </Box>
-
-                <Box mt={5}>
-                    <br /><br />
+                <Box pt={8}>
                     <Footer />
-                    <br />
                 </Box>
-            </div>
-        </Container >
+            </main>
+        </div>
     )
 }
 

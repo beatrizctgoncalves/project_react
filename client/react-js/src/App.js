@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Head from './views/Components/Head';
-import Navbar from './views/Components/Navbar';
 import Home from './views/GeneralPages/Home';
 import Profile from './views/Profile/Profile';
 import EditProfile from './views/Profile/EditProfile';
@@ -22,7 +21,6 @@ import ToolsProjects from './views/Groups/Projects/ToolsProjects';
 import Sprints from './views/Groups/Sprint/Sprints';
 import Projects from './views/Groups/Projects/Projects';
 import UserProfile from './views/Profile/UserProfile';
-import MemberGroup from './views/Groups/GroupMember';
 import Rankings from './views/Groups/Rankings/Rankings';
 
 
@@ -30,8 +28,6 @@ function App() {
   return (
     <div>
       <Head></Head>
-
-      <Navbar></Navbar>
 
       <Router>
         <Switch>
@@ -140,11 +136,6 @@ function App() {
           <Route
             exact path="/groups/:id/members"
             render={(props) => window.sessionStorage.getItem('username') ? <Members {...props} /> : <Redirect to="/sign-in" />}
-          />
-
-          <Route
-            exact path="/groups/belong/to/member"
-            render={(props) => window.sessionStorage.getItem('username') ? <MemberGroup {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route

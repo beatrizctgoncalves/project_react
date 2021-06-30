@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react"
-import { addProjectToGroup, getToolProjects, getSpecificGroup } from '../../Services/BasicService';
+import { getToolProjects, getSpecificGroup } from '../../Services/BasicService';
 import { ToastContainer, toast } from 'react-toastify';
-import { Container, CssBaseline, Card, CardHeader, Grid, Box } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Box, Typography, Paper } from '@material-ui/core';
 import Footer from '../../Components/Footer.js';
 import GoBack from '../../Components/GoBack';
-import { ButtonGreen } from '../../Components/ColorButtons'
 import { useStyles } from '../../Components/Style';
+import Navbar from "../../Components/Navbar";
+import CardTools from "./CardTools";
+import clsx from "clsx";
 
 
 function ToolsProjects(props) {
@@ -14,7 +16,6 @@ function ToolsProjects(props) {
     const { id } = props.match.params
     const [availableProjects, setavailableProjects] = useState([])
     const [group, setGroup] = useState({})
-
 
     useEffect(() => {
         getToolProjects(tool, owner)
@@ -54,89 +55,61 @@ function ToolsProjects(props) {
     }, [])
 
 
-    function handleAddProjectToGroup(projId) {
-        const user_index = group.projects.findIndex(p => p.id === projId)
-        if (user_index === -1) {
-            addProjectToGroup(id, projId, tool)
-                .then(resp => {
-                    window.location.replace(`/groups/${id}`)
-                })
-                .catch(err => {
-                    console.log(err)
-                    toast.error(err.body, {
-                        position: "top-left",
-                        autoClose: 4000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    })
-                })
-        } else {
-            toast("this project already exists", {
-                position: "top-left",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            })
-        }
-    }
-
     const classes = useStyles();
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
-        <Container component="main" maxWidth="lg">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">Available Projects in {tool}</h2>
-                    <hr className="divider" />
-                </div>
-                <ToastContainer />
-                <br />
+            <Navbar />
 
-                <Grid container spacing={3} justify='center'>
-                    {availableProjects ? availableProjects.map(project => {
-                        return (
-                            <Grid item xs={4} key={group.id}>
-                                <Card align="center">
-                                    <CardHeader
-                                        title={project.avatar}
-                                        key={project.id}
-                                        subheader={project.title}
-                                        titleTypographyProps={{ align: 'center' }}
-                                        subheaderTypographyProps={{ align: 'center' }}
-                                        className={classes.cardHeader}
-                                    />
+            <ToastContainer />
 
-                                    <Box mt={1}>
-                                        <ButtonGreen className={classes.margin} onClick={handleAddProjectToGroup.bind(null, project.id)}>
-                                            <i className="bi bi-plus-lg"></i>
-                                        </ButtonGreen>
-                                    </Box>
-                                    <Box mt={1}></Box>
-                                </Card>
-                            </Grid>
-                        )
-                    }) : ""}
-                </Grid>
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="sm" component="main" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography component="h1" variant="h3" align="center" color="textPrimary">
+                                Available Projects in {tool}
+                            </Typography>
+                        </Grid>
 
-                <Box mt={8}>
-                    <GoBack />
+                        <Grid item xs={12}>
+                            <Typography variant="h5" align="center" color="textSecondary" component="p">
+                                You are adding this to {group.name}...
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Container>
+
+                <Container maxWidth="md" component="main">
+                    <Grid container spacing={4} alignItems='center'>
+                        {availableProjects ? availableProjects.map(project =>
+                            <CardTools key={project.id} project={project} group={group} tool={tool} />
+                        ) :
+                            <Paper className={fixedHeightPaper}>
+                                <Box mt={3} align='center'>
+                                    <Typography variant="h6" color="textSecondary">
+                                        Error!
+                                    </Typography>
+                                </Box>
+                            </Paper>
+                        }
+                    </Grid>
+                </Container>
+
+                <Box pt={8}>
+                    <Container maxWidth="xs">
+                        <GoBack />
+                    </Container>
                 </Box>
 
-                <Box mt={5}>
-                    <br /><br />
+                <Box pt={8}>
                     <Footer />
-                    <br />
                 </Box>
-            </div>
-        </Container>
+            </main>
+        </div>
     )
 }
 

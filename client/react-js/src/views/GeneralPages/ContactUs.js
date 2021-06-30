@@ -1,25 +1,29 @@
 import React from 'react';
 import Footer from '../Components/Footer.js';
-import { Container, CssBaseline, Grid, Box, Link } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Box, Link, Typography } from '@material-ui/core';
 import { useStyles } from '../Components/Style';
 import CardContact from '../Components/CardContact.js';
+import Navbar from '../Components/Navbar.js';
 
 
 function ContactUs() {
     const featuredPosts = [
         {
+            id: 1,
             title: <Link href={`https://github.com/beatrizctgoncalves`}>Beatriz Gonçalves</Link>,
             icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
                 alt="Card image cap"></img>,
             description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
         },
         {
+            id: 2,
             title: <Link href={`https://github.com/A44866`}>Maksym</Link>,
             icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
                 alt="Card image cap"></img>,
             description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
         },
         {
+            id: 3,
             title: <Link href={`https://github.com/pinto6`}>Miguel Pinto</Link>,
             icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
                 alt="Card image cap"></img>,
@@ -30,29 +34,31 @@ function ContactUs() {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="lg">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-2">
-                    <h2 className="text-center mt-0">Contact Us</h2>
-                    <hr className="divider" />
-                </div>
-                <br />
+            <Navbar />
 
-                <main>
-                    <Grid container spacing={4}>
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography component="h1" variant="h3" align="center" color="textPrimary">
+                                Contacts
+                            </Typography>
+                        </Grid>
+
                         {featuredPosts.map((post) => (
-                            <CardContact key={post.title} post={post} />
+                            <CardContact key={post.id} post={post} />
                         ))}
                     </Grid>
 
-                    <Box mt={8}>
+                    <Box pt={8}>
                         <Footer />
                     </Box>
-                </main>
-            </div>
-        </Container>
+                </Container>
+            </main>
+        </div>
     )
 }
 

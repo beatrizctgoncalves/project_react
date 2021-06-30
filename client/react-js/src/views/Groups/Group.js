@@ -1,30 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { addMemberToGroup, getSpecificGroup, getUser, addSprintToGroup } from '../Services/BasicService.js';
-import Footer from '../Components/Footer.js';
-import GoBack from '../Components/GoBack';
-import { ButtonGreen, ButtonLime } from '../Components/ColorButtons';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import Navbar from '../Components/Navbar';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
+import { ToastContainer } from 'react-toastify';
 import { useStyles } from '../Components/Style';
-import { ToastContainer, toast } from 'react-toastify';
-import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box, TextField } from '@material-ui/core';
+import Footer from '../Components/Footer';
+import { getSpecificGroup } from '../Services/BasicService';
+import { toast } from 'react-toastify';
+import { ButtonLime } from '../Components/ColorButtons';
+import GoBack from '../Components/GoBack';
 
 
-function Group(props) {
+export default function Group(props) {
     const [group, setGroup] = useState({})
-    const [user, setUser] = useState({})
     const { id } = props.match.params
-
-    const [toAddMembers, setAddMembers] = useState(false)
-    const [newMember, setNewMember] = useState("")
-
-    const [toAddProjects, setAddProjects] = useState(false)
-
-    const [toAddSprints, setAddSprints] = useState(false)
-    const [newSprint, setNewSprint] = useState("")
-
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
-
-    const owner = window.sessionStorage.getItem("username")
 
     useEffect(() => {
         getSpecificGroup(id)
@@ -43,32 +40,16 @@ function Group(props) {
             })
     }, [])
 
-    useEffect(() => {
-        getUser(owner)
-            .then(resp => setUser(resp.message))
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
-    }, [])
 
-    function handleToEditSprintsChange() {
+    function handleToSprints() {
         window.location.replace(`/groups/${group.id}/sprints`)
     }
 
-    function handleToEditMembersChange() {
+    function handleToMembers() {
         window.location.replace(`/groups/${group.id}/members`)
     }
 
-    function handleToEditProjectsChange() {
+    function handleToProjects() {
         window.location.replace(`/groups/${group.id}/projects`)
     }
 
@@ -79,130 +60,151 @@ function Group(props) {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="xs">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">Your Group Details</h2>
-                    <hr className="divider" />
-                </div>
-                <ToastContainer />
-                <br />
+            <Navbar />
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Card align="center">
-                            <CardHeader
-                                title={group.name}
-                                subheader={<Link to={`/groups/${group.id}/edit`}><i className="bi bi-pencil-fill" /></Link>}
-                                titleTypographyProps={{ align: 'center' }}
-                                subheaderTypographyProps={{ align: 'center' }}
-                                className={classes.cardHeader}
-                            />
-                            <CardContent>
-                                <Typography component="h2" variant="h5" color="textPrimary">
-                                    {group.description}
-                                </Typography>
-                                <br />
+            <ToastContainer />
 
-                                <div className={classes.cardGroup}>
-                                    <Typography variant="h6" color="textSecondary">
-                                        The Owner of this Group is {group.owner}.
-                                    </Typography>
-                                    <br />
-                                </div>
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="sm" component="main" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography component="h1" variant="h3" align="center" color="textPrimary">
+                                {group.name}
+                            </Typography>
+                        </Grid>
 
-                                <div className={classes.cardGroup}>
-                                    <ul className={classes.listItem}>
-                                        <Typography variant="body1">
-                                            <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>Members</Button>
-                                        </Typography>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" align="center" color="textSecondary" component="p">
+                                {group.description}
+                            </Typography>
+                        </Grid>
 
-                                        <div>
-                                            {group.members && group.members.length != 0 ? group.members.map((member) => (
-                                                <ul className={classes.listItem} key={member}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        {member}
-                                                    </Typography>
-                                                </ul>
-                                            )) :
-                                                <ul className={classes.listItem}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        You do not have any Members!
-                                                    </Typography>
-                                                </ul>
-                                            }
-                                        </div>
-                                    </ul>
-
-                                    <ul className={classes.listItem}>
-                                        <Typography variant="body1">
-                                            <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditProjectsChange}>Projects</Button>
-                                        </Typography>
-
-                                        <div>
-                                            {group.projects && group.projects.length != 0 ? group.projects.map((project) => (
-                                                <ul className={classes.listItem} key={project}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        {project.title}
-                                                    </Typography>
-                                                </ul>
-                                            )) :
-                                                <ul className={classes.listItem}>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        You do not have any Projects!
-                                                    </Typography>
-                                                </ul>
-                                            }
-                                        </div>
-                                    </ul>
-                                </div>
-
-                                <ul className={classes.listItem}>
-                                    <Typography variant="body1">
-                                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>Sprints</Button>
-                                    </Typography>
-
-                                    <div>
-                                        {group.sprints && group.sprints.length != 0 ? group.sprints.map((sprint) => (
-                                            <ul className={classes.listItem} key={sprint}>
-                                                <Typography variant="body2" color="textSecondary">
-                                                    {sprint.title}
-                                                </Typography>
-                                            </ul>
-                                        )) :
-                                            <ul className={classes.listItem}>
-                                                <Typography variant="body2" color="textSecondary">
-                                                    You do not have any Sprints!
-                                                </Typography>
-                                            </ul>
-                                        }
-                                    </div>
-                                </ul>
-
-                                <br />
-                                <ButtonLime onClick={handleToRankings}>
-                                    <i className="bi bi-trophy-fill">&nbsp;&nbsp;</i>
-                                    Rankings
-                                </ButtonLime>
-                            </CardContent>
-                        </Card>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" align="center" component="p">
+                                The owner of this group is {group.owner}.
+                            </Typography>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Container>
 
-                <Box mt={5}>
-                    <GoBack />
-                </Box>
-
-                <Box mt={5}>
-                    <br /><br />
-                    <Footer />
+                <Container maxWidth="md" component="main">
                     <br />
-                </Box>
-            </div>
-        </Container >
-    )
-}
+                    <Grid container spacing={5} alignItems="flex-end">
+                        <Grid item xs={12} md={4}>
+                            <Card>
+                                <CardHeader
+                                    title={'Members'}
+                                    titleTypographyProps={{ align: 'center' }}
+                                    className={classes.cardHeader}
+                                />
 
-export default Group
+                                <CardContent>
+                                    <Grid item xs={12} align='center'>
+                                        {group.members && group.members != 0 ? group.members.map((member) => (
+                                            <Typography variant="h6" color="textSecondary" key={member}>
+                                                {member}
+                                            </Typography>
+                                        )) : ""}
+                                    </Grid>
+                                </CardContent>
+
+                                <CardActions>
+                                    <Button fullWidth variant='contained' color="primary" onClick={handleToMembers}>
+                                        See More
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+
+                        <Grid item xs={12} md={4}>
+                            <Card>
+                                <CardHeader
+                                    title={'Projects'}
+                                    titleTypographyProps={{ align: 'center' }}
+                                    className={classes.cardHeader}
+                                />
+
+                                <CardContent>
+                                    <Grid item xs={12} align='center'>
+                                        {group.projects && group.projects != 0 ? group.projects.map((project) => (
+                                            <Typography variant="h6" color="textSecondary" key={project.id}>
+                                                {project.title}
+                                            </Typography>
+                                        )) :
+                                            <Typography variant="h6" color="textSecondary">
+                                                You do not have any Projects.
+                                            </Typography>
+                                        }
+                                    </Grid>
+                                </CardContent>
+
+                                <CardActions>
+                                    <Button fullWidth variant='contained' color="primary" onClick={handleToProjects}>
+                                        See More
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+
+                        <Grid item xs={12} md={4}>
+                            <Card>
+                                <CardHeader
+                                    title={'Sprints'}
+                                    titleTypographyProps={{ align: 'center' }}
+                                    className={classes.cardHeader}
+                                />
+
+                                <CardContent>
+                                    <Grid item xs={12} align='center'>
+                                        {group.sprints && group.sprints != 0 ? group.sprints.map((sprint) => (
+                                            <Typography variant="h6" color="textSecondary" key={sprint.title}>
+                                                {sprint.title}
+                                            </Typography>
+                                        )) :
+                                            <Typography variant="h6" color="textSecondary">
+                                                You do not have any Sprints.
+                                            </Typography>
+                                        }
+                                    </Grid>
+                                </CardContent>
+
+                                <CardActions>
+                                    <Button fullWidth variant='contained' color="primary" onClick={handleToSprints}>
+                                        See More
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    </Grid>
+                </Container>
+
+                <Box pt={8}>
+                    <Container maxWidth="xs" align='center'>
+                        <Card>
+                            <br />
+                            <ButtonLime onClick={handleToRankings}>
+                                <i className="bi bi-trophy-fill">&nbsp;&nbsp;</i>
+                                Rankings
+                            </ButtonLime>
+                            <br />
+                            <br />
+                        </Card>
+                    </Container>
+                </Box>
+
+                <Box pt={8}>
+                    <Container maxWidth="xs">
+                        <GoBack />
+                    </Container>
+                </Box>
+
+                <Box pt={8}>
+                    <Footer />
+                </Box>
+            </main>
+        </div>
+    );
+}
