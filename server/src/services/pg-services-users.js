@@ -65,21 +65,14 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                 }
             }
 
-            return databaseUsers.getUser(username)
-                .then(user => {
-                    user.info.map(info => {
-                        if (updatedInfo.info && !updatedInfo.info.find(i => i.type == info.type))
-                            updatedInfo.info.push(info)
-                    })
-                    return databaseUsers.updateUser(username, updatedInfo)
-                        .then(user_name => {
-                            return pgResponses.setSuccessUri(
-                                pgResponses.OK,
-                                pgResponses.index.users,
-                                user_name,
-                                ""
-                            )
-                        })
+            return databaseUsers.updateUser(username, updatedInfo)
+                .then(user_name => {
+                    return pgResponses.setSuccessUri(
+                        pgResponses.OK,
+                        pgResponses.index.users,
+                        user_name,
+                        ""
+                    )
                 })
         },
 

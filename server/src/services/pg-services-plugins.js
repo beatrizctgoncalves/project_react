@@ -3,7 +3,7 @@
 function services(databaseGroup, databaseUsers, pgResponses) {
     const serv = {    
         
-        getProjectsOfTool: function(toolName, PURL, userId){
+        getProjectsOfTool: function(toolName, PURL, ownerCredentials){
             let api = undefined
             try{
                 api = require("./plugins/" + toolName + "/api")()
@@ -13,9 +13,7 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                     "Tool is not implemented in this server"
                 )
             }
-            return databaseUsers.getUser(userId)
-                .then(user =>  user.info.filter(i => i.type == toolName)[0])
-                .then(info => api.getProjectsFromUsername(PURL, info.accountId, info.AToken))
+            return api.getProjectsFromUsername(PURL, ownerCredentials.accountId, ownerCredentials.AToken)
                 .then(projects => {
                     return pgResponses.setSuccessList(
                         pgResponses.OK,

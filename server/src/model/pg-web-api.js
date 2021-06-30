@@ -22,14 +22,14 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
     router.post(`/groups/:group_id/members`, addMemberToGroup); //Add a specific user to a group
-    router.post(`/groups/:group_id/projects/:project_id/:username/credentials`, addMemberInfoToProject); //Add a specific user to a group
+    router.post(`/groups/:group_id/projects/:project_id/:username/credentials`, addMemberInfoToProject); //Add credentials to a project
     router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
     //router.post(`/groups/:group_id/members`, addMemberNotification); //Add a specific user to a group
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
     router.get('/rankings', getRankings); //TODO get all rankings
 
-    router.get('/tools/:tool_name/projects/:username', getProjectsOfTool)
+    router.get('/tools/:tool_name/projects', getProjectsOfTool)
 
     return router;
 
@@ -91,9 +91,8 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     function removeProjectFromGroup(req, res) {
-        console.log(req.params)
         aux.promisesAsyncImplementation(
-            services.removeProjectFromGroup(req.params.group_id, req.params.project_id),
+            services.removeProjectFromGroup(req.params.group_id, req.body.URL, req.params.project_id),
             res
         );
     }
@@ -143,7 +142,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     function getProjectsOfTool(req, res) {
         aux.promisesAsyncImplementation(
-            servicesPlugins.getProjectsOfTool(req.params.tool_name, req.params.username),
+            servicesPlugins.getProjectsOfTool(req.params.tool_name, req.body.URL, req.body.ownerCredentials),
             res
         )
     }

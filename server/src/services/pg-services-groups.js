@@ -128,10 +128,10 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
-        removeProjectFromGroup: function (group_id, project_id) {
+        removeProjectFromGroup: function (group_id, PURL, project_id) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(groupObj => {
-                    const project_index = groupObj.projects.findIndex(p => p.id === project_id)
+                    const project_index = groupObj.projects.findIndex(p => p.id == project_id && p.URL == PURL)
                     if (project_index === -1) {
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
