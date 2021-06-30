@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../Components/Footer.js';
-import { Link } from 'react-router-dom';
-import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
-import { Button, Container, CssBaseline, Grid, Typography, Box, Card, CardHeader } from '@material-ui/core';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import GoBack from '../Components/GoBack';
-import { ButtonGrey, ButtonRed, ButtonGreen } from '../Components/ColorButtons';
+import clsx from 'clsx';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Link from '@material-ui/core/Link';
 import { useStyles } from '../Components/Style';
+import Footer from '../Components/Footer';
+import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
+import { ToastContainer, toast } from 'react-toastify';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Title from '../Components/Title';
+import { ButtonGrey, ButtonRed } from '../Components/ColorButtons';
+import GroupsMember from './GroupsMember';
+import Navbar from '../Components/Navbar';
+import GoBack from '../Components/GoBack';
 
 
-function Groups() {
+export default function Groups() {
     const [groups, setGroups] = useState([])
 
     const [edit, setEdit] = useState(false)
-    const [toCreate, setToCreate] = useState(false)
 
     const owner = window.sessionStorage.getItem("username")
     const [newGroup, setNewGroup] = useState({ owner: owner })
@@ -68,7 +81,7 @@ function Groups() {
                         let aux = groups
                         aux.push(group.message)
                         setGroups(aux)
-                        setToCreate(false)
+                        setEdit(false)
                     })
             })
             .catch(err => {
@@ -89,96 +102,104 @@ function Groups() {
         setNewGroup({ ...newGroup, [name]: value })
     }
 
-    function handleToCreate() {
-        if (toCreate) {
-            setToCreate(false)
-        }
-        else {
-            setToCreate(true)
-        }
-    }
-
     function handleEdit(id) {
         window.location.replace(`/groups/${id}/edit`)
     }
 
-    function handleRedirect() {
-        window.location.replace(`/groups/belong/to/member`)
-    }
-
     const classes = useStyles();
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
-        <Container component="main" maxWidth="lg">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">Your Groups</h2>
-                    <hr className="divider" />
-                </div>
-                <ToastContainer />
-                <br />
+            <Navbar />
 
-                <Grid container spacing={3} justify='center'>
-                    {groups ? groups.map(group => {
-                        return (
-                            <Grid item xs={4} key={group.id}>
-                                <Card align="center">
-                                    <CardHeader
-                                        subheader={<Link color="inherit" to={`/groups/${group.id}`}>{group.name}</Link>}
-                                        subheaderTypographyProps={{ align: 'center' }}
-                                        className={classes.cardHeader}
-                                    />
-                                    <Box mt={1}>
-                                        <ButtonGrey variant="contained" className={classes.margin} onClick={handleEdit.bind(null, group.id)}>
-                                            <Typography variant="body2">
-                                                <i className="bi bi-pencil-fill"></i>
-                                            </Typography>
-                                        </ButtonGrey>
-                                        <ButtonRed variant="contained" className={classes.margin} onClick={handleGroupDelete.bind(null, group.id)}>
-                                            <Typography variant="body2">
-                                                <i className="bi bi-trash-fill"></i>
-                                            </Typography>
-                                        </ButtonRed>
-                                    </Box>
-                                    <Box mt={1}></Box>
-                                </Card>
-                            </Grid>
-                        )
-                    }) : ""}
-                </Grid>
+            <ToastContainer />
 
-                <Box mt={4} align='center'>
-                    <Grid container spacing={3} justify='center'>
-                        <Grid item xs={6}>
-                            {toCreate ?
-                                <Box mt={5} align='center'>
-                                    <h3 className="h4 mb-2">Create New Group</h3>
-                                    <br />
-                                    <input
-                                        variant="outlined"
-                                        margin="normal"
-                                        className="form-control"
-                                        required
-                                        type="text"
-                                        name="name"
-                                        placeholder="Enter Group Name"
-                                        onChange={handleChange}
-                                    />
-                                    <br />
-                                    <input
-                                        variant="outlined"
-                                        margin="normal"
-                                        className="form-control"
-                                        required
-                                        type="text"
-                                        name="description"
-                                        onChange={handleChange}
-                                        placeholder="Enter Group Description"
-                                    />
-                                    <br /><br />
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container spacing={3}>
 
+                        {/*Groups*/}
+                        <Grid item xs={12}>
+                            <Paper className={classes.paper}>
+                                <Title>Your Own Groups</Title>
+                                <Table size="small">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Name</TableCell>
+                                            <TableCell>Description</TableCell>
+                                            <TableCell align="right">Edit</TableCell>
+                                            <TableCell align="right">Remove</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {groups.map((group) => (
+                                            <TableRow key={group.id}>
+                                                <TableCell>
+                                                    <Link color="inherit" href={`/groups/${group.id}`}>
+                                                        {group.name}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell>{group.description}</TableCell>
+                                                <TableCell align="right">
+                                                    <ButtonGrey variant="contained" onClick={handleEdit.bind(null, group.id)}>
+                                                        <Typography variant="body2">
+                                                            <i className="bi bi-pencil-fill"></i>
+                                                        </Typography>
+                                                    </ButtonGrey>
+                                                </TableCell>
+                                                <TableCell align="right">
+                                                    <ButtonRed variant="contained" onClick={handleGroupDelete.bind(null, group.id)}>
+                                                        <Typography variant="body2">
+                                                            <i className="bi bi-trash-fill"></i>
+                                                        </Typography>
+                                                    </ButtonRed>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </Paper>
+                        </Grid>
+
+                        {/*Groups by Member*/}
+                        <Grid item xs={12} md={8} lg={9}>
+                            <Paper className={fixedHeightPaper}>
+                                <GroupsMember />
+                            </Paper>
+                        </Grid>
+
+                        {/*Create Group*/}
+                        <Grid item xs={12} md={4} lg={3}>
+                            <Paper className={fixedHeightPaper}>
+                                <Title>Create New Group</Title>
+                                <br />
+                                <input
+                                    variant="outlined"
+                                    margin="normal"
+                                    className="form-control"
+                                    required
+                                    type="text"
+                                    name="name"
+                                    placeholder="Enter Group Name"
+                                    onChange={handleChange}
+                                />
+                                <br />
+                                <input
+                                    variant="outlined"
+                                    margin="normal"
+                                    className="form-control"
+                                    required
+                                    type="text"
+                                    name="description"
+                                    onChange={handleChange}
+                                    placeholder="Enter Group Description"
+                                />
+                                <br />
+
+                                <div>
                                     <Button
                                         type="button"
                                         className="button1"
@@ -189,44 +210,22 @@ function Groups() {
                                     >
                                         Create Group
                                     </Button>
-                                </Box>
-                                : ""}
-
-                            <Box mt={4} align='center'>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={handleToCreate}
-                                >
-                                    <i className="bi bi-plus-circle-fill">&nbsp;&nbsp;</i>
-                                    {toCreate ? "" : "Create Group"}
-                                </Button>
-                            </Box>
-                        </Grid>
-
-                        <Grid item xs={6}>
-                            <Box mt={4} align='center'>
-                                <ButtonGreen type="submit" variant="contained" onClick={handleRedirect} >
-                                    <i className="bi bi-eyeglasses">&nbsp;&nbsp;</i>
-                                    Groups that you belong to
-                                </ButtonGreen>
-                            </Box>
+                                </div>
+                            </Paper>
                         </Grid>
                     </Grid>
-                </Box>
 
-                <Box mt={4}>
-                    <br /><br />
-                    <GoBack />
-                </Box>
+                    <Box pt={8}>
+                        <Container maxWidth="xs">
+                            <GoBack />
+                        </Container>
+                    </Box>
 
-                <Box mt={8}>
-                    <Footer />
-                </Box>
-            </div>
-        </Container >
-    )
+                    <Box pt={8}>
+                        <Footer />
+                    </Box>
+                </Container>
+            </main>
+        </div>
+    );
 }
-
-export default Groups;

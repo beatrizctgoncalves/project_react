@@ -1,6 +1,6 @@
 import { Button, Grid, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
-import { editGroup, getSpecificGroup } from '../Services/BasicService';
+import { editGroup } from '../Services/BasicService';
 import { toast } from 'react-toastify';
 
 
@@ -9,15 +9,12 @@ function FormEditGroup(props) {
 
     const [updatedGroup, setUpdatedGroup] = useState({})
 
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
-
     function handleGroupEdit() {
         editGroup(id, updatedGroup)
             .then(resp => {
                 window.location.assign(`/groups/${id}`)
             })
             .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
                 toast.error(err.body)
             })
     }

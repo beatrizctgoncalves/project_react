@@ -8,7 +8,7 @@ function database(pgResponses, requests) {
                 "username": username,
                 "name": name,
                 "surname": surname,
-                "avatar": "https://thumbs.dreamstime.com/b/programmer-linear-icon-technologist-freelancer-thin-line-illustration-contour-symbol-vector-isolated-outline-drawing-programmer-197065655.jpg",
+                "avatar": "http://mundocarreira.com.br/wp-content/uploads/2015/08/1-profissional-multifuncional.jpg",
                 "info": [],
                 "groupsMember": [],
                 "notifications": []

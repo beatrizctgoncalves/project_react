@@ -1,61 +1,73 @@
-import React, { useState } from 'react';
-import { logout } from '../Services/authenticationService';
+import React from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import { useStyles } from './Style';
+import clsx from 'clsx';
+import Drawer from '@material-ui/core/Drawer';
+import { mainListItems, secondaryListItems } from './listItems';
 
 
 function Navbar() {
-    const username = window.sessionStorage.getItem("username")
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(true);
 
-    function handleLogout() {
-        console.log("logOut handle enter")
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
 
-        logout()
-            .then(resp => {
-                window.sessionStorage.removeItem("username");
-                console.log(window.sessionStorage.getItem("username")?"yes":"no")
-                window.location.replace('/');
-            })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
-    }
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark fixed-top py-3" id="mainNav">
-            <div className="container px-4 px-lg-5">
-                <a className="navbar-brand" href="/">Pluggable Gamification</a>
-                <button className="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarResponsive">
-                    <ul className="navbar-nav ms-auto my-2 my-lg-0">
-                        <li className="nav-item"><a className="nav-link" href="/about-us">About Us</a></li>
-                        <li className="nav-item"><a className="nav-link" href="/contacts">Contacts</a></li>
-
-                        {username ?
-                            <>
-                                <div className="dropdown">
-                                    <button className="btn-drop">
-                                        {username}
-                                        <i className="bi bi-arrow-down"></i>                                        
-                                    </button>
-
-                                    <ul className="dropdown-content">
-                                        <li><a className="dropdown-item" href="/profile">Profile</a></li>
-                                        <li><a className="dropdown-item" href="/notifications">Notifications</a></li>
-                                        <li><a className="dropdown-item" href="/groups">Groups</a></li>
-                                    </ul>
-                                </div>
-                                <li className="nav-item"><a className="nav-link" onClick={handleLogout}>Logout</a></li>
-                            </>
-                            :
-                            <>
-                                <li className="nav-item"><a className="nav-link" href="/sign-in">Sign In</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/sign-up">Sign Up</a></li>
-                            </>
-                        }
-                    </ul>
+        <>
+            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                        Pluggable Gamification
+                    </Typography>
+                    <IconButton color="inherit">
+                        <Badge badgeContent={4} color="secondary">
+                            <NotificationsIcon />
+                        </Badge>
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                variant="permanent"
+                classes={{
+                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                }}
+                open={open}
+            >
+                <div className={classes.toolbarIcon}>
+                    <IconButton onClick={handleDrawerClose}>
+                        <ChevronLeftIcon />
+                    </IconButton>
                 </div>
-            </div>
-        </nav>
+                <Divider />
+                <List>{mainListItems}</List>
+                <Divider />
+                <List>{secondaryListItems}</List>
+            </Drawer>
+        </>
     )
 }
 

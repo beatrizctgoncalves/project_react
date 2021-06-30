@@ -3,8 +3,10 @@ import { getSpecificGroup, getRankings } from '../../Services/BasicService.js';
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { useStyles } from '../../Components/Style';
-import { Typography, CardHeader, Container, Card, CardContent, CssBaseline, Grid, Button, Box, TextField, Link } from '@material-ui/core';
+import { Typography, Container, Card, CardContent, CssBaseline, Grid, Box } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
+import CardRankings from './CardRankings.js';
+import Navbar from '../../Components/Navbar.js';
 
 
 function Rankings(props) {
@@ -53,90 +55,62 @@ function Rankings(props) {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="lg">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">{group.name} - Rankings</h2>
-                    <hr className="divider" />
-                </div>
-                <ToastContainer />
-                <br />
+            <Navbar />
 
-                <Grid container spacing={3} justify='center'>
-                    {sprints && sprints.length != 0 ? sprints.map(sprint =>
-                        <Grid item xs={4} key={sprint.SprintTitle}>
-                            <Card align="center">
-                                <CardHeader
-                                    title={sprint.SprintTitle}
-                                    titleTypographyProps={{ align: 'center' }}
-                                    className={classes.cardHeader}
-                                />
+            <ToastContainer />
 
-                                <div className={classes.cardGroup} key={sprint.SprintTitle}>
-                                    <CardContent>
-                                        <Grid item xs={12}>
-                                            <Grid container spacing={4} justify='center'>
-                                                {sprint.Scores && sprint.Scores != 0 ? sprint.Scores.map(score =>
-                                                    <Grid item xs={4} key={score.AppUsername}>
-                                                        <Typography variant="body1">
-                                                            {score.AppUsername}
-                                                        </Typography>
-
-                                                        <ul className={classes.listItem}>
-                                                            <Typography variant="body2" color="textSecondary">
-                                                                {score.Points}
-                                                            </Typography>
-                                                        </ul>
-                                                    </Grid>
-                                                ) :
-                                                    <div className={classes.cardGroup}>
-                                                        <Grid item xs={12}>
-                                                            <Card align="center">
-                                                                <CardContent className={classes.cardHeader}>
-                                                                    <Typography variant="h6" color="textSecondary">
-                                                                        This Group do not have any Scores.<br />
-                                                                        Start finishing Sprints!
-                                                                    </Typography>
-                                                                </CardContent>
-                                                            </Card>
-                                                        </Grid>
-                                                    </div>
-                                                }
-                                            </Grid>
-                                        </Grid>
-                                    </CardContent>
-                                </div>
-                            </Card>
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="sm" component="main" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography component="h1" variant="h3" align="center" color="textPrimary">
+                                Rankings
+                            </Typography>
                         </Grid>
-                    ) :
-                        <div className={classes.cardGroup}>
-                            <Grid item xs={12}>
-                                <Card align="center">
-                                    <CardContent className={classes.cardHeader}>
-                                        <Typography variant="h6" color="textSecondary">
-                                            You do not have any Sprints.<br />
-                                            Start adding so we can gamify them!
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        </div>
-                    }
-                </Grid>
 
-                <Box mt={8}>
-                    <GoBack />
-                </Box>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" align="center" color="textSecondary" component="p">
+                                {group.name}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Container>
 
-                <Box mt={5}>
-                    <br /><br />
+                <Container maxWidth="md" component="main">
+                    <Grid container spacing={4} justify='center'>
+                        {sprints && sprints.length != 0 ? sprints.map(sprint =>
+                            <CardRankings key={sprint} sprint={sprint} groupId={id} />
+                        ) :
+                            <div className={classes.cardGroup}>
+                                <Grid item xs={12}>
+                                    <Card align="center">
+                                        <CardContent className={classes.cardHeader}>
+                                            <Typography variant="h6" color="textSecondary">
+                                                This Group do not have any Scores.<br />
+                                                Start creating Sprints!
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </div>
+                        }
+                    </Grid>
+
+                    <Box pt={8}>
+                        <Container maxWidth="xs">
+                            <GoBack />
+                        </Container>
+                    </Box>
+                </Container>
+
+                <Box pt={8}>
                     <Footer />
-                    <br />
                 </Box>
-            </div>
-        </Container >
+            </main>
+        </div>
     )
 }
 

@@ -1,60 +1,37 @@
 import React from 'react'
 import Footer from '../Components/Footer.js';
-import { Container, CssBaseline, Box, Grid } from '@material-ui/core';
+import { Container, CssBaseline, Box, Grid, Typography } from '@material-ui/core';
 import { useStyles } from '../Components/Style';
-import CardAbout from '../Components/CardAbout.js';
+import Navbar from '../Components/Navbar.js';
 
 
 function About() {
-    const featuredPosts = [
-        {
-            title: 'Up to Date',
-            icon: <i className="bi-check-circle-fill fs-1 text-primary"></i>,
-            description: 'All dependencies are kept current to keep things fresh.',
-        },
-        {
-            title: 'Responsive Design',
-            icon: <i className="bi-laptop fs-1 text-primary"></i>,
-            description: 'Our site  has a responsive mobile-first web application. Allows consulting information of various platforms!',
-        },
-        {
-            title: 'Something',
-            icon: <i className="bi-globe fs-1 text-primary"></i>,
-            description: 'Something.',
-        },
-        {
-            title: 'Something2',
-            icon: <i className="bi-check-circle-fill fs-1 text-primary"></i>,
-            description: 'Something.',
-        }
-    ];
-
     const classes = useStyles();
 
     return (
-        <Container maxWidth="lg">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-2">
-                    <h2 className="text-center mt-0">About Us</h2>
-                    <hr className="divider" />
-                </div>
-                <br />
+            <Navbar />
 
-                <main>
-                    <Grid container spacing={4}>
-                        {featuredPosts.map((post) => (
-                            <CardAbout key={post.title} post={post} />
-                        ))}
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography component="h1" variant="h3" align="center" color="textPrimary">
+                                About Our Application
+                            </Typography>
+                        </Grid>
+
+                        TODO
                     </Grid>
 
-                    <Box mt={8}>
+                    <Box pt={8}>
                         <Footer />
                     </Box>
-                </main>
-            </div>
-        </Container >
+                </Container>
+            </main>
+        </div>
     )
 }
 

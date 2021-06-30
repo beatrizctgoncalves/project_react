@@ -1,17 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useStyles } from '../../Components/Style';
-import { Typography, CardHeader, Card, CardContent, Grid } from '@material-ui/core';
+import { Typography, CardHeader, Box, Card, CardContent, Grid, CardActions } from '@material-ui/core';
 import { ButtonRed } from '../../Components/ColorButtons';
+import { toast } from 'react-toastify';
 
 
-function CardSprint(props) {
-    const { sprint } = props
-    
+function CardProject(props) {
+    const { sprint, groupId } = props
+    const [edit, setEdit] = useState(false)
+    const [group, setGroup] = useState({})
+
+    function handleSprintDelete(projectId) {
+        //TODO
+    }
+
     const classes = useStyles();
 
     return (
-        <Grid item xs={4} key={sprint.id}>
-            <Card align="center">
+        <Grid item xs={12} sm={6} md={4}>
+            <Card className={classes.card}>
                 <CardHeader
                     subheader={sprint.title}
                     subheaderTypographyProps={{ align: 'center' }}
@@ -19,40 +26,48 @@ function CardSprint(props) {
                 />
 
                 <CardContent>
-                    <div className={classes.cardGroup} key={sprint.id}>
-                        <ul className={classes.listItem}>
-                            <Typography variant="body1" color='primary'>
-                                Begin Date
-                            </Typography>
+                    <Box align='center'>
+                        <div className={classes.cardGroup} key={sprint.id}>
+                            <ul className={classes.listItem}>
+                                <Typography variant="body1" color='primary'>
+                                    Begin Date
+                                </Typography>
 
-                            <div>
-                                <ul className={classes.listItem} key={sprint.id}>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {sprint.beginDate}
-                                    </Typography>
-                                </ul>
-                            </div>
-                        </ul>
+                                <div>
+                                    <ul className={classes.listItem} key={sprint.id}>
+                                        <Typography variant="body2" color="textSecondary">
+                                            {sprint.beginDate}
+                                        </Typography>
+                                    </ul>
+                                </div>
+                            </ul>
 
-                        <ul className={classes.listItem}>
-                            <Typography variant="body1" color='primary'>
-                                End Date
-                            </Typography>
+                            <ul className={classes.listItem}>
+                                <Typography variant="body1" color='primary'>
+                                    End Date
+                                </Typography>
 
-                            <div>
-                                <ul className={classes.listItem} key={sprint.id}>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {sprint.endDate}
-                                    </Typography>
-                                </ul>
-                            </div>
-                        </ul>
-                    </div>
+                                <div>
+                                    <ul className={classes.listItem} key={sprint.id}>
+                                        <Typography variant="body2" color="textSecondary">
+                                            {sprint.endDate}
+                                        </Typography>
+                                    </ul>
+                                </div>
+                            </ul>
+                        </div>
+                    </Box>
                 </CardContent>
+                <CardActions>
+                    <ButtonRed size="small" color="primary" onClick={handleSprintDelete.bind(null, sprint.id)}>
+                        <Typography variant="body2">
+                            <i className="bi bi-trash-fill"></i>
+                        </Typography>
+                    </ButtonRed>
+                </CardActions>
             </Card>
         </Grid>
     )
 }
-    
 
-export default CardSprint
+export default CardProject
