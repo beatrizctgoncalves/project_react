@@ -187,6 +187,32 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
+        addMemberInfoToProject: function (group_id, project_URL, project_id, username, memberCredentials) {
+            return databaseUsers.getUser(username) //check if the user exists
+                .then(userObj => {
+                    return databaseGroups.getGroupDetails(group_id) //check if the group exists
+                        .then(groupObj => {
+                            const project_index = groupObj.projects.findIndex(p => p.id == project_id && p.URL == project_URL)
+                            const userExists = groupObj.members.findIndex(m => m === username)
+                            if (userExists == -1 || project_index == -1) {  //check if the user already exists in the group
+                                return pgResponses.setError(
+                                    pgResponses.FORBIDDEN,
+                                    pgResponses.FORBIDDEN_MSG
+                                )
+                            }
+                            return databaseGroups.addMemberInfoToProject(group_id, project_index, username, memberCredentials)
+                                .then(group => {
+                                    return pgResponses.setSuccessUri(
+                                        pgResponses.OK,
+                                        pgResponses.index.api,
+                                        pgResponses.index.groups,
+                                        group
+                                    )
+                                })
+                        })
+                })
+        },
+
         /*addMemberNotification: function (group_id, member, manager) { //add the notification to the user
             return databaseUsers.getUser(member) //check if the user exists
                 .then(memberObj => {

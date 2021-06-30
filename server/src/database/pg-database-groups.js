@@ -78,20 +78,17 @@ function database(pgResponses, requests) {
                 .catch(error => pgResponses.resolveErrorElastic(error))
         },
 
-        addMemberInfoToProject: function (group_id, projectType, projectURL, username, memberCredentials) {
+        addMemberInfoToProject: function (group_id, project_index, username, memberCredentials) {
             return this.getGroupDetails(group_id)
                 .then(group => {
                     let projects = group.projects
-                    let projectIndex = projects.findIndex(p => p.type == projectType && p.URL == projectURL)
-                    if(projectIndex == -1){
-                        //TODO
-                    }
-                    let memberCredentialsIndex = projects[projectIndex].memberCredentials.findIndex(mC => mC.AppUsername == username)
+                    let memberCredentialsIndex = projects[project_index].memberCredentials.findIndex(mC => mC.AppUsername == username)
+                    
                     if(memberCredentialsIndex != -1){
-                        projects[projectIndex].memberCredentials[memberCredentialsIndex] = memberCredentials
+                        projects[project_index].memberCredentials[memberCredentialsIndex] = memberCredentials
                     }
                     else{
-                        projects[projectIndex].memberCredentials[memberCredentialsIndex].push(memberCredentials)
+                        projects[project_index].memberCredentials.push(memberCredentials)
                     }
                     return projects
                 })
@@ -136,7 +133,6 @@ function database(pgResponses, requests) {
         },
 
         removeProjectFromGroup: function (group_id, project_index) {
-            console.log(project_index)
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",
