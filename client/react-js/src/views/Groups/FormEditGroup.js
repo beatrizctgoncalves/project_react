@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 
 function FormEditGroup(props) {
     const { id } = props.match.params
-
     const [updatedGroup, setUpdatedGroup] = useState({})
 
     function handleGroupEdit() {
@@ -30,33 +29,31 @@ function FormEditGroup(props) {
     return (
         <React.Fragment >
             <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="name"
-                        name="name"
-                        label="New Name"
-                        fullWidth
-                        onChange={handleName}
-                    />
+                <Grid item xs={12} align='center'>
+                    <Grid item sm={6} align='center'>
+                        <TextField
+                            required
+                            id="name"
+                            name="name"
+                            label="New Name"
+                            onChange={handleName}
+                        />
+                    </Grid>
+                    <Grid item sm={6} align='center'>
+                        <TextField
+                            required
+                            id="description"
+                            name="description"
+                            label="New Description"
+                            onChange={handleDesc}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="description"
-                        name="description"
-                        label="New Description"
-                        fullWidth
-                        onChange={handleDesc}
-                    />
-                </Grid>
-
                 <br /><br /><br /><br />
-                <Grid item xs={12}>
+                <Grid item xs={12} align='center'>
                     <Button
                         type="button"
                         className="button1"
-                        fullWidth
                         variant="contained"
                         color="primary"
                         onClick={handleGroupEdit}

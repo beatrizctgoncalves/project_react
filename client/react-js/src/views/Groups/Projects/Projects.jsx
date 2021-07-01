@@ -3,13 +3,14 @@ import { getUser, getSpecificGroup } from '../../Services/BasicService.js';
 import Footer from '../../Components/Footer';
 import GoBack from '../../Components/GoBack';
 import { useStyles } from '../../Components/Style';
-import { Typography, Container, CssBaseline, Grid, Button, Box, Card, CardContent } from '@material-ui/core';
+import { Typography, Container, CssBaseline, Grid, Box } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../../Components/ColorButtons';
 import CardProject from './CardProjects.jsx';
 import Navbar from '../../Components/Navbar.js';
 import clsx from 'clsx';
 import Paper from '@material-ui/core/Paper';
+import { Gitlab } from './Plugins/Views';
 
 
 function Projects(props) {
@@ -54,10 +55,6 @@ function Projects(props) {
     }, [])
 
 
-    function handleToProjects(type) {
-        window.location.replace(`/groups/${id}/tools/${type}`)
-    }
-
     function handleToEditProjectsChange() {
         if (toAddProjects) {
             setAddProjects(false)
@@ -65,7 +62,6 @@ function Projects(props) {
             setAddProjects(true)
         }
     }
-
 
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -98,7 +94,7 @@ function Projects(props) {
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} alignItems='center'>
                         {group.projects && group.projects != 0 ? group.projects.map(project =>
-                            <CardProject key={project.id} project={project} groupId={id} groupOwner={group.owner} />
+                            <CardProject key={project.id} project={project} group={group} owner={owner} />
                         ) :
                             <Paper className={fixedHeightPaper}>
                                 <Box mt={3} align='center'>
@@ -111,23 +107,19 @@ function Projects(props) {
                         }
                     </Grid>
 
-                    {group.owner != owner ?
+                    {group.owner == owner ?
                         <Box pt={5} align='center'>
                             {toAddProjects ?
-                                <Paper className={fixedHeightPaper}>
+                                <Paper>
                                     <Box mt={3} align='center'>
-                                        <Typography variant="h5" color="textPrimary">
-                                            Project
+                                        <br />
+                                        <Typography variant="h5" color="textSecondary">
+                                            Select one of these options
                                         </Typography>
                                         <br />
-                                        <ul className={classes.listItem}>
-                                            {user.info ? user.info.map(i =>
-                                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToProjects.bind(null, i.type)}>
-                                                    {i.type}
-                                                </ButtonGreen>
-                                            ) : ""}
-                                        </ul>
+                                        <Gitlab groupId={group.id} />
                                     </Box>
+                                    <br />
                                 </Paper> : ""}
 
                             <Box mt={3} align='center'>

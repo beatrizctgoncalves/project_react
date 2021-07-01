@@ -123,12 +123,15 @@ export async function createGroup(newGroup) {
         })
 }
 
-export async function getToolProjects(tool, username) {
-    const uri = `tools/${tool}/projects/${username}`
+export async function getToolProjects(tool, URL, ownerCredentials) {
+    const uri = `tools/${tool}/projects`
+    const body = {
+        URL,
+        ownerCredentials
+    }
 
-    return makeRequest(urls.groups.concat(uri))
+    return makeRequest(urls.groups.concat(uri), body, 'POST')
         .then(resp => {
-            console.log(resp)
             return resp
         })
 }

@@ -61,10 +61,6 @@ function FormProfile() {
             })
     }*/
 
-    function handleAdditionalInfo() {
-        window.location.assign(`/profile/${username}/edit/info`)
-    }
-
     const classes = useStyles();
 
     return (
@@ -97,7 +93,7 @@ function FormProfile() {
                         color="primary"
                         onClick={handleEdit}
                     >
-                        Save
+                        Save Changes
                     </Button>
                 </Grid>
 

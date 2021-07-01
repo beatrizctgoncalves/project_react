@@ -7,14 +7,14 @@ import { toast } from 'react-toastify';
 
 
 function CardProject(props) {
-    const { project, groupId, groupOwner } = props
+    const { project, group, owner } = props
     const [edit, setEdit] = useState(false)
-    const [group, setGroup] = useState({})
+    const [groupUpdated, setGroup] = useState({})
 
     function handleProjectDelete(projectId) {
-        removeProjectFromGroup(groupId, projectId)
+        removeProjectFromGroup(group.id, projectId)
             .then(resp => {
-                let aux = group.projects.filter(project => {
+                let aux = groupUpdated.projects.filter(project => {
                     if (project.id !== projectId) {
                         return project
                     }
@@ -49,10 +49,8 @@ function CardProject(props) {
                     <Typography gutterBottom variant="h5" component="h2">
                         {project.title}
                     </Typography>
-                    <Typography>
-                    </Typography>
                 </CardContent>
-                {group.owner == groupOwner ?
+                {group.owner == owner ?
                     <CardActions>
                         <ButtonRed size="small" color="primary" onClick={handleProjectDelete.bind(null, project.id)}>
                             <Typography variant="body2">

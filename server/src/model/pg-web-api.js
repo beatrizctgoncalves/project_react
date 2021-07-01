@@ -29,7 +29,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
     router.get('/rankings', getRankings); //TODO get all rankings
 
-    router.get('/tools/:tool_name/projects', getProjectsOfTool)
+    router.post('/tools/:tool_name/projects', getProjectsOfTool)
 
     return router;
 

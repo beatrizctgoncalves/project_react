@@ -139,9 +139,7 @@ export default function Groups() {
                                         {groups.map((group) => (
                                             <TableRow key={group.id}>
                                                 <TableCell>
-                                                    <Link color="inherit" href={`/groups/${group.id}`}>
-                                                        {group.name}
-                                                    </Link>
+                                                    {group.name}
                                                 </TableCell>
                                                 <TableCell>{group.description}</TableCell>
                                                 <TableCell>

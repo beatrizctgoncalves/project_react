@@ -13,23 +13,19 @@ function FormSignIn() {
   function handlingSubmit() {
     loginFetch(userToLogin.username, userToLogin.password)
       .then(resp => {
-        console.log(resp)
         window.sessionStorage.setItem('username', userToLogin.username);
         window.location.assign('/')
       })
       .catch(err => {
-        console.log(err)
         setError({ errorMessage: err.body, shouldShow: true })
       })
   }
 
   const handlePassword = event => {
-    console.log(event.target.value)
     setUserToLogin({ ...userToLogin, password: event.target.value })
   }
 
   const handleUsername = event => {
-    console.log(event.target.value)
     setUserToLogin({ ...userToLogin, username: event.target.value })
   }
 

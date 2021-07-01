@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, TextField, CssBaseline, Grid, Container, Button, Box, Paper } from '@material-ui/core';
+import { CssBaseline, Grid, Container, Box, Paper } from '@material-ui/core';
 import Footer from '../Components/Footer';
 import Form from './FormProfile';
 import GoBack from '../Components/GoBack';
