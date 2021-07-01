@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { ButtonGreen } from '../Components/ColorButtons';
+import { ButtonRed } from '../Components/ColorButtons';
 import { Box, Button, TextField, Grid } from '@material-ui/core';
 import React, { useState } from 'react';
 import { deleteUser, getUser, updateUser } from '../Services/BasicService.js';
@@ -26,9 +26,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function FormProfile() {
-
     const username = window.sessionStorage.getItem("username")
     const [updatedUser, setUpdatedUser] = useState({})
+    
     function handleEdit() {
         updateUser(username, updatedUser)
             .then(resp => {
@@ -70,32 +70,29 @@ function FormProfile() {
     return (
         <React.Fragment>
             <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+                <Grid item sm={4} align='right'>
                     <TextField
                         id="firstName"
                         name="firstName"
                         label="First name"
-                        fullWidth
                         autoComplete="given-name"
                         onChange={handleName}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item sm={4} align='left'>
                     <TextField
                         id="lastName"
                         name="lastName"
                         label="Last name"
-                        fullWidth
                         autoComplete="family-name"
                         onChange={handleSurname}
                     />
                 </Grid>
-                <br /><br /><br /><br />
-                <Grid item xs={12}>
+                <Grid item sm={4} align='left'>
+                    <br />
                     <Button
                         type="button"
                         className="button1"
-                        fullWidth
                         variant="contained"
                         color="primary"
                         onClick={handleEdit}
@@ -105,16 +102,11 @@ function FormProfile() {
                 </Grid>
 
                 <Grid item xs={12} align='center'>
-                    <Box mt={6}>
-                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleAdditionalInfo}>
-                            <i className="bi bi-patch-plus-fill">&nbsp;&nbsp;</i>
-                            Additional Information
-                        </Button>
-
-                        <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
+                    <Box mt={2}>
+                        <ButtonRed variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
                             <i className="bi bi-trash-fill">&nbsp;&nbsp;</i>
                             Delete Profile Definitively
-                        </ButtonGreen>
+                        </ButtonRed>
                     </Box>
                 </Grid>
             </Grid>

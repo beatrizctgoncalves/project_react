@@ -2,25 +2,38 @@ import React, { useState, useEffect } from 'react';
 import { getUser, updateUser } from '../Services/BasicService.js';
 import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
-import { useStyles} from '../Components/Style';
-import { ButtonGreen } from '../Components/ColorButtons';
-import { Typography, CardHeader, TextField, Card, CssBaseline, CardContent, Grid, Container, Button, Box } from '@material-ui/core';
+import { useStyles } from '../Components/Style';
+import { Typography, TextField, CssBaseline, Grid, Container, Button, Box, Paper } from '@material-ui/core';
+import Navbar from '../Components/Navbar.js';
+import { ToastContainer, toast } from 'react-toastify';
+import Title from '../Components/Title.js';
+import clsx from 'clsx';
 
 
-function Profile() {
-    const username = window.sessionStorage.getItem("username")
+function Profile(props) {
+    const { username } = props.match.params
+    const owner = window.sessionStorage.getItem("username")
     const [user, setUser] = useState({})
-
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     useEffect(() => {
         getUser(username)
             .then(resp => setUser(resp.message))
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }, [])
 
     const classes = useStyles();
-
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeightProfile);
+    
     const [newAvatar, setNewAvatar] = useState("")
     const [toUpdateAvatar, setUpdatedAvatar] = useState(false)
 
@@ -39,129 +52,116 @@ function Profile() {
                 setNewAvatar(user.avatar)
                 setUpdatedAvatar(false)
             })
-            .catch(err => setError({ errorMessage: err.body, shouldShow: true }))
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
     const handleURL = event => {
         setNewAvatar(event.target.value)
     }
 
-    function handleAdditionalInfo() {
-        window.location.assign(`/profile/${username}/edit/info`)
+    function handleEdit() {
+        window.location.assign(`/profile/${owner}/edit`)
     }
 
+    
     return (
-        <Container component="main" maxWidth="xs">
+        <div className={classes.root}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <br /><br />
-                <div className="container px-4 px-lg-5">
-                    <h2 className="text-center mt-0">Your Profile</h2>
-                    <hr className="divider" />
-                </div>
-                <br />
+            <Navbar />
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Card align="center">
-                            <CardHeader
-                                title={
-                                    <>
-                                        {toUpdateAvatar ?
-                                            <Box mt={5}>
-                                                <h3 className="h4 mb-2">Insert New Avatar</h3>
-                                                <br />
-                                                <TextField
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    id="url"
-                                                    label="URL (.png)"
-                                                    name="url"
-                                                    autoComplete="url"
-                                                    autoFocus
-                                                    onChange={handleURL}
-                                                />
-                                                <br /><br />
+            <ToastContainer />
 
-                                                <Button
-                                                    type="button"
-                                                    className="button1"
-                                                    fullWidth
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={handleUpateAvatar}
-                                                >
-                                                    Save
-                                                </Button>
-                                                <br /><br />
-                                            </Box> : ""}
-                                        <Box>
-                                            <Button onClick={handleToEditAvatarChange}>
-                                                <img src={`${user.avatar}`}
-                                                    width="auto" height="150" className={classes.avatar}></img>
-                                            </Button>
-                                        </Box>
-                                    </>
-                                }
-                                subheader={username}
-                                titleTypographyProps={{ align: 'center' }}
-                                subheaderTypographyProps={{ align: 'center' }}
-                                className={classes.cardHeader}
-                            />
-                            <CardContent>
-                                <Typography component="h2" variant="h4" color="textPrimary">
-                                    {user.name} {user.surname}
-                                </Typography>
-                                <br />
-
-                                <Typography variant="h5" color="primary">
-                                    Additional Information
-                                </Typography>
-
-                                {user.info && user.info.length != 0 ? user.info.map(info => (
-                                    <Box mt={2}>
-                                        <Typography variant="h6" color="textSecondary">
-                                            {info.type}
-                                        </Typography>
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container spacing={3}>
+                        {/*Avatar*/}
+                        <Grid item xs={12} md={4} lg={3} align='center'>
+                            <Paper>
+                                {username == owner ?
+                                    <Box>
+                                        <img src={`${user.avatar}`}
+                                            width="auto" height="192" className={classes.avatar}></img>
                                     </Box>
-                                )) :
-                                    <Box mt={2}>
-                                        <Typography variant="body1" color="textSecondary" align="center">
-                                            You do not have any additional <br /> information added yet!
-                                        </Typography>
+                                    : ''}
+                                {toUpdateAvatar ?
+                                    <Grid item xs={12} align='center'>
+                                        <br /><br />
+                                        <h3 className="h4 mb-2">Insert New Avatar</h3>
                                         <br />
-                                        <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleAdditionalInfo}>
-                                            <i className="bi bi-plus-lg">&nbsp;&nbsp;</i>
-                                            Add Now
-                                        </ButtonGreen>
-                                    </Box>
-                                }
-                            </CardContent>
+                                        <TextField
+                                            variant="outlined"
+                                            margin="normal"
+                                            required
+                                            id="url"
+                                            label="URL (.png)"
+                                            name="url"
+                                            autoComplete="url"
+                                            autoFocus
+                                            onChange={handleURL}
+                                        />
+                                        <br /><br />
 
-                            <CardContent>
-                                <Box mt={0}>
-                                    <Button variant="contained" color="primary" className={classes.margin} href={`/profile/${username}/edit`}>
-                                        <i className="bi bi-pencil-fill"></i>
+                                        <Button
+                                            type="button"
+                                            className="button1"
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={handleUpateAvatar}
+                                        >
+                                            Save
+                                        </Button>
+                                        <br /><br />
+                                    </Grid> : ""}
+                                <Box>
+                                    <Button onClick={handleToEditAvatarChange}>
+                                        <img src={`${user.avatar}`}
+                                            width="auto" height="192" className={classes.avatar}></img>
                                     </Button>
                                 </Box>
-                            </CardContent>
-                        </Card>
+                            </Paper>
+                        </Grid>
+
+                        {/*Profile information*/}
+                        <Grid item xs={12} md={8} lg={9}>
+                            <Paper className={fixedHeightPaper}>
+                                <Title>Profile of user {user.username}</Title>
+                                <Typography variant="h6">
+                                    {user.name} {user.surname}
+                                </Typography>
+                                {username == owner ?
+                                    <Box mt={4}>
+                                        <Button variant="contained" color="primary" className={classes.margin} onClick={handleEdit}>
+                                            <i className="bi bi-pencil-fill"></i>
+                                        </Button>
+                                    </Box>
+                                    : ''}
+                            </Paper>
+                        </Grid>
                     </Grid>
-                </Grid>
 
-                <Box mt={5}>
-                    <GoBack />
-                </Box>
+                    <Box pt={8}>
+                        <Container maxWidth="xs">
+                            <GoBack />
+                        </Container>
+                    </Box>
 
-                <Box mt={5}>
-                    <br /><br />
-                    <Footer />
-                    <br />
-                </Box>
-            </div>
-        </Container >
+                    <Box pt={8}>
+                        <Footer />
+                    </Box>
+                </Container>
+            </main>
+        </div>
     )
 }
 

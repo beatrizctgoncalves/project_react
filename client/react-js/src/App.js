@@ -1,11 +1,9 @@
 import React from 'react';
-import './App.css';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Head from './views/Components/Head';
 import Home from './views/GeneralPages/Home';
 import Profile from './views/Profile/Profile';
 import EditProfile from './views/Profile/EditProfile';
-import EditInfo from './views/Profile/EditInfo';
 import SignUp from './views/SignUp/SignUp';
 import SignIn from './views/SignIn/SignIn';
 import Groups from './views/Groups/Groups';
@@ -20,7 +18,6 @@ import Members from './views/Groups/Members/Members';
 import ToolsProjects from './views/Groups/Projects/ToolsProjects';
 import Sprints from './views/Groups/Sprint/Sprints';
 import Projects from './views/Groups/Projects/Projects';
-import UserProfile from './views/Profile/UserProfile';
 import Rankings from './views/Groups/Rankings/Rankings';
 
 
@@ -77,23 +74,13 @@ function App() {
 
           {/*PROFILE*/}
           <Route
-            exact path='/profile'
-            render={(props) => window.sessionStorage.getItem('username') ? <Profile {...props} /> : <Redirect to="/sign-in" />}
-          />
-
-          <Route
             exact path='/profile/:username'
-            render={(props) => window.sessionStorage.getItem('username') ? <UserProfile {...props} /> : <Redirect to="/sign-in" />}
+            render={(props) => window.sessionStorage.getItem('username') ? <Profile {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
             exact path='/profile/:username/edit'
             render={(props) => window.sessionStorage.getItem('username') ? <EditProfile {...props} /> : <Redirect to="/sign-in" />}
-          />
-
-          <Route
-            exact path='/profile/:username/edit/info'
-            render={(props) => window.sessionStorage.getItem('username') ? <EditInfo {...props} /> : <Redirect to="/sign-in" />}
           />
 
           <Route
