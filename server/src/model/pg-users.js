@@ -44,11 +44,16 @@ module.exports = function (express, services, aux, authization) {
     }
 
     function signIn(req, res) {
+        const username = req.body.username
+        services.getUser(username)
+            .catch(err => {
+                res.statusCode = err.status
+                res.json({ error: err })
+            })
         if (req.isAuthenticated()) {
             res.json({ message: "Successfull SignIn" })
-
         } else {
-            res.json({ message: "Something went wrong with SignIn" })
+            res
         }
     }
 
@@ -56,7 +61,6 @@ module.exports = function (express, services, aux, authization) {
         if (!req.isAuthenticated()) {
             res.json({ message: "Successfull logout SignIn" })
         } else {
-            
             res.json({ message: "Something wrong with logout" })
         }
     }
@@ -97,7 +101,7 @@ module.exports = function (express, services, aux, authization) {
             res
         );
     }
-    
+
     function deleteUser(req, res) {
         aux.promisesAsyncImplementation(
             services.deleteUser(req.params.username),

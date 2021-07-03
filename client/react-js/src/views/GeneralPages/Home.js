@@ -71,7 +71,7 @@ export default function SignInSide() {
                                 <br />
 
                                 <Grid item xs={12} align='center'>
-                                    <Typography variant="h5" className={classes.subtitle} className={classes2.letters}>
+                                    <Typography variant="h5" className={classes2.letters}>
                                         Start gamifying your projects so you never feel bored! <br />
                                         Just create an account and start adding your team and projects to groups!
                                     </Typography>
@@ -96,7 +96,7 @@ export default function SignInSide() {
                                             </Grid>
 
                                             <Grid item xs={12}>
-                                                <Typography variant="body1" className={classes.subtitle} className={classes2.letters}>
+                                                <Typography variant="body1" className={classes2.letters}>
                                                     Never get bored of your work!<br />
                                                     Our website is always free!<br />
                                                     You can add your own projects to be gamify, no strings attached!

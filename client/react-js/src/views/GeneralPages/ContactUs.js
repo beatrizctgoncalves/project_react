@@ -11,22 +11,19 @@ function ContactUs() {
         {
             id: 1,
             title: <Link href={`https://github.com/beatrizctgoncalves`}>Beatriz Gonçalves</Link>,
-            icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                alt="Card image cap"></img>,
+            icon: <img src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif" alt="Card cap 1" />,
             description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
         },
         {
             id: 2,
             title: <Link href={`https://github.com/A44866`}>Maksym</Link>,
-            icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                alt="Card image cap"></img>,
+            icon: <img alt='contact card 2' src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif" />,
             description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
         },
         {
             id: 3,
             title: <Link href={`https://github.com/pinto6`}>Miguel Pinto</Link>,
-            icon: <img className="card-img-top" src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif"
-                alt="Card image cap"></img>,
+            icon: <img alt='contact card 3' src="https://cdn.discordapp.com/attachments/841329211448360997/841469679876440074/gif.gif" />,
             description: 'Engineering student at ISEL (Instituto Politécnico Engenharia de Lisboa)',
         }
     ];

@@ -80,12 +80,12 @@ function auxFunc(memberInfoMapGitlab, title){
 function MergeProjectsInSprint(SprintScores){
     let toRet = []
     SprintScores.forEach(sprintScore => {
-        let value = toRet.find(v => v.SprintTitle == sprintScore.SprintTitle)
+        let value = toRet.find(v => v.SprintTitle === sprintScore.SprintTitle)
         if (!value){
             toRet.push(sprintScore)
         }else{
             sprintScore.Scores.forEach(Score => {
-                let p = value.Scores.find(v => v.AppUsername == Score.AppUsername)
+                let p = value.Scores.find(v => v.AppUsername === Score.AppUsername)
                 if(p){
                     p.Points += Score.Points
                 }else{

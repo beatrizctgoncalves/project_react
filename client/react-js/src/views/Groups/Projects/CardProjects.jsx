@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { removeProjectFromGroup } from '../../Services/BasicService.js';
 import { useStyles } from '../../Components/Style';
-import { Typography, CardMedia, CardActions, Card, CardContent, Grid } from '@material-ui/core';
-import { ButtonRed } from '../../Components/ColorButtons';
+import { Typography, CardMedia, CardActions, Card, CardContent, Grid, Link } from '@material-ui/core';
+import { ButtonRed, ButtonGreen } from '../../Components/ColorButtons';
 import { toast } from 'react-toastify';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
 
 
 function CardProject(props) {
     const { project, group, owner } = props
     const [edit, setEdit] = useState(false)
     const [groupUpdated, setGroup] = useState({})
+    const username = window.sessionStorage.getItem('username');
 
     function handleProjectDelete(projectId) {
         removeProjectFromGroup(group.id, projectId)
@@ -17,6 +20,8 @@ function CardProject(props) {
                 let aux = groupUpdated.projects.filter(project => {
                     if (project.id !== projectId) {
                         return project
+                    } else {
+                        return null
                     }
                 })
                 setGroup(aux)
@@ -35,6 +40,15 @@ function CardProject(props) {
             })
     }
 
+    const [toAddCredentials, setAddCredentials] = useState(false)
+    function handleAddCredentials() {
+        if (toAddCredentials) {
+            setAddCredentials(false)
+        } else {
+            setAddCredentials(true)
+        }
+    }
+
     const classes = useStyles();
 
     return (
@@ -46,16 +60,38 @@ function CardProject(props) {
                     title="Image title"
                 />
                 <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {project.title}
+                    <Typography gutterBottom variant="h5">
+                        <Link href={`/groups/${group.id}/projects/${project.id}`}>
+                            {project.title}
+                        </Link>
                     </Typography>
+
+                    <Typography gutterBottom variant="body1">
+                        Owner's Credentials saved.
+                    </Typography>
+
+                    {project.memberCredentials ?
+                        <Typography gutterBottom variant="body2">
+                            Member's Credentials saved.
+                        </Typography>
+                        :
+                        <Typography gutterBottom variant="body2">
+                            There is no Member's Credentials saved!
+                        </Typography>
+                    }
                 </CardContent>
-                {group.owner == owner ?
+                {/*TODO*/}
+                {!project.memberCredentials && owner !== username && project.memberCredentials.AppUsername !== username ?
+                    <CardActions>
+                        <ButtonGreen size="small" color="primary" onClick={handleProjectDelete.bind(null, project.id)}>
+                            <AddIcon></AddIcon>
+                        </ButtonGreen>
+                    </CardActions>
+                    : ''}
+                {group.owner === owner ?
                     <CardActions>
                         <ButtonRed size="small" color="primary" onClick={handleProjectDelete.bind(null, project.id)}>
-                            <Typography variant="body2">
-                                <i className="bi bi-trash-fill"></i>
-                            </Typography>
+                            <DeleteIcon />
                         </ButtonRed>
                     </CardActions>
                     : ''}

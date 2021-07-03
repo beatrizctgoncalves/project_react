@@ -72,7 +72,6 @@ export async function getSpecificGroup(id) {
 
     return makeRequest(urls.groups.concat(uri))
         .then(resp => {
-            console.log(resp)
             return resp
         })
 }
@@ -145,12 +144,14 @@ export async function addSprintToGroup(groupId, body) {
         })
 }
 
-export async function addProjectToGroup(groupId, projectId, type) {
+export async function addProjectToGroup(groupId, projectId, tool, url, ownerCredentials) {
     const uri = `groups/${groupId}/projects`
 
     const body = {
         Pid: projectId,
-        type: type
+        type: tool,
+        URL: url,
+        ownerCredentials: ownerCredentials
     }
 
     return makeRequest(urls.groups.concat(uri), body, "POST")
@@ -163,6 +164,22 @@ export async function removeProjectFromGroup(groupId, projectId) {
     const uri = `groups/${groupId}/projects/${projectId}`
 
     return makeRequest(urls.groups.concat(uri), {}, "DELETE")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function addMemberInfo(groupId, projectId, tool, url, ownerCredentials) {
+    const uri = `groups/${groupId}/projects`
+
+    const body = {
+        Pid: projectId,
+        type: tool,
+        URL: url,
+        ownerCredentials: ownerCredentials
+    }
+
+    return makeRequest(urls.groups.concat(uri), body, "POST")
         .then(resp => {
             return resp
         })

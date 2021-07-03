@@ -9,6 +9,7 @@ import { Box } from '@material-ui/core';
 import Title from '../Components/Title';
 import { getUserMemberGroups } from '../Services/BasicService';
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
+import { toast } from 'react-toastify';
 
 
 export default function Orders() {
@@ -18,13 +19,24 @@ export default function Orders() {
     useEffect(() => {
         getUserMemberGroups(owner)
             .then(resp => setGroups(resp.message))
-    }, [])
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
+    }, [owner])
 
     return (
         <React.Fragment>
             <Title>Groups You Belong To</Title>
             <Table size="small">
-                {groups.length != 0 ? groups.map((group) => (
+                {groups.length !== 0 ? groups.map((group) => (
                     <>
                         <TableHead>
                             <TableRow>

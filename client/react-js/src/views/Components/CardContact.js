@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, Typography, Card, CardContent, Box } from '@material-ui/core';
-import { useStyles } from '../Components/Style';
+import { useStyles } from './Style';
 
 
 function CardContact(props) {

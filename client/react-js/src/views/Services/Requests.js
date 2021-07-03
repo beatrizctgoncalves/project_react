@@ -3,27 +3,22 @@ const DEFAULT_OPTIONS = met => ({ method: met, credentials: 'include', headers: 
 const produceInit = (body, met) => ({ ...DEFAULT_OPTIONS(met), body: JSON.stringify(body), json: true });
 
 const request = (url, init) => fetch(url, init)
-    .then(async resp => {
-            console.log(resp)
-          
+    .then(async resp => {        
             const jsonResponse = await resp.json()
-            console.log(jsonResponse)
             if (resp.ok) {
                 return jsonResponse
             }
-            console.log(jsonResponse)
             const error = Promise.reject({
                 status: jsonResponse.error.status,
                 body: jsonResponse.error.body
             })
             //const error = new Error(jsonResponse.error)
+            console.log(error)
             error.status = resp.status
-            console.log(error.status)
             if (error.status === 403) {
-                window.location.assign('/')
+                window.location.assign('/sign-in')
             }
            
-            console.log(error.status)
             return error
     })
 

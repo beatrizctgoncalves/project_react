@@ -8,10 +8,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../../Components/ColorButtons';
 import CardSprint from './CardSprint';
 import Navbar from '../../Components/Navbar.js';
-import clsx from 'clsx';
-import Paper from '@material-ui/core/Paper';
 import { TextField, Card } from '@material-ui/core';
-
+import AddIcon from '@material-ui/icons/Add';
 
 
 function Sprint(props) {
@@ -37,7 +35,7 @@ function Sprint(props) {
                     progress: undefined,
                 })
             })
-    }, [])
+    }, [id])
 
 
     const handleTitle = event => {
@@ -113,7 +111,7 @@ function Sprint(props) {
 
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} alignItems='center'>
-                        {group.sprints && group.sprints != 0 ? group.sprints.map(sprint =>
+                        {group.sprints && group.sprints !== 0 ? group.sprints.map(sprint =>
                             <CardSprint key={sprint.title} sprint={sprint} groupId={id} groupOwner={group.owner} />
                         ) :
                             <Grid item xs={12}>
@@ -130,7 +128,7 @@ function Sprint(props) {
                         }
                     </Grid>
 
-                    {group.owner != owner ?
+                    {group.owner === owner ?
                         <Box pt={5} align='center'>
                             {toAddSprints ?
                                 <Card>
@@ -215,7 +213,7 @@ function Sprint(props) {
 
                             <Box mt={3} align='center'>
                                 <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>
-                                    <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                                    <AddIcon />
                                     {toAddSprints ? "" : "Add Sprint"}
                                 </ButtonGreen>
                             </Box>

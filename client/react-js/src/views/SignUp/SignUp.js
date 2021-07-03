@@ -1,5 +1,5 @@
 import React from 'react';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import UserPlusIcon from '@material-ui/icons/PersonAdd';
 import { Container, Typography, Box, CssBaseline, Avatar, Grid, Paper } from '@material-ui/core';
 import Footer from '../Components/Footer';
 import Form from './FormSignUp';
@@ -26,7 +26,7 @@ export default function SignUp() {
                             <Paper className={classes.paper}>
                                 <Box align='center'>
                                     <Avatar className={classes.avatar}>
-                                        <LockOutlinedIcon />
+                                        <UserPlusIcon />
                                     </Avatar>
                                 </Box>
                                 <Typography component="h1" variant="h5">

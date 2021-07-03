@@ -31,13 +31,13 @@ module.exports = {
     },
     
     resolveErrorApis: function(error) {
-        if(error.status == this.NOT_FOUND) return this.setError(error.status, this.NOT_FOUND_PROJECT_MSG);
-        else if(error.status == this.FORBIDDEN) return this.setError(error.status, this.FORBIDDEN_MSG);
+        if(error.status === this.NOT_FOUND) return this.setError(error.status, this.NOT_FOUND_PROJECT_MSG);
+        else if(error.status === this.FORBIDDEN) return this.setError(error.status, this.FORBIDDEN_MSG);
         else return this.setError(this.API_ERROR, this.API_ERROR_MSG);            
     },
 
     resolveErrorElastic: function(error) {
-        if(error.status == this.NOT_FOUND) return this.setError(error.status, error.body);
+        if(error.status === this.NOT_FOUND) return this.setError(error.status, error.body);
         else return this.setError(this.DB_ERROR, this.DB_ERROR_MSG);           
     },
 

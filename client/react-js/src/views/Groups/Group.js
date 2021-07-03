@@ -16,7 +16,7 @@ import Footer from '../Components/Footer';
 import { getSpecificGroup } from '../Services/BasicService';
 import { toast } from 'react-toastify';
 import { ButtonLime } from '../Components/ColorButtons';
-import GoBack from '../Components/GoBack';
+import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 
 
 export default function Group(props) {
@@ -38,7 +38,7 @@ export default function Group(props) {
                     progress: undefined,
                 })
             })
-    }, [])
+    }, [id])
 
 
     function handleToSprints() {
@@ -69,7 +69,7 @@ export default function Group(props) {
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="sm" component="main" className={classes.container}>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} justify='center'>
                         <Grid item xs={12}>
                             <Typography component="h1" variant="h3" align="center" color="textPrimary">
                                 {group.name}
@@ -83,9 +83,17 @@ export default function Group(props) {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Typography variant="h5" align="center" component="p">
+                            <Typography variant="h6" align="center" component="p">
                                 The owner of this group is {group.owner}.
+                                <br />Check your group's Rankings!
                             </Typography>
+                        </Grid>
+
+                        <Grid item xs={12} align='center'>
+                            <ButtonLime onClick={handleToRankings}>
+                                <EmojiEventsIcon />
+                                Rankings
+                            </ButtonLime>
                         </Grid>
                     </Grid>
                 </Container>
@@ -103,7 +111,7 @@ export default function Group(props) {
 
                                 <CardContent>
                                     <Grid item xs={12} align='center'>
-                                        {group.members && group.members != 0 ? group.members.map((member) => (
+                                        {group.members && group.members !== 0 ? group.members.map((member) => (
                                             <Typography variant="h6" color="textSecondary" key={member}>
                                                 {member}
                                             </Typography>
@@ -129,7 +137,7 @@ export default function Group(props) {
 
                                 <CardContent>
                                     <Grid item xs={12} align='center'>
-                                        {group.projects && group.projects != 0 ? group.projects.map((project) => (
+                                        {group.projects && group.projects !== 0 ? group.projects.map((project) => (
                                             <Typography variant="h6" color="textSecondary" key={project.id}>
                                                 {project.title}
                                             </Typography>
@@ -159,7 +167,7 @@ export default function Group(props) {
 
                                 <CardContent>
                                     <Grid item xs={12} align='center'>
-                                        {group.sprints && group.sprints != 0 ? group.sprints.map((sprint) => (
+                                        {group.sprints && group.sprints !== 0 ? group.sprints.map((sprint) => (
                                             <Typography variant="h6" color="textSecondary" key={sprint.title}>
                                                 {sprint.title}
                                             </Typography>
@@ -180,26 +188,6 @@ export default function Group(props) {
                         </Grid>
                     </Grid>
                 </Container>
-
-                <Box pt={8}>
-                    <Container maxWidth="xs" align='center'>
-                        <Card>
-                            <br />
-                            <ButtonLime onClick={handleToRankings}>
-                                <i className="bi bi-trophy-fill">&nbsp;&nbsp;</i>
-                                Rankings
-                            </ButtonLime>
-                            <br />
-                            <br />
-                        </Card>
-                    </Container>
-                </Box>
-
-                <Box pt={8}>
-                    <Container maxWidth="xs">
-                        <GoBack />
-                    </Container>
-                </Box>
 
                 <Box pt={8}>
                     <Footer />

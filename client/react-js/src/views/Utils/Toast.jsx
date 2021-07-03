@@ -3,10 +3,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function Toast(message){ 
-
-    useEffect(()=>{
-        toast(message,{
+function Toast(message) {
+    useEffect(() => {
+        toast(message, {
             position: "top-left",
             autoClose: 5000,
             hideProgressBar: true,
@@ -14,11 +13,11 @@ function Toast(message){
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            })
-    },[message])
+        })
+    }, [message])
 
-    return(
-        <ToastContainer/>
+    return (
+        <ToastContainer />
     )
 }
 

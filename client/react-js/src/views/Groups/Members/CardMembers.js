@@ -4,6 +4,7 @@ import { Typography, Button, CardMedia, CardActions, Card, CardContent, Grid } f
 import { toast } from 'react-toastify';
 import { useStyles } from '../../Components/Style';
 import { ButtonRed } from '../../Components/ColorButtons';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 function CardMembers(props) {
@@ -30,7 +31,7 @@ function CardMembers(props) {
                     progress: undefined,
                 })
             })
-    }, [])
+    }, [member])
 
 
     function handleMemberDelete(memberId) {
@@ -39,6 +40,8 @@ function CardMembers(props) {
                 let aux = group.members.filter(member => {
                     if (member.id !== memberId) {
                         return member
+                    } else {
+                        return null
                     }
                 })
                 setGroup(aux)
@@ -85,13 +88,11 @@ function CardMembers(props) {
                     <Button size="small" color="primary" onClick={handleUserProfile.bind(null, member)}>
                         View
                     </Button>
-                    {groupOwner != username ?
+                    {groupOwner !== username ?
                         <ButtonRed size="small" color="primary" onClick={handleMemberDelete.bind(null, member)}>
-                            <Typography variant="body2">
-                                <i className="bi bi-trash-fill"></i>
-                            </Typography>
+                            <DeleteIcon />
                         </ButtonRed>
-                    : ''}
+                        : ''}
                 </CardActions>
             </Card>
         </Grid>

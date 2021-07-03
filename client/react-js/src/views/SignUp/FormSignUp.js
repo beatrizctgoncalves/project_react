@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import { signUpFetch, loginFetch } from '../Services/authenticationService';
+import { loginFetch, signUpFetch } from '../Services/authenticationService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react'
@@ -13,7 +13,6 @@ import { useState } from 'react'
 
 function FormSignUp() {
     const [userToCreate, setUserToCreate] = useState({})
-    const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -22,10 +21,12 @@ function FormSignUp() {
 
     function handleSignUpClick() {
         signUpFetch(userToCreate)
-            .then(resp => window.location.assign('/sign-in'))
+            .then(resp => {
+                loginFetch(userToCreate.username, userToCreate.password)
+                    .then(resp => window.location.assign('/'))
+            })
             .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true })
-                toast.error(err.body,{
+                toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
                     hideProgressBar: true,
@@ -33,13 +34,13 @@ function FormSignUp() {
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                    })
-            } )
+                })
+            })
     }
 
     return (
         <div>
-            <ToastContainer/>
+            <ToastContainer />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField

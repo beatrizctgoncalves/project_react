@@ -4,11 +4,11 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { loginFetch } from '../Services/authenticationService';
+import { toast } from 'react-toastify';
 
 
 function FormSignIn() {
   const [userToLogin, setUserToLogin] = useState({ username: undefined, password: undefined })
-  const [error, setError] = useState({ errorMessage: undefined, shouldShow: false })
 
   function handlingSubmit() {
     loginFetch(userToLogin.username, userToLogin.password)
@@ -16,9 +16,15 @@ function FormSignIn() {
         window.sessionStorage.setItem('username', userToLogin.username);
         window.location.assign('/')
       })
-      .catch(err => {
-        setError({ errorMessage: err.body, shouldShow: true })
-      })
+      .catch(err => toast.error(err.body, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }))
   }
 
   const handlePassword = event => {
@@ -55,8 +61,8 @@ function FormSignIn() {
         autoComplete="current-password"
         onChange={handlePassword}
       />
-      <br/>
-      <br/>
+      <br />
+      <br />
       <Button
         type="submit"
         fullWidth
@@ -66,14 +72,9 @@ function FormSignIn() {
       >
         Sign In
       </Button>
-      <br/>
-      <br/>
+      <br />
+      <br />
       <Grid container>
-        <Grid item xs>
-          <Link href="#" variant="body2">
-            Forgot password?
-          </Link>
-        </Grid>
         <Grid item>
           <Link href="/sign-up" variant="body2">
             {"Don't have an account? Sign Up"}

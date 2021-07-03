@@ -16,7 +16,6 @@ export async function signUpFetch(options) {
 
     return makeRequest(uri, options, 'POST')
         .then(resp => {
-            console.log(resp)
             return resp.message
         })
 }

@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -23,6 +22,8 @@ import GroupsMember from './GroupsMember';
 import Navbar from '../Components/Navbar';
 import GoBack from '../Components/GoBack';
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 
 export default function Groups() {
@@ -47,7 +48,7 @@ export default function Groups() {
                     progress: undefined,
                 })
             })
-    }, [])
+    }, [owner])
 
 
     function handleGroupDelete(groupId) {
@@ -56,6 +57,8 @@ export default function Groups() {
                 let aux = groups.filter(group => {
                     if (group.id !== groupId) {
                         return group
+                    } else {
+                        return null
                     }
                 })
                 setGroups(aux)
@@ -136,7 +139,7 @@ export default function Groups() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {groups.map((group) => (
+                                        {groups.map((group) => 
                                             <TableRow key={group.id}>
                                                 <TableCell>
                                                     {group.name}
@@ -149,20 +152,16 @@ export default function Groups() {
                                                 </TableCell>
                                                 <TableCell align="right">
                                                     <ButtonGrey variant="contained" onClick={handleEdit.bind(null, group.id)}>
-                                                        <Typography variant="body2">
-                                                            <i className="bi bi-pencil-fill"></i>
-                                                        </Typography>
+                                                        <EditIcon />
                                                     </ButtonGrey>
                                                 </TableCell>
                                                 <TableCell align="right">
                                                     <ButtonRed variant="contained" onClick={handleGroupDelete.bind(null, group.id)}>
-                                                        <Typography variant="body2">
-                                                            <i className="bi bi-trash-fill"></i>
-                                                        </Typography>
+                                                        <DeleteIcon />
                                                     </ButtonRed>
                                                 </TableCell>
                                             </TableRow>
-                                        ))}
+                                        )}
                                     </TableBody>
                                 </Table>
                             </Paper>

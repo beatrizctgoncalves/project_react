@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { ButtonRed } from '../Components/ColorButtons';
-import { Box, Button, TextField, Grid } from '@material-ui/core';
+import { Box, Button, TextField, Grid, CardContent, Divider } from '@material-ui/core';
 import React, { useState } from 'react';
 import { deleteUser, getUser, updateUser } from '../Services/BasicService.js';
 import { toast } from 'react-toastify';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 function FormProfile() {
     const username = window.sessionStorage.getItem("username")
     const [updatedUser, setUpdatedUser] = useState({})
-    
+
     function handleEdit() {
         updateUser(username, updatedUser)
             .then(resp => {
@@ -65,46 +65,65 @@ function FormProfile() {
 
     return (
         <React.Fragment>
-            <Grid container spacing={3}>
-                <Grid item sm={4} align='right'>
-                    <TextField
-                        id="firstName"
-                        name="firstName"
-                        label="First name"
-                        autoComplete="given-name"
-                        onChange={handleName}
-                    />
+            <CardContent>
+                <Grid container spacing={3}>
+                    <Grid item md={6} xs={12}>
+                        <TextField
+                            id="firstName"
+                            name="firstName"
+                            label="First name"
+                            fullWidth
+                            autoComplete="given-name"
+                            onChange={handleName}
+                            required
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item md={6} xs={12}>
+                        <TextField
+                            id="lastName"
+                            name="lastName"
+                            fullWidth
+                            label="Last name"
+                            autoComplete="family-name"
+                            onChange={handleSurname}
+                            required
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="email"
+                            name="email"
+                            fullWidth
+                            label="Email"
+                            autoComplete="email"
+                            onChange={''}
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item md={6} xs={12}>
+                        <Button
+                            type="button"
+                            className="button1"
+                            variant="contained"
+                            color="primary"
+                            onClick={handleEdit}
+                        >
+                            Save details
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Grid item sm={4} align='left'>
-                    <TextField
-                        id="lastName"
-                        name="lastName"
-                        label="Last name"
-                        autoComplete="family-name"
-                        onChange={handleSurname}
-                    />
-                </Grid>
-                <Grid item sm={4} align='left'>
-                    <br />
-                    <Button
-                        type="button"
-                        className="button1"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleEdit}
-                    >
-                        Save Changes
-                    </Button>
-                </Grid>
+            </CardContent>
 
-                <Grid item xs={12} align='center'>
-                    <Box mt={2}>
-                        <ButtonRed variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
-                            <i className="bi bi-trash-fill">&nbsp;&nbsp;</i>
-                            Delete Profile Definitively
-                        </ButtonRed>
-                    </Box>
-                </Grid>
+            <Grid item xs={12} align='center'>
+                <Divider />
+                <Box mt={2}>
+                    <ButtonRed variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
+                        <i className="bi bi-trash-fill">&nbsp;&nbsp;</i>
+                        Delete Profile Definitively
+                    </ButtonRed>
+                </Box>
             </Grid>
         </React.Fragment >
     )

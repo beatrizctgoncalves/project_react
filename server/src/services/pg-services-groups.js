@@ -108,8 +108,8 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(validatedObj => {
                     return databaseGroups.getGroupDetails(group_id)
                         .then(groupObj => {
-                            const projectExists = groupObj.projects.findIndex(p => p.id == Pid && p.type == type)
-                            if (projectExists != -1) {
+                            const projectExists = groupObj.projects.findIndex(p => p.id === Pid && p.type === type)
+                            if (projectExists !== -1) {
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
@@ -131,7 +131,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         removeProjectFromGroup: function (group_id, PURL, project_id) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(groupObj => {
-                    const project_index = groupObj.projects.findIndex(p => p.id == project_id && p.URL == PURL)
+                    const project_index = groupObj.projects.findIndex(p => p.id === project_id && p.URL === PURL)
                     if (project_index === -1) {
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
@@ -167,7 +167,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                     return databaseGroups.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
                             const userExists = groupObj.members.findIndex(m => m === username)
-                            if (userExists != -1) {  //check if the user already exists in the group
+                            if (userExists !== -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
@@ -192,9 +192,9 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(userObj => {
                     return databaseGroups.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            const project_index = groupObj.projects.findIndex(p => p.id == project_id && p.URL == project_URL)
+                            const project_index = groupObj.projects.findIndex(p => p.id === project_id && p.URL === project_URL)
                             const userExists = groupObj.members.findIndex(m => m === username)
-                            if (userExists == -1 || project_index == -1) {  //check if the user already exists in the group
+                            if (userExists === -1 || project_index === -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
@@ -219,7 +219,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                     return databaseGroups.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
                             const userExists = groupObj.members.findIndex(m => m.user === member)
-                            if (userExists != -1) {  //check if the user already exists in the group
+                            if (userExists !== -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
                                     pgResponses.FORBIDDEN_MSG
@@ -265,7 +265,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
             return databaseGroups.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {
                     const sprintExists = groupObj.sprints.findIndex(s => s.title === title)
-                    if (sprintExists != -1) {  //check if the sprint already exists in the group
+                    if (sprintExists !== -1) {  //check if the sprint already exists in the group
                         return pgResponses.setError(
                             pgResponses.FORBIDDEN,
                             pgResponses.FORBIDDEN_MSG
@@ -289,7 +289,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(issuesObj => Promise.all(issuesObj))
                 .then(issues => { 
                     return issues[0].map(i => {
-                        if(i.state.statusCategory.key == 'done') 
+                        if(i.state.statusCategory.key === 'done') 
                             return databaseGroups.addRatingsToGroup(group_id, i.key, i.assignee.accountId, pgScores.ISSUE)
                     })
                 })

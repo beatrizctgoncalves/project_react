@@ -22,7 +22,7 @@ function CardRankings(props) {
                     className={classes.cardHeader}
                 />
                 <Grid container align='center' justify='center'>
-                    {sprint.Scores && sprint.Scores != 0 ? sprint.Scores.map(score =>
+                    {sprint.Scores && sprint.Scores !== 0 ? sprint.Scores.map(score =>
                         <Grid item xs={4} key={score.AppUsername}>
                             <ButtonUser gutterBottom variant="h5" component="h2" onClick={handleUserProfile.bind(null, score.AppUsername)}>
                                 {score.AppUsername}

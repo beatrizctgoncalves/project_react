@@ -1,5 +1,5 @@
 import React from 'react';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LockOpen from '@material-ui/icons/LockOpen';
 import { Container, Typography, Box, CssBaseline, Avatar, Grid, Paper } from '@material-ui/core';
 import Footer from '../Components/Footer';
 import Form from './FormSignIn';
@@ -26,7 +26,7 @@ export default function SignIn() {
               <Paper className={classes.paper}>
                 <Box align='center'>
                   <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <LockOpen />
                   </Avatar>
                 </Box>
                 <Typography component="h1" variant="h5">

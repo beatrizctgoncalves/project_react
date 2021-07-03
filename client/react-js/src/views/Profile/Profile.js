@@ -3,7 +3,7 @@ import { getUser, updateUser } from '../Services/BasicService.js';
 import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
 import { useStyles } from '../Components/Style';
-import { Typography, TextField, CssBaseline, Grid, Container, Button, Box, Paper } from '@material-ui/core';
+import { Typography, TextField, CssBaseline, Grid, Container, Button, Box, Paper, Divider } from '@material-ui/core';
 import Navbar from '../Components/Navbar.js';
 import { ToastContainer, toast } from 'react-toastify';
 import Title from '../Components/Title.js';
@@ -29,11 +29,11 @@ function Profile(props) {
                     progress: undefined,
                 })
             })
-    }, [])
+    }, [username])
 
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeightProfile);
-    
+
     const [newAvatar, setNewAvatar] = useState("")
     const [toUpdateAvatar, setUpdatedAvatar] = useState(false)
 
@@ -73,7 +73,7 @@ function Profile(props) {
         window.location.assign(`/profile/${owner}/edit`)
     }
 
-    
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -88,61 +88,76 @@ function Profile(props) {
                         {/*Avatar*/}
                         <Grid item xs={12} md={4} lg={3} align='center'>
                             <Paper>
-                                {username == owner ?
-                                    <Box>
-                                        <img src={`${user.avatar}`}
-                                            width="auto" height="192" className={classes.avatar}></img>
-                                    </Box>
-                                    : ''}
-                                {toUpdateAvatar ?
-                                    <Grid item xs={12} align='center'>
-                                        <br /><br />
-                                        <h3 className="h4 mb-2">Insert New Avatar</h3>
-                                        <br />
-                                        <TextField
-                                            variant="outlined"
-                                            margin="normal"
-                                            required
-                                            id="url"
-                                            label="URL (.png)"
-                                            name="url"
-                                            autoComplete="url"
-                                            autoFocus
-                                            onChange={handleURL}
-                                        />
-                                        <br /><br />
-
-                                        <Button
-                                            type="button"
-                                            className="button1"
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={handleUpateAvatar}
-                                        >
-                                            Save
-                                        </Button>
-                                        <br /><br />
-                                    </Grid> : ""}
                                 <Box>
-                                    <Button onClick={handleToEditAvatarChange}>
-                                        <img src={`${user.avatar}`}
-                                            width="auto" height="192" className={classes.avatar}></img>
-                                    </Button>
+                                    <img src={`${user.avatar}`} width="auto" height="192" alt="profile" />
                                 </Box>
+                                <Box>
+                                    <Typography color="textPrimary" gutterBottom variant="h5">
+                                        {user.name} {user.surname}
+                                    </Typography>
+                                    <Typography color="textSecondary" variant="body1">
+                                        {`${user.email}`}
+                                    </Typography>
+                                    <br />
+                                </Box>
+                                {username !== owner ?
+                                    ''
+                                    :
+                                    <>
+                                        {toUpdateAvatar ?
+                                            <Grid item xs={12} align='center'>
+                                                <br />
+                                                <Typography color="textPrimary" gutterBottom variant="h5">Insert New Avatar</Typography>
+
+                                                <TextField
+                                                    variant="outlined"
+                                                    margin="normal"
+                                                    required
+                                                    id="url"
+                                                    label="URL (.png)"
+                                                    name="url"
+                                                    autoComplete="url"
+                                                    autoFocus
+                                                    onChange={handleURL}
+                                                />
+                                                <br /><br />
+
+                                                <Button
+                                                    type="button"
+                                                    className="button1"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={handleUpateAvatar}
+                                                >
+                                                    Save
+                                                </Button>
+                                                <br /><br />
+                                            </Grid> : ""}
+                                        <Box>
+                                            <Divider />
+                                            <Button variant="text" fullWidth color="primary" onClick={handleToEditAvatarChange}>
+                                                Update Image
+                                            </Button>
+                                        </Box>
+                                    </>
+                                }
                             </Paper>
                         </Grid>
 
                         {/*Profile information*/}
                         <Grid item xs={12} md={8} lg={9}>
                             <Paper className={fixedHeightPaper}>
-                                <Title>Profile of user {user.username}</Title>
+                                <Title>Profile</Title>
                                 <Typography variant="h6">
                                     {user.name} {user.surname}
                                 </Typography>
-                                {username == owner ?
+                                <Typography variant="body1" color='textSecondary'>
+                                    {user.username}
+                                </Typography>
+                                {username === owner ?
                                     <Box mt={4}>
                                         <Button variant="contained" color="primary" className={classes.margin} onClick={handleEdit}>
-                                            <i className="bi bi-pencil-fill"></i>
+                                            Edit Details
                                         </Button>
                                     </Box>
                                     : ''}
@@ -161,9 +176,8 @@ function Profile(props) {
                     </Box>
                 </Container>
             </main>
-        </div>
+        </div >
     )
 }
-
 
 export default Profile

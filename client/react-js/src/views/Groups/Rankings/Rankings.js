@@ -32,7 +32,7 @@ function Rankings(props) {
                     progress: undefined,
                 })
             })
-    }, [])
+    }, [id])
 
     useEffect(() => {
         getSpecificGroup(id)
@@ -49,7 +49,7 @@ function Rankings(props) {
                     progress: undefined,
                 })
             })
-    }, [])
+    }, [id])
 
 
     const classes = useStyles();
@@ -81,7 +81,7 @@ function Rankings(props) {
 
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} justify='center'>
-                        {sprints && sprints.length != 0 ? sprints.map(sprint =>
+                        {sprints && sprints.length !== 0 ? sprints.map(sprint =>
                             <CardRankings key={sprint} sprint={sprint} groupId={id} />
                         ) :
                             <div className={classes.cardGroup}>

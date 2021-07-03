@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { useStyles } from '../../Components/Style';
 import { Typography, CardHeader, Box, Card, CardContent, Grid, CardActions } from '@material-ui/core';
 import { ButtonRed } from '../../Components/ColorButtons';
-import { toast } from 'react-toastify';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 function CardProject(props) {
     const { sprint, groupId, groupOwner } = props
-    const [group, setGroup] = useState({})
+    const owner = window.sessionStorage.getItem('username');
+    //const [group, setGroup] = useState({})
 
     function handleSprintDelete(projectId) {
         //TODO
@@ -57,12 +58,10 @@ function CardProject(props) {
                         </div>
                     </Box>
                 </CardContent>
-                {group.owner == groupOwner ?
+                {owner === groupOwner ?
                     <CardActions>
                         <ButtonRed size="small" color="primary" onClick={handleSprintDelete.bind(null, sprint.id)}>
-                            <Typography variant="body2">
-                                <i className="bi bi-trash-fill"></i>
-                            </Typography>
+                            <DeleteIcon />
                         </ButtonRed>
                     </CardActions>
                     : ''}

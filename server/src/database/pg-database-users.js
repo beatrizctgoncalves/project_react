@@ -36,11 +36,11 @@ function database(pgResponses, requests) {
         updateUser: function (username, updatedInfo) {
             var requestBody = JSON.stringify({
                 "script": {
-                    "source": "if(params.name != null) ctx._source.name = params.name; " +
-                        "if(params.surname != null) ctx._source.surname = params.surname; " +
-                        "if(params.avatar != null) ctx._source.avatar = params.avatar;" +
-                        "if(params.groupsMember != null) ctx._source.groupsMember = params.groupsMember;" +
-                        "if(params.notifications != null) ctx._source.notifications = params.notifications;",
+                    "source": "if(params.name !== null) ctx._source.name = params.name; " +
+                        "if(params.surname !== null) ctx._source.surname = params.surname; " +
+                        "if(params.avatar !== null) ctx._source.avatar = params.avatar;" +
+                        "if(params.groupsMember !== null) ctx._source.groupsMember = params.groupsMember;" +
+                        "if(params.notifications !== null) ctx._source.notifications = params.notifications;",
                     "params": updatedInfo
                 }
             });
@@ -49,7 +49,7 @@ function database(pgResponses, requests) {
                 .then(userObj => {
                     return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {
-                            if (body.result == 'updated') {
+                            if (body.result === 'updated') {
                                 return body._id;
                             } else {
                                 return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
@@ -74,7 +74,7 @@ function database(pgResponses, requests) {
                 .then(userObj => {
                     return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {
-                            if (body.result == 'updated') {
+                            if (body.result === 'updated') {
                                 return body._id;
                             } else {
                                 return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);

@@ -14,8 +14,8 @@ import { Gitlab } from './Plugins/Views';
 import AddIcon from '@material-ui/icons/Add';
 
 
-function Projects(props) {
-    const { id } = props.match.params
+function ProjectsDetails(props) {
+    const { id, projectId } = props.match.params
     const [group, setGroup] = useState({})
     const [toAddProjects, setAddProjects] = useState(false)
     const owner = window.sessionStorage.getItem("username")
@@ -60,13 +60,13 @@ function Projects(props) {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <Typography component="h1" variant="h3" align="center" color="textPrimary">
-                                Projects
+                                Project Details
                             </Typography>
                         </Grid>
 
                         <Grid item xs={12}>
                             <Typography variant="h5" align="center" color="textSecondary" component="p">
-                                {group.name}
+                                {group.projects.find(p => p.id === projectId)}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -127,4 +127,4 @@ function Projects(props) {
     )
 }
 
-export default Projects
+export default ProjectsDetails

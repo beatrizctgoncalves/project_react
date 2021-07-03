@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CssBaseline, Grid, Container, Box, Paper } from '@material-ui/core';
+import { CssBaseline, Grid, Container, Box, Paper, Typography, Divider } from '@material-ui/core';
 import Footer from '../Components/Footer';
 import Form from './FormProfile';
 import GoBack from '../Components/GoBack';
@@ -29,10 +29,10 @@ function EditProfile() {
                     progress: undefined,
                 })
             })
-    }, [])
+    }, [username])
 
     const classes = useStyles();
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const fixedHeightPaper = clsx(classes.paper, 400);
 
     return (
         <div className={classes.root}>
@@ -49,8 +49,17 @@ function EditProfile() {
                         <Grid item xs={12} md={4} lg={3} align='center'>
                             <Paper>
                                 <Box>
-                                    <img src={`${user.avatar}`}
-                                        width="auto" height="192" className={classes.avatar}></img>
+                                    <img src={`${user.avatar}`} alt="profile"
+                                        width="auto" height="192"></img>
+                                </Box>
+                                <Box>
+                                    <Typography color="textPrimary" gutterBottom variant="h5">
+                                        {user.name} {user.surname}
+                                    </Typography>
+                                    <Typography color="textSecondary" variant="body1">
+                                        {`${user.email}`}
+                                    </Typography>
+                                    <br />
                                 </Box>
                             </Paper>
                         </Grid>
@@ -59,6 +68,7 @@ function EditProfile() {
                         <Grid item xs={12} md={8} lg={9}>
                             <Paper className={fixedHeightPaper}>
                                 <Title>Editing profile of user {user.username}...</Title>
+                                <Divider />
                                 <Form />
                             </Paper>
                         </Grid>

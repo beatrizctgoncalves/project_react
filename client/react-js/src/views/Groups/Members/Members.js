@@ -8,6 +8,7 @@ import { useStyles } from '../../Components/Style';
 import CardMembers from './CardMembers.js';
 import { ButtonGreen } from '../../Components/ColorButtons.js';
 import Navbar from '../../Components/Navbar.js';
+import AddIcon from '@material-ui/icons/Add';
 
 
 function Members(props) {
@@ -104,7 +105,7 @@ function Members(props) {
 
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4}>
-                        {group.members && group.members != 0 ? group.members.map(member =>
+                        {group.members && group.members !== 0 ? group.members.map(member =>
                             <CardMembers key={member} member={member} groupId={id} groupOwner={group.owner} />
                         ) :
                             <div className={classes.cardGroup}>
@@ -122,7 +123,7 @@ function Members(props) {
                         }
                     </Grid>
 
-                    {group.owner != username ?
+                    {group.owner === username ?
                         <Box pt={5} align='center'>
                             {toAddMembers ?
                                 <Card>
@@ -160,7 +161,7 @@ function Members(props) {
 
                             <Box mt={3} align='center'>
                                 <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditMembersChange}>
-                                    <i className="bi bi-person-plus-fill">&nbsp;&nbsp;</i>
+                                    <AddIcon />
                                     {toAddMembers ? "" : "Add Members"}
                                 </ButtonGreen>
                             </Box>

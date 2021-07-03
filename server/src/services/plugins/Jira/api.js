@@ -27,7 +27,7 @@ function makeFetch(uri, method, body, AToken) {
         body: body //Request body
     })
         .then(response => {
-            if(response.status != pgResponses.OK) return Promise.reject(response);
+            if(response.status !== pgResponses.OK) return Promise.reject(response);
             return response.json()
         })
 }

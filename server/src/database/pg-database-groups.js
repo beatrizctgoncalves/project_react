@@ -71,7 +71,7 @@ function database(pgResponses, requests) {
 
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
                 .then(body => {
-                    if (body.result == 'updated') {
+                    if (body.result === 'updated') {
                         return body._id;
                     } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);
                 })
@@ -82,9 +82,9 @@ function database(pgResponses, requests) {
             return this.getGroupDetails(group_id)
                 .then(group => {
                     let projects = group.projects
-                    let memberCredentialsIndex = projects[project_index].memberCredentials.findIndex(mC => mC.AppUsername == username)
+                    let memberCredentialsIndex = projects[project_index].memberCredentials.findIndex(mC => mC.AppUsername === username)
                     
-                    if(memberCredentialsIndex != -1){
+                    if(memberCredentialsIndex !== -1){
                         projects[project_index].memberCredentials[memberCredentialsIndex] = memberCredentials
                     }
                     else{

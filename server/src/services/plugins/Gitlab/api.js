@@ -13,7 +13,7 @@ function makeRequest(PURL, URI) {
         }
     })
     .then(response => {
-        if(response.status != pgResponses.OK) return Promise.reject(response);
+        if(response.status !== pgResponses.OK) return Promise.reject(response);
         return response.json()
     })
 }
