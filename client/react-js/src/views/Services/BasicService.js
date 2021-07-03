@@ -160,10 +160,10 @@ export async function addProjectToGroup(groupId, projectId, tool, url, ownerCred
         })
 }
 
-export async function removeProjectFromGroup(groupId, projectId) {
+export async function removeProjectFromGroup(groupId, projectId, url) {
     const uri = `groups/${groupId}/projects/${projectId}`
 
-    return makeRequest(urls.groups.concat(uri), {}, "DELETE")
+    return makeRequest(urls.groups.concat(uri), { URL: url}, "DELETE")
         .then(resp => {
             return resp
         })

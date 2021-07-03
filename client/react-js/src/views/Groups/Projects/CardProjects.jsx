@@ -14,8 +14,9 @@ function CardProject(props) {
     const [groupUpdated, setGroup] = useState({})
     const username = window.sessionStorage.getItem('username');
 
-    function handleProjectDelete(projectId) {
-        removeProjectFromGroup(group.id, projectId)
+    function handleProjectDelete(project) {
+        const projectId = project.id
+        removeProjectFromGroup(group.id, projectId, project.url)
             .then(resp => {
                 let aux = groupUpdated.projects.filter(project => {
                     if (project.id !== projectId) {
@@ -83,14 +84,14 @@ function CardProject(props) {
                 {/*TODO*/}
                 {!project.memberCredentials && owner !== username && project.memberCredentials.AppUsername !== username ?
                     <CardActions>
-                        <ButtonGreen size="small" color="primary" onClick={handleProjectDelete.bind(null, project.id)}>
+                        <ButtonGreen size="small" color="primary" onClick={''}>
                             <AddIcon></AddIcon>
                         </ButtonGreen>
                     </CardActions>
                     : ''}
                 {group.owner === owner ?
                     <CardActions>
-                        <ButtonRed size="small" color="primary" onClick={handleProjectDelete.bind(null, project.id)}>
+                        <ButtonRed size="small" color="primary" onClick={handleProjectDelete.bind(null, project)}>
                             <DeleteIcon />
                         </ButtonRed>
                     </CardActions>
