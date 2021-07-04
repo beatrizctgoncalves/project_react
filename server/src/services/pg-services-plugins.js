@@ -25,6 +25,8 @@ function services(databaseGroup, databaseUsers, pgResponses) {
         countPointsInGroup: function (groupId) { //TODO
             let projects = []
             let sprints = []
+            let tasks = []
+            let tasksPoints = []
             let SprintScores = []
             let owner = undefined
             return databaseGroup.getGroupDetails(groupId)
@@ -32,6 +34,7 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                     projects = group.projects
                     sprints = group.sprints
                     owner = group.owner
+                    tasks = group.tasks
                 })
                 .then(() => {
                     let promisses = []
@@ -57,9 +60,24 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                                 .then(memberInfoMap => SprintScores.push(auxFunc(memberInfoMap, sprint.title)))
                             )
                         })
+
+                        tasks.forEach(task => {
+                            if(checkDate(task.beginDate,sprint.beginDate, sprint.endDate)){
+                                let usersInfoTask = { SprintTitle: sprint.title, Scores: [] }
+                                if (task.members) {
+                                    task.members.forEach(m => {
+                                        usersInfoTask.Scores.push({ AppUsername: m, Points: task.points })
+                                    })
+                                }
+                                tasksPoints.push(usersInfoTask)
+                            }
+                        })
+
+
                     })
                     return Promise.all(promisses)
                 })
+                .then(() => SprintScores = SprintScores.concat(tasksPoints))
                 .then(() => SprintScores = MergeProjectsInSprint(SprintScores))
                 .then(() => {
                     return pgResponses.setSuccessList(
@@ -73,13 +91,19 @@ function services(databaseGroup, databaseUsers, pgResponses) {
     return serv;
 }
 
-function auxFunc(memberInfoMapGitlab, title) {
+function auxFunc(memberInfoMap, title) {
     let toRet = { SprintTitle: title, Scores: [] }
 
-    memberInfoMapGitlab.forEach(info => {
+    memberInfoMap.forEach(info => {
         toRet.Scores.push({ AppUsername: info.AppUsername, Points: info.Points })
     })
     return toRet
+}
+
+function checkDate(taskBeginDate, beginDate, endDate){
+    if(!beginDate || !endDate)
+        return true
+    return taskBeginDate >= beginDate && taskBeginDate <= endDate
 }
 
 function MergeProjectsInSprint(SprintScores) {
