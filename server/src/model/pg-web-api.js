@@ -22,6 +22,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
     router.delete('/groups/:group_id/projects/:project_id', removeProjectFromGroup); //Remove a specific project from a group
+    router.post('/groups/:group_id/projects/:project_id', getProjectFromGroup); //Remove a specific project from a group
     router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
@@ -104,6 +105,13 @@ module.exports = function (express, services, servicesPlugins, aux) {
     function addProjectToGroup(req, res) {
         aux.promisesAsyncImplementation(
             services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.URL, req.body.ownerCredentials, req.body.type),
+            res
+        );
+    }
+
+    function getProjectFromGroup(req, res) {
+        aux.promisesAsyncImplementation(
+            services.getProjectFromGroup(req.params.group_id, req.body.URL, req.params.project_id),
             res
         );
     }

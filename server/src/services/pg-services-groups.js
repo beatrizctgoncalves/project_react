@@ -101,6 +101,23 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                     )
                 })
         },
+        
+        getProjectFromGroup: function (group_id, PURL, Pid) {
+            return databaseGroups.getGroupDetails(group_id)
+                .then(group => {
+                    let project = group.projects.find(p => p.URL == PURL && p.id == Pid)
+                    if(!project){
+                        return pgResponses.setError(
+                            pgResponses.NOT_FOUND,
+                            pgResponses.NOT_FOUND_PROJECT_MSG
+                        )
+                    }
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        project
+                    )
+                })
+        },
 
         addProjectToGroup: function (group_id, Pid, PURL, ownerCredentials, type) {
             const x = require("../plugins/" + type + "/api")()
