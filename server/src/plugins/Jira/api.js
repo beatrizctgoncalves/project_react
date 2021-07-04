@@ -3,7 +3,7 @@
 const URL = 'https://pluggable-gamification.atlassian.net'
 
 const fetch = require('node-fetch');
-const pgResponses = require('../../pg-responses');
+const pgResponses = require('../../services/pg-responses');
 
 var arrayMethods = {
     POST: 'POST',

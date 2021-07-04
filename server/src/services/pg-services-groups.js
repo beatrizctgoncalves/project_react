@@ -103,16 +103,16 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         },
 
         addProjectToGroup: function (group_id, Pid, PURL, ownerCredentials, type) {
-            const x = require("./plugins/" + type + "/api")()
+            const x = require("../plugins/" + type + "/api")()
             return x.validateProject(PURL, Pid, ownerCredentials)
                 .then(validatedObj => {
                     return databaseGroups.getGroupDetails(group_id)
                         .then(groupObj => {
-                            const projectExists = groupObj.projects.findIndex(p => p.id === Pid && p.type === type)
-                            if (projectExists !== -1) {
+                            const projectExists = groupObj.projects.findIndex(p => p.id == Pid && p.type == type)
+                            if (projectExists != -1) {
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
-                                    pgResponses.FORBIDDEN_MSG
+                                    pgResponses.FORBIDDEN_PROJECTS_MSG
                                 )
                             }
                             return databaseGroups.addProjectToGroup(group_id, validatedObj)
@@ -131,14 +131,13 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         removeProjectFromGroup: function (group_id, PURL, project_id) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(groupObj => {
-                    const project_index = groupObj.projects.findIndex(p => p.id === project_id && p.URL === PURL)
-                    if (project_index === -1) {
+                    const project_index = groupObj.projects.findIndex(p => p.id == project_id && p.URL == PURL)
+                    if (project_index == -1) {
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
                             pgResponses.NOT_FOUND_PROJECT_MSG
                         );
                     }
-                    console.log(project_index)
                     return databaseGroups.removeProjectFromGroup(group_id, project_index)
                         .then(id => {
                             return pgResponses.setSuccessUri(
@@ -170,7 +169,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             if (userExists !== -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
-                                    pgResponses.FORBIDDEN_MSG
+                                    pgResponses.FORBIDDEN_USER_MSG
                                 )
                             }
                             return databaseUsers.addGroupToUser(username, group_id)
@@ -194,10 +193,10 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                         .then(groupObj => {
                             const project_index = groupObj.projects.findIndex(p => p.id === project_id && p.URL === project_URL)
                             const userExists = groupObj.members.findIndex(m => m === username)
-                            if (userExists === -1 || project_index === -1) {  //check if the user already exists in the group
+                            if (userExists === -1 || project_index === -1) {
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
-                                    pgResponses.FORBIDDEN_MSG
+                                    pgResponses.FORBIDDEN_USER_INFO_MSG
                                 )
                             }
                             return databaseGroups.addMemberInfoToProject(group_id, project_index, username, memberCredentials)
@@ -248,7 +247,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             pgResponses.NOT_FOUND_USER_MSG
                         );
                     }
-                    return databaseUsers.removeMemberGroup(username,group_id)
+                    return databaseUsers.removeMemberGroup(username, group_id)
                         .then(databaseGroups.removeMemberFromGroup(group_id, user_index)) //remove the user by index
                         .then(group => {
                             return pgResponses.setSuccessUri(
@@ -268,7 +267,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                     if (sprintExists !== -1) {  //check if the sprint already exists in the group
                         return pgResponses.setError(
                             pgResponses.FORBIDDEN,
-                            pgResponses.FORBIDDEN_MSG
+                            pgResponses.FORBIDDEN_SPRINT_MSG
                         )
                     }
                     return databaseGroups.addSprintToGroup(group_id, title, beginDate, endDate) //add sprint

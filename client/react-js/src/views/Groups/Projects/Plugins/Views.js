@@ -116,7 +116,7 @@ export function Gitlab(props) {
                                 <br /><br />
                             </Box>
                             :
-                            <ToolsProjects availableProjects={availableProjects} id={groupId} ownerCredentials={ownerCredentials} tool={'Gitlab'} />
+                            <ToolsProjects availableProjects={availableProjects} id={groupId} ownerCredentials={ownerCredentials} url={URL} tool={'Gitlab'} />
                         }
                     </Box>
                 </Box>
@@ -237,47 +237,56 @@ export function GitlabCredentialsMembers(props) {
     }
 
     return (
-        <Grid container spacing={3} justify='center'>
-            <Grid item sm={12} align='center'>
-                <TextField
-                    required
-                    id="url"
-                    name="url"
-                    label="URL"
-                    onChange={handleUrl}
-                />
-            </Grid>
-            <Grid item sm={6} align='center'>
-                <TextField
-                    required
-                    id="accountId"
-                    name="accountId"
-                    label="Username"
-                    onChange={handleAccountId}
-                />
-            </Grid>
-            <Grid item sm={6} align='center'>
-                <TextField
-                    required
-                    id="AToken"
-                    name="AToken"
-                    label="Access Token"
-                    onChange={handleAToken}
-                />
-            </Grid>
-            <br /><br /><br /><br />
-            <Grid item xs={12} align='center'>
-                <Button
-                    type="button"
-                    className="button1"
-                    variant="contained"
-                    color="primary"
-                    onClick={handleAddCredentials}
-                >
-                    Save
-                </Button>
-            </Grid>
-        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+            <Box mt={2} align='center'>
+                <Typography variant="h6" color="textPrimary">
+                    Add your Credentials so we can gamify your work
+                </Typography>
+                <br />
+
+                <Grid container spacing={3} justify='center'>
+                    <Grid item sm={12} align='center'>
+                        <TextField
+                            required
+                            id="url"
+                            name="url"
+                            label="URL"
+                            onChange={handleUrl}
+                        />
+                    </Grid>
+                    <Grid item sm={6} align='center'>
+                        <TextField
+                            required
+                            id="accountId"
+                            name="accountId"
+                            label="Username"
+                            onChange={handleAccountId}
+                        />
+                    </Grid>
+                    <Grid item sm={6} align='center'>
+                        <TextField
+                            required
+                            id="AToken"
+                            name="AToken"
+                            label="Access Token"
+                            onChange={handleAToken}
+                        />
+                    </Grid>
+                    <br /><br /><br /><br />
+                    <Grid item xs={12} align='center'>
+                        <Button
+                            type="button"
+                            className="button1"
+                            variant="contained"
+                            color="primary"
+                            onClick={handleAddCredentials}
+                        >
+                            Save
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Box>
+        </Grid >
     )
 }
 

@@ -16,7 +16,7 @@ function CardProject(props) {
 
     function handleProjectDelete(project) {
         const projectId = project.id
-        removeProjectFromGroup(group.id, projectId, project.url)
+        removeProjectFromGroup(group.id, projectId, project.URL)
             .then(resp => {
                 let aux = groupUpdated.projects.filter(project => {
                     if (project.id !== projectId) {
@@ -26,7 +26,7 @@ function CardProject(props) {
                     }
                 })
                 setGroup(aux)
-                setEdit(false)
+                setEdit(true)
             })
             .catch(err => {
                 toast.error(err.body, {

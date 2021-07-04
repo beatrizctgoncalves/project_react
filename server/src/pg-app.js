@@ -15,7 +15,7 @@ module.exports = async function() {
     const fetch = require('node-fetch');
     const pgResponses = require('./services/pg-responses');
     const aux = require('./model/pg-promises');
-    const requests = require('./services/apis-db-requests')(fetch, pgResponses);
+    const requests = require('./services/db-requests')(fetch, pgResponses);
 
     const databaseGroups = require('./database/pg-database-groups')(pgResponses, requests);
     const databaseUsers = require('./database/pg-database-users')(pgResponses, requests);

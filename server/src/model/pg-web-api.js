@@ -15,7 +15,8 @@ module.exports = function (express, services, servicesPlugins, aux) {
     router.delete('/groups/:group_id', deleteGroup); //delete a group
     router.patch('/groups/:group_id', editGroup); //update group
 
-    router.get(`/groups/:group_id/projects`, getGroupProjects); //Add a specific project to a group
+    router.get(`/groups/:group_id/projects`, getGroupProjects); //Get all projects of a group
+
     router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
     router.delete('/groups/:group_id/projects/:project_id', removeProjectFromGroup); //Remove a specific project from a group
     router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
@@ -119,7 +120,6 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     /*function addMemberNotification(req, res) { //Implementation of the route to add a user to a specific group
-        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.addMemberNotification(req.params.group_id, req.body.username, req.body.manager),
             res

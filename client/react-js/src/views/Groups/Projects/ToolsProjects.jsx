@@ -28,34 +28,21 @@ function ToolsProjects(props) {
     }, [id])
 
     function handleAddProjectToGroup(projId) {
-        const user_index = group.projects.findIndex(p => p.id === projId)
-        if (user_index === -1) {
-            addProjectToGroup(group.id, projId, tool, url, ownerCredentials)
-                .then(resp => {
-                    window.location.replace(`/groups/${group.id}`)
-                })
-                .catch(err => {
-                    toast.error(err.body, {
-                        position: "top-left",
-                        autoClose: 4000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    })
-                })
-        } else {
-            toast("this project already exists", {
-                position: "top-left",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
+        addProjectToGroup(group.id, projId, tool, url, ownerCredentials)
+            .then(resp => {
+                window.location.replace(`/groups/${group.id}`)
             })
-        }
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 4000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
     const classes = useStyles();
@@ -75,7 +62,7 @@ function ToolsProjects(props) {
                     : ''}
 
                 {availableProjects.length !== 0 ? availableProjects.map(project =>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} key={project.id}>
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}
