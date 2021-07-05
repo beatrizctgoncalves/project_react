@@ -94,6 +94,7 @@ function FormProfile() {
                     <Grid item xs={12}>
                         <TextField
                             id="email"
+                            required
                             name="email"
                             fullWidth
                             label="Email"

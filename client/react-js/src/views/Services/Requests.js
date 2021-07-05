@@ -14,9 +14,6 @@ const request = (url, init) => fetch(url, init)
             })
             //const error = new Error(jsonResponse.error)
             error.status = resp.status
-            if (error.status === 403) {
-                //window.location.assign('/sign-in')
-            }
 
             return error
     })

@@ -17,6 +17,7 @@ import { getSpecificGroup } from '../Services/BasicService';
 import { toast } from 'react-toastify';
 import { ButtonLime } from '../Components/ColorButtons';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import GoBack from '../Components/GoBack';
 
 
 export default function Group(props) {
@@ -188,6 +189,10 @@ export default function Group(props) {
                         </Grid>
                     </Grid>
                 </Container>
+
+                <Box pt={8}>
+                    <GoBack />
+                </Box>
 
                 <Box pt={8}>
                     <Footer />
