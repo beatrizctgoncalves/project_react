@@ -17,8 +17,12 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     router.get(`/groups/:group_id/projects`, getGroupProjects); //Get all projects of a group
 
+    router.post(`/groups/:group_id/tasks`, addTaskToGroup); //Add a task to a group
+    router.patch(`/groups/:group_id/tasks`, updateTaskFromGroup); //Add a task to a group
+
     router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
     router.delete('/groups/:group_id/projects/:project_id', removeProjectFromGroup); //Remove a specific project from a group
+    router.post('/groups/:group_id/projects/:project_id', getProjectFromGroup); //Remove a specific project from a group
     router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
@@ -84,9 +88,30 @@ module.exports = function (express, services, servicesPlugins, aux) {
         );
     }
 
+    function addTaskToGroup(req, res) {
+        aux.promisesAsyncImplementation(
+            services.addTaskToGroup(req.params.group_id, req.body.title, req.body.beginDate, req.body.endDate),
+            res
+        );
+    }
+
+    function updateTaskFromGroup(req, res) {
+        aux.promisesAsyncImplementation(
+            services.updateTaskFromGroup(req.params.group_id, req.body.title, req.body.updatedInfo),
+            res
+        );
+    }
+
     function addProjectToGroup(req, res) {
         aux.promisesAsyncImplementation(
             services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.URL, req.body.ownerCredentials, req.body.type),
+            res
+        );
+    }
+
+    function getProjectFromGroup(req, res) {
+        aux.promisesAsyncImplementation(
+            services.getProjectFromGroup(req.params.group_id, req.body.URL, req.params.project_id),
             res
         );
     }

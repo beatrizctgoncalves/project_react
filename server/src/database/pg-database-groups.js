@@ -10,8 +10,8 @@ function database(pgResponses, requests) {
                 "description": group_description,
                 "members": [owner],
                 "sprints": [],
-                "projects": [],
-                "ratings": []
+                "tasks": [],
+                "projects": []
             })
             return requests.makeFetchElastic(requests.index.groups.concat('_doc'), requests.arrayMethods.POST, requestBody)
                 .then(body => {
@@ -221,6 +221,55 @@ function database(pgResponses, requests) {
                 })    
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
+        addTaskToGroup: function (group_id, title, beginDate, endDate) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline": "ctx._source.tasks.add(params.task)",
+                    "params": {
+                        "task": {
+                            "title": title,
+                            "beginDate": beginDate,
+                            "endDate": endDate,
+                            "members": [],
+                            "points": 0
+                        }
+                    }
+                }
+            });
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
+        updateTaskFromGroup: function (group_id, taskIndex, updatedInfo) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "source": `if(params.member != null) ctx._source.tasks[${taskIndex}].members.add(params.member); ` +
+                        `if(params.points != null) ctx._source.tasks[${taskIndex}].points = params.points; `,
+                    "params": updatedInfo
+                }
+            });
+
+            return this.getGroupDetails(group_id)
+                .then(groupObj => {
+                    return requests.makeFetchElastic(requests.index.groups.concat(`_update/${groupObj.id}`), requests.arrayMethods.POST, requestBody)
+                        .then(body => {
+                            console.log(body)
+                            if (body.result == 'updated') {
+                                return body._id;
+                            } else {
+                                return pgResponses.setError(pgResponses.BAD_REQUEST, pgResponses.BAD_REQUEST_MSG);
+                            }
+                        })
+                })
+                .catch(error => pgResponses.resolveErrorElastic(error))
         },
 
         addRatingsToGroup: function (group_id, key, accountId, score) {

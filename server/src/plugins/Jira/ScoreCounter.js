@@ -3,7 +3,6 @@
 module.exports = {
     countPoints: function(PURL, Pid, userInfoMap, owner, beginDate, endDate) {
         const ApiJira = require("./api")()
-        console.log(userInfoMap)
         let AToken = userInfoMap.get(owner).info.AToken
         let memberInfoMapJira = new Map()
         Array.from(userInfoMap, ([key, value]) => {

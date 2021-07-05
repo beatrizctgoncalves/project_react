@@ -101,6 +101,23 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                     )
                 })
         },
+        
+        getProjectFromGroup: function (group_id, PURL, Pid) {
+            return databaseGroups.getGroupDetails(group_id)
+                .then(group => {
+                    let project = group.projects.find(p => p.URL == PURL && p.id == Pid)
+                    if(!project){
+                        return pgResponses.setError(
+                            pgResponses.NOT_FOUND,
+                            pgResponses.NOT_FOUND_PROJECT_MSG
+                        )
+                    }
+                    return pgResponses.setSuccessList(
+                        pgResponses.OK,
+                        project
+                    )
+                })
+        },
 
         addProjectToGroup: function (group_id, Pid, PURL, ownerCredentials, type) {
             const x = require("../plugins/" + type + "/api")()
@@ -280,6 +297,67 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             )
                         })
                 })
+        },
+
+        addTaskToGroup: function (group_id, title, beginDate, endDate) {
+            return databaseGroups.getGroupDetails(group_id) //check if the group exists
+                .then(groupObj => {
+                    const taskExists = groupObj.tasks.findIndex(t => t.title == title)
+                    if (taskExists != -1) {  //check if the task already exists in the group
+                        return pgResponses.setError(
+                            pgResponses.FORBIDDEN,
+                            pgResponses.FORBIDDEN_TASK_MSG
+                        )
+                    }
+                    return databaseGroups.addTaskToGroup(group_id, title, beginDate, endDate) //add task
+                        .then(() => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                pgResponses.index.api,
+                                pgResponses.index.groups,
+                                group_id
+                            )
+                        })
+                })
+        },
+
+        updateTaskFromGroup: function (group_id, title, updatedInfo) {
+
+            return databaseGroups.getGroupDetails(group_id) //check if the group exists
+                .then(groupObj => {
+                    const taskIndex = groupObj.tasks.findIndex(t => t.title == title)
+                    if (taskIndex == -1) {  //check if the task doesn't exists in the group
+                        return pgResponses.setError(
+                            pgResponses.NOT_FOUND,
+                            pgResponses.NOT_FOUND_TASK_MSG
+                        )
+                    }
+                    if(updatedInfo.member){
+                        if(!groupObj.members.find(m => m == updatedInfo.member)){
+                            return pgResponses.setError(
+                                pgResponses.NOT_FOUND,
+                                pgResponses.NOT_FOUND_USER_TASK_MSG
+                            )
+                        }
+                        if(groupObj.tasks[taskIndex].members.find(m => m == updatedInfo.member)){
+                            return pgResponses.setError(
+                                pgResponses.FORBIDDEN,
+                                pgResponses.FORBIDDEN_USER_MSG
+                            )
+                        }
+                    }
+                    
+                    return databaseGroups.updateTaskFromGroup(group_id, taskIndex, updatedInfo) 
+                        .then(group => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                pgResponses.index.api,
+                                pgResponses.index.groups,
+                                group
+                            )
+                        })
+                })
+                
         },
 
         /*getGroupRankings: function(group_id, url, email, token) {

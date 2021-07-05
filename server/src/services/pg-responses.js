@@ -13,6 +13,8 @@ module.exports = {
     NOT_FOUND_USER_MSG: "User not found",
     NOT_FOUND_PROJECT_MSG: "Project not found",
     NOT_FOUND_GROUP_MSG: "Group not found",
+    NOT_FOUND_TASK_MSG: "Group not found",
+    NOT_FOUND_USER_TASK_MSG: "Member not found in this group",
     NOT_FOUND_GROUPS_MSG: "You do not have any groups yet",
     BAD_REQUEST_MSG: "Bad Request",
     BAD_REQUEST_AVATAR_MSG: "Bad Request! Your Avatar's link needs to end with .png",
@@ -21,6 +23,7 @@ module.exports = {
     FORBIDDEN_PROJECTS_MSG: "Forbidden! This Project already exists in this Group",
     FORBIDDEN_USER_MSG: "Forbidden! This User already exists in this Group",
     FORBIDDEN_SPRINT_MSG: "Forbidden! This Sprint already exists in this Group",
+    FORBIDDEN_TASK_MSG: "Forbidden! This Task already exists in this Group",
     FORBIDDEN_USER_INFO_MSG: "Forbidden! This User already saved his/her information",
 
     WRONG_PASSWORD_MSG: "Invalid password",
