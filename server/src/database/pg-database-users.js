@@ -3,11 +3,12 @@
 
 function database(pgResponses, requests) {
     const dt = {
-        createUser: function (username, name, surname) {
+        createUser: function (username, name, surname, email) {
             var requestBody = JSON.stringify({
                 "username": username,
                 "name": name,
                 "surname": surname,
+                "email": email,
                 "avatar": "http://mundocarreira.com.br/wp-content/uploads/2015/08/1-profissional-multifuncional.jpg",
                 "groupsMember": [],
                 "notifications": []

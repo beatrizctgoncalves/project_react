@@ -12,11 +12,11 @@ import About from './views/GeneralPages/AboutUs';
 import Contact from './views/GeneralPages/ContactUs';
 import Notifications from './views/Notifications/Notifications';
 import Members from './views/Groups/Members/Members';
-import ProjectsDetails from './views/Groups/Projects/ProjectsDetails';
 import Sprints from './views/Groups/Sprint/Sprints';
 import Projects from './views/Groups/Projects/Projects';
 import Rankings from './views/Groups/Rankings/Rankings';
 import Error404 from './views/Error/Error404';
+import Tasks from './views/Groups/Tasks/Tasks'
 
 
 function App() {
@@ -95,13 +95,13 @@ function App() {
         />
 
         <Route
-          exact path="/groups/:id/projects/:projectId"
-          render={(props) => window.sessionStorage.getItem('username') ? <ProjectsDetails {...props} /> : <Redirect to="/sign-in" />}
+          exact path="/groups/:id/sprints"
+          render={(props) => window.sessionStorage.getItem('username') ? <Sprints {...props} /> : <Redirect to="/sign-in" />}
         />
 
         <Route
-          exact path="/groups/:id/sprints"
-          render={(props) => window.sessionStorage.getItem('username') ? <Sprints {...props} /> : <Redirect to="/sign-in" />}
+          exact path="/groups/:id/tasks"
+          render={(props) => window.sessionStorage.getItem('username') ? <Tasks {...props} /> : <Redirect to="/sign-in" />}
         />
 
         <Route

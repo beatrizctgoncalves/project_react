@@ -22,8 +22,7 @@ function FormSignUp() {
     function handleSignUpClick() {
         signUpFetch(userToCreate)
             .then(resp => {
-                loginFetch(userToCreate.username, userToCreate.password)
-                    .then(resp => window.location.assign('/'))
+                window.location.assign('/sign-in')
             })
             .catch(err => {
                 toast.error(err.body, {
@@ -76,6 +75,19 @@ function FormSignUp() {
                         label="Last Name"
                         name="surname"
                         autoComplete="lname"
+                        onChange={handleChange}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="email"
+                        label="Email"
+                        type="email"
+                        id="email"
+                        autoComplete="email"
                         onChange={handleChange}
                     />
                 </Grid>

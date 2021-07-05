@@ -10,7 +10,7 @@ import CardProject from './CardProjects.jsx';
 import Navbar from '../../Components/Navbar.js';
 import clsx from 'clsx';
 import Paper from '@material-ui/core/Paper';
-import { Gitlab } from './Plugins/Views';
+import { Gitlab, Jira } from './Plugins/Views';
 import AddIcon from '@material-ui/icons/Add';
 
 
@@ -99,6 +99,7 @@ function Projects(props) {
                                         </Typography>
                                         <br />
                                         <Gitlab groupId={group.id} />
+                                        <Jira groupId={group.id} />
                                     </Box>
                                     <br />
                                 </Paper> : ""}

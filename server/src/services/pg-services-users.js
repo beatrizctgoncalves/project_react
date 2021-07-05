@@ -9,6 +9,7 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
             const password = request.body.password;
             const name = request.body.name;
             const surname = request.body.surname;
+            const email = request.body.email;
 
             var regExp = /[a-zA-Z]/g;
             if (!regExp.test(username)) {  //verify if username is a string
@@ -18,7 +19,7 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                 )
             }
             return authUser.create(username, password)
-                .then(databaseUsers.createUser(username, name, surname))
+                .then(databaseUsers.createUser(username, name, surname, email))
                 .then(() => {
                     return pgResponses.setSuccessUri(
                         pgResponses.CREATE,

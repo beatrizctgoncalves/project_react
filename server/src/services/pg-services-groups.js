@@ -101,12 +101,12 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                     )
                 })
         },
-        
+
         getProjectFromGroup: function (group_id, PURL, Pid) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(group => {
                     let project = group.projects.find(p => p.URL == PURL && p.id == Pid)
-                    if(!project){
+                    if (!project) {
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
                             pgResponses.NOT_FOUND_PROJECT_MSG
@@ -322,7 +322,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         },
 
         updateTaskFromGroup: function (group_id, title, updatedInfo) {
-
             return databaseGroups.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {
                     const taskIndex = groupObj.tasks.findIndex(t => t.title == title)
@@ -332,22 +331,22 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             pgResponses.NOT_FOUND_TASK_MSG
                         )
                     }
-                    if(updatedInfo.member){
-                        if(!groupObj.members.find(m => m == updatedInfo.member)){
+                    if (updatedInfo.member) {
+                        if (!groupObj.members.find(m => m == updatedInfo.member)) {
                             return pgResponses.setError(
                                 pgResponses.NOT_FOUND,
                                 pgResponses.NOT_FOUND_USER_TASK_MSG
                             )
                         }
-                        if(groupObj.tasks[taskIndex].members.find(m => m == updatedInfo.member)){
+                        if (groupObj.tasks[taskIndex].members.find(m => m == updatedInfo.member)) {
                             return pgResponses.setError(
                                 pgResponses.FORBIDDEN,
                                 pgResponses.FORBIDDEN_USER_MSG
                             )
                         }
                     }
-                    
-                    return databaseGroups.updateTaskFromGroup(group_id, taskIndex, updatedInfo) 
+
+                    return databaseGroups.updateTaskFromGroup(group_id, taskIndex, updatedInfo)
                         .then(group => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
@@ -357,7 +356,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             )
                         })
                 })
-                
         },
 
         /*getGroupRankings: function(group_id, url, email, token) {

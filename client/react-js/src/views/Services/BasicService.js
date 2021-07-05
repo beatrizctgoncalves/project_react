@@ -144,6 +144,24 @@ export async function addSprintToGroup(groupId, body) {
         })
 }
 
+export async function addTaskToGroup(groupId, body) {
+    const uri = `groups/${groupId}/tasks`
+
+    return makeRequest(urls.groups.concat(uri), body, "POST")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function updateTaskOfGroup(groupId, body) {
+    const uri = `groups/${groupId}/tasks`
+
+    return makeRequest(urls.groups.concat(uri), body, "PATCH")
+        .then(resp => {
+            return resp
+        })
+}
+
 export async function addProjectToGroup(groupId, projectId, tool, url, ownerCredentials) {
     const uri = `groups/${groupId}/projects`
 
@@ -164,6 +182,19 @@ export async function removeProjectFromGroup(groupId, projectId, url) {
     const uri = `groups/${groupId}/projects/${projectId}`
 
     return makeRequest(urls.groups.concat(uri), { URL: url }, "DELETE")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function getProjectFromGroup(groupId, projectId, url) {
+    const uri = `groups/${groupId}/projects/${projectId}`
+
+    const body = {
+        URL: url
+    }
+
+    return makeRequest(urls.groups.concat(uri), body, "POST")
         .then(resp => {
             return resp
         })

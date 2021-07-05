@@ -14,7 +14,7 @@ function FormSignIn() {
     loginFetch(userToLogin.username, userToLogin.password)
       .then(resp => {
         window.sessionStorage.setItem('username', userToLogin.username);
-        window.location.assign('/')
+        window.location.assign('/groups')
       })
       .catch(err => toast.error(err.body, {
         position: "top-left",

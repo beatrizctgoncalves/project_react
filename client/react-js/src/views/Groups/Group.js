@@ -46,6 +46,10 @@ export default function Group(props) {
         window.location.replace(`/groups/${group.id}/sprints`)
     }
 
+    function handleToTasks() {
+        window.location.replace(`/groups/${group.id}/tasks`)
+    }
+
     function handleToMembers() {
         window.location.replace(`/groups/${group.id}/members`)
     }
@@ -99,10 +103,10 @@ export default function Group(props) {
                     </Grid>
                 </Container>
 
-                <Container maxWidth="md" component="main">
+                <Container maxWidth="lg" component="main">
                     <br />
-                    <Grid container spacing={5} alignItems="flex-end">
-                        <Grid item xs={12} md={4}>
+                    <Grid container spacing={3} alignItems="flex-end" justify="center">
+                        <Grid item xs={12} md={3}>
                             <Card>
                                 <CardHeader
                                     title={'Members'}
@@ -128,7 +132,7 @@ export default function Group(props) {
                             </Card>
                         </Grid>
 
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} md={3}>
                             <Card>
                                 <CardHeader
                                     title={'Projects'}
@@ -158,7 +162,7 @@ export default function Group(props) {
                             </Card>
                         </Grid>
 
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} md={3}>
                             <Card>
                                 <CardHeader
                                     title={'Sprints'}
@@ -187,11 +191,43 @@ export default function Group(props) {
                                 </CardActions>
                             </Card>
                         </Grid>
+
+                        <Grid item xs={12} md={3}>
+                            <Card>
+                                <CardHeader
+                                    title={'Tasks'}
+                                    titleTypographyProps={{ align: 'center' }}
+                                    className={classes.cardHeader}
+                                />
+
+                                <CardContent>
+                                    <Grid item xs={12} align='center'>
+                                        {group.tasks && group.tasks !== 0 ? group.tasks.map((task) => (
+                                            <Typography variant="h6" color="textSecondary" key={task.title}>
+                                                {task.title}
+                                            </Typography>
+                                        )) :
+                                            <Typography variant="h6" color="textSecondary">
+                                                You do not have any Tasks.
+                                            </Typography>
+                                        }
+                                    </Grid>
+                                </CardContent>
+
+                                <CardActions>
+                                    <Button fullWidth variant='contained' color="primary" onClick={handleToTasks}>
+                                        See More
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
                     </Grid>
                 </Container>
 
                 <Box pt={8}>
-                    <GoBack />
+                    <Container maxWidth="xs">
+                        <GoBack />
+                    </Container>
                 </Box>
 
                 <Box pt={8}>

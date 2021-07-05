@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { getSpecificGroup, addProjectToGroup } from '../../Services/BasicService';
+import React from "react"
+import { addProjectToGroup } from '../../Services/BasicService';
 import { toast } from 'react-toastify';
 import { Typography, CardMedia, CardActions, Card, CardContent, Grid } from '@material-ui/core';
 import { useStyles } from '../../Components/Style';
@@ -9,28 +9,11 @@ import AddIcon from "@material-ui/icons/Add";
 
 function ToolsProjects(props) {
     const { availableProjects, url, ownerCredentials, id, tool } = props
-    const [group, setGroup] = useState({})
-
-    useEffect(() => {
-        getSpecificGroup(id)
-            .then(resp => setGroup(resp.message))
-            .catch(err => {
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
-    }, [id])
 
     function handleAddProjectToGroup(projId) {
-        addProjectToGroup(group.id, projId, tool, url, ownerCredentials)
+        addProjectToGroup(id, projId, tool, url, ownerCredentials)
             .then(resp => {
-                window.location.replace(`/groups/${group.id}`)
+                window.location.replace(`/groups/${id}`)
             })
             .catch(err => {
                 toast.error(err.body, {
@@ -54,9 +37,6 @@ function ToolsProjects(props) {
                     <Grid item xs={12}>
                         <Typography component="h1" variant="h6" align="center" color="textPrimary">
                             Available Projects in {'tool'}
-                        </Typography>
-                        <Typography variant="body2" align="center" color="textSecondary" component="p">
-                            You are adding this to {group.name}...
                         </Typography>
                     </Grid>
                     : ''}

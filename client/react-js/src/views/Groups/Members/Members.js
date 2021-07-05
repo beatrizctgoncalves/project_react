@@ -23,7 +23,6 @@ function Members(props) {
         getSpecificGroup(id)
             .then(resp => setGroup(resp.message))
             .catch(err => {
-                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -54,9 +53,7 @@ function Members(props) {
             .then(resp => {
                 getSpecificGroup(id)
                     .then(groupObj => {
-                        console.log(groupObj)
                         let aux = groupObj.message
-                        console.log(aux)
                         setGroup(aux)
                         setAddMembers(false)
                     })

@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import { removeProjectFromGroup } from '../../Services/BasicService.js';
 import { useStyles } from '../../Components/Style';
-import { Typography, CardMedia, CardActions, Card, CardContent, Grid, Link } from '@material-ui/core';
+import { Typography, CardMedia, CardActions, Card, CardContent, Grid, Box, Paper } from '@material-ui/core';
 import { ButtonRed, ButtonGreen } from '../../Components/ColorButtons';
 import { toast } from 'react-toastify';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import { GitlabCredentialsMembers, JiraCredentialsMembers } from './Plugins/Views.js';
 
 
 function CardProject(props) {
     const { project, group, owner } = props
     const [edit, setEdit] = useState(false)
     const [groupUpdated, setGroup] = useState({})
-    const username = window.sessionStorage.getItem('username');
 
     function handleProjectDelete(project) {
         const projectId = project.id
@@ -41,12 +41,12 @@ function CardProject(props) {
             })
     }
 
-    const [toAddCredentials, setAddCredentials] = useState(false)
+    const [toAddMemberCredentials, setAddMemberCredentials] = useState(false)
     function handleAddCredentials() {
-        if (toAddCredentials) {
-            setAddCredentials(false)
+        if (toAddMemberCredentials) {
+            setAddMemberCredentials(false)
         } else {
-            setAddCredentials(true)
+            setAddMemberCredentials(true)
         }
     }
 
@@ -62,16 +62,14 @@ function CardProject(props) {
                 />
                 <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5">
-                        <Link href={`/groups/${group.id}/projects/${project.id}`}>
-                            {project.title}
-                        </Link>
+                        {project.title}
                     </Typography>
 
                     <Typography gutterBottom variant="body1">
                         Owner's Credentials saved.
                     </Typography>
 
-                    {project.memberCredentials ?
+                    {project.memberCredentials.length != 0 ?
                         <Typography gutterBottom variant="body2">
                             Member's Credentials saved.
                         </Typography>
@@ -81,23 +79,37 @@ function CardProject(props) {
                         </Typography>
                     }
                 </CardContent>
-                {/*TODO*/}
-                {!project.memberCredentials && owner !== username && project.memberCredentials.AppUsername !== username ?
-                    <CardActions>
-                        <ButtonGreen size="small" color="primary" onClick={''}>
-                            <AddIcon></AddIcon>
-                        </ButtonGreen>
-                    </CardActions>
-                    : ''}
+
                 {group.owner === owner ?
                     <CardActions>
                         <ButtonRed size="small" color="primary" onClick={handleProjectDelete.bind(null, project)}>
                             <DeleteIcon />
                         </ButtonRed>
                     </CardActions>
-                    : ''}
-            </Card>
-        </Grid>
+                    :
+                    <>
+                        {toAddMemberCredentials ?
+                            <Paper>
+                                <Box mt={2} align='center'>
+                                    <br />
+                                    <Typography variant="h6" color="textSecondary">
+                                        Select one of these options
+                                    </Typography>
+                                    <br />
+                                    <GitlabCredentialsMembers groupId={group.id} />
+                                    <JiraCredentialsMembers groupId={group.id} />
+                                </Box>
+                                <br />
+                            </Paper> : ""}
+                        <CardActions>
+                            <ButtonGreen size="small" color="primary" onClick={handleAddCredentials}>
+                                {toAddMemberCredentials ? "" : <AddIcon></AddIcon>}
+                            </ButtonGreen>
+                        </CardActions>
+                    </>
+                }
+            </Card >
+        </Grid >
     )
 }
 
