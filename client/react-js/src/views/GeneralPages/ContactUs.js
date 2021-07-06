@@ -1,8 +1,8 @@
 import React from 'react';
 import Footer from '../Components/Footer.js';
 import { Container, CssBaseline, Grid, Box, Link, Typography } from '@material-ui/core';
-import { useStyles } from '../Components/Style';
-import CardContact from '../Components/CardContact.js';
+import { useStyles } from '../Components/Styles/Style';
+import CardContact from '../Components/Contact/CardContact';
 import Navbar from '../Components/Navbar.js';
 
 

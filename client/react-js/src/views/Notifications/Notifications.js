@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getUser } from '../Services/BasicService.js';
 import Footer from '../Components/Footer.js';
 import GoBack from '../Components/GoBack';
-import { useStyles } from '../Components/Style';
+import { useStyles } from '../Components/Styles/Style';
 import { Typography, CssBaseline, Grid, Container, Box, Paper } from '@material-ui/core';
 import Navbar from '../Components/Navbar.js';
 import { ToastContainer, toast } from 'react-toastify';

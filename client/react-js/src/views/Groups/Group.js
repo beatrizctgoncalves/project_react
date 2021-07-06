@@ -11,11 +11,11 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { ToastContainer } from 'react-toastify';
-import { useStyles } from '../Components/Style';
+import { useStyles } from '../Components/Styles/Style';
 import Footer from '../Components/Footer';
 import { getSpecificGroup } from '../Services/BasicService';
 import { toast } from 'react-toastify';
-import { ButtonLime } from '../Components/ColorButtons';
+import { ButtonLime } from '../Components/Styles/ColorButtons';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import GoBack from '../Components/GoBack';
 

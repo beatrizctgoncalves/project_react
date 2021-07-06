@@ -10,12 +10,12 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { useStyles } from './Style';
+import { useStyles } from './Styles/Style';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
-import { mainListItems, otherListItems, secondaryListItems } from './listItems';
+import { mainListItems, otherListItems, secondaryListItems } from './ListItems';
 import { toast } from 'react-toastify';
-import { logout } from '../Services/authenticationService';
+import { logout } from '../Services/AuthenticationService';
 import { getUserNotifications } from '../Services/BasicService';
 import InputIcon from '@material-ui/icons/Input';
 

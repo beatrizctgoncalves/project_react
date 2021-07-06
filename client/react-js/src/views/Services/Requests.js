@@ -3,19 +3,19 @@ const DEFAULT_OPTIONS = met => ({ method: met, credentials: 'include', headers: 
 const produceInit = (body, met) => ({ ...DEFAULT_OPTIONS(met), body: JSON.stringify(body), json: true });
 
 const request = (url, init) => fetch(url, init)
-    .then(async resp => {        
-            const jsonResponse = await resp.json()
-            if (resp.ok) {
-                return jsonResponse
-            }
-            const error = Promise.reject({
-                status: jsonResponse.error.status,
-                body: jsonResponse.error.body
-            })
-            //const error = new Error(jsonResponse.error)
-            error.status = resp.status
+    .then(async resp => {
+        const jsonResponse = await resp.json()
+        if (resp.ok) {
+            return jsonResponse
+        }
+        const error = Promise.reject({
+            status: jsonResponse.error.status,
+            body: jsonResponse.error.body
+        })
 
-            return error
+        error.status = resp.status
+
+        return error
     })
 
 

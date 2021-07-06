@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { ButtonRed } from '../Components/ColorButtons';
+import { ButtonRed } from '../Styles/ColorButtons';
 import { Box, Button, TextField, Grid, CardContent, Divider } from '@material-ui/core';
 import React, { useState } from 'react';
-import { deleteUser, getUser, updateUser } from '../Services/BasicService.js';
+import { deleteUser, getUser, updateUser } from '../../Services/BasicService';
 import { toast } from 'react-toastify';
 
 

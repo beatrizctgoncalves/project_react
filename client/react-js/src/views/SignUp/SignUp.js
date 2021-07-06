@@ -2,8 +2,8 @@ import React from 'react';
 import UserPlusIcon from '@material-ui/icons/PersonAdd';
 import { Container, Typography, Box, CssBaseline, Avatar, Grid, Paper } from '@material-ui/core';
 import Footer from '../Components/Footer';
-import Form from './FormSignUp';
-import { useStyles } from '../Components/Style';
+import Form from '../Components/SignUp/FormSignUp';
+import { useStyles } from '../Components/Styles/Style';
 import Navbar from '../Components/Navbar';
 import { ToastContainer } from 'react-toastify';
 

@@ -1,6 +1,6 @@
 import { Button, Grid, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
-import { editGroup } from '../Services/BasicService';
+import { editGroup } from '../../Services/BasicService';
 import { toast } from 'react-toastify';
 
 

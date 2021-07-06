@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { addTaskToGroup, getSpecificGroup } from '../../Services/BasicService.js';
-import Footer from '../../Components/Footer';
-import GoBack from '../../Components/GoBack';
-import { useStyles } from '../../Components/Style';
+import { addSprintToGroup, getSpecificGroup } from '../Services/BasicService.js';
+import Footer from '../Components/Footer';
+import GoBack from '../Components/GoBack';
+import { useStyles } from '../Components/Styles/Style';
 import { Typography, Container, CssBaseline, Grid, Box } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
-import { ButtonGreen } from '../../Components/ColorButtons';
-import CardTask from './CardTask';
-import Navbar from '../../Components/Navbar.js';
+import { ButtonGreen } from '../Components/Styles/ColorButtons';
+import CardSprint from '../Components/Sprint/CardSprint';
+import Navbar from '../Components/Navbar.js';
 import { TextField, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 
-function Task(props) {
+function Sprint(props) {
     const [group, setGroup] = useState({})
     const { id } = props.match.params
     const owner = window.sessionStorage.getItem("username")
 
-    const [toAddTasks, setAddTasks] = useState(false)
-    const [newTask, setNewTask] = useState("")
+    const [toAddSprints, setAddSprints] = useState(false)
+    const [newSprint, setNewSprint] = useState("")
 
     useEffect(() => {
         getSpecificGroup(id)
             .then(resp => setGroup(resp.message))
             .catch(err => {
-                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -39,37 +38,36 @@ function Task(props) {
 
 
     const handleTitle = event => {
-        setNewTask({ ...newTask, title: event.target.value })
+        setNewSprint({ ...newSprint, title: event.target.value })
     }
 
     const handleBeginDate = event => {
-        setNewTask({ ...newTask, beginDate: event.target.value })
+        setNewSprint({ ...newSprint, beginDate: event.target.value })
     }
 
     const handleEndDate = event => {
-        setNewTask({ ...newTask, endDate: event.target.value })
+        setNewSprint({ ...newSprint, endDate: event.target.value })
     }
 
-    function handleToEditTasksChange() {
-        if (toAddTasks) {
-            setAddTasks(false)
+    function handleToEditSprintsChange() {
+        if (toAddSprints) {
+            setAddSprints(false)
         } else {
-            setAddTasks(true)
+            setAddSprints(true)
         }
     }
 
-    function handleAddTasks() {
-        addTaskToGroup(id, newTask)
+    function handleAddSprints() {
+        addSprintToGroup(id, newSprint)
             .then(resp => {
                 getSpecificGroup(id)
                     .then(groupObj => {
                         let aux = groupObj.message
                         setGroup(aux)
-                        setAddTasks(false)
+                        setAddSprints(false)
                     })
             })
             .catch(err => {
-                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -97,7 +95,7 @@ function Task(props) {
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <Typography component="h1" variant="h3" align="center" color="textPrimary">
-                                Tasks
+                                Sprints
                             </Typography>
                         </Grid>
 
@@ -111,14 +109,14 @@ function Task(props) {
 
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} alignItems='center'>
-                        {group.tasks && group.tasks !== 0 ? group.tasks.map(task =>
-                            <CardTask key={task.title} task={task} group={group} />
+                        {group.sprints && group.sprints !== 0 ? group.sprints.map(sprint =>
+                            <CardSprint key={sprint.title} sprint={sprint} groupId={id} groupOwner={group.owner} />
                         ) :
                             <Grid item xs={12}>
                                 <Card>
                                     <Box mt={3} align='center'>
                                         <Typography variant="h6" color="textSecondary">
-                                            You do not have any Tasks.<br />
+                                            You do not have any Sprints.<br />
                                             Start adding!
                                         </Typography>
                                         <br />
@@ -130,7 +128,7 @@ function Task(props) {
 
                     {group.owner === owner ?
                         <Box pt={5} align='center'>
-                            {toAddTasks ?
+                            {toAddSprints ?
                                 <Card>
                                     <Box mt={3} align='center'>
                                         <Grid item xs={6} align='center'>
@@ -162,7 +160,6 @@ function Task(props) {
                                                     variant="outlined"
                                                     margin="normal"
                                                     required
-                                                    fullWidth
                                                     className="form-control"
                                                     placeholder="2021-06-10"
                                                     onChange={handleBeginDate}
@@ -186,7 +183,6 @@ function Task(props) {
                                                     variant="outlined"
                                                     margin="normal"
                                                     required
-                                                    fullWidth
                                                     className="form-control"
                                                     placeholder="2021-06-10"
                                                     onChange={handleEndDate}
@@ -198,18 +194,18 @@ function Task(props) {
                                         <ButtonGreen
                                             variant="contained"
                                             className={classes.margin}
-                                            onClick={handleAddTasks}
+                                            onClick={handleAddSprints}
                                         >
-                                            Add Task
+                                            Add Sprint
                                         </ButtonGreen>
                                     </Box>
                                     <br />
                                 </Card> : ""}
 
                             <Box mt={3} align='center'>
-                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditTasksChange}>
+                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditSprintsChange}>
                                     <AddIcon />
-                                    {toAddTasks ? "" : "Add Task"}
+                                    {toAddSprints ? "" : "Add Sprint"}
                                 </ButtonGreen>
                             </Box>
                         </Box>
@@ -230,4 +226,4 @@ function Task(props) {
     )
 }
 
-export default Task
+export default Sprint

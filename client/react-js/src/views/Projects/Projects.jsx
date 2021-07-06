@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { getSpecificGroup } from '../../Services/BasicService.js';
-import Footer from '../../Components/Footer';
-import GoBack from '../../Components/GoBack';
-import { useStyles } from '../../Components/Style';
+import { getSpecificGroup } from '../Services/BasicService.js';
+import Footer from '../Components/Footer';
+import GoBack from '../Components/GoBack';
+import { useStyles } from '../Components/Styles/Style';
 import { Typography, Container, CssBaseline, Grid, Box } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
-import { ButtonGreen } from '../../Components/ColorButtons';
-import CardProject from './CardProjects.jsx';
-import Navbar from '../../Components/Navbar.js';
+import { ButtonGreen } from '../Components/Styles/ColorButtons';
+import CardProject from '../Components/Projects/CardProjects';
+import Navbar from '../Components/Navbar.js';
 import clsx from 'clsx';
 import Paper from '@material-ui/core/Paper';
-import { Gitlab, Jira } from './Plugins/Views';
+import { Gitlab } from './Plugins/Gitlab';
+import { Jira } from './Plugins/Jira';
 import AddIcon from '@material-ui/icons/Add';
 
 

@@ -11,12 +11,12 @@ import EditGroup from './views/Groups/EditGroup';
 import About from './views/GeneralPages/AboutUs';
 import Contact from './views/GeneralPages/ContactUs';
 import Notifications from './views/Notifications/Notifications';
-import Members from './views/Groups/Members/Members';
-import Sprints from './views/Groups/Sprint/Sprints';
-import Projects from './views/Groups/Projects/Projects';
-import Rankings from './views/Groups/Rankings/Rankings';
+import Members from './views/Members/Members';
+import Sprints from './views/Sprint/Sprints';
+import Projects from './views/Projects/Projects';
+import Rankings from './views/Rankings/Rankings';
 import Error404 from './views/Error/Error404';
-import Tasks from './views/Groups/Tasks/Tasks'
+import Tasks from './views/Tasks/Tasks'
 
 
 function App() {

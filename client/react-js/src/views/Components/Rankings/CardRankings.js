@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, CardHeader, Card, Grid } from '@material-ui/core';
-import { useStyles } from '../../Components/Style';
-import { ButtonUser } from '../../Components/ColorButtons';
+import { useStyles } from '../Styles/Style';
+import { ButtonUser } from '../Styles/ColorButtons';
 
 
 function CardRankings(props) {

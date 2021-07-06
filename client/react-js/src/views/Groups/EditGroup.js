@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { CssBaseline, Grid, Container, Box, Paper } from '@material-ui/core';
 import Footer from '../Components/Footer';
 import GoBack from '../Components/GoBack';
-import { useStyles } from '../Components/Style';
+import { useStyles } from '../Components/Styles/Style';
 import Navbar from '../Components/Navbar.js';
 import { ToastContainer, toast } from 'react-toastify';
-import Title from '../Components/Title.js';
+import Title from '../Components/Styles/Title.js';
 import { getSpecificGroup } from '../Services/BasicService';
-import Form from './FormEditGroup';
+import Form from '../Components/Groups/FormEditGroup';
 
 
 function EditGroup(props) {

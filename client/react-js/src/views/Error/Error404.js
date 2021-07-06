@@ -7,7 +7,7 @@ import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Footer from '../Components/Footer';
 import Navbar from '../Components/Navbar';
-import { useStyles } from '../Components/Style';
+import { useStyles } from '../Components/Styles/Style';
 
 
 export default function Error() {

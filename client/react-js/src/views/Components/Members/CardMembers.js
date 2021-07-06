@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { removeMemberFromGroup, getUser } from '../../Services/BasicService.js';
+import { removeMemberFromGroup, getUser } from '../../Services/BasicService';
 import { Typography, Button, CardMedia, CardActions, Card, CardContent, Grid } from '@material-ui/core';
 import { toast } from 'react-toastify';
-import { useStyles } from '../../Components/Style';
-import { ButtonRed } from '../../Components/ColorButtons';
+import { useStyles } from '../Styles/Style';
+import { ButtonRed } from '../Styles/ColorButtons';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useStyles } from '../../Components/Style';
+import { useStyles } from '../Styles/Style';
 import { Typography, CardHeader, Box, Card, CardContent, Grid, CardActions, TextField, Checkbox, FormControlLabel } from '@material-ui/core';
-import { ButtonRed, ButtonGreen } from '../../Components/ColorButtons';
+import { ButtonRed, ButtonGreen } from '../Styles/ColorButtons';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import { updateTaskOfGroup } from '../../Services/BasicService';

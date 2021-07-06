@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
-import { useStyles } from '../Components/Style';
+import { useStyles } from '../Components/Styles/Style';
 import Footer from '../Components/Footer';
 import { createGroup, deleteGroup, getSpecificGroup, getUserGroups } from '../Services/BasicService';
 import { ToastContainer, toast } from 'react-toastify';
@@ -16,8 +16,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Title from '../Components/Title';
-import { ButtonGrey, ButtonRed } from '../Components/ColorButtons';
+import Title from '../Components/Styles/Title';
+import { ButtonGrey, ButtonRed } from '../Components/Styles/ColorButtons';
 import GroupsMember from './GroupsMember';
 import Navbar from '../Components/Navbar';
 import GoBack from '../Components/GoBack';
@@ -143,7 +143,9 @@ export default function Groups() {
                                                 <TableCell>
                                                     {group.name}
                                                 </TableCell>
-                                                <TableCell>{group.description}</TableCell>
+                                                <TableCell>
+                                                    {group.description}
+                                                </TableCell>
                                                 <TableCell>
                                                     <Link color="inherit" href={`/groups/${group.id}`}>
                                                         <RemoveRedEye />

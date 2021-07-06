@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { addMemberToGroup, getSpecificGroup } from '../../Services/BasicService.js';
-import Footer from '../../Components/Footer';
-import GoBack from '../../Components/GoBack';
+import { addMemberToGroup, getSpecificGroup } from '../Services/BasicService.js';
+import Footer from '../Components/Footer';
+import GoBack from '../Components/GoBack';
 import { Container, CssBaseline, Grid, Box, TextField, Typography, Card, CardContent } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
-import { useStyles } from '../../Components/Style';
-import CardMembers from './CardMembers.js';
-import { ButtonGreen } from '../../Components/ColorButtons.js';
-import Navbar from '../../Components/Navbar.js';
+import { useStyles } from '../Components/Styles/Style';
+import CardMembers from '../Components/Members/CardMembers';
+import { ButtonGreen } from '../Components/Styles/ColorButtons.js';
+import Navbar from '../Components/Navbar.js';
 import AddIcon from '@material-ui/icons/Add';
 
 

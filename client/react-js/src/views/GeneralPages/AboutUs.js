@@ -1,7 +1,7 @@
 import React from 'react'
 import Footer from '../Components/Footer.js';
 import { Container, CssBaseline, Box, Grid, Typography } from '@material-ui/core';
-import { useStyles } from '../Components/Style';
+import { useStyles } from '../Components/Styles/Style';
 import Navbar from '../Components/Navbar.js';
 
 

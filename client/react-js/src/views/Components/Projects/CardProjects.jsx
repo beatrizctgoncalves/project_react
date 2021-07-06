@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { removeProjectFromGroup } from '../../Services/BasicService.js';
-import { useStyles } from '../../Components/Style';
+import { removeProjectFromGroup } from '../../Services/BasicService';
+import { useStyles } from '../Styles/Style';
 import { Typography, CardMedia, CardActions, Card, CardContent, Grid, Box, Paper } from '@material-ui/core';
-import { ButtonRed, ButtonGreen } from '../../Components/ColorButtons';
+import { ButtonRed, ButtonGreen } from '../Styles/ColorButtons';
 import { toast } from 'react-toastify';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-import { GitlabCredentialsMembers, JiraCredentialsMembers } from './Plugins/Views.js';
+import { GitlabCredentialsMembers } from '../../Projects/Plugins/Gitlab';
+import { JiraCredentialsMembers } from '../../Projects/Plugins/Jira';
 
 
 function CardProject(props) {

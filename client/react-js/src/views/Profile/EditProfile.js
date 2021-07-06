@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { CssBaseline, Grid, Container, Box, Paper, Typography, Divider } from '@material-ui/core';
 import Footer from '../Components/Footer';
-import Form from './FormProfile';
+import Form from '../Components/Profile/FormProfile';
 import GoBack from '../Components/GoBack';
-import { useStyles } from '../Components/Style';
+import { useStyles } from '../Components/Styles/Style';
 import Navbar from '../Components/Navbar.js';
 import { ToastContainer, toast } from 'react-toastify';
-import Title from '../Components/Title.js';
+import Title from '../Components/Styles/Title.js';
 import clsx from 'clsx';
 import { getUser } from '../Services/BasicService';
 

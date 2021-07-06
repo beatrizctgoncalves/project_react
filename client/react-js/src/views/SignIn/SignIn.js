@@ -2,8 +2,8 @@ import React from 'react';
 import LockOpen from '@material-ui/icons/LockOpen';
 import { Container, Typography, Box, CssBaseline, Avatar, Grid, Paper } from '@material-ui/core';
 import Footer from '../Components/Footer';
-import Form from './FormSignIn';
-import { useStyles } from '../Components/Style';
+import Form from '../Components/SignIn/FormSignIn';
+import { useStyles } from '../Components/Styles/Style';
 import Navbar from '../Components/Navbar';
 import { ToastContainer } from 'react-toastify';
 

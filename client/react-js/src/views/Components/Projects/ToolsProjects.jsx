@@ -2,8 +2,8 @@ import React from "react"
 import { addProjectToGroup } from '../../Services/BasicService';
 import { toast } from 'react-toastify';
 import { Typography, CardMedia, CardActions, Card, CardContent, Grid } from '@material-ui/core';
-import { useStyles } from '../../Components/Style';
-import { ButtonGreen } from "../../Components/ColorButtons";
+import { useStyles } from '../Styles/Style';
+import { ButtonGreen } from "../Styles/ColorButtons";
 import AddIcon from "@material-ui/icons/Add";
 
 
@@ -31,7 +31,7 @@ function ToolsProjects(props) {
     const classes = useStyles();
 
     return (
-        <>
+        <React.Fragment>
             <Grid container spacing={2} justify='center'>
                 {availableProjects.length !== 0 ?
                     <Grid item xs={12}>
@@ -63,7 +63,7 @@ function ToolsProjects(props) {
                     </Grid>
                 ) : ''}
             </Grid>
-        </>
+        </React.Fragment>
     )
 }
 

@@ -7,9 +7,9 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-import { useStyles } from '../Components/Style';
+import { useStyles } from '../Components/Styles/Style';
 import { makeStyles } from '@material-ui/core';
-import { ButtonHome1 } from '../Components/ColorButtons';
+import { ButtonHome1 } from '../Components/Styles/ColorButtons';
 
 
 const useStyles2 = makeStyles((theme) => ({

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { getSpecificGroup, getRankings } from '../../Services/BasicService.js';
-import Footer from '../../Components/Footer';
-import GoBack from '../../Components/GoBack';
-import { useStyles } from '../../Components/Style';
+import { getSpecificGroup, getRankings } from '../Services/BasicService.js';
+import Footer from '../Components/Footer';
+import GoBack from '../Components/GoBack';
+import { useStyles } from '../Components/Styles/Style';
 import { Typography, Container, Card, CardContent, CssBaseline, Grid, Box } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
-import CardRankings from './CardRankings.js';
-import Navbar from '../../Components/Navbar.js';
+import CardRankings from '../Components/Rankings/CardRankings';
+import Navbar from '../Components/Navbar.js';
 
 
 function Rankings(props) {

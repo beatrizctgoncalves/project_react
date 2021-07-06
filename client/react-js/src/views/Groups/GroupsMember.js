@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Box } from '@material-ui/core';
-import Title from '../Components/Title';
+import Title from '../Components/Styles/Title';
 import { getUserMemberGroups } from '../Services/BasicService';
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
