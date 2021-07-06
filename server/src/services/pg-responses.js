@@ -12,6 +12,7 @@ module.exports = {
     API_ERROR_MSG: "Service Unavailable",
     NOT_FOUND_USER_MSG: "User not found",
     NOT_FOUND_PROJECT_MSG: "Project not found",
+    NOT_FOUND_SPRINT_MSG: "Sprint not found",
     NOT_FOUND_GROUP_MSG: "Group not found",
     NOT_FOUND_TASK_MSG: "Group not found",
     NOT_FOUND_USER_TASK_MSG: "Member not found in this group",
