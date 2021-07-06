@@ -181,6 +181,25 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
+        removeTaskFromGroup: function (group_id, task_index) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline": "ctx._source.tasks.remove(params.task)",
+                    "params": {
+                        "task": task_index
+                    }
+                }
+            });
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
         addMemberToGroup: function (group_id, username) {
             var requestBody = JSON.stringify({
                 "script": {

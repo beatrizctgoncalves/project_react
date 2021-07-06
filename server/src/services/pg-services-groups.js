@@ -189,6 +189,28 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
+        removeTaskFromGroup: function (group_id, title) {
+            return databaseGroups.getGroupDetails(group_id)
+                .then(groupObj => {
+                    const task_index = groupObj.tasks.findIndex(t => t.title == title)
+                    if (task_index == -1) {
+                        return pgResponses.setError(
+                            pgResponses.NOT_FOUND,
+                            pgResponses.NOT_FOUND_TASK_MSG
+                        );
+                    }
+                    return databaseGroups.removeTaskFromGroup(group_id, task_index)
+                        .then(id => {
+                            return pgResponses.setSuccessUri(
+                                pgResponses.OK,
+                                pgResponses.index.api,
+                                pgResponses.index.groups,
+                                id
+                            )
+                        })
+                })
+        },
+
         getGroupMembers: function (group_id) {
             return databaseGroups.getGroupDetails(group_id)
                 .then(group => {
