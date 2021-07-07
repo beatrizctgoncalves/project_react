@@ -10,6 +10,7 @@ import Footer from '../Components/Footer';
 import { useStyles } from '../Components/Styles/Style';
 import { makeStyles } from '@material-ui/core';
 import { ButtonHome1 } from '../Components/Styles/ColorButtons';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 
 const useStyles2 = makeStyles((theme) => ({
@@ -65,8 +66,8 @@ export default function SignInSide() {
 
                                 <Grid item xs={12}>
                                     <ButtonHome1 variant="contained" className={classes.margin} onClick={handleAbout}>
-                                        Find Out More&nbsp;&nbsp;
-                                        <i className="bi bi-arrow-right-short"></i>
+                                        Find Out More
+                                        <ArrowForwardIosIcon />
                                     </ButtonHome1>
                                 </Grid>
                             </Box>
