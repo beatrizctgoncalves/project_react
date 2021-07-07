@@ -343,7 +343,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
-        addTaskToGroup: function (group_id, title, beginDate, endDate) {
+        addTaskToGroup: function (group_id, title, date, points) {
             return databaseGroups.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {
                     const taskExists = groupObj.tasks.findIndex(t => t.title == title)
@@ -353,7 +353,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             pgResponses.FORBIDDEN_TASK_MSG
                         )
                     }
-                    return databaseGroups.addTaskToGroup(group_id, title, beginDate, endDate) //add task
+                    return databaseGroups.addTaskToGroup(group_id, title, date, points) //add task
                         .then(() => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
@@ -385,7 +385,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                         if (groupObj.tasks[taskIndex].members.find(m => m == updatedInfo.member)) {
                             return pgResponses.setError(
                                 pgResponses.FORBIDDEN,
-                                pgResponses.FORBIDDEN_USER_MSG
+                                pgResponses.FORBIDDEN_TASK_MSG
                             )
                         }
                     }

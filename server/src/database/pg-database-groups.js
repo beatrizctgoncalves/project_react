@@ -261,7 +261,7 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
-        addTaskToGroup: function (group_id, title, beginDate, endDate) {
+        addTaskToGroup: function (group_id, title, beginDate, points) {
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",
@@ -270,9 +270,8 @@ function database(pgResponses, requests) {
                         "task": {
                             "title": title,
                             "beginDate": beginDate,
-                            "endDate": endDate,
                             "members": [],
-                            "points": 0
+                            "points": points
                         }
                     }
                 }

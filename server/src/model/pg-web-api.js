@@ -92,7 +92,7 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     function addTaskToGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.addTaskToGroup(req.params.group_id, req.body.title, req.body.beginDate, req.body.endDate),
+            services.addTaskToGroup(req.params.group_id, req.body.title, req.body.date, req.body.points),
             res
         );
     }
