@@ -144,10 +144,28 @@ export async function addSprintToGroup(groupId, body) {
         })
 }
 
+export async function removeSprintFromGroup(groupId, body) {
+    const uri = `groups/${groupId}/sprints`
+
+    return makeRequest(urls.groups.concat(uri), body, "DELETE")
+        .then(resp => {
+            return resp
+        })
+}
+
 export async function addTaskToGroup(groupId, body) {
     const uri = `groups/${groupId}/tasks`
 
     return makeRequest(urls.groups.concat(uri), body, "POST")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function removeTaskFromGroup(groupId, body) {
+    const uri = `groups/${groupId}/tasks`
+
+    return makeRequest(urls.groups.concat(uri), body, "DELETE")
         .then(resp => {
             return resp
         })

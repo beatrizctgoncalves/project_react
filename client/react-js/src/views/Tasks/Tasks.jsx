@@ -59,6 +59,7 @@ function Task(props) {
     }
 
     function handleAddTasks() {
+        console.log(id)
         addTaskToGroup(id, newTask)
             .then(resp => {
                 getSpecificGroup(id)

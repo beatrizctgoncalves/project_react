@@ -35,7 +35,7 @@ function CardProject(props) {
     }
 
     function handleAddTasks() {
-        updateTaskOfGroup(group.id, { updatedInfo: updateTask })
+        updateTaskOfGroup(group.id, { title: task.title, updatedInfo: updateTask })
             .then(resp => {
                 setUpdatedTasks(false)
             })

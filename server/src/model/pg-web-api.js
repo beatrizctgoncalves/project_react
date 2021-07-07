@@ -22,17 +22,16 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     router.post(`/groups/:group_id/projects`, addProjectToGroup); //Add a specific project to a group
     router.delete('/groups/:group_id/projects/:project_id', removeProjectFromGroup); //Remove a specific project from a group
-    router.post('/groups/:group_id/projects/:project_id', getProjectFromGroup); //Remove a specific project from a group
+    router.post('/groups/:group_id/projects/:project_id', getProjectFromGroup); //Get a specific project from a group
     router.post(`/groups/:group_id/sprints`, addSprintToGroup); //Add a sprint to a group
 
     router.get(`/groups/:group_id/members`, getGroupMembers); //Get a specific user of a group
     router.post(`/groups/:group_id/members`, addMemberToGroup); //Add a specific user to a group
     router.post(`/groups/:group_id/projects/:project_id/:username/credentials`, addMemberInfoToProject); //Add credentials to a project
     router.delete('/groups/:group_id/members/:username', removeMemberFromGroup); //Remove a specific user from a group
-    //router.post(`/groups/:group_id/members`, addMemberNotification); //Add a specific user to a group
 
     router.get('/groups/:group_id/rankings', getGroupRankings); //get group's rankings
-    router.get('/rankings', getRankings); //TODO get all rankings
+    router.get('/rankings', getRankings); //get all rankings
 
     router.post('/tools/:tool_name/projects', getProjectsOfTool)
 
@@ -143,13 +142,6 @@ module.exports = function (express, services, servicesPlugins, aux) {
             res
         );
     }
-
-    /*function addMemberNotification(req, res) { //Implementation of the route to add a user to a specific group
-        aux.promisesAsyncImplementation(
-            services.addMemberNotification(req.params.group_id, req.body.username, req.body.manager),
-            res
-        );
-    }*/
 
     function addSprintToGroup(req, res) { //Implementation of the route to add a user to a specific group
         aux.promisesAsyncImplementation(

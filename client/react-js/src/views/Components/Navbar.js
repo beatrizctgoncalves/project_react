@@ -85,16 +85,9 @@ function Navbar() {
                         Pluggable Gamification
                     </Typography>
                     {username ?
-                        <>
-                            <Button color="inherit">
-                                <Badge badgeContent={4} color="secondary" onClick={handleNotifications}>
-                                    <NotificationsIcon />
-                                </Badge>
-                            </Button>
-                            <Button color="inherit" onClick={handleLogout}>
-                                <InputIcon />
-                            </Button>
-                        </>
+                        <Button color="inherit" onClick={handleLogout}>
+                            <InputIcon />
+                        </Button>
                         : ''}
                 </Toolbar>
             </AppBar>

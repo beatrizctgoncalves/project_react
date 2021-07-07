@@ -3,15 +3,38 @@ import { useStyles } from '../Styles/Style';
 import { Typography, CardHeader, Box, Card, CardContent, Grid, CardActions } from '@material-ui/core';
 import { ButtonRed } from '../Styles/ColorButtons';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { removeSprintFromGroup } from '../../Services/BasicService';
+import { toast } from 'react-toastify';
 
 
-function CardProject(props) {
+function CardSprint(props) {
     const { sprint, groupId, groupOwner } = props
     const owner = window.sessionStorage.getItem('username');
-    //const [group, setGroup] = useState({})
+    const [groupUpdated, setGroup] = useState({})
 
-    function handleSprintDelete(projectId) {
-        //TODO
+    function handleSprintDelete(title) {
+        removeSprintFromGroup(groupId, { title: title })
+            .then(resp => {
+                let aux = groupUpdated.sprints.filter(sprint => {
+                    if (sprint.title !== title) {
+                        return sprint
+                    } else {
+                        return null
+                    }
+                })
+                setGroup(aux)
+            })
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
     }
 
     const classes = useStyles();
@@ -27,14 +50,14 @@ function CardProject(props) {
 
                 <CardContent>
                     <Box align='center'>
-                        <div className={classes.cardGroup} key={sprint.id}>
+                        <div className={classes.cardGroup} key={sprint.title}>
                             <ul className={classes.listItem}>
                                 <Typography variant="body1" color='primary'>
                                     Begin Date
                                 </Typography>
 
                                 <div>
-                                    <ul className={classes.listItem} key={sprint.id}>
+                                    <ul className={classes.listItem} key={sprint.title}>
                                         <Typography variant="body2" color="textSecondary">
                                             {sprint.beginDate}
                                         </Typography>
@@ -48,7 +71,7 @@ function CardProject(props) {
                                 </Typography>
 
                                 <div>
-                                    <ul className={classes.listItem} key={sprint.id}>
+                                    <ul className={classes.listItem} key={sprint.title}>
                                         <Typography variant="body2" color="textSecondary">
                                             {sprint.endDate}
                                         </Typography>
@@ -60,7 +83,7 @@ function CardProject(props) {
                 </CardContent>
                 {owner === groupOwner ?
                     <CardActions>
-                        <ButtonRed size="small" color="primary" onClick={handleSprintDelete.bind(null, sprint.id)}>
+                        <ButtonRed size="small" color="primary" onClick={handleSprintDelete.bind(null, sprint.title)}>
                             <DeleteIcon />
                         </ButtonRed>
                     </CardActions>
@@ -70,4 +93,4 @@ function CardProject(props) {
     )
 }
 
-export default CardProject
+export default CardSprint

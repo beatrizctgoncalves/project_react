@@ -12,7 +12,6 @@ import { JiraCredentialsMembers } from '../../Projects/Plugins/Jira';
 
 function CardProject(props) {
     const { project, group, owner } = props
-    const [edit, setEdit] = useState(false)
     const [groupUpdated, setGroup] = useState({})
 
     function handleProjectDelete(project) {
@@ -27,7 +26,6 @@ function CardProject(props) {
                     }
                 })
                 setGroup(aux)
-                setEdit(true)
             })
             .catch(err => {
                 toast.error(err.body, {

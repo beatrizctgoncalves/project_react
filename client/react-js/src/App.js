@@ -10,7 +10,6 @@ import Group from './views/Groups/Group';
 import EditGroup from './views/Groups/EditGroup';
 import About from './views/GeneralPages/AboutUs';
 import Contact from './views/GeneralPages/ContactUs';
-import Notifications from './views/Notifications/Notifications';
 import Members from './views/Members/Members';
 import Sprints from './views/Sprint/Sprints';
 import Projects from './views/Projects/Projects';
@@ -70,11 +69,6 @@ function App() {
         <Route
           exact path='/profile/:username/edit'
           render={(props) => window.sessionStorage.getItem('username') ? <EditProfile {...props} /> : <Redirect to="/sign-in" />}
-        />
-
-        <Route
-          exact path='/notifications'
-          render={(props) => window.sessionStorage.getItem('username') ? <Notifications {...props} /> : <Redirect to="/sign-in" />}
         />
 
 
