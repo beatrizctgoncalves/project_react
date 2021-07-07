@@ -8,12 +8,12 @@ import { toast } from 'react-toastify';
 
 
 function CardSprint(props) {
-    const { sprint, groupId, groupOwner } = props
+    const { sprint, group, groupOwner } = props
     const owner = window.sessionStorage.getItem('username');
-    const [groupUpdated, setGroup] = useState({})
+    const [groupUpdated, setGroup] = useState([])
 
     function handleSprintDelete(title) {
-        removeSprintFromGroup(groupId, { title: title })
+        removeSprintFromGroup(group.id, { title: title })
             .then(resp => {
                 let aux = groupUpdated.sprints.filter(sprint => {
                     if (sprint.title !== title) {
@@ -50,14 +50,14 @@ function CardSprint(props) {
 
                 <CardContent>
                     <Box align='center'>
-                        <div className={classes.cardGroup} key={sprint.title}>
+                        <div className={classes.cardGroup}>
                             <ul className={classes.listItem}>
                                 <Typography variant="body1" color='primary'>
                                     Begin Date
                                 </Typography>
 
                                 <div>
-                                    <ul className={classes.listItem} key={sprint.title}>
+                                    <ul className={classes.listItem}>
                                         <Typography variant="body2" color="textSecondary">
                                             {sprint.beginDate}
                                         </Typography>
@@ -71,7 +71,7 @@ function CardSprint(props) {
                                 </Typography>
 
                                 <div>
-                                    <ul className={classes.listItem} key={sprint.title}>
+                                    <ul className={classes.listItem}>
                                         <Typography variant="body2" color="textSecondary">
                                             {sprint.endDate}
                                         </Typography>

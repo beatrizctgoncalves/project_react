@@ -22,7 +22,12 @@ function FormSignUp() {
     function handleSignUpClick() {
         signUpFetch(userToCreate)
             .then(resp => {
-                window.location.assign('/sign-in')
+                console.log(resp)
+                loginFetch(userToCreate.username, userToCreate.password)
+                    .then(resp => {
+                        window.sessionStorage.setItem('username', userToCreate.username);
+                        window.location.assign('/groups');
+                    })
             })
             .catch(err => {
                 toast.error(err.body, {

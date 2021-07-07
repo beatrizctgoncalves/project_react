@@ -134,7 +134,7 @@ export default function Groups() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {groups.map((group) => 
+                                        {groups.map((group) =>
                                             <TableRow key={group.id}>
                                                 <TableCell>
                                                     {group.name}

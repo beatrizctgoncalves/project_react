@@ -163,7 +163,6 @@ function Task(props) {
                                                     variant="outlined"
                                                     margin="normal"
                                                     required
-                                                    fullWidth
                                                     className="form-control"
                                                     placeholder="2021-06-10"
                                                     onChange={handleBeginDate}
@@ -187,7 +186,6 @@ function Task(props) {
                                                     variant="outlined"
                                                     margin="normal"
                                                     required
-                                                    fullWidth
                                                     className="form-control"
                                                     placeholder="2021-06-10"
                                                     onChange={handleEndDate}

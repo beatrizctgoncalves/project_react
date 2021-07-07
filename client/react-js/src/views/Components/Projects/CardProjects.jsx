@@ -12,7 +12,7 @@ import { JiraCredentialsMembers } from '../../Projects/Plugins/Jira';
 
 function CardProject(props) {
     const { project, group, owner } = props
-    const [groupUpdated, setGroup] = useState({})
+    const [groupUpdated, setGroup] = useState([])
 
     function handleProjectDelete(project) {
         const projectId = project.id
@@ -68,7 +68,7 @@ function CardProject(props) {
                         Owner's Credentials saved.
                     </Typography>
 
-                    {project.memberCredentials.length != 0 ?
+                    {project.memberCredentials.length !== 0 ?
                         <Typography gutterBottom variant="body2">
                             Member's Credentials saved.
                         </Typography>

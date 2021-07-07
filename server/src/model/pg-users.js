@@ -40,6 +40,7 @@ module.exports = function (express, services, aux, authization) {
     }
 
     function signIn(req, res) {
+        console.log(req.body)
         const username = req.body.username
         services.getUser(username)
             .catch(err => {

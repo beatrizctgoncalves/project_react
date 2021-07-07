@@ -110,7 +110,7 @@ function Sprint(props) {
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} alignItems='center'>
                         {group.sprints && group.sprints !== 0 ? group.sprints.map(sprint =>
-                            <CardSprint key={sprint.title} sprint={sprint} groupId={id} groupOwner={group.owner} />
+                            <CardSprint key={sprint.title} sprint={sprint} group={group} groupOwner={group.owner} />
                         ) :
                             <Grid item xs={12}>
                                 <Card>
