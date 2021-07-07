@@ -10,19 +10,12 @@ import Footer from '../Components/Footer';
 import { useStyles } from '../Components/Styles/Style';
 import { makeStyles } from '@material-ui/core';
 import { ButtonHome1 } from '../Components/Styles/ColorButtons';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 
 const useStyles2 = makeStyles((theme) => ({
     root: {
         height: '100vh',
-    },
-    image: {
-        backgroundImage: 'url(https://source.unsplash.com/random)',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
     },
     paper: {
         margin: theme.spacing(8, 4),
@@ -30,19 +23,8 @@ const useStyles2 = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
     letters: {
-        color: '#fff',
+        color: '#000',
         fontWeight: 'bold'
     },
     card: {
@@ -53,6 +35,10 @@ const useStyles2 = makeStyles((theme) => ({
 export default function SignInSide() {
     const classes = useStyles();
     const classes2 = useStyles2();
+
+    function handleAbout() {
+        window.location.replace('/about-us')
+    }
 
     return (
         <div className={classes.root}>
@@ -79,34 +65,13 @@ export default function SignInSide() {
                                 <br />
 
                                 <Grid item xs={12}>
-                                    <ButtonHome1 variant="contained" className={classes.margin} onClick={'handleAbout'}>
-                                        Find Out More&nbsp;&nbsp;
-                                        <i className="bi bi-arrow-right-short"></i>
+                                    <ButtonHome1 variant="contained" className={classes.margin} onClick={handleAbout}>
+                                        Find Out More
+                                        <ArrowForwardIosIcon />
                                     </ButtonHome1>
                                 </Grid>
-
-                                <Box pt={8} className={classes.section}>
-                                    <Paper className={classes2.card}>
-                                        <br />
-                                        <Grid container spacing={2} align='center'>
-                                            <Grid item xs={12}>
-                                                <Typography variant="h4" className={classes2.letters}>
-                                                    We've got what you need!
-                                                </Typography>
-                                            </Grid>
-
-                                            <Grid item xs={12}>
-                                                <Typography variant="body1" className={classes2.letters}>
-                                                    Never get bored of your work!<br />
-                                                    Our website is always free!<br />
-                                                    You can add your own projects to be gamify, no strings attached!
-                                                </Typography>
-                                            </Grid>
-                                        </Grid>
-                                        <br /><br />
-                                    </Paper>
-                                </Box>
                             </Box>
+                            <br /><br /><br /><br /><br /><br /><br /><br />
                         </div>
                     </Grid>
                 </Grid>

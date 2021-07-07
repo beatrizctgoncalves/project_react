@@ -25,10 +25,6 @@ module.exports = function (express, services, aux, authization) {
     }, signIn);
     router.post('/logout', authenticate.logout, logOut);
 
-    //router.get(`/notifications/:username`, getUserNotifications); //Get all user's notifications
-    //router.post(`/notifications/:username/groups/:group_id`, addMemberToGroup); //Add a specific user to a group
-    //router.delete(`/notifications/:username/groups/:group_id`, removeUserNotification);
-
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
     router.delete('/:username', deleteUser);
@@ -44,6 +40,7 @@ module.exports = function (express, services, aux, authization) {
     }
 
     function signIn(req, res) {
+        console.log(req.body)
         const username = req.body.username
         services.getUser(username)
             .catch(err => {
@@ -64,29 +61,6 @@ module.exports = function (express, services, aux, authization) {
             res.json({ message: "Something wrong with logout" })
         }
     }
-
-    /*
-    function getUserNotifications(req, res) { //Implementation of the route to get all notifications of a user
-        aux.promisesAsyncImplementation(
-            services.getUserNotifications(req.params.username),
-            res
-        );
-    }
-
-    function addMemberToGroup(req, res) { //Implementation of the route to add a user to a specific group
-        aux.promisesAsyncImplementation(
-            services.addMemberToGroup(req.params.group_id, req.params.username),
-            res
-        );
-    }
-
-    function removeUserNotification(req, res) { //Implementation of the route to delete a specific notification of a user
-        aux.promisesAsyncImplementation(
-            services.removeUserNotification(req.params.username, req.params.group_id),
-            res
-        );
-    }
-*/
 
     function getUser(req, res) {
         aux.promisesAsyncImplementation(

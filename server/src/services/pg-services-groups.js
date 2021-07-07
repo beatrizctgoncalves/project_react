@@ -273,31 +273,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 })
         },
 
-        /*addMemberNotification: function (group_id, member, manager) { //add the notification to the user
-            return databaseUsers.getUser(member) //check if the user exists
-                .then(memberObj => {
-                    return databaseGroups.getGroupDetails(group_id) //check if the group exists
-                        .then(groupObj => {
-                            const userExists = groupObj.members.findIndex(m => m.user === member)
-                            if (userExists !== -1) {  //check if the user already exists in the group
-                                return pgResponses.setError(
-                                    pgResponses.FORBIDDEN,
-                                    pgResponses.FORBIDDEN_MSG
-                                )
-                            }
-                            return databaseUsers.addNotificationToUser(group_id, memberObj.id, manager)
-                                .then(() => {
-                                    return pgResponses.setSuccessUri(
-                                        pgResponses.OK,
-                                        pgResponses.index.api,
-                                        pgResponses.index.groups,
-                                        group_id
-                                    )
-                                })
-                        })
-                })
-        },*/
-
         removeMemberFromGroup: function (group_id, username) {
             return databaseGroups.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {

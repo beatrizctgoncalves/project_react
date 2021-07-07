@@ -6,17 +6,14 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { useStyles } from './Styles/Style';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import { mainListItems, otherListItems, secondaryListItems } from './ListItems';
 import { toast } from 'react-toastify';
 import { logout } from '../Services/AuthenticationService';
-import { getUserNotifications } from '../Services/BasicService';
 import InputIcon from '@material-ui/icons/Input';
 
 
@@ -52,22 +49,6 @@ function Navbar() {
             })
     }
 
-    function handleNotifications() {
-        getUserNotifications(username)
-            .then(resp => window.location.replace('/notifications'))
-            .catch(err => {
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
-    }
-
     return (
         <>
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -85,16 +66,9 @@ function Navbar() {
                         Pluggable Gamification
                     </Typography>
                     {username ?
-                        <>
-                            <Button color="inherit">
-                                <Badge badgeContent={4} color="secondary" onClick={handleNotifications}>
-                                    <NotificationsIcon />
-                                </Badge>
-                            </Button>
-                            <Button color="inherit" onClick={handleLogout}>
-                                <InputIcon />
-                            </Button>
-                        </>
+                        <Button color="inherit" onClick={handleLogout}>
+                            <InputIcon />
+                        </Button>
                         : ''}
                 </Toolbar>
             </AppBar>

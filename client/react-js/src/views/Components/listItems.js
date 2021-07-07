@@ -10,6 +10,7 @@ import UserPlusIcon from '@material-ui/icons/PersonAdd';
 import LockOpen from '@material-ui/icons/LockOpen';
 import Home from '@material-ui/icons/Home';
 import React from 'react';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 
 const username = window.sessionStorage.getItem("username")
@@ -42,6 +43,10 @@ function handleProfile() {
   window.location.replace(`/profile/${username}`);
 }
 
+function handleProfileEdit() {
+  window.location.replace(`/profile/${username}/edit`);
+}
+
 
 export const mainListItems = (
   <div>
@@ -51,12 +56,14 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Home" />
     </ListItem>
+
     <ListItem button onClick={handleAbout}>
       <ListItemIcon>
         <MenuBook />
       </ListItemIcon>
       <ListItemText primary="About" />
     </ListItem>
+
     <ListItem button onClick={handleContacts}>
       <ListItemIcon>
         <PeopleIcon />
@@ -76,6 +83,14 @@ export const secondaryListItems = (
         </ListItemIcon>
         <ListItemText primary={username} />
       </ListItem>
+
+      <ListItem button onClick={handleProfileEdit}>
+        <ListItemIcon>
+          <SettingsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Settings" />
+      </ListItem>
+
       <ListItem button onClick={handleGroups}>
         <ListItemIcon>
           <AssignmentIcon />

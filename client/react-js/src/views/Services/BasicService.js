@@ -31,24 +31,6 @@ export async function updateUser(username, updatedUser) {
         })
 }
 
-export async function getUserNotifications(username) {
-    const uri = `${username}`
-
-    return makeRequest(urls.users.concat(uri))
-        .then(resp => {
-            return resp
-        })
-}
-
-export async function removeUserNotification(username, group_id) {
-    const uri = `/notifications/${username}/groups/${group_id}`
-
-    return makeRequest(urls.users.concat(uri), {}, "DELETE")
-        .then(resp => {
-            return resp
-        })
-}
-
 export async function getUserGroups(owner) {
     const uri = `groups/owner/${owner}`
 
@@ -144,10 +126,28 @@ export async function addSprintToGroup(groupId, body) {
         })
 }
 
+export async function removeSprintFromGroup(groupId, body) {
+    const uri = `groups/${groupId}/sprints`
+
+    return makeRequest(urls.groups.concat(uri), body, "DELETE")
+        .then(resp => {
+            return resp
+        })
+}
+
 export async function addTaskToGroup(groupId, body) {
     const uri = `groups/${groupId}/tasks`
 
     return makeRequest(urls.groups.concat(uri), body, "POST")
+        .then(resp => {
+            return resp
+        })
+}
+
+export async function removeTaskFromGroup(groupId, body) {
+    const uri = `groups/${groupId}/tasks`
+
+    return makeRequest(urls.groups.concat(uri), body, "DELETE")
         .then(resp => {
             return resp
         })

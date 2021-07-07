@@ -119,7 +119,7 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
-        removeMemberGroup: function (username, groupId) { //TODO
+        removeMemberGroup: function (username, groupId) {
             let requestBody = undefined
             return this.getUser(username)
                 .then(userObj => {

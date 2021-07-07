@@ -28,7 +28,6 @@ import EditIcon from '@material-ui/icons/Edit';
 
 export default function Groups() {
     const [groups, setGroups] = useState([])
-    const [edit, setEdit] = useState(false)
     const owner = window.sessionStorage.getItem("username")
     const [newGroup, setNewGroup] = useState({ owner: owner })
 
@@ -60,7 +59,6 @@ export default function Groups() {
                     }
                 })
                 setGroups(aux)
-                setEdit(false)
             })
             .catch(err => {
                 toast.error(err.body, {
@@ -82,9 +80,7 @@ export default function Groups() {
                     .then(group => {
                         let aux = groups
                         aux.push(group.message)
-                        console.log(aux)
                         setGroups(aux)
-                        setEdit(false)
                     })
             })
             .catch(err => {
@@ -138,7 +134,7 @@ export default function Groups() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {groups.map((group) => 
+                                        {groups.map((group) =>
                                             <TableRow key={group.id}>
                                                 <TableCell>
                                                     {group.name}
