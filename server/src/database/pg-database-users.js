@@ -10,8 +10,7 @@ function database(pgResponses, requests) {
                 "surname": surname,
                 "email": email,
                 "avatar": "http://mundocarreira.com.br/wp-content/uploads/2015/08/1-profissional-multifuncional.jpg",
-                "groupsMember": [],
-                "notifications": []
+                "groupsMember": []
             });
 
             return requests.makeFetchElastic(requests.index.users.concat('_doc'), requests.arrayMethods.POST, requestBody)
@@ -82,40 +81,6 @@ function database(pgResponses, requests) {
                         })
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
-        },
-
-        addNotificationToUser: function (group_id, memberId, manager) {
-            var requestBody = JSON.stringify({
-                "script": {
-                    "lang": "painless",
-                    "inline": "ctx._source.notifications.add(params.notifications)",
-                    "params": {
-                        "notifications": {
-                            "manager": manager,
-                            "group_id": group_id
-                        }
-                    }
-                }
-            });
-
-            return requests.makeFetchElastic(requests.index.users.concat(`_update/${memberId}`), requests.arrayMethods.POST, requestBody)
-                .then(body => body._id)
-                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
-        },
-
-        removeUserNotification: function (user_id, notification_index) {
-            var requestBody = JSON.stringify({
-                "script": {
-                    "lang": "painless",
-                    "inline": "ctx._source.notifications.remove(params.notification)",
-                    "params": {
-                        "notification": notification_index
-                    }
-                }
-            });
-            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${user_id}`), requests.arrayMethods.POST, requestBody)
-                .then(body => body._id)
-                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
         removeMemberGroup: function (username, groupId) {
