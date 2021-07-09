@@ -308,6 +308,17 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             })
                             return Promise.all(promisses)
                         })
+                        .then(() => {
+                            let promisses =[]
+                            groupObj.tasks.forEach((task,i) => {
+                                let user_task_index = task.members.findIndex(m => m == username)
+                                
+                                if(user_task_index != -1){
+                                    promisses.push(databaseGroups.removeMembeFromTask(group_id,i,user_task_index))
+                                }
+                            })
+                            return Promise.all(promisses)
+                        })
                         .then(() => databaseGroups.removeMemberFromGroup(group_id, user_index)) //remove the user by index
                         .then(group => {
                             return pgResponses.setSuccessUri(
