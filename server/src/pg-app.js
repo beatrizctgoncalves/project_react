@@ -26,7 +26,7 @@ module.exports = async function() {
     try {
         let authization = await require('@authization/authization').setup({ app, db: authizationConfig.dbConfigs, rbac_opts: authizationConfig.rbac_opts });
         const servicesGroups = require('./services/pg-services-groups')(databaseGroups, databaseUsers, pgResponses);
-        const servicesUsers = require('./services/pg-services-users')(databaseUsers, databaseGroups, pgResponses, authization);
+        const servicesUsers = require('./services/pg-services-users')(databaseUsers, databaseGroups, servicesGroups, pgResponses, authization);
 
         const webApi = require('./model/pg-web-api')(express, servicesGroups, servicesPlugins, aux); //Import the web-api
         const usersCreator = require('./model/pg-users')(express, servicesUsers, aux, authization);

@@ -42,6 +42,9 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         getUserGroups: function (owner) {
             return databaseGroups.getUserGroups(owner)
                 .then(groups => {
+                    if(!groups){
+                        return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG);
+                    }
                     return pgResponses.setSuccessList(
                         pgResponses.OK,
                         groups
@@ -61,7 +64,17 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         },
 
         deleteGroup: function (group_id) {
-            return databaseGroups.deleteGroup(group_id)
+            return databaseGroups.getGroupDetails(group_id)
+                .then(groupObj => {
+                    let promisses = []
+                    groupObj.members.forEach( member => {
+                        if(member != groupObj.owner){
+                            promisses.push(databaseUsers.removeMemberGroup(member,group_id))
+                        }
+                    })
+                    return Promise.all(promisses)
+                })
+                .then(() => databaseGroups.deleteGroup(group_id))
                 .then(group => {
                     return pgResponses.setSuccessUri(
                         pgResponses.OK,
@@ -226,7 +239,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(userObj => {
                     return databaseGroups.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            const userExists = groupObj.members.findIndex(m => m === username)
+                            const userExists = groupObj.members.findIndex(m => m == username)
                             if (userExists !== -1) {  //check if the user already exists in the group
                                 return pgResponses.setError(
                                     pgResponses.FORBIDDEN,
@@ -252,12 +265,12 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(userObj => {
                     return databaseGroups.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            const project_index = groupObj.projects.findIndex(p => p.id === project_id && p.URL === project_URL)
-                            const userExists = groupObj.members.findIndex(m => m === username)
-                            if (userExists === -1 || project_index === -1) {
+                            const project_index = groupObj.projects.findIndex(p => p.id == project_id && p.URL == project_URL)
+                            const userExists = groupObj.members.findIndex(m => m == username)
+                            if (userExists == -1 || project_index == -1) {
                                 return pgResponses.setError(
-                                    pgResponses.FORBIDDEN,
-                                    pgResponses.FORBIDDEN_USER_INFO_MSG
+                                    pgResponses.NOT_FOUND,
+                                    pgResponses.NOT_FOUND_USER_PROJECT_MSG
                                 )
                             }
                             return databaseGroups.addMemberInfoToProject(group_id, project_index, username, memberCredentials)
@@ -276,15 +289,26 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         removeMemberFromGroup: function (group_id, username) {
             return databaseGroups.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {
-                    const user_index = groupObj.members.findIndex(member => member === username)  //get the user's index
-                    if (user_index === -1) { //the user doesnt exist in the group
-                        return pgResponses.setError(
+                    const user_index = groupObj.members.findIndex(member => member == username)  //get the user's index
+                    if (user_index == -1) { 
+                        return pgResponses.setError( //the user doesnt exist in the group
                             pgResponses.NOT_FOUND,
                             pgResponses.NOT_FOUND_USER_MSG
                         );
                     }
                     return databaseUsers.removeMemberGroup(username, group_id)
-                        .then(databaseGroups.removeMemberFromGroup(group_id, user_index)) //remove the user by index
+                        .then(() => {
+                            let promisses =[]
+                            groupObj.projects.forEach((project,i) => {
+                                let user_project_index = project.memberCredentials.findIndex(mc => mc.AppUsername == username)
+                                
+                                if(user_project_index != -1){
+                                    promisses.push(databaseGroups.removeMemberInfoFromProject(group_id,i,user_project_index))
+                                }
+                            })
+                            return Promise.all(promisses)
+                        })
+                        .then(() => databaseGroups.removeMemberFromGroup(group_id, user_index)) //remove the user by index
                         .then(group => {
                             return pgResponses.setSuccessUri(
                                 pgResponses.OK,
@@ -299,7 +323,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
         addSprintToGroup: function (group_id, title, beginDate, endDate) {
             return databaseGroups.getGroupDetails(group_id) //check if the group exists
                 .then(groupObj => {
-                    const sprintExists = groupObj.sprints.findIndex(s => s.title === title)
+                    const sprintExists = groupObj.sprints.findIndex(s => s.title == title)
                     if (sprintExists !== -1) {  //check if the sprint already exists in the group
                         return pgResponses.setError(
                             pgResponses.FORBIDDEN,
@@ -376,29 +400,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                         })
                 })
         },
-
-        /*getGroupRankings: function(group_id, url, email, token) {
-            return databaseGroups.getGroupDetails(group_id)
-                .then(groupObj => groupObj.projects.map(p => apiJira.getIssues(url, email, token, p.key)))
-                .then(issuesObj => Promise.all(issuesObj))
-                .then(issues => { 
-                    return issues[0].map(i => {
-                        if(i.state.statusCategory.key === 'done') 
-                            return databaseGroups.addRatingsToGroup(group_id, i.key, i.assignee.accountId, pgScores.ISSUE)
-                    })
-                })
-                .then(addedIssueObj => Promise.all(addedIssueObj))
-                .then(ratings => {
-                    return pgResponses.setSuccessList(
-                        pgResponses.OK,
-                        ratings
-                    )
-                })
-        },
-
-        getRankings: function() {
-            //TODO
-        }*/
     }
     return serv;
 }

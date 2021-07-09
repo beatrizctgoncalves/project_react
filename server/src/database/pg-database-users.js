@@ -50,7 +50,7 @@ function database(pgResponses, requests) {
                 .then(userObj => {
                     return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {
-                            if (body.result === 'updated') {
+                            if (body.result == 'updated') {
                                 return body._id;
                             } else {
                                 return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
@@ -75,7 +75,7 @@ function database(pgResponses, requests) {
                 .then(userObj => {
                     return requests.makeFetchElastic(requests.index.users.concat(`_update/${userObj.id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {
-                            if (body.result === 'updated') {
+                            if (body.result == 'updated') {
                                 return body._id;
                             } else {
                                 return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
@@ -123,8 +123,8 @@ function database(pgResponses, requests) {
             let requestBody = undefined
             return this.getUser(username)
                 .then(userObj => {
-                    const group_index = userObj.groupsMember.findIndex(group => group === groupId)  //get the groups's index
-                    if (group_index === -1) { //the user doesnt exist in the group
+                    const group_index = userObj.groupsMember.findIndex(group => group == groupId)  //get the groups's index
+                    if (group_index == -1) { //the user doesnt exist in the group
                         return pgResponses.setError(
                             pgResponses.NOT_FOUND,
                             pgResponses.NOT_FOUND_USER_MSG
@@ -150,7 +150,7 @@ function database(pgResponses, requests) {
             return this.getUser(username)
                 .then(userObj => requests.makeFetchElastic(requests.index.users.concat(`_doc/${userObj.id}`), requests.arrayMethods.DELETE, null))
                 .then(body => {
-                    if (body.result === 'deleted') return body.username;
+                    if (body.result == 'deleted') return body.username;
                     else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_USER_MSG);
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))

@@ -1,6 +1,6 @@
 'use strict'
 
-function services(databaseUsers, databaseGroups, pgResponses, authization) {
+function services(databaseUsers, databaseGroups, servicesGroups, pgResponses, authization) {
     const authUser = authization.user
 
     const serv = {
@@ -76,39 +76,7 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
                     )
                 })
         },
-
-        getUserNotifications: function (username) {
-            return databaseUsers.getUser(username) //check if the user exists
-                .then(user => {
-                    return pgResponses.setSuccessList(
-                        pgResponses.OK,
-                        user.notifications
-                    )
-                })
-        },
-
-        removeUserNotification: function (username, group_id) {
-            return databaseUsers.getUser(username) //check if the user exists
-                .then(userObj => {
-                    const notification_index = userObj.notifications.findIndex(n => n.group_id === group_id)  //get the notification's index
-                    if (notification_index === -1) { //the notification doesnt exist in the user
-                        return pgResponses.setError(
-                            pgResponses.NOT_FOUND,
-                            pgResponses.NOT_FOUND_USER_MSG
-                        );
-                    }
-                    return databaseUsers.removeUserNotification(userObj.id, notification_index) //remove the user by index
-                        .then(() => {
-                            return pgResponses.setSuccessUri(
-                                pgResponses.OK,
-                                pgResponses.index.users,
-                                pgResponses.index.notifications,
-                                username
-                            )
-                        })
-                })
-        },
-
+        
         addMemberToGroup: function (group_id, member) {
             return databaseGroups.addMemberToGroup(group_id, member)
                 .then(() => {
@@ -131,16 +99,30 @@ function services(databaseUsers, databaseGroups, pgResponses, authization) {
         },
 
         deleteUser: function (username) {
-            return this.deleteFromAuthization(username)
+            try {
+                databaseGroups.getUserGroups(username)
+            } catch (error) {
+                
+            }
+            return databaseGroups.getUserGroups(username)  //remove groups which username is owner
+                .then(groups => {
+                    if(!groups) return undefined
+                    let promisses = groups.map(g => servicesGroups.deleteGroup(g.id))
+                    return Promise.all(promisses)
+                })
+                .then(() => servicesGroups.getUserMemberGroups(username))
+                .then(groups => {
+                    if(!groups) return undefined
+                    let promisses = groups.body.map(g => servicesGroups.removeMemberFromGroup(g.id,username))
+                    return Promise.all(promisses)
+                })
+                .then(() => this.deleteFromAuthization(username))
                 .then(() => databaseUsers.deleteUser(username))
-                .then(() => databaseGroups.getUserGroups(username))
-                .then(groups => groups.map(g => databaseGroups.removeGroup(g.id)))
-                .then(result => Promise.all(result))
                 .then(() => {
                     return pgResponses.setSuccessUri(
                         pgResponses.OK,
                         pgResponses.index.users,
-                        username,
+                        "/" + username,
                         ""
                     )
                 })

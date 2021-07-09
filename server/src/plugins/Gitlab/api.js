@@ -25,7 +25,6 @@ function apiGitlab() {
                     return {
                         "id": body.id,
                         "owner_name": body.owner.username,
-                        "owner_id": body.owner.id,
                         "title": body.name,
                         "description": body.description,
                         "avatar": body.avatar_url,
