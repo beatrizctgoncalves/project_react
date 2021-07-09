@@ -40,8 +40,7 @@ function database(pgResponses, requests) {
                     "source": "if(params.name !== null) ctx._source.name = params.name; " +
                         "if(params.surname !== null) ctx._source.surname = params.surname; " +
                         "if(params.avatar !== null) ctx._source.avatar = params.avatar;" +
-                        "if(params.groupsMember !== null) ctx._source.groupsMember = params.groupsMember;" +
-                        "if(params.notifications !== null) ctx._source.notifications = params.notifications;",
+                        "if(params.groupsMember !== null) ctx._source.groupsMember = params.groupsMember;",
                     "params": updatedInfo
                 }
             });
