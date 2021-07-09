@@ -99,11 +99,6 @@ function services(databaseUsers, databaseGroups, servicesGroups, pgResponses, au
         },
 
         deleteUser: function (username) {
-            try {
-                databaseGroups.getUserGroups(username)
-            } catch (error) {
-                
-            }
             return databaseGroups.getUserGroups(username)  //remove groups which username is owner
                 .then(groups => {
                     if(!groups) return undefined
