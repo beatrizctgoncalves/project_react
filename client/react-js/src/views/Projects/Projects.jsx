@@ -48,14 +48,15 @@ function Projects(props) {
         const projectId = project.id
         removeProjectFromGroup(group.id, projectId, project.URL)
             .then(resp => {
-                let aux = group.projects.filter(project => {
+                let aux = group
+                aux.projects = aux.projects.filter(project => {
                     if (project.id !== projectId) {
                         return project
                     } else {
                         return null
                     }
                 })
-                setGroup(aux)
+                setGroup({...aux})
             })
             .catch(err => {
                 toast.error(err.body, {

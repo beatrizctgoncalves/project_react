@@ -83,14 +83,15 @@ function Sprint(props) {
     function handleSprintDelete(title) {
         removeSprintFromGroup(group.id, { title: title })
             .then(resp => {
-                let aux = group.sprints.filter(sprint => {
+                let aux = group
+                aux.sprints = group.sprints.filter(sprint => {
                     if (sprint.title !== title) {
                         return sprint
                     } else {
                         return null
                     }
                 })
-                setGroup(aux)
+                setGroup({ ...aux })
             })
             .catch(err => {
                 toast.error(err.body, {

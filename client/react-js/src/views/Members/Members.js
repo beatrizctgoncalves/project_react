@@ -75,14 +75,15 @@ function Members(props) {
     function handleMemberDelete(m) {
         removeMemberFromGroup(group.id, m)
             .then(resp => {
-                let aux = group.members.filter(member => {
+                let aux = group
+                aux.members = aux.members.filter(member => {
                     if (member !== m) {
                         return member
                     } else {
                         return null
                     }
                 })
-                setGroup(aux)
+                setGroup({...aux})
             })
             .catch(err => {
                 toast.error(err.body, {

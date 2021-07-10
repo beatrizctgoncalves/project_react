@@ -124,14 +124,15 @@ function Task(props) {
     function handleTaskDelete(title) {
         removeTaskFromGroup(group.id, { title: title })
             .then(resp => {
-                let aux = group.tasks.filter(task => {
+                let aux = group
+                aux.tasks = group.tasks.filter(task => {
                     if (task.title !== title) {
                         return task
                     } else {
                         return null
                     }
                 })
-                setGroup(aux)
+                setGroup({ ...aux })
             })
             .catch(err => {
                 toast.error(err.body, {
