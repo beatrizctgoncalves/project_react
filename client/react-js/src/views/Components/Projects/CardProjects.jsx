@@ -18,13 +18,21 @@ function CardProject(props) {
         const projectId = project.id
         removeProjectFromGroup(group.id, projectId, project.URL)
             .then(resp => {
-                let aux = groupUpdated.projects.filter(project => {
+                console.log(groupUpdated)
+                let aux  = [...groupUpdated]
+                console.log("1111111111")
+                console.log(aux)
+                console.log(aux.projects)
+               aux.projects = aux.projects.filter(project => {
                     if (project.id !== projectId) {
                         return project
                     } else {
                         return null
                     }
                 })
+                console.log("22222222222222")
+                console.log(aux)
+                console.log(aux.projects)
                 setGroup(aux)
             })
             .catch(err => {

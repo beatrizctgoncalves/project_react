@@ -77,11 +77,7 @@ export default function Groups() {
         createGroup(newGroup)
             .then(resp => {
                 getSpecificGroup(resp.message.id)
-                    .then(group => {
-                        let aux = groups
-                        aux.push(group.message)
-                        setGroups(aux)
-                    })
+                    .then(group => setGroups([...groups,group.message]) )
             })
             .catch(err => {
                 toast.error(err.body, {

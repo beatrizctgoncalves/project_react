@@ -13,6 +13,7 @@ module.exports = function (express, services, aux, authization) {
     router.post('/signin', async (req, res, next) => {
         await authenticate.usingLocal(req, res, err => {
             if (err) {
+            
                 const myError = {
                     status: err.status,
                     body: err.message
@@ -28,6 +29,10 @@ module.exports = function (express, services, aux, authization) {
     router.get('/:username', getUser);
     router.patch('/:username', updateUser);
     router.delete('/:username', deleteUser);
+
+    router.get('/google/signIn', authenticate.usingGoogle)
+
+    router.get('/google/callback', authenticate.usingGoogleCallback, successCallback)
 
     return router;
 
@@ -81,5 +86,17 @@ module.exports = function (express, services, aux, authization) {
             services.deleteUser(req.params.username),
             res
         );
+    }
+
+    
+    function successCallback (req, res)  {
+
+        if (req.isAuthenticated()) {
+            res.json({ message: "Successfull logout SignIn" })  
+        }
+        else {
+            res.json({ message: "Something wrong with logout" }) 
+            
+        }
     }
 }

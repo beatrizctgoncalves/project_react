@@ -24,7 +24,7 @@ module.exports = async function() {
     const servicesPlugins = require('./services/pg-services-plugins')(databaseGroups, databaseUsers, pgResponses);
 
     try {
-        let authization = await require('@authization/authization').setup({ app, db: authizationConfig.dbConfigs, rbac_opts: authizationConfig.rbac_opts });
+        let authization = await require('@authization/authization').setup({ app, db: authizationConfig.dbConfigs, rbac_opts: authizationConfig.rbac_opts, strategies:authizationConfig.strategies });
         const servicesGroups = require('./services/pg-services-groups')(databaseGroups, databaseUsers, pgResponses);
         const servicesUsers = require('./services/pg-services-users')(databaseUsers, databaseGroups, pgResponses, authization);
 
