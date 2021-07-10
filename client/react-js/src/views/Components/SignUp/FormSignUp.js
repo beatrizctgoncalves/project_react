@@ -22,7 +22,6 @@ function FormSignUp() {
     function handleSignUpClick() {
         signUpFetch(userToCreate)
             .then(resp => {
-                console.log(resp)
                 loginFetch(userToCreate.username, userToCreate.password)
                     .then(resp => {
                         window.sessionStorage.setItem('username', userToCreate.username);

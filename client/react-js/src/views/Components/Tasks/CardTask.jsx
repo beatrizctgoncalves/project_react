@@ -9,11 +9,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 
 
-function CardProject(props) {
+function CardTask(props) {
     const { task, group } = props
     const owner = window.sessionStorage.getItem('username');
     const [toUpdateTasks, setUpdatedTasks] = useState(false)
-    const [updateTask, setUpdateTask] = useState({ title: task.title })
+    const [updateTask, setUpdateTask] = useState({})
     const [groupUpdated, setGroup] = useState([])
 
     const [value, setValue] = React.useState('');
@@ -21,12 +21,10 @@ function CardProject(props) {
 
     const handleRadioChange = (event) => {
         setValue(event.target.value);
+        console.log(event.target.id)
+        setUpdatedTasks({ ...updateTask, member: event.target.id });
         setError(false);
     };
-
-    const handlePoints = event => {
-        setUpdateTask({ ...updateTask, points: event.target.value })
-    }
 
     function handleToEditTasksChange() {
         if (toUpdateTasks) {
@@ -96,27 +94,13 @@ function CardProject(props) {
                         <div className={classes.cardGroup}>
                             <ul className={classes.listItem}>
                                 <Typography variant="body1" color='primary'>
-                                    Begin Date
+                                    Date
                                 </Typography>
 
                                 <div>
                                     <ul className={classes.listItem}>
                                         <Typography variant="body2" color="textSecondary">
                                             {task.beginDate}
-                                        </Typography>
-                                    </ul>
-                                </div>
-                            </ul>
-
-                            <ul className={classes.listItem}>
-                                <Typography variant="body1" color='primary'>
-                                    End Date
-                                </Typography>
-
-                                <div>
-                                    <ul className={classes.listItem}>
-                                        <Typography variant="body2" color="textSecondary">
-                                            {task.endDate}
                                         </Typography>
                                     </ul>
                                 </div>
@@ -144,34 +128,23 @@ function CardProject(props) {
                                             Give scores about this task!
                                         </Typography>
 
-                                        {group.members.map(member =>
+                                        {group.members.length !== 0 ? group.members.map(member =>
                                             <>
-                                                <form onSubmit={handleUpdateTask}>
+                                                <form key={member}>
                                                     <FormControl component="fieldset" error={error} className={classes.formControl} align='center'>
-                                                        <RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
-                                                            <FormControlLabel value={member} control={<Radio />} label={member} />
+                                                        <RadioGroup aria-label="member" name="member" id={member} value={value} onChange={handleRadioChange}>
+                                                            <FormControlLabel value={member} id={member} control={<Radio />} label={member} />
                                                         </RadioGroup>
-
-                                                        <TextField
-                                                            type="text"
-                                                            id="points"
-                                                            name="points"
-                                                            required
-                                                            fullWidth
-                                                            label="Points"
-                                                            onChange={handlePoints}
-                                                        />
-
                                                         <br />
 
-                                                        <Button size="small" type="submit" color="primary" className={classes.button}>
+                                                        <Button size="small" type="submit" color="primary" onClick={handleUpdateTask} className={classes.button}>
                                                             Save
                                                         </Button>
                                                     </FormControl>
                                                 </form >
                                                 <br />
                                             </>
-                                        )}
+                                        ) : ''}
                                     </Grid>
                                 </Box>
                                 <br />
@@ -194,4 +167,4 @@ function CardProject(props) {
     )
 }
 
-export default CardProject
+export default CardTask

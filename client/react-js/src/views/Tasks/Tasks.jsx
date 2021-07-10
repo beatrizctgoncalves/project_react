@@ -42,6 +42,10 @@ function Task(props) {
         setNewTask({ ...newTask, title: event.target.value })
     }
 
+    const handlePoints = event => {
+        setNewTask({ ...newTask, points: event.target.value })
+    }
+
     const handleBeginDate = event => {
         setNewTask({ ...newTask, beginDate: event.target.value })
     }
@@ -143,6 +147,19 @@ function Task(props) {
                                                 fullWidth
                                                 label="Title"
                                                 onChange={handleTitle}
+                                            />
+                                        </Grid>
+                                        <br />
+
+                                        <Grid item xs={6} align='center'>
+                                            <TextField
+                                                type="text"
+                                                id="points"
+                                                name="points"
+                                                required
+                                                fullWidth
+                                                label="Points"
+                                                onChange={handlePoints}
                                             />
                                         </Grid>
                                         <br />
