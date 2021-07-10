@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { addMemberToGroup, getSpecificGroup, removeMemberFromGroup, getUser } from '../Services/BasicService.js';
+import { addMemberToGroup, getSpecificGroup, removeMemberFromGroup } from '../Services/BasicService.js';
 import Footer from '../Components/Footer';
 import GoBack from '../Components/GoBack';
-import { Container, CssBaseline, Grid, Box, TextField, Typography, Card, CardContent, CardMedia, CardActions, Button } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Box, TextField, Typography, Card, CardContent, CardActions, Button } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { useStyles } from '../Components/Styles/Style';
 import { ButtonGreen } from '../Components/Styles/ColorButtons.js';

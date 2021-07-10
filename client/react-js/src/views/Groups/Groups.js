@@ -86,9 +86,7 @@ export default function Groups() {
             .then(resp => {
                 getSpecificGroup(resp.message.id)
                     .then(group => {
-                        let aux = groups
-                        aux.push(group.message)
-                        setGroups(aux)
+                        setGroups([...groups, group.message])
                     })
             })
             .catch(err => {
