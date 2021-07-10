@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { addSprintToGroup, getSpecificGroup } from '../Services/BasicService.js';
+import { addSprintToGroup, getSpecificGroup, removeSprintFromGroup } from '../Services/BasicService.js';
 import Footer from '../Components/Footer';
 import GoBack from '../Components/GoBack';
 import { useStyles } from '../Components/Styles/Style';
-import { Typography, Container, CssBaseline, Grid, Box } from '@material-ui/core';
+import { Typography, Container, CssBaseline, Grid, Box, Card, CardContent, CardActions, TextField, CardHeader } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../Components/Styles/ColorButtons';
-import CardSprint from '../Components/Sprint/CardSprint';
 import Navbar from '../Components/Navbar.js';
-import { TextField, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import { ButtonRed } from '../Components/Styles/ColorButtons';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 function Sprint(props) {
@@ -80,6 +80,31 @@ function Sprint(props) {
             })
     }
 
+    function handleSprintDelete(title) {
+        removeSprintFromGroup(group.id, { title: title })
+            .then(resp => {
+                let aux = group.sprints.filter(sprint => {
+                    if (sprint.title !== title) {
+                        return sprint
+                    } else {
+                        return null
+                    }
+                })
+                setGroup(aux)
+            })
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
+    }
+
     const classes = useStyles();
 
     return (
@@ -109,8 +134,57 @@ function Sprint(props) {
 
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} alignItems='center'>
-                        {group.sprints && group.sprints !== 0 ? group.sprints.map(sprint =>
-                            <CardSprint key={sprint.title} sprint={sprint} group={group} groupOwner={group.owner} />
+                        {group.sprints && group.sprints.length !== 0 ? group.sprints.map(sprint =>
+                            <Grid item xs={12} sm={6} md={4} key={sprint.title}>
+                                <Card className={classes.card}>
+                                    <CardHeader
+                                        subheader={sprint.title}
+                                        subheaderTypographyProps={{ align: 'center' }}
+                                        className={classes.cardHeader}
+                                    />
+
+                                    <CardContent>
+                                        <Box align='center'>
+                                            <div className={classes.cardGroup}>
+                                                <ul className={classes.listItem}>
+                                                    <Typography variant="body1" color='primary'>
+                                                        Begin Date
+                                                    </Typography>
+
+                                                    <div>
+                                                        <ul className={classes.listItem}>
+                                                            <Typography variant="body2" color="textSecondary">
+                                                                {sprint.beginDate}
+                                                            </Typography>
+                                                        </ul>
+                                                    </div>
+                                                </ul>
+
+                                                <ul className={classes.listItem}>
+                                                    <Typography variant="body1" color='primary'>
+                                                        End Date
+                                                    </Typography>
+
+                                                    <div>
+                                                        <ul className={classes.listItem}>
+                                                            <Typography variant="body2" color="textSecondary">
+                                                                {sprint.endDate}
+                                                            </Typography>
+                                                        </ul>
+                                                    </div>
+                                                </ul>
+                                            </div>
+                                        </Box>
+                                    </CardContent>
+                                    {owner === group.owner ?
+                                        <CardActions>
+                                            <ButtonRed size="small" color="primary" onClick={handleSprintDelete.bind(null, sprint.title)}>
+                                                <DeleteIcon />
+                                            </ButtonRed>
+                                        </CardActions>
+                                        : ''}
+                                </Card>
+                            </Grid>
                         ) :
                             <Grid item xs={12}>
                                 <Card>

@@ -17,11 +17,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from '../Components/Styles/Title';
-import { ButtonGrey, ButtonRed } from '../Components/Styles/ColorButtons';
+import { ButtonRed } from '../Components/Styles/ColorButtons';
 import GroupsMember from './GroupsMember';
 import Navbar from '../Components/Navbar';
 import GoBack from '../Components/GoBack';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -30,6 +29,7 @@ export default function Groups() {
     const [groups, setGroups] = useState([])
     const owner = window.sessionStorage.getItem("username")
     const [newGroup, setNewGroup] = useState({ owner: owner })
+    const [toCreateGroup, setCreateGroup] = useState(false)
 
     useEffect(() => {
         getUserGroups(owner)
@@ -47,6 +47,14 @@ export default function Groups() {
             })
     }, [owner])
 
+
+    function handleCreateChange() {
+        if (toCreateGroup) {
+            setCreateGroup(false)
+        } else {
+            setCreateGroup(true)
+        }
+    }
 
     function handleGroupDelete(groupId) {
         deleteGroup(groupId)
@@ -125,35 +133,43 @@ export default function Groups() {
                                 <Title>Your Own Groups</Title>
                                 <Table size="small">
                                     <TableHead>
-                                        <TableRow>
-                                            <TableCell>Name</TableCell>
-                                            <TableCell>Description</TableCell>
-                                            <TableCell>View</TableCell>
-                                            <TableCell align="right">Edit</TableCell>
-                                            <TableCell align="right">Remove</TableCell>
+                                        <TableRow color='primary'>
+                                            <TableCell align="center">Name</TableCell>
+                                            <TableCell align="center">Members</TableCell>
+                                            <TableCell align="center">Projects</TableCell>
+                                            <TableCell align="center">Sprints</TableCell>
+                                            <TableCell align="center">Tasks</TableCell>
+                                            <TableCell align="center">Edit</TableCell>
+                                            <TableCell align="center">Remove</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {groups.map((group) =>
+                                        {groups.map(group =>
                                             <TableRow key={group.id}>
-                                                <TableCell>
-                                                    {group.name}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {group.description}
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Link color="inherit" href={`/groups/${group.id}`}>
-                                                        <RemoveRedEye />
+                                                <TableCell align="center">
+                                                    <Link color="primary" href={`/groups/${group.id}`}>
+                                                        {group.name}
                                                     </Link>
                                                 </TableCell>
-                                                <TableCell align="right">
-                                                    <ButtonGrey variant="contained" onClick={handleEdit.bind(null, group.id)}>
-                                                        <EditIcon />
-                                                    </ButtonGrey>
+                                                <TableCell align="center">
+                                                    {group.members.length}
                                                 </TableCell>
-                                                <TableCell align="right">
-                                                    <ButtonRed variant="contained" onClick={handleGroupDelete.bind(null, group.id)}>
+                                                <TableCell align="center">
+                                                    {group.projects.length}
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    {group.sprints.length}
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    {group.tasks.length}
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <Button onClick={handleEdit.bind(null, group.id)}>
+                                                        <EditIcon />
+                                                    </Button>
+                                                </TableCell>
+                                                <TableCell align="center">
+                                                    <ButtonRed onClick={handleGroupDelete.bind(null, group.id)}>
                                                         <DeleteIcon />
                                                     </ButtonRed>
                                                 </TableCell>
@@ -173,45 +189,55 @@ export default function Groups() {
 
                         {/*Create Group*/}
                         <Grid item xs={12} md={4} lg={3}>
-                            <Paper className={fixedHeightPaper}>
-                                <Title>Create New Group</Title>
-                                <br />
-                                <input
-                                    variant="outlined"
-                                    margin="normal"
-                                    className={classes.formControl}
-                                    required
-                                    type="text"
-                                    name="name"
-                                    placeholder="Enter Group Name"
-                                    onChange={handleChange}
-                                />
-                                <br />
-                                <input
-                                    variant="outlined"
-                                    margin="normal"
-                                    className={classes.formControl}
-                                    required
-                                    type="text"
-                                    name="description"
-                                    onChange={handleChange}
-                                    placeholder="Enter Group Description"
-                                />
-                                <br />
+                            {toCreateGroup ?
+                                <Paper className={fixedHeightPaper}>
+                                    <Box align='center'>
+                                        <Title>Create New Group</Title>
+                                        <br />
+                                        <input
+                                            variant="outlined"
+                                            margin="normal"
+                                            className={classes.formControl}
+                                            required
+                                            type="text"
+                                            name="name"
+                                            placeholder="Enter Group Name"
+                                            onChange={handleChange}
+                                        />
+                                        <br />
+                                        <input
+                                            variant="outlined"
+                                            margin="normal"
+                                            className={classes.formControl}
+                                            required
+                                            type="text"
+                                            name="description"
+                                            onChange={handleChange}
+                                            placeholder="Enter Group Description"
+                                        />
+                                        <br />
 
-                                <div>
-                                    <Button
-                                        type="button"
-                                        className="button1"
-                                        fullWidth
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleGroupCreate}
-                                    >
-                                        Create Group
-                                    </Button>
-                                </div>
-                            </Paper>
+                                        <div>
+                                            <Button
+                                                type="button"
+                                                className="button1"
+                                                fullWidth
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={handleGroupCreate}
+                                            >
+                                                Save
+                                            </Button>
+                                        </div>
+                                    </Box>
+                                </Paper>
+                                : ""}
+
+                            <Box mt={2} align='center'>
+                                <Button variant="contained" color="primary" className={classes.margin} onClick={handleCreateChange}>
+                                    {toCreateGroup ? "-" : "Create Group"}
+                                </Button>
+                            </Box>
                         </Grid>
                     </Grid>
 

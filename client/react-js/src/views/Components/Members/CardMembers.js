@@ -55,47 +55,26 @@ function CardMembers(props) {
             })
     }
 
-
-    function handleUserProfile(member) {
-        window.location.replace(`/profile/${member}`)
-    }
-
     const classes = useStyles();
 
     return (
-        <Grid item xs={12} sm={6} md={4}>
-            <Card className={classes.card}>
-                <CardMedia
-                    component="img"
-                    alt="Member"
-                    height="220"
-                    src={user.avatar}
-                    title="Contemplative Reptile"
-                />
-                <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {user.name} {user.surname}
-                    </Typography>
-                    <Typography>
-                        {member}
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button size="small" color="primary" onClick={handleUserProfile.bind(null, member)}>
-                        View
-                    </Button>
-                    {groupOwner === username ?
-                        <>
-                            {user.username !== groupOwner ?
-                                <Button size="small" color="secondary" onClick={handleMemberDelete.bind(null, member)}>
-                                    <DeleteIcon />
-                                </Button>
-                                : ''}
-                        </>
-                        : ''}
-                </CardActions>
-            </Card>
-        </Grid>
+        <>
+            <CardMedia
+                component="img"
+                alt="Member"
+                height="220"
+                src={user.avatar}
+                title="Contemplative Reptile"
+            />
+            <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5" component="h2">
+                    {user.name} {user.surname}
+                </Typography>
+                <Typography>
+                    {member}
+                </Typography>
+            </CardContent>
+        </>
     )
 }
 

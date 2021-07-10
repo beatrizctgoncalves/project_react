@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { addTaskToGroup, getSpecificGroup } from '../Services/BasicService.js';
+import { addTaskToGroup, getSpecificGroup, removeTaskFromGroup, updateTaskOfGroup } from '../Services/BasicService.js';
 import Footer from '../Components/Footer';
 import GoBack from '../Components/GoBack';
 import { useStyles } from '../Components/Styles/Style';
-import { Typography, Container, CssBaseline, Grid, Box } from '@material-ui/core';
+import { Typography, Container, CssBaseline, Grid, Box, Card, Radio, RadioGroup, FormControl, TextField, CardHeader, CardContent, Button, CardActions, FormControlLabel } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../Components/Styles/ColorButtons';
-import CardTask from '../Components/Tasks/CardTask';
 import Navbar from '../Components/Navbar.js';
-import { TextField, Card } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 function Task(props) {
@@ -19,12 +18,13 @@ function Task(props) {
 
     const [toAddTasks, setAddTasks] = useState(false)
     const [newTask, setNewTask] = useState("")
+    const [updateTask, setUpdateTask] = useState({})
+    const [toUpdateTasks, setUpdatedTasks] = useState(false)
 
     useEffect(() => {
         getSpecificGroup(id)
             .then(resp => setGroup(resp.message))
             .catch(err => {
-                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -54,7 +54,7 @@ function Task(props) {
         setNewTask({ ...newTask, endDate: event.target.value })
     }
 
-    function handleToEditTasksChange() {
+    function handleToAddTasksChange() {
         if (toAddTasks) {
             setAddTasks(false)
         } else {
@@ -63,7 +63,6 @@ function Task(props) {
     }
 
     function handleAddTasks() {
-        console.log(id)
         addTaskToGroup(id, newTask)
             .then(resp => {
                 getSpecificGroup(id)
@@ -74,7 +73,67 @@ function Task(props) {
                     })
             })
             .catch(err => {
-                console.log(err)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
+    }
+
+
+    const [value, setValue] = React.useState('');
+    const [error, setError] = React.useState(false);
+
+    const handleRadioChange = (event) => {
+        setValue(event.target.value);
+        setUpdateTask({ ...updateTask, member: event.target.id });
+        setError(false);
+    };
+
+    function handleToEditTasksChange() {
+        if (toUpdateTasks) {
+            setUpdatedTasks(false)
+        } else {
+            setUpdatedTasks(true)
+        }
+    }
+
+    function handleUpdateTask(title) {
+        updateTaskOfGroup(group.id, { title: title, updatedInfo: updateTask })
+            .then(resp => {
+                setUpdatedTasks(false)
+            })
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
+    }
+
+    function handleTaskDelete(title) {
+        removeTaskFromGroup(group.id, { title: title })
+            .then(resp => {
+                let aux = group.tasks.filter(task => {
+                    if (task.title !== title) {
+                        return task
+                    } else {
+                        return null
+                    }
+                })
+                setGroup(aux)
+            })
+            .catch(err => {
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -116,8 +175,90 @@ function Task(props) {
 
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} alignItems='center'>
-                        {group.tasks && group.tasks !== 0 ? group.tasks.map(task =>
-                            <CardTask key={task.title} task={task} group={group} />
+                        {group.tasks && group.tasks.length !== 0 ? group.tasks.map(task =>
+                            <Grid item xs={12} sm={6} md={4} key={task.title}>
+                                <Card className={classes.card}>
+                                    <CardHeader
+                                        subheader={task.title}
+                                        subheaderTypographyProps={{ align: 'center' }}
+                                        className={classes.cardHeader}
+                                    />
+
+                                    <CardContent>
+                                        <Box align='center'>
+                                            <div className={classes.cardGroup}>
+                                                <ul className={classes.listItem}>
+                                                    <Typography variant="body1" color='primary'>
+                                                        Date
+                                                    </Typography>
+
+                                                    <div>
+                                                        <ul className={classes.listItem}>
+                                                            <Typography variant="body2" color="textSecondary">
+                                                                {task.beginDate}
+                                                            </Typography>
+                                                        </ul>
+                                                    </div>
+                                                </ul>
+
+                                                {!task.updatedInfo ?
+                                                    <Typography variant="body1" color="primary">
+                                                        Give points to a user if it is done!
+                                                    </Typography>
+                                                    :
+                                                    <Typography variant="body1" color="primary">
+                                                        You already gave points to a user for finishing this taks but you can give to other user.
+                                                    </Typography>
+                                                }
+                                            </div>
+                                        </Box>
+                                    </CardContent>
+                                    {owner === group.owner ?
+                                        <>
+                                            {toUpdateTasks ?
+                                                <>
+                                                    <Box mt={0} align='center'>
+                                                        <Grid item xs={6} align='center'>
+                                                            <Typography variant="body1" color="textSecondary">
+                                                                Give scores about this task!
+                                                            </Typography>
+
+                                                            {group.members.length !== 0 ? group.members.map(member =>
+                                                                <>
+                                                                    <form key={member}>
+                                                                        <FormControl component="fieldset" error={error} className={classes.formControl} align='center'>
+                                                                            <RadioGroup aria-label="member" name="member" id={member} value={value} onChange={handleRadioChange}>
+                                                                                <FormControlLabel value={member} id={member} control={<Radio />} label={member} />
+                                                                            </RadioGroup>
+                                                                            <br />
+
+                                                                            <Button size="small" type="submit" color="primary" onClick={handleUpdateTask.bind(null, task.title)} className={classes.button}>
+                                                                                Save
+                                                                            </Button>
+                                                                        </FormControl>
+                                                                    </form >
+                                                                    <br />
+                                                                </>
+                                                            ) : ''}
+                                                        </Grid>
+                                                    </Box>
+                                                    <br />
+                                                </>
+                                                : ""}
+                                            <CardActions>
+                                                <Grid item xs={12} align='left'>
+                                                    <Button size="small" color="primary" onClick={handleToEditTasksChange}>
+                                                        {toUpdateTasks ? "-" : "Update"}
+                                                    </Button>
+                                                </Grid>
+                                                <Button size="small" color="secondary" onClick={handleTaskDelete.bind(null, task.title)}>
+                                                    <DeleteIcon />
+                                                </Button>
+                                            </CardActions>
+                                        </>
+                                        : ''}
+                                </Card>
+                            </Grid>
                         ) :
                             <Grid item xs={12}>
                                 <Card>
@@ -223,7 +364,7 @@ function Task(props) {
                                 </Card> : ""}
 
                             <Box mt={3} align='center'>
-                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToEditTasksChange}>
+                                <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToAddTasksChange}>
                                     <AddIcon />
                                     {toAddTasks ? "" : "Add Task"}
                                 </ButtonGreen>

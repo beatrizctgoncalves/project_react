@@ -12,7 +12,7 @@ import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 import { toast } from 'react-toastify';
 
 
-export default function Orders() {
+export default function GroupsMember() {
     const owner = window.sessionStorage.getItem("username")
     const [groups, setGroups] = useState([])
 
@@ -35,36 +35,43 @@ export default function Orders() {
     return (
         <React.Fragment>
             <Title>Groups You Belong To</Title>
-            <Table size="small">
-                {groups.length !== 0 ? groups.map((group) => (
-                    <>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Description</TableCell>
-                                <TableCell align="right">View</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow key={group.id}>
-                                <TableCell>
-                                    {group.name}
-                                </TableCell>
-                                <TableCell>{group.description}</TableCell>
-                                <TableCell align="right">
-                                    <Link color="inherit" href={`/groups/${group.id}`}>
-                                        <RemoveRedEye />
-                                    </Link>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </>
-                )) :
-                    <Box mt={2}>
-                        You do not belong to any group!
-                    </Box>
-                }
-            </Table>
+
+            {groups.length !== 0 ? groups.map(group => (
+                <Table size="small" key={group.id}>
+                    <TableHead>
+                        <TableRow color='primary'>
+                            <TableCell align="center">Name</TableCell>
+                            <TableCell align="center">Members</TableCell>
+                            <TableCell align="center">Projects</TableCell>
+                            <TableCell align="center">Sprints</TableCell>
+                            <TableCell align="center">Tasks</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableCell align="center">
+                            <Link color="primary" href={`/groups/${group.id}`}>
+                                {group.name}
+                            </Link>
+                        </TableCell>
+                        <TableCell align="center">
+                            {group.members.length}
+                        </TableCell>
+                        <TableCell align="center">
+                            {group.projects.length}
+                        </TableCell>
+                        <TableCell align="center">
+                            {group.sprints.length}
+                        </TableCell>
+                        <TableCell align="center">
+                            {group.tasks.length}
+                        </TableCell>
+                    </TableBody>
+                </Table>
+            )) :
+                <Box mt={2}>
+                    You do not belong to any group!
+                </Box>
+            }
         </React.Fragment>
     );
 }

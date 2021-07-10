@@ -2,8 +2,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ButtonRed } from '../Styles/ColorButtons';
 import { Box, Button, TextField, Grid, CardContent, Divider } from '@material-ui/core';
 import React, { useState } from 'react';
-import { deleteUser, getUser, updateUser } from '../../Services/BasicService';
+import { deleteUser, updateUser } from '../../Services/BasicService';
 import { toast } from 'react-toastify';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { logout } from '../../Services/AuthenticationService';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,11 +33,17 @@ function FormProfile() {
 
     function handleEdit() {
         updateUser(username, updatedUser)
-            .then(resp => {
-                window.location.assign(`/profile`)
-            })
+            .then(resp => window.location.assign(`/profile/${username}`))
             .catch(err => {
-                toast.error(err.body)
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             })
     }
 
@@ -48,18 +56,28 @@ function FormProfile() {
     }
 
 
-    /*const [profile, setProfile] = useState([])
+    const [profile, setProfile] = useState([])
     function handleDelete() {
         deleteUser(username)
-            .then(resp => getUser(username))
             .then(resp => {
-                setProfile(profile)
-                setEdit(false)
+                logout()
+                    .then(resp => {
+                        window.sessionStorage.removeItem("username");
+                        window.location.replace('/');
+                    })
             })
             .catch(err => {
-                setError({ errorMessage: err.body, shouldShow: true });
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             })
-    }*/
+    }
 
     const classes = useStyles();
 
@@ -120,8 +138,8 @@ function FormProfile() {
             <Grid item xs={12} align='center'>
                 <Divider />
                 <Box mt={2}>
-                    <ButtonRed variant="contained" color="primary" className={classes.margin} onClick={'handleDelete'}>
-                        <i className="bi bi-trash-fill">&nbsp;&nbsp;</i>
+                    <ButtonRed color="primary" className={classes.margin} onClick={handleDelete}>
+                        <DeleteIcon />
                         Delete Profile Definitively
                     </ButtonRed>
                 </Box>
