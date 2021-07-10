@@ -45,7 +45,6 @@ module.exports = function (express, services, aux, authization) {
     }
 
     function signIn(req, res) {
-        console.log(req.body)
         const username = req.body.username
         services.getUser(username)
             .catch(err => {
@@ -61,7 +60,7 @@ module.exports = function (express, services, aux, authization) {
 
     function logOut(req, res) {
         if (!req.isAuthenticated()) {
-            res.json({ message: "Successfull logout SignIn" })
+            res.json({ message: "Successfull logout" })
         } else {
             res.json({ message: "Something wrong with logout" })
         }

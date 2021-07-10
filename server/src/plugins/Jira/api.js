@@ -1,7 +1,5 @@
 'use strict'
 
-const URL = 'https://pluggable-gamification.atlassian.net'
-
 const fetch = require('node-fetch');
 const pgResponses = require('../../services/pg-responses');
 
@@ -24,7 +22,7 @@ function makeFetch(uri, method, body, AToken) {
     return fetch(uri, {
         method: method,
         headers,
-        body: body //Request body
+        body: body
     })
         .then(response => {
             if(response.status !== pgResponses.OK) return Promise.reject(response);
@@ -41,7 +39,6 @@ function apiJira() {
                     project = {
                         "id": body.id,
                         "owner_name": "",
-                        "owner_id": body.lead.accountId,
                         "description": body.description,
                         "avatar":  body.avatarUrls,
                         "type": "Jira",

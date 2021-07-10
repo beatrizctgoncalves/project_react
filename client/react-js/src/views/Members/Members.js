@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { addMemberToGroup, getSpecificGroup } from '../Services/BasicService.js';
+import { addMemberToGroup, getSpecificGroup, removeMemberFromGroup } from '../Services/BasicService.js';
 import Footer from '../Components/Footer';
 import GoBack from '../Components/GoBack';
-import { Container, CssBaseline, Grid, Box, TextField, Typography, Card, CardContent } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Box, TextField, Typography, Card, CardContent, CardActions, Button } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { useStyles } from '../Components/Styles/Style';
-import CardMembers from '../Components/Members/CardMembers';
 import { ButtonGreen } from '../Components/Styles/ColorButtons.js';
 import Navbar from '../Components/Navbar.js';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import CardMembers from '../Components/Members/CardMembers.js';
 
 
 function Members(props) {
@@ -59,7 +60,6 @@ function Members(props) {
                     })
             })
             .catch(err => {
-                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -72,6 +72,36 @@ function Members(props) {
             })
     }
 
+    function handleMemberDelete(m) {
+        removeMemberFromGroup(group.id, m)
+            .then(resp => {
+                let aux = group
+                aux.members = aux.members.filter(member => {
+                    if (member !== m) {
+                        return member
+                    } else {
+                        return null
+                    }
+                })
+                setGroup({...aux})
+            })
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
+    }
+
+
+    function handleUserProfile(member) {
+        window.location.replace(`/profile/${member}`)
+    }
 
     const classes = useStyles();
 
@@ -101,9 +131,27 @@ function Members(props) {
                 </Container>
 
                 <Container maxWidth="md" component="main">
-                    <Grid container spacing={4}>
-                        {group.members && group.members !== 0 ? group.members.map(member =>
-                            <CardMembers key={member} member={member} groupId={id} groupOwner={group.owner} />
+                    <Grid container spacing={4} justify='center'>
+                        {group.members && group.members.length !== 0 ? group.members.map(member =>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card className={classes.card}>
+                                    <CardMembers member={member} groupId={group.id} groupOwner={group.owner} key={member} />
+                                    <CardActions>
+                                        <Button size="small" color="primary" onClick={handleUserProfile.bind(null, member)}>
+                                            View
+                                        </Button>
+                                        {group.owner === username ?
+                                            <>
+                                                {member !== group.owner ?
+                                                    <Button size="small" color="secondary" onClick={handleMemberDelete.bind(null, member)}>
+                                                        <DeleteIcon />
+                                                    </Button>
+                                                    : ''}
+                                            </>
+                                            : ''}
+                                    </CardActions>
+                                </Card>
+                            </Grid>
                         ) :
                             <div className={classes.cardGroup}>
                                 <Grid item xs={12}>

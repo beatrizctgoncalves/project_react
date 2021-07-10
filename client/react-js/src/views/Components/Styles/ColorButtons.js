@@ -30,8 +30,7 @@ export const ButtonUser = withStyles((theme) => ({
 
 export const ButtonRed = withStyles((theme) => ({
     root: {
-        color: theme.palette.getContrastText(purple[500]),
-        backgroundColor: red[500],
+        color: red[700],
         fontFamily: [
             "Merriweather Sans",
             '-apple-system',
@@ -47,7 +46,7 @@ export const ButtonRed = withStyles((theme) => ({
             "Segoe UI Symbol",
         ].join(','),
         '&:hover': {
-            backgroundColor: red[700],
+            backgroundColor: red[50],
         },
         margin: '4px'
     },
@@ -100,33 +99,6 @@ export const ButtonGreen = withStyles((theme) => ({
             backgroundColor: green[700],
         },
         margin: '4px'
-    },
-}))(Button);
-
-export const ButtonGrey = withStyles((theme) => ({
-    root: {
-        color: theme.palette.getContrastText(purple[500]),
-        backgroundColor: grey[500],
-
-        fontFamily: [
-            "Merriweather Sans",
-            '-apple-system',
-            'BlinkMacSystemFont',
-            "Segoe UI",
-            'Roboto',
-            "Helvetica Neue",
-            'Arial',
-            "Noto Sans",
-            'sans-serif',
-            "Apple Color Emoji",
-            "Segoe UI Emoji",
-            "Segoe UI Symbol",
-        ].join(','),
-        '&:hover': {
-            backgroundColor: grey[700],
-        },
-        margin: '4px',
-        padding: '4px 4px'
     },
 }))(Button);
 

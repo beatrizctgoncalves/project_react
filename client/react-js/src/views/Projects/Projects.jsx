@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { getSpecificGroup } from '../Services/BasicService.js';
+import { getSpecificGroup, removeProjectFromGroup } from '../Services/BasicService.js';
 import Footer from '../Components/Footer';
 import GoBack from '../Components/GoBack';
 import { useStyles } from '../Components/Styles/Style';
-import { Typography, Container, CssBaseline, Grid, Box } from '@material-ui/core';
+import { Typography, Container, CssBaseline, Grid, Box, CardMedia, CardActions, Card, CardContent, Paper } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
-import { ButtonGreen } from '../Components/Styles/ColorButtons';
-import CardProject from '../Components/Projects/CardProjects';
+import { ButtonGreen, ButtonRed } from '../Components/Styles/ColorButtons';
 import Navbar from '../Components/Navbar.js';
 import clsx from 'clsx';
-import Paper from '@material-ui/core/Paper';
-import { Gitlab } from './Plugins/Gitlab';
-import { Jira } from './Plugins/Jira';
+import { Gitlab, GitlabCredentialsMembers } from './Plugins/Gitlab';
+import { Jira, JiraCredentialsMembers } from './Plugins/Jira';
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 function Projects(props) {
@@ -45,6 +44,42 @@ function Projects(props) {
         }
     }
 
+    function handleProjectDelete(project) {
+        const projectId = project.id
+        removeProjectFromGroup(group.id, projectId, project.URL)
+            .then(resp => {
+                let aux = group
+                aux.projects = aux.projects.filter(project => {
+                    if (project.id !== projectId) {
+                        return project
+                    } else {
+                        return null
+                    }
+                })
+                setGroup({...aux})
+            })
+            .catch(err => {
+                toast.error(err.body, {
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
+            })
+    }
+
+    const [toAddMemberCredentials, setAddMemberCredentials] = useState(false)
+    function handleAddCredentials() {
+        if (toAddMemberCredentials) {
+            setAddMemberCredentials(false)
+        } else {
+            setAddMemberCredentials(true)
+        }
+    }
+
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -74,18 +109,78 @@ function Projects(props) {
                 </Container>
 
                 <Container maxWidth="md" component="main">
-                    <Grid container spacing={4} alignItems='center'>
-                        {group.projects && group.projects !== 0 ? group.projects.map(project =>
-                            <CardProject key={project.id} project={project} group={group} owner={owner} />
+                    <Grid container spacing={4} alignItems='center' justify='center'>
+                        {group.projects && group.projects.length !== 0 ? group.projects.map(project =>
+                            <Grid item xs={12} sm={6} md={4} key={project.id}>
+                                <Card className={classes.card}>
+                                    <CardMedia
+                                        className={classes.cardMedia}
+                                        image={project.avatar ? project.avatar : "https://www.combr.com.br/wp-content/uploads/2016/08/img_ftp2.jpg"}
+                                        title="Image title"
+                                    />
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography gutterBottom variant="h5">
+                                            {project.title}
+                                        </Typography>
+
+                                        <Typography gutterBottom variant="body1">
+                                            Owner's Credentials saved.
+                                        </Typography>
+
+                                        {project.memberCredentials.length !== 0 ?
+                                            <Typography gutterBottom variant="body2">
+                                                Member's Credentials saved.
+                                            </Typography>
+                                            :
+                                            <Typography gutterBottom variant="body2">
+                                                There is no Member's Credentials saved!
+                                            </Typography>
+                                        }
+                                    </CardContent>
+
+                                    {group.owner === owner ?
+                                        <CardActions>
+                                            <ButtonRed size="small" color="primary" onClick={handleProjectDelete.bind(null, project)}>
+                                                <DeleteIcon />
+                                            </ButtonRed>
+                                        </CardActions>
+                                        :
+                                        <>
+                                            {toAddMemberCredentials ?
+                                                <Paper>
+                                                    <Box mt={2} align='center'>
+                                                        <br />
+                                                        <Typography variant="h6" color="textSecondary">
+                                                            Select one of these options
+                                                        </Typography>
+                                                        <br />
+                                                        <GitlabCredentialsMembers groupId={group.id} />
+                                                        <JiraCredentialsMembers groupId={group.id} />
+                                                    </Box>
+                                                    <br />
+                                                </Paper> : ""}
+                                            <CardActions>
+                                                <ButtonGreen size="small" color="primary" onClick={handleAddCredentials}>
+                                                    {toAddMemberCredentials ? "" : <AddIcon></AddIcon>}
+                                                </ButtonGreen>
+                                            </CardActions>
+                                        </>
+                                    }
+                                </Card >
+                            </Grid >
                         ) :
-                            <Paper className={fixedHeightPaper}>
-                                <Box mt={3} align='center'>
-                                    <Typography variant="h6" color="textSecondary">
-                                        You do not have any Projects.<br />
-                                        Start adding!
-                                    </Typography>
-                                </Box>
-                            </Paper>
+                            <Grid item xs={12}>
+                                <Paper>
+                                    <Box mt={3} align='center'>
+                                        <br />
+                                        <Typography variant="h6" color="textSecondary">
+                                            You do not have any Projects.<br />
+                                            Start adding!
+                                        </Typography>
+                                        <br />
+                                    </Box>
+                                </Paper>
+                            </Grid>
                         }
                     </Grid>
 

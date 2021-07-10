@@ -15,6 +15,7 @@ function Footer() {
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>
+            <br /><br />
         </div>
     );
 }

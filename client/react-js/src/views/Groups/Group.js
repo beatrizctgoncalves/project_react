@@ -125,7 +125,7 @@ export default function Group(props) {
                                 </CardContent>
 
                                 <CardActions>
-                                    <Button fullWidth variant='contained' color="primary" onClick={handleToMembers}>
+                                    <Button fullWidth color="primary" onClick={handleToMembers}>
                                         See More
                                     </Button>
                                 </CardActions>
@@ -155,7 +155,7 @@ export default function Group(props) {
                                 </CardContent>
 
                                 <CardActions>
-                                    <Button fullWidth variant='contained' color="primary" onClick={handleToProjects}>
+                                    <Button fullWidth color="primary" onClick={handleToProjects}>
                                         See More
                                     </Button>
                                 </CardActions>
@@ -185,7 +185,7 @@ export default function Group(props) {
                                 </CardContent>
 
                                 <CardActions>
-                                    <Button fullWidth variant='contained' color="primary" onClick={handleToSprints}>
+                                    <Button fullWidth color="primary" onClick={handleToSprints}>
                                         See More
                                     </Button>
                                 </CardActions>
@@ -215,7 +215,7 @@ export default function Group(props) {
                                 </CardContent>
 
                                 <CardActions>
-                                    <Button fullWidth variant='contained' color="primary" onClick={handleToTasks}>
+                                    <Button fullWidth color="primary" onClick={handleToTasks}>
                                         See More
                                     </Button>
                                 </CardActions>
