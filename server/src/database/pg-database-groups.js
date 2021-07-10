@@ -30,7 +30,7 @@ function database(pgResponses, requests) {
                             return hit._source;
                         })
                     } else {
-                        return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUPS_MSG);
+                        return undefined
                     }
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
@@ -52,7 +52,7 @@ function database(pgResponses, requests) {
         deleteGroup: function (group_id) {
             return requests.makeFetchElastic(requests.index.groups.concat(`_doc/${group_id}?refresh=true`), requests.arrayMethods.DELETE, null)
                 .then(body => {
-                    if (body.result === 'deleted') return body._id
+                    if (body.result == 'deleted') return body._id
                     else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG)
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error))
@@ -71,7 +71,7 @@ function database(pgResponses, requests) {
 
             return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
                 .then(body => {
-                    if (body.result === 'updated') {
+                    if (body.result == 'updated') {
                         return body._id;
                     } else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);
                 })
@@ -82,7 +82,7 @@ function database(pgResponses, requests) {
             return this.getGroupDetails(group_id)
                 .then(group => {
                     let projects = group.projects
-                    let memberCredentialsIndex = projects[project_index].memberCredentials.findIndex(mC => mC.AppUsername === username)
+                    let memberCredentialsIndex = projects[project_index].memberCredentials.findIndex(mC => mC.AppUsername == username)
                     
                     if(memberCredentialsIndex !== -1){
                         projects[project_index].memberCredentials[memberCredentialsIndex] = memberCredentials
@@ -200,6 +200,25 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
+        removeMembeFromTask: function (group_id, task_index, user_index) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline": `ctx._source.tasks[${task_index}].members.remove(params.user)`,
+                    "params": {
+                        "user": user_index
+                    }
+                }
+            });
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
         addMemberToGroup: function (group_id, username) {
             var requestBody = JSON.stringify({
                 "script": {
@@ -238,6 +257,25 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
+        removeMemberInfoFromProject: function (group_id, project_index, user_index) {
+            var requestBody = JSON.stringify({
+                "script": {
+                    "lang": "painless",
+                    "inline": `ctx._source.projects[${project_index}].memberCredentials.remove(params.user)`,
+                    "params": {
+                        "user": user_index
+                    }
+                }
+            });
+            return requests.makeFetchElastic(requests.index.groups.concat(`_update/${group_id}`), requests.arrayMethods.POST, requestBody)
+                .then(resp => {
+                    if(resp.error) throw resp
+                    return resp
+                })    
+                .then(body => body._id)
+                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+        },
+
         addSprintToGroup: function (group_id, title, beginDate, endDate) {
             var requestBody = JSON.stringify({
                 "script": {
@@ -261,7 +299,7 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
-        addTaskToGroup: function (group_id, title, beginDate, endDate) {
+        addTaskToGroup: function (group_id, title, beginDate, points) {
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",
@@ -270,9 +308,8 @@ function database(pgResponses, requests) {
                         "task": {
                             "title": title,
                             "beginDate": beginDate,
-                            "endDate": endDate,
                             "members": [],
-                            "points": 0
+                            "points": points
                         }
                     }
                 }
@@ -332,11 +369,7 @@ function database(pgResponses, requests) {
                 .then(body => body._id)
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
-
-        getRankings: function () {
-            //TODO
-        },
-
+        
         removeGroup: function (group_id) {
             return requests.makeFetchElastic(requests.index.users.concat(`_doc/${group_id}`), requests.arrayMethods.DELETE, null)
                 .then(resp => {
@@ -344,7 +377,7 @@ function database(pgResponses, requests) {
                     return resp
                 })    
                 .then(body => {
-                    if (body.result === 'deleted') return body.username;
+                    if (body.result == 'deleted') return body.username;
                     else return pgResponses.setError(pgResponses.NOT_FOUND, pgResponses.NOT_FOUND_GROUP_MSG);
                 })
                 .catch(error => pgResponses.resolveErrorElastic(error));
