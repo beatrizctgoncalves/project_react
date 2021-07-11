@@ -3,7 +3,7 @@ import { addTaskToGroup, getSpecificGroup, removeTaskFromGroup, updateTaskOfGrou
 import Footer from '../Components/Footer';
 import GoBack from '../Components/GoBack';
 import { useStyles } from '../Components/Styles/Style';
-import { Typography, Container, CssBaseline, Grid, Box, Card, Radio, RadioGroup, FormControl, TextField, CardHeader, CardContent, Button, CardActions, FormControlLabel } from '@material-ui/core';
+import { Typography, Container, CssBaseline, Grid, Box, Card, FormControl, TextField, CardHeader, CardContent, Button, CardActions } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../Components/Styles/ColorButtons';
 import Navbar from '../Components/Navbar.js';
@@ -23,7 +23,9 @@ function Task(props) {
 
     useEffect(() => {
         getSpecificGroup(id)
-            .then(resp => setGroup(resp.message))
+            .then(resp => {
+                setGroup(resp.message)
+            })
             .catch(err => {
                 toast.error(err.body, {
                     position: "top-left",
@@ -47,11 +49,7 @@ function Task(props) {
     }
 
     const handleBeginDate = event => {
-        setNewTask({ ...newTask, beginDate: event.target.value })
-    }
-
-    const handleEndDate = event => {
-        setNewTask({ ...newTask, endDate: event.target.value })
+        setNewTask({ ...newTask, date: event.target.value })
     }
 
     function handleToAddTasksChange() {
@@ -85,14 +83,12 @@ function Task(props) {
             })
     }
 
+    const handleMemberChange = (event) => {
+        setUpdateTask({ ...updateTask, member: event.target.value });
+    };
 
-    const [value, setValue] = React.useState('');
-    const [error, setError] = React.useState(false);
-
-    const handleRadioChange = (event) => {
-        setValue(event.target.value);
-        setUpdateTask({ ...updateTask, member: event.target.id });
-        setError(false);
+    const handlePointsChange = (event) => {
+        setUpdateTask({ ...updateTask, points: event.target.value });
     };
 
     function handleToEditTasksChange() {
@@ -106,9 +102,20 @@ function Task(props) {
     function handleUpdateTask(title) {
         updateTaskOfGroup(group.id, { title: title, updatedInfo: updateTask })
             .then(resp => {
+                console.log(resp)
+                let aux = group
+                aux.tasks = group.tasks.filter(task => {
+                    if (task.title !== title) {
+                        return task
+                    } else {
+                        return null
+                    }
+                })
+                setGroup({ ...aux })
                 setUpdatedTasks(false)
             })
             .catch(err => {
+                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -175,7 +182,7 @@ function Task(props) {
                 </Container>
 
                 <Container maxWidth="md" component="main">
-                    <Grid container spacing={4} alignItems='center'>
+                    <Grid container spacing={4} alignItems='center' justify='center'>
                         {group.tasks && group.tasks.length !== 0 ? group.tasks.map(task =>
                             <Grid item xs={12} sm={6} md={4} key={task.title}>
                                 <Card className={classes.card}>
@@ -190,25 +197,30 @@ function Task(props) {
                                             <div className={classes.cardGroup}>
                                                 <ul className={classes.listItem}>
                                                     <Typography variant="body1" color='primary'>
-                                                        Date
+                                                        Date:
                                                     </Typography>
 
                                                     <div>
                                                         <ul className={classes.listItem}>
                                                             <Typography variant="body2" color="textSecondary">
-                                                                {task.beginDate}
+                                                                {task.date}
                                                             </Typography>
                                                         </ul>
                                                     </div>
                                                 </ul>
 
-                                                {!task.updatedInfo ?
-                                                    <Typography variant="body1" color="primary">
-                                                        Give points to a user if it is done!
+                                                <Typography variant="body1" color="primary">
+                                                    This Task gives you {task.points} points!
+                                                </Typography>
+                                                <br />
+
+                                                {task.members && task.members.length !== 0 ? task.members.map(member =>
+                                                    <Typography variant="body1" color="primary" key={member}>
+                                                        Task done by {member}
                                                     </Typography>
-                                                    :
-                                                    <Typography variant="body1" color="primary">
-                                                        You already gave points to a user for finishing this taks but you can give to other user.
+                                                ) :
+                                                    <Typography variant="body2">
+                                                        This task does not have any assigned users.
                                                     </Typography>
                                                 }
                                             </div>
@@ -220,26 +232,31 @@ function Task(props) {
                                                 <>
                                                     <Box mt={0} align='center'>
                                                         <Grid item xs={6} align='center'>
-                                                            <Typography variant="body1" color="textSecondary">
-                                                                Give scores about this task!
-                                                            </Typography>
-
                                                             {group.members.length !== 0 ? group.members.map(member =>
-                                                                <>
-                                                                    <form key={member}>
-                                                                        <FormControl component="fieldset" error={error} className={classes.formControl} align='center'>
-                                                                            <RadioGroup aria-label="member" name="member" id={member} value={value} onChange={handleRadioChange}>
-                                                                                <FormControlLabel value={member} id={member} control={<Radio />} label={member} />
-                                                                            </RadioGroup>
-                                                                            <br />
+                                                                <form key={member}>
+                                                                    <FormControl component="fieldset" className={classes.formControl} align='center'>
+                                                                        <TextField
+                                                                            type="text"
+                                                                            id="member"
+                                                                            name="member"
+                                                                            label="Member"
+                                                                            onChange={handleMemberChange}
+                                                                        />
 
-                                                                            <Button size="small" type="submit" color="primary" onClick={handleUpdateTask.bind(null, task.title)} className={classes.button}>
-                                                                                Save
-                                                                            </Button>
-                                                                        </FormControl>
-                                                                    </form >
-                                                                    <br />
-                                                                </>
+                                                                        <TextField
+                                                                            type="text"
+                                                                            id="pointsUpdated"
+                                                                            name="pointsUpdated"
+                                                                            label="Points"
+                                                                            onChange={handlePointsChange}
+                                                                        />
+
+                                                                        <br />
+                                                                        <Button size="small" type="submit" color="primary" onClick={handleUpdateTask.bind(null, task.title)} className={classes.button}>
+                                                                            Save
+                                                                        </Button>
+                                                                    </FormControl>
+                                                                </form >
                                                             ) : ''}
                                                         </Grid>
                                                     </Box>
@@ -280,43 +297,43 @@ function Task(props) {
                             {toAddTasks ?
                                 <Card>
                                     <Box mt={3} align='center'>
-                                        <Grid item xs={6} align='center'>
-                                            <TextField
-                                                type="text"
-                                                id="title"
-                                                name="title"
-                                                required
-                                                fullWidth
-                                                label="Title"
-                                                onChange={handleTitle}
-                                            />
-                                        </Grid>
-                                        <br />
-
-                                        <Grid item xs={6} align='center'>
-                                            <TextField
-                                                type="text"
-                                                id="points"
-                                                name="points"
-                                                required
-                                                fullWidth
-                                                label="Points"
-                                                onChange={handlePoints}
-                                            />
-                                        </Grid>
-                                        <br />
-
-                                        <Grid container spacing={1}>
+                                        <Grid container spacing={1} justify='center'>
                                             <Grid item xs={6}>
+                                                <TextField
+                                                    type="text"
+                                                    id="title"
+                                                    name="title"
+                                                    required
+                                                    label="Title"
+                                                    onChange={handleTitle}
+                                                />
+                                            </Grid>
+                                            <br />
+
+                                            <Grid item xs={6}>
+                                                <TextField
+                                                    type="text"
+                                                    id="points"
+                                                    name="points"
+                                                    required
+                                                    label="Points"
+                                                    onChange={handlePoints}
+                                                />
+                                            </Grid>
+                                        </Grid>
+
+                                        <br /><br />
+                                        <Grid container spacing={1} justify='center'>
+                                            <Grid item xs={5}>
                                                 <Typography variant="h6" color="textSecondary">
-                                                    Begin Date:
+                                                    Date:
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={5}>
                                                 <input
                                                     type="date"
-                                                    id="beginDate"
-                                                    name="beginDate"
+                                                    id="date"
+                                                    name="date"
                                                     max="2050-12-31"
                                                     min="2020-06-27"
                                                     variant="outlined"
@@ -325,29 +342,6 @@ function Task(props) {
                                                     className="form-control"
                                                     placeholder="2021-06-10"
                                                     onChange={handleBeginDate}
-                                                />
-                                            </Grid>
-                                        </Grid>
-
-                                        <Grid container spacing={1}>
-                                            <Grid item xs={6}>
-                                                <Typography variant="h6" color="textSecondary">
-                                                    End Date:
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={5}>
-                                                <input
-                                                    type="date"
-                                                    id="endDate"
-                                                    name="endDate"
-                                                    max="2050-12-31"
-                                                    min="2020-06-27"
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    required
-                                                    className="form-control"
-                                                    placeholder="2021-06-10"
-                                                    onChange={handleEndDate}
                                                 />
                                             </Grid>
                                         </Grid>

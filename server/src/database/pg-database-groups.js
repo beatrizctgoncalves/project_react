@@ -140,7 +140,7 @@ function database(pgResponses, requests) {
                     return resp
                 })    
                 .then(body => body._id)
-                .catch((err) => console.log(err))
+                .catch((err) => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
         removeProjectFromGroup: function (group_id, project_index) {
@@ -299,7 +299,7 @@ function database(pgResponses, requests) {
                 .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
         },
 
-        addTaskToGroup: function (group_id, title, beginDate, points) {
+        addTaskToGroup: function (group_id, title, date, points) {
             var requestBody = JSON.stringify({
                 "script": {
                     "lang": "painless",
@@ -307,7 +307,7 @@ function database(pgResponses, requests) {
                     "params": {
                         "task": {
                             "title": title,
-                            "beginDate": beginDate,
+                            "date": date,
                             "members": [],
                             "points": points
                         }
@@ -336,7 +336,6 @@ function database(pgResponses, requests) {
                 .then(groupObj => {
                     return requests.makeFetchElastic(requests.index.groups.concat(`_update/${groupObj.id}`), requests.arrayMethods.POST, requestBody)
                         .then(body => {
-                            console.log(body)
                             if (body.result == 'updated') {
                                 return body._id;
                             } else {

@@ -395,7 +395,7 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                         if (groupObj.tasks[taskIndex].members.find(m => m == updatedInfo.member)) {
                             return pgResponses.setError(
                                 pgResponses.FORBIDDEN,
-                                pgResponses.FORBIDDEN_TASK_MSG
+                                pgResponses.FORBIDDEN_TASK_USER_MSG
                             )
                         }
                     }

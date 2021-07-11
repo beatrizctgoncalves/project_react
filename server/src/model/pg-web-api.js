@@ -96,7 +96,6 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     function updateTaskFromGroup(req, res) {
-        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.updateTaskFromGroup(req.params.group_id, req.body.title, req.body.updatedInfo),
             res
