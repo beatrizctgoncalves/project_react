@@ -117,7 +117,7 @@ export function Gitlab(props) {
                                 <br /><br />
                             </Box>
                             :
-                            <ToolsProjects availableProjects={availableProjects} id={groupId} ownerCredentials={ownerCredentials} url={URL} tool={'Gitlab'} />
+                            <ToolsProjects availableProjects={availableProjects} id={groupId} ownerCredentials={ownerCredentials} url={URL} tool={'Gitlab'} icon={'https://img.icons8.com/color/452/gitlab.png'} />
                         }
                     </Box>
                 </Box>

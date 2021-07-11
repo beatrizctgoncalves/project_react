@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { removeMemberFromGroup, getUser } from '../../Services/BasicService';
-import { Typography, Button, CardMedia, CardActions, Card, CardContent, Grid } from '@material-ui/core';
+import { getUser } from '../../Services/BasicService';
+import { Typography, CardMedia, CardContent } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { useStyles } from '../Styles/Style';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 
 function CardMembers(props) {
-    const { member, groupId, groupOwner } = props
-    const username = window.sessionStorage.getItem("username")
-    const [group, setGroup] = useState({})
+    const { member } = props
     const [user, setUser] = useState({})
 
     useEffect(() => {
@@ -27,33 +24,6 @@ function CardMembers(props) {
                 })
             })
     }, [member])
-
-
-    function handleMemberDelete(memberId) {
-        removeMemberFromGroup(groupId, memberId)
-            .then(resp => {
-                let aux = group.members.filter(member => {
-                    if (member.id !== memberId) {
-                        return member
-                    } else {
-                        return null
-                    }
-                })
-                setGroup(aux)
-            })
-            .catch(err => {
-                console.log(err)
-                toast.error(err.body, {
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                })
-            })
-    }
 
     const classes = useStyles();
 

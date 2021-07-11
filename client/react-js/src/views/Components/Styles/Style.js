@@ -137,7 +137,6 @@ export const useStyles = makeStyles((theme) => ({
     transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
   },
   image: {
-    backgroundImage: 'url(https://img.freepik.com/vetores-gratis/empresario-trabalhando-e-voando-como-super-heroi-com-maleta-inicie-o-lancamento-inicie-o-conceito-de-empreendimento-e-empreendedorismo-em-fundo-branco_335657-1678.jpg?size=626&ext=jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[0] : theme.palette.grey[900],

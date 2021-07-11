@@ -135,7 +135,7 @@ function Members(props) {
                         {group.members && group.members.length !== 0 ? group.members.map(member =>
                             <Grid item xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
-                                    <CardMembers member={member} groupId={group.id} groupOwner={group.owner} key={member} />
+                                    <CardMembers member={member} key={member} />
                                     <CardActions>
                                         <Button size="small" color="primary" onClick={handleUserProfile.bind(null, member)}>
                                             View

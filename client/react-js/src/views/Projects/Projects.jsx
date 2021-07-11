@@ -7,7 +7,6 @@ import { Typography, Container, CssBaseline, Grid, Box, CardMedia, CardActions, 
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen, ButtonRed } from '../Components/Styles/ColorButtons';
 import Navbar from '../Components/Navbar.js';
-import clsx from 'clsx';
 import { Gitlab, GitlabCredentialsMembers } from './Plugins/Gitlab';
 import { Jira, JiraCredentialsMembers } from './Plugins/Jira';
 import AddIcon from '@material-ui/icons/Add';
@@ -81,7 +80,6 @@ function Projects(props) {
     }
 
     const classes = useStyles();
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
         <div className={classes.root}>
@@ -114,9 +112,11 @@ function Projects(props) {
                             <Grid item xs={12} sm={6} md={4} key={project.id}>
                                 <Card className={classes.card}>
                                     <CardMedia
-                                        className={classes.cardMedia}
-                                        image={project.avatar ? project.avatar : "https://www.combr.com.br/wp-content/uploads/2016/08/img_ftp2.jpg"}
-                                        title="Image title"
+                                        component="img"
+                                        height='200'
+                                        alt="Project"
+                                        src={project.avatar ? project.avatar : "https://www.combr.com.br/wp-content/uploads/2016/08/img_ftp2.jpg"}
+                                        title="Contemplative Reptile"
                                     />
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5">

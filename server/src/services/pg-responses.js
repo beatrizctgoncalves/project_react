@@ -27,6 +27,7 @@ module.exports = {
     FORBIDDEN_SPRINT_MSG: "Forbidden! This Sprint already exists in this Group",
     FORBIDDEN_TASK_MSG: "Forbidden! This Task already exists in this Group",
     FORBIDDEN_USER_INFO_MSG: "Forbidden! This User already saved his/her information",
+    NOT_FOUND_TOOL_MSG: "Tool is not implemented in this server",
 
     WRONG_PASSWORD_MSG: "Invalid password",
     WRONG_USERNAME_MSG: "Invalid username",

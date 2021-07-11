@@ -119,7 +119,7 @@ export function Jira(props) {
                                 <br /><br />
                             </Box>
                             :
-                            <ToolsProjects availableProjects={availableProjects} id={groupId} ownerCredentials={ownerCredentials} url={URL} tool={'Jira'} />
+                            <ToolsProjects availableProjects={availableProjects} id={groupId} ownerCredentials={ownerCredentials} url={URL} tool={'Jira'} icon={'https://logos-world.net/wp-content/uploads/2021/02/Jira-Emblem-700x394.png'} />
                         }
                     </Box>
                 </Box>

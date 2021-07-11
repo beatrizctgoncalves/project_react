@@ -8,7 +8,7 @@ import AddIcon from "@material-ui/icons/Add";
 
 
 function ToolsProjects(props) {
-    const { availableProjects, url, ownerCredentials, id, tool } = props
+    const { availableProjects, url, ownerCredentials, id, tool, icon } = props
 
     function handleAddProjectToGroup(projId) {
         addProjectToGroup(id, projId, tool, url, ownerCredentials)
@@ -45,9 +45,11 @@ function ToolsProjects(props) {
                     <Grid item xs={6} key={project.id}>
                         <Card className={classes.card}>
                             <CardMedia
-                                className={classes.cardMedia}
-                                image={project.avatar ? project.avatar : "https://www.combr.com.br/wp-content/uploads/2016/08/img_ftp2.jpg"}
-                                title="Image title"
+                                component="img"
+                                height='150'
+                                alt="ToolProject"
+                                src={icon}
+                                title="Contemplative Reptile"
                             />
                             <CardContent className={classes.cardContent}>
                                 <Typography gutterBottom variant="body1">

@@ -1,6 +1,6 @@
 'use strict'
 
-function services(databaseGroup, databaseUsers, pgResponses) {
+function services(databaseGroup, pgResponses) {
     const serv = {
 
         getProjectsOfTool: function (toolName, PURL, ownerCredentials) {
@@ -10,7 +10,7 @@ function services(databaseGroup, databaseUsers, pgResponses) {
             } catch (error) {
                 return pgResponses.setError(
                     pgResponses.NOT_FOUND,
-                    "Tool is not implemented in this server"
+                    pgResponses.NOT_FOUND_TOOL_MSG
                 )
             }
             return api.getProjectsFromUsername(PURL, ownerCredentials.accountId, ownerCredentials.AToken)
@@ -62,7 +62,7 @@ function services(databaseGroup, databaseUsers, pgResponses) {
                         })
 
                         tasks.forEach(task => {
-                            if(checkDate(task.beginDate,sprint.beginDate, sprint.endDate)){
+                            if (checkDate(task.beginDate, sprint.beginDate, sprint.endDate)) {
                                 let usersInfoTask = { SprintTitle: sprint.title, Scores: [] }
                                 if (task.members) {
                                     task.members.forEach(m => {
@@ -100,8 +100,8 @@ function auxFunc(memberInfoMap, title) {
     return toRet
 }
 
-function checkDate(taskBeginDate, beginDate, endDate){
-    if(!beginDate || !endDate)
+function checkDate(taskBeginDate, beginDate, endDate) {
+    if (!beginDate || !endDate)
         return true
     return taskBeginDate >= beginDate && taskBeginDate <= endDate
 }

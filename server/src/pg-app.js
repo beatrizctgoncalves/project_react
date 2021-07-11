@@ -21,7 +21,7 @@ module.exports = async function() {
     const databaseUsers = require('./database/pg-database-users')(pgResponses, requests);
 
     const authizationConfig = require('./database/authization-dg-config/config')
-    const servicesPlugins = require('./services/pg-services-plugins')(databaseGroups, databaseUsers, pgResponses);
+    const servicesPlugins = require('./services/pg-services-plugins')(databaseGroups, pgResponses);
 
     try {
         let authization = await require('@authization/authization').setup({ app, db: authizationConfig.dbConfigs, rbac_opts: authizationConfig.rbac_opts });

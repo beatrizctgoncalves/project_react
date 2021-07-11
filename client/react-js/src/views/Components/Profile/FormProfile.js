@@ -56,7 +56,6 @@ function FormProfile() {
     }
 
 
-    const [profile, setProfile] = useState([])
     function handleDelete() {
         deleteUser(username)
             .then(resp => {

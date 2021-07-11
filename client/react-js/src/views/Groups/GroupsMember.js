@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Link from '@material-ui/core/Link';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { Box } from '@material-ui/core';
+import { Box, Table, Link, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import Title from '../Components/Styles/Title';
 import { getUserMemberGroups } from '../Services/BasicService';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 import { toast } from 'react-toastify';
 
 

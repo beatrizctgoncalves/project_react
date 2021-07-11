@@ -70,8 +70,8 @@ export default function SignInSide() {
                                         <ArrowForwardIosIcon />
                                     </ButtonHome1>
                                 </Grid>
+                                <img alt='home' src='https://img.freepik.com/vetores-gratis/empresario-trabalhando-e-voando-como-super-heroi-com-maleta-inicie-o-lancamento-inicie-o-conceito-de-empreendimento-e-empreendedorismo-em-fundo-branco_335657-1678.jpg?size=626&ext=jpg' />
                             </Box>
-                            <br /><br /><br /><br /><br /><br /><br /><br />
                         </div>
                     </Grid>
                 </Grid>

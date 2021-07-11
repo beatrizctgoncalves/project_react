@@ -140,7 +140,7 @@ function database(pgResponses, requests) {
                     return resp
                 })    
                 .then(body => body._id)
-                .catch(() => pgResponses.setError(pgResponses.DB_ERROR, pgResponses.DB_ERROR_MSG))
+                .catch((err) => console.log(err))
         },
 
         removeProjectFromGroup: function (group_id, project_index) {
