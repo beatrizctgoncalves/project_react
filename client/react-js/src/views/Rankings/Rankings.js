@@ -80,9 +80,9 @@ function Rankings(props) {
                 </Container>
 
                 <Container maxWidth="md" component="main">
-                    <Grid container spacing={4} justify='center'>
+                    <Grid container spacing={3} justify='center'>
                         {sprints && sprints.length !== 0 ? sprints.map(sprint =>
-                            <CardRankings key={sprint} sprint={sprint} groupId={id} />
+                            <CardRankings key={sprint.SprintTitle} sprint={sprint} />
                         ) :
                             <div className={classes.cardGroup}>
                                 <Grid item xs={12}>

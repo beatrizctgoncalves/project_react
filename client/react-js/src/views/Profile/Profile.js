@@ -89,6 +89,7 @@ function Profile(props) {
                         <Grid item xs={12} md={4} lg={3} align='center'>
                             <Paper>
                                 <Box>
+                                    <br />
                                     <img src={`${user.avatar}`} width="auto" height="192" alt="profile" />
                                 </Box>
                                 <Box>

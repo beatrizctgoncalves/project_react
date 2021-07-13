@@ -1,44 +1,131 @@
 import React from 'react'
-import { Typography, CardHeader, Card, Grid } from '@material-ui/core';
-import { useStyles } from '../Styles/Style';
-import { ButtonUser } from '../Styles/ColorButtons';
+import { Bar } from 'react-chartjs-2';
+import { Box, Card, CardContent, useTheme, Divider, colors, Grid, CardHeader } from '@material-ui/core';
+import { useEffect, useState } from 'react';
 
 
 function CardRankings(props) {
     const { sprint } = props
+    const [scores, setScores] = useState([])
+    const [usernames, setUsernames] = useState([])
 
-    function handleUserProfile(member) {
-        window.location.replace(`/profile/${member}`)
-    }
+    useEffect(() => {
+        if (sprint.Scores && sprint.Scores.length) {
+            sprint.Scores.map(score => {
+                setScores([...scores, score.Points])
+                setUsernames([...usernames, score.AppUsername])
+            })
+        }
+    }, [sprint])
 
-    const classes = useStyles();
+
+    const theme = useTheme();
+
+    const data = {
+        datasets: [
+            {
+                backgroundColor: colors.indigo[500],
+                data: scores,
+                label: 'Scores'
+            }
+        ],
+        labels: usernames
+    };
+
+    const options = {
+        animation: true,
+        cornerRadius: 20,
+        layout: { padding: 0 },
+        legend: { display: false },
+        maintainAspectRatio: false,
+        responsive: true,
+        scales: {
+            xAxes: [
+                {
+                    barThickness: 12,
+                    maxBarThickness: 10,
+                    barPercentage: 0.5,
+                    categoryPercentage: 0.5,
+                    ticks: {
+                        fontColor: theme.palette.text.secondary
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    }
+                }
+            ],
+            yAxes: [
+                {
+                    ticks: {
+                        fontColor: theme.palette.text.secondary,
+                        beginAtZero: true,
+                        min: 0
+                    },
+                    gridLines: {
+                        borderDash: [2],
+                        borderDashOffset: [2],
+                        color: theme.palette.divider,
+                        drawBorder: false,
+                        zeroLineBorderDash: [2],
+                        zeroLineBorderDashOffset: [2],
+                        zeroLineColor: theme.palette.divider
+                    }
+                }
+            ]
+        },
+        tooltips: {
+            backgroundColor: theme.palette.background.paper,
+            bodyFontColor: theme.palette.text.secondary,
+            borderColor: theme.palette.divider,
+            borderWidth: 1,
+            enabled: true,
+            footerFontColor: theme.palette.text.secondary,
+            intersect: false,
+            mode: 'index',
+            titleFontColor: theme.palette.text.primary
+        }
+    };
+
 
     return (
-        <Grid item xs={12} sm={6} md={4}>
-            <Card className={classes.card}>
+        <Grid item xs={6}>
+            <Card {...props}>
                 <CardHeader
                     title={sprint.SprintTitle}
-                    titleTypographyProps={{ align: 'center' }}
-                    className={classes.cardHeader}
                 />
-                <Grid container align='center' justify='center'>
-                    {sprint.Scores && sprint.Scores !== 0 ? sprint.Scores.map(score =>
-                        <Grid item xs={4} key={score.AppUsername}>
-                            <ButtonUser gutterBottom variant="h5" component="h2" onClick={handleUserProfile.bind(null, score.AppUsername)}>
-                                {score.AppUsername}
-                            </ButtonUser>
-
-                            <ul className={classes.listItem}>
-                                <Typography variant="body2" color="textSecondary">
-                                    {score.Points}
-                                </Typography>
-                            </ul>
-                        </Grid>
-                    ) : ''}
-                </Grid>
+                <Divider />
+                <CardContent>
+                    <Box
+                        sx={{
+                            height: 400,
+                            position: 'relative'
+                        }}
+                    >
+                        <Bar
+                            data={data}
+                            options={options}
+                        />
+                    </Box>
+                </CardContent>
+                <Divider />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        p: 2
+                    }}
+                >
+                </Box>
             </Card>
         </Grid>
-    )
+    );
 }
 
 export default CardRankings
+
+
+
+
+
+

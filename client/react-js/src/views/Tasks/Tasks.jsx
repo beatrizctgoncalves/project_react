@@ -3,7 +3,7 @@ import { addTaskToGroup, getSpecificGroup, removeTaskFromGroup, updateTaskOfGrou
 import Footer from '../Components/Footer';
 import GoBack from '../Components/GoBack';
 import { useStyles } from '../Components/Styles/Style';
-import { Typography, Container, CssBaseline, Grid, Box, Card, FormControl, TextField, CardHeader, CardContent, Button, CardActions } from '@material-ui/core';
+import { Typography, Container, CssBaseline, Grid, Box, Card, TextField, CardHeader, CardContent, Button, CardActions } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen } from '../Components/Styles/ColorButtons';
 import Navbar from '../Components/Navbar.js';
@@ -115,7 +115,6 @@ function Task(props) {
                 setUpdatedTasks(false)
             })
             .catch(err => {
-                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
@@ -232,32 +231,26 @@ function Task(props) {
                                                 <>
                                                     <Box mt={0} align='center'>
                                                         <Grid item xs={6} align='center'>
-                                                            {group.members.length !== 0 ? group.members.map(member =>
-                                                                <form key={member}>
-                                                                    <FormControl component="fieldset" className={classes.formControl} align='center'>
-                                                                        <TextField
-                                                                            type="text"
-                                                                            id="member"
-                                                                            name="member"
-                                                                            label="Member"
-                                                                            onChange={handleMemberChange}
-                                                                        />
+                                                            <TextField
+                                                                type="text"
+                                                                id="member"
+                                                                name="member"
+                                                                label="Member"
+                                                                onChange={handleMemberChange}
+                                                            />
 
-                                                                        <TextField
-                                                                            type="text"
-                                                                            id="pointsUpdated"
-                                                                            name="pointsUpdated"
-                                                                            label="Points"
-                                                                            onChange={handlePointsChange}
-                                                                        />
+                                                            <TextField
+                                                                type="text"
+                                                                id="pointsUpdated"
+                                                                name="pointsUpdated"
+                                                                label="Points"
+                                                                onChange={handlePointsChange}
+                                                            />
 
-                                                                        <br />
-                                                                        <Button size="small" type="submit" color="primary" onClick={handleUpdateTask.bind(null, task.title)} className={classes.button}>
-                                                                            Save
-                                                                        </Button>
-                                                                    </FormControl>
-                                                                </form >
-                                                            ) : ''}
+                                                            <br />
+                                                            <Button size="small" type="submit" color="primary" onClick={handleUpdateTask.bind(null, task.title)} className={classes.button}>
+                                                                Save
+                                                            </Button>
                                                         </Grid>
                                                     </Box>
                                                     <br />

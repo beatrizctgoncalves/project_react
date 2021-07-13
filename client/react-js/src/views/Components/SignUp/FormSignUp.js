@@ -78,7 +78,7 @@ function FormSignUp() {
                         id="surname"
                         label="Last Name"
                         name="surname"
-                        autoComplete="lname"
+                        autoComplete="family-name"
                         onChange={handleChange}
                     />
                 </Grid>

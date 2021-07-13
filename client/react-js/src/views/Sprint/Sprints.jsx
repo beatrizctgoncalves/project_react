@@ -134,7 +134,7 @@ function Sprint(props) {
                 </Container>
 
                 <Container maxWidth="md" component="main">
-                    <Grid container spacing={4} alignItems='center'>
+                    <Grid container spacing={4} alignItems='center' justify='center'>
                         {group.sprints && group.sprints.length !== 0 ? group.sprints.map(sprint =>
                             <Grid item xs={12} sm={6} md={4} key={sprint.title}>
                                 <Card className={classes.card}>

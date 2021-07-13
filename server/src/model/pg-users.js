@@ -13,7 +13,6 @@ module.exports = function (express, services, aux, authization) {
     router.post('/signin', async (req, res, next) => {
         await authenticate.usingLocal(req, res, err => {
             if (err) {
-            
                 const myError = {
                     status: err.status,
                     body: err.message
@@ -89,7 +88,6 @@ module.exports = function (express, services, aux, authization) {
 
     
     function successCallback (req, res)  {
-
         if (req.isAuthenticated()) {
             res.json({ message: "Successfull logout SignIn" })  
         }
