@@ -151,14 +151,15 @@ module.exports = function (express, services, servicesPlugins, aux) {
         );
     }
 
-    function addMemberInfoToProject(req, res){
+    function addMemberInfoToProject(req, res) {
+        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.addMemberInfoToProject(req.params.group_id, req.body.project_URL, req.params.project_id, req.params.username, req.body.memberCredentials),
             res
         );
     }
 
-    function addSprintToGroup(req, res) { 
+    function addSprintToGroup(req, res) {
         aux.promisesAsyncImplementation(
             services.addSprintToGroup(req.params.group_id, req.body.title, req.body.beginDate, req.body.endDate),
             res

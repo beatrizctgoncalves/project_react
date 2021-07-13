@@ -200,14 +200,12 @@ export async function getProjectFromGroup(groupId, projectId, url) {
         })
 }
 
-export async function addMemberInfo(groupId, projectId, tool, url, ownerCredentials) {
-    const uri = `groups/${groupId}/projects`
+export async function addMemberInfo(groupId, projectId, username, url, memberCredentials) {
+    const uri = `groups/${groupId}/projects/${projectId}/${username}/credentials`
 
     const body = {
-        Pid: projectId,
-        type: tool,
-        URL: url,
-        ownerCredentials: ownerCredentials
+        project_URL: url,
+        memberCredentials: memberCredentials
     }
 
     return makeRequest(urls.groups.concat(uri), body, "POST")

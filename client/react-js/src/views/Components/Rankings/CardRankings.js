@@ -6,14 +6,23 @@ import { useEffect, useState } from 'react';
 
 function CardRankings(props) {
     const { sprint } = props
-    const [scores, setScores] = useState([])
-    const [usernames, setUsernames] = useState([])
+    const data = {
+        datasets: [
+            {
+                backgroundColor: colors.indigo[500],
+                data: [],
+                label: 'Scores'
+            }
+        ],
+        labels: []
+    };
 
     useEffect(() => {
         if (sprint.Scores && sprint.Scores.length) {
             sprint.Scores.map(score => {
-                setScores([...scores, score.Points])
-                setUsernames([...usernames, score.AppUsername])
+                data.datasets[0].data.push(score.Points);
+                data.labels.push(score.AppUsername);
+                return null
             })
         }
     }, [sprint])
@@ -21,16 +30,7 @@ function CardRankings(props) {
 
     const theme = useTheme();
 
-    const data = {
-        datasets: [
-            {
-                backgroundColor: colors.indigo[500],
-                data: scores,
-                label: 'Scores'
-            }
-        ],
-        labels: usernames
-    };
+
 
     const options = {
         animation: true,

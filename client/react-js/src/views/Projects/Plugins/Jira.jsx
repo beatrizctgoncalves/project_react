@@ -135,12 +135,12 @@ export function Jira(props) {
 }
 
 export function JiraCredentialsMembers(props) {
-    const { groupId, projectId, url } = props
+    const { groupId, project } = props
     const username = window.sessionStorage.getItem("username")
     const [memberCredentials, setMemberCredentials] = useState({ AppUsername: username })
 
     function handleAddCredentials() {
-        addMemberInfo(groupId, projectId, username, url, memberCredentials)
+        addMemberInfo(groupId, project.id, username, project.URL, memberCredentials)
             .then(resp => window.location.replace(`/groups/${groupId}/projects`))
             .catch(err => {
                 toast.error(err.body, {

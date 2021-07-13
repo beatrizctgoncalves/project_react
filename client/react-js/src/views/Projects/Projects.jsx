@@ -55,7 +55,7 @@ function Projects(props) {
                         return null
                     }
                 })
-                setGroup({...aux})
+                setGroup({ ...aux })
             })
             .catch(err => {
                 toast.error(err.body, {
@@ -154,8 +154,11 @@ function Projects(props) {
                                                             Select one of these options
                                                         </Typography>
                                                         <br />
-                                                        <GitlabCredentialsMembers groupId={group.id} />
-                                                        <JiraCredentialsMembers groupId={group.id} />
+                                                        {project.type === 'Jira' ?
+                                                            <JiraCredentialsMembers groupId={group.id} project={project} />
+                                                            :
+                                                            <GitlabCredentialsMembers groupId={group.id} project={project} />
+                                                        }
                                                     </Box>
                                                     <br />
                                                 </Paper> : ""}
