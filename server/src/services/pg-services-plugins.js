@@ -62,7 +62,7 @@ function services(databaseGroup, pgResponses) {
                         })
 
                         tasks.forEach(task => {
-                            if (checkDate(task.beginDate, sprint.beginDate, sprint.endDate)) {
+                            if (checkDate(task.date, sprint.beginDate, sprint.endDate)) {
                                 let usersInfoTask = { SprintTitle: sprint.title, Scores: [] }
                                 if (task.members) {
                                     task.members.forEach(m => {

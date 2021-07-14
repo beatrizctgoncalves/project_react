@@ -30,8 +30,6 @@ function CardRankings(props) {
 
     const theme = useTheme();
 
-
-
     const options = {
         animation: true,
         cornerRadius: 20,
