@@ -1,7 +1,7 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2';
 import { Box, Card, CardContent, useTheme, Divider, colors, Grid, CardHeader } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 
 function CardRankings(props) {

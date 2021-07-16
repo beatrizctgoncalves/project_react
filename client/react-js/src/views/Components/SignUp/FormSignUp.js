@@ -21,13 +21,7 @@ function FormSignUp() {
 
     function handleSignUpClick() {
         signUpFetch(userToCreate)
-            .then(resp => {
-                loginFetch(userToCreate.username, userToCreate.password)
-                    .then(resp => {
-                        window.sessionStorage.setItem('username', userToCreate.username);
-                        window.location.assign('/groups');
-                    })
-            })
+            .then(resp => window.location.assign('/sign-in'))
             .catch(err => {
                 toast.error(err.body, {
                     position: "top-left",
@@ -66,7 +60,7 @@ function FormSignUp() {
                         fullWidth
                         id="name"
                         label="First Name"
-                        autoFocus
+                        autoComplete="first-name"
                         onChange={handleChange}
                     />
                 </Grid>
