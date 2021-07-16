@@ -106,6 +106,7 @@ function Task(props) {
                     .then(groupObj => {
                         let aux = groupObj.message
                         setGroup(aux)
+                        setUpdatedTasks(false)
                     })
             })
             .catch(err => {
