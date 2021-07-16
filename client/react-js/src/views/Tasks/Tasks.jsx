@@ -88,11 +88,11 @@ function Task(props) {
     };
 
     const handlePointsChange = (event) => {
-        setUpdateTask({ ...updateTask, points: event.target.value });
+        setUpdateTask({ ...updateTask, points: parseInt(event.target.value) });
     };
 
-    function handleToEditTasksChange() {
-        if (toUpdateTasks) {
+    function handleToEditTasksChange(title) {
+        if (toUpdateTasks && title) {
             setUpdatedTasks(false)
         } else {
             setUpdatedTasks(true)
@@ -102,17 +102,11 @@ function Task(props) {
     function handleUpdateTask(title) {
         updateTaskOfGroup(group.id, { title: title, updatedInfo: updateTask })
             .then(resp => {
-                console.log(resp)
-                let aux = group
-                aux.tasks = group.tasks.filter(task => {
-                    if (task.title !== title) {
-                        return task
-                    } else {
-                        return null
-                    }
-                })
-                setGroup({ ...aux })
-                setUpdatedTasks(false)
+                getSpecificGroup(id)
+                    .then(groupObj => {
+                        let aux = groupObj.message
+                        setGroup(aux)
+                    })
             })
             .catch(err => {
                 toast.error(err.body, {
@@ -258,7 +252,7 @@ function Task(props) {
                                                 : ""}
                                             <CardActions>
                                                 <Grid item xs={12} align='left'>
-                                                    <Button size="small" color="primary" onClick={handleToEditTasksChange}>
+                                                    <Button size="small" color="primary" onClick={handleToEditTasksChange.bind(null, task.title)}>
                                                         {toUpdateTasks ? "-" : "Update"}
                                                     </Button>
                                                 </Grid>
