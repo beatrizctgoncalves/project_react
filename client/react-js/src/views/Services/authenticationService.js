@@ -1,30 +1,38 @@
 const { makeRequest } = require('./Requests').requests;
-
+const users = 'http://localhost:8081/server/users/g5/pluggable/gamification/'
 
 export async function loginFetch(usernameInput, passwordInput) {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/signin`
+    const uri = `signin`
     const options = {
         username: usernameInput,
         password: passwordInput
     }
 
-    return makeRequest(uri, options, 'POST')
+    return makeRequest(users.concat(uri), options, 'POST')
 }
 
 export async function signUpFetch(options) {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/signup`
+    const uri = `signup`
 
-    return makeRequest(uri, options, 'POST')
-        .then(resp => {
-            return resp.message
-        })
+    return makeRequest(users.concat(uri), options, 'POST')
+        .then(resp => resp.message)
 }
 
 export async function logout() {
-    const uri = `http://localhost:8081/server/users/g5/pluggable/gamification/logout`
+    const uri = `logout`
 
-    return makeRequest(uri, {}, 'POST')
+    return makeRequest(users.concat(uri), {}, 'POST')
+        .then(resp => resp)
+}
+
+export async function loginGoogle() {
+    const uri = `google/signIn`
+
+    return fetch(users.concat(uri), { method: "GET" })
         .then(resp => {
+            console.log("here")
+            console.log(resp.url)
+
             return resp
         })
 }

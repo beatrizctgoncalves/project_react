@@ -7,7 +7,7 @@ import { useStyles } from '../Components/Styles/Style';
 import Navbar from '../Components/Navbar';
 import { ToastContainer } from 'react-toastify';
 import GoogleIcon from '../GoogleIcon';
-import { loginGoogle } from "../Services/BasicService"
+import { loginGoogle } from "../Services/AuthenticationService"
 
 
 export default function SignIn() {
