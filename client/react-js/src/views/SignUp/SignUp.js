@@ -33,7 +33,7 @@ export default function SignUp() {
                                     Sign Up
                                 </Typography>
                                 <br /><br />
-
+                        
                                 <Form />
                             </Paper>
                         </Grid>

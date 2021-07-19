@@ -15,7 +15,7 @@ module.exports = {
     NOT_FOUND_USER_PROJECT_MSG: "User not found or Project not found",
     NOT_FOUND_SPRINT_MSG: "Sprint not found",
     NOT_FOUND_GROUP_MSG: "Group not found",
-    NOT_FOUND_TASK_MSG: "Group not found",
+    NOT_FOUND_TASK_MSG: "Task not found",
     NOT_FOUND_USER_TASK_MSG: "Member not found in this group",
     NOT_FOUND_GROUPS_MSG: "You do not have any groups yet",
     BAD_REQUEST_MSG: "Bad Request",

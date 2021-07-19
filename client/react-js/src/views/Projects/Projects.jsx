@@ -7,10 +7,11 @@ import { Typography, Container, CssBaseline, Grid, Box, CardMedia, CardActions, 
 import { ToastContainer, toast } from 'react-toastify';
 import { ButtonGreen, ButtonRed } from '../Components/Styles/ColorButtons';
 import Navbar from '../Components/Navbar.js';
-import { Gitlab, GitlabCredentialsMembers } from './Plugins/Gitlab';
-import { Jira, JiraCredentialsMembers } from './Plugins/Jira';
+import { Gitlab } from './Plugins/Gitlab';
+import { Jira } from './Plugins/Jira';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CredentialsMembers from './CredentialsMembers';
 
 
 function Projects(props) {
@@ -70,15 +71,6 @@ function Projects(props) {
             })
     }
 
-    const [toAddMemberCredentials, setAddMemberCredentials] = useState(false)
-    function handleAddCredentials() {
-        if (toAddMemberCredentials) {
-            setAddMemberCredentials(false)
-        } else {
-            setAddMemberCredentials(true)
-        }
-    }
-
     const classes = useStyles();
 
     return (
@@ -123,17 +115,13 @@ function Projects(props) {
                                             {project.title}
                                         </Typography>
 
-                                        <Typography gutterBottom variant="body1">
-                                            Owner's Credentials saved.
-                                        </Typography>
-
-                                        {project.memberCredentials.length !== 0 ?
-                                            <Typography gutterBottom variant="body2">
-                                                Member's Credentials saved.
+                                        {group.owner !== owner ?
+                                            <Typography gutterBottom variant="body1">
+                                                Add your credentials if you haven't done it yet!
                                             </Typography>
                                             :
-                                            <Typography gutterBottom variant="body2">
-                                                There is no Member's Credentials saved!
+                                            <Typography gutterBottom variant="body1">
+                                                Your credentials have been saved!
                                             </Typography>
                                         }
                                     </CardContent>
@@ -145,29 +133,7 @@ function Projects(props) {
                                             </ButtonRed>
                                         </CardActions>
                                         :
-                                        <>
-                                            {toAddMemberCredentials ?
-                                                <Paper>
-                                                    <Box mt={2} align='center'>
-                                                        <br />
-                                                        <Typography variant="h6" color="textSecondary">
-                                                            Select one of these options
-                                                        </Typography>
-                                                        <br />
-                                                        {project.type === 'Jira' ?
-                                                            <JiraCredentialsMembers groupId={group.id} project={project} />
-                                                            :
-                                                            <GitlabCredentialsMembers groupId={group.id} project={project} />
-                                                        }
-                                                    </Box>
-                                                    <br />
-                                                </Paper> : ""}
-                                            <CardActions>
-                                                <ButtonGreen size="small" color="primary" onClick={handleAddCredentials}>
-                                                    {toAddMemberCredentials ? "" : <AddIcon></AddIcon>}
-                                                </ButtonGreen>
-                                            </CardActions>
-                                        </>
+                                        <CredentialsMembers group={group} project={project} />
                                     }
                                 </Card >
                             </Grid >

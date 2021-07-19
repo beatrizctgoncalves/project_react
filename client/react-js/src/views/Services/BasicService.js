@@ -226,13 +226,11 @@ export async function getRankings(groupId) {
 export async function loginGoogle() {
     const uri = `google/signIn`
 
-   return  fetch("http://localhost:8081/server/users/g5/pluggable/gamification/google/signIn",{ method: "GET" })
-    .then( resp => {
-        console.log("here")
-        console.log(resp)
-        
-        return resp
-    })
+    return fetch("http://localhost:8081/server/users/g5/pluggable/gamification/google/signIn", { method: "GET" })
+        .then(resp => {
+            console.log("here")
+            console.log(resp.url)
 
-   
+            return resp
+        })
 }

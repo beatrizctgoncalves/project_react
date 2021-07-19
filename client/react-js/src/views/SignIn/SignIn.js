@@ -1,15 +1,23 @@
 import React from 'react';
 import LockOpen from '@material-ui/icons/LockOpen';
-import { Container, Typography, Box, CssBaseline, Avatar, Grid, Paper } from '@material-ui/core';
+import { Container, Typography, Box, CssBaseline, Avatar, Grid, Paper, Button } from '@material-ui/core';
 import Footer from '../Components/Footer';
 import Form from '../Components/SignIn/FormSignIn';
 import { useStyles } from '../Components/Styles/Style';
 import Navbar from '../Components/Navbar';
 import { ToastContainer } from 'react-toastify';
+import GoogleIcon from '../GoogleIcon';
+import { loginGoogle } from "../Services/BasicService"
 
 
 export default function SignIn() {
   const classes = useStyles();
+
+  function handleSubmitGoogle() {
+    loginGoogle()
+      .then(resp => window.location.assign(resp.url))
+      .catch(err => console.log(err))
+  }
 
   return (
     <div className={classes.root}>
@@ -34,14 +42,27 @@ export default function SignIn() {
                 </Typography>
                 <br /><br />
 
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Button color='secondary' startIcon={<GoogleIcon />} onClick={handleSubmitGoogle} size="large" variant="outlined">
+                      Login with Google
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography color="textSecondary" variant="body2">
+                      or login with your username
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <br />
+
                 <Form />
               </Paper>
             </Grid>
           </Grid>
         </Container>
 
-        <Box mt={0}>
-          <br /><br />
+        <Box mt={2}>
           <Footer />
         </Box>
       </main>

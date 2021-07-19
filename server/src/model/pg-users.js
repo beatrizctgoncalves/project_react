@@ -37,8 +37,14 @@ module.exports = function (express, services, aux, authization) {
 
 
     function signUp(req, res) {
+        const username = request.body.username;
+        const password = request.body.password;
+        const name = request.body.name;
+        const surname = request.body.surname;
+        const email = request.body.email;
+
         aux.promisesAsyncImplementation(
-            services.createUser(req),
+            services.createUser(username, password, name, surname, email),
             res
         );
     }
@@ -50,6 +56,7 @@ module.exports = function (express, services, aux, authization) {
                 res.statusCode = err.status
                 res.json({ error: err })
             })
+
         if (req.isAuthenticated()) {
             res.json({ message: "Successfull SignIn" })
         } else {
@@ -86,14 +93,29 @@ module.exports = function (express, services, aux, authization) {
         );
     }
 
-    
-    function successCallback (req, res)  {
+    function successCallback(req, res) {
         if (req.isAuthenticated()) {
-            res.json({ message: "Successfull logout SignIn" })  
-        }
-        else {
-            res.json({ message: "Something wrong with logout" }) 
-            
+            console.log(req.user)
+            let username = '';
+            const name = req.user.username.split(' ');
+
+            if (req.user.idp) {
+                username = name[0].concat(req.user.idp)
+            } else if (req.user.idp_id) {
+                username = name[0].concat(req.user.idp_id)
+            }
+
+            services.getUser(username)
+                .then(() => res.json({ message: "Successfull SignIn" }))
+                .catch(() => {
+                    aux.promisesAsyncImplementation(
+                        services.createUserElastic(username, name[0], name[1], null),
+                        res
+                    );
+                })
+        } else {
+            res.json({ message: "Something wrong with SignIn" })
+
         }
     }
 }

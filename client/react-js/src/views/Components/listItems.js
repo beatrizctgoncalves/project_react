@@ -84,18 +84,18 @@ export const secondaryListItems = (
         <ListItemText primary={username} />
       </ListItem>
 
-      <ListItem button onClick={handleProfileEdit}>
-        <ListItemIcon>
-          <SettingsIcon />
-        </ListItemIcon>
-        <ListItemText primary="Settings" />
-      </ListItem>
-
       <ListItem button onClick={handleGroups}>
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
         <ListItemText primary="Groups" />
+      </ListItem>
+      
+      <ListItem button onClick={handleProfileEdit}>
+        <ListItemIcon>
+          <SettingsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Settings" />
       </ListItem>
     </>
   </div>

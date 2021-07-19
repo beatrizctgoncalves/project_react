@@ -25,7 +25,7 @@ function CardRankings(props) {
                 return null
             })
         }
-    }, [sprint])
+    })
 
 
     const theme = useTheme();

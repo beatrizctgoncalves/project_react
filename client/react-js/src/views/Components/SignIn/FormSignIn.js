@@ -5,6 +5,8 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { loginFetch } from '../../Services/AuthenticationService';
 import { toast } from 'react-toastify';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Container, Typography } from '@material-ui/core';
 
 
 function FormSignIn() {
@@ -37,51 +39,61 @@ function FormSignIn() {
 
   return (
     <div>
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        id="username"
-        label="Username"
-        name="username"
-        autoComplete="username"
-        autoFocus
-        onChange={handleUsername}
-      />
-      <TextField
-        variant="outlined"
-        margin="normal"
-        required
-        fullWidth
-        name="password"
-        label="Password"
-        type="password"
-        id="password"
-        autoComplete="current-password"
-        onChange={handlePassword}
-      />
-      <br />
-      <br />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        onClick={handlingSubmit}
-      >
-        Sign In
-      </Button>
-      <br />
-      <br />
-      <Grid container>
-        <Grid item>
-          <Link href="/sign-up" variant="body2">
-            {"Don't have an account? Sign Up"}
-          </Link>
-        </Grid>
-      </Grid>
-    </div >
+      <Box sx={{ backgroundColor: 'background.default', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center' }}>
+        <Container maxWidth="sm">
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+            onChange={handleUsername}
+          />
+
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={handlePassword}
+          />
+
+          <Box mt={3}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handlingSubmit}
+            >
+              Sign In
+            </Button>
+          </Box>
+
+          <br />
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Typography color="textSecondary" variant="body2">
+                Don&apos;t have an account?
+                {' '}
+                <Link component={RouterLink} to="/sign-up" variant="body2">
+                  Sign up
+                </Link>
+              </Typography>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+    </div>
   );
 }
 

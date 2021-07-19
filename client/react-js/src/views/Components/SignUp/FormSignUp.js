@@ -9,6 +9,8 @@ import { signUpFetch } from '../../Services/AuthenticationService';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react'
+import { Link as RouterLink } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 
 function FormSignUp() {
@@ -53,7 +55,6 @@ function FormSignUp() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        autoComplete="fname"
                         name="name"
                         variant="outlined"
                         required
@@ -120,12 +121,18 @@ function FormSignUp() {
             >
                 Sign Up
             </Button>
+
+            <br />
+            <br />
             <Grid container justify="flex-end">
                 <Grid item>
-                    <br />
-                    <Link href="/sign-in" variant="body2">
-                        Already have an account? Sign in
-                    </Link>
+                    <Typography color="textSecondary" variant="body2">
+                        Already have an account?
+                        {' '}
+                        <Link component={RouterLink} to="/sign-up" variant="body2">
+                            Sign in
+                        </Link>
+                    </Typography>
                 </Grid>
             </Grid>
         </div>

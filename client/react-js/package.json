@@ -12,6 +12,7 @@
     "bootstrap": "^4.6.0",
     "chokidar": "^3.5.2",
     "craco": "0.0.3",
+    "formik": "^2.2.9",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
     "react-chartjs-2": "^3.0.3",
@@ -23,7 +24,8 @@
     "react-scripts": "4.0.3",
     "react-spinners": "^0.11.0",
     "react-toastify": "^7.0.4",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "set PORT=8081 && craco start",

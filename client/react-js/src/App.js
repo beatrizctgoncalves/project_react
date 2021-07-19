@@ -16,7 +16,6 @@ import Projects from './views/Projects/Projects';
 import Rankings from './views/Rankings/Rankings';
 import Error404 from './views/Error/Error404';
 import Tasks from './views/Tasks/Tasks'
-import SignInG from './views/Components/SignIn/signInGoogle';
 
 
 function App() {
@@ -113,12 +112,6 @@ function App() {
           exact path='/groups'
         >
           {sessionStorage.getItem('username') ? <Groups /> : <SignIn />}
-        </Route>
-
-        <Route
-          exact path='/ola'
-        >
-          <SignInG/>
         </Route>
 
         <Route path='*'>

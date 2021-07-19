@@ -4,13 +4,7 @@ function services(databaseUsers, databaseGroups, servicesGroups, pgResponses, au
     const authUser = authization.user
 
     const serv = {
-        createUser: function (request) {
-            const username = request.body.username;
-            const password = request.body.password;
-            const name = request.body.name;
-            const surname = request.body.surname;
-            const email = request.body.email;
-
+        createUser: function (username, password, name, surname, email) {
             var regExp = /[a-zA-Z]/g;
             if (!regExp.test(username)) {  //verify if username is a string
                 return pgResponses.setError(
@@ -18,6 +12,7 @@ function services(databaseUsers, databaseGroups, servicesGroups, pgResponses, au
                     pgResponses.BAD_REQUEST_MSG
                 )
             }
+
             return authUser.create(username, password)
                 .then(databaseUsers.createUser(username, name, surname, email))
                 .then(() => {
@@ -31,6 +26,22 @@ function services(databaseUsers, databaseGroups, servicesGroups, pgResponses, au
                 .catch(err => {
                     if (!err.body) err.body = err.errors[0].message;
                     else this.deleteFromAuthization(username);
+                    return pgResponses.setError(err.status, err.body);
+                })
+        },
+
+        createUserElastic: function (username, name, surname, email) {
+            return databaseUsers.createUser(username, name, surname, email)
+                .then(() => {
+                    return pgResponses.setSuccessUri(
+                        pgResponses.CREATE,
+                        pgResponses.index.users,
+                        "/",
+                        username
+                    )
+                })
+                .catch(err => {
+                    if (!err.body) err.body = err.errors[0].message;
                     return pgResponses.setError(err.status, err.body);
                 })
         },

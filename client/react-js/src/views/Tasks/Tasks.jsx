@@ -91,8 +91,8 @@ function Task(props) {
         setUpdateTask({ ...updateTask, points: parseInt(event.target.value) });
     };
 
-    function handleToEditTasksChange(title) {
-        if (toUpdateTasks && title) {
+    function handleToEditTasksChange() {
+        if (toUpdateTasks) {
             setUpdatedTasks(false)
         } else {
             setUpdatedTasks(true)
@@ -223,40 +223,32 @@ function Task(props) {
                                     {owner === group.owner ?
                                         <>
                                             {toUpdateTasks ?
-                                                <>
-                                                    <Box mt={0} align='center'>
-                                                        <Grid item xs={6} align='center'>
-                                                            <TextField
-                                                                type="text"
-                                                                id="member"
-                                                                name="member"
-                                                                label="Member"
-                                                                onChange={handleMemberChange}
-                                                            />
+                                                <Box mt={0} align='center'>
+                                                    <Grid item xs={6} align='center'>
+                                                        <TextField
+                                                            type="text"
+                                                            id="member"
+                                                            name="member"
+                                                            label="Member"
+                                                            onChange={handleMemberChange}
+                                                        />
 
-                                                            <TextField
-                                                                type="text"
-                                                                id="pointsUpdated"
-                                                                name="pointsUpdated"
-                                                                label="Points"
-                                                                onChange={handlePointsChange}
-                                                            />
+                                                        <TextField
+                                                            type="text"
+                                                            id="pointsUpdated"
+                                                            name="pointsUpdated"
+                                                            label="Points"
+                                                            onChange={handlePointsChange}
+                                                        />
 
-                                                            <br />
-                                                            <Button size="small" type="submit" color="primary" onClick={handleUpdateTask.bind(null, task.title)} className={classes.button}>
-                                                                Save
-                                                            </Button>
-                                                        </Grid>
-                                                    </Box>
-                                                    <br />
-                                                </>
+                                                        <br /><br />
+                                                        <Button size="small" type="submit" color="primary" onClick={handleUpdateTask.bind(null, task.title)} className={classes.button}>
+                                                            Save
+                                                        </Button>
+                                                    </Grid>
+                                                </Box>
                                                 : ""}
                                             <CardActions>
-                                                <Grid item xs={12} align='left'>
-                                                    <Button size="small" color="primary" onClick={handleToEditTasksChange.bind(null, task.title)}>
-                                                        {toUpdateTasks ? "-" : "Update"}
-                                                    </Button>
-                                                </Grid>
                                                 <Button size="small" color="secondary" onClick={handleTaskDelete.bind(null, task.title)}>
                                                     <DeleteIcon />
                                                 </Button>
@@ -281,78 +273,91 @@ function Task(props) {
                     </Grid>
 
                     {group.owner === owner ?
-                        <Box pt={5} align='center'>
-                            {toAddTasks ?
-                                <Card>
-                                    <Box mt={3} align='center'>
-                                        <Grid container spacing={1} justify='center'>
-                                            <Grid item xs={6}>
-                                                <TextField
-                                                    type="text"
-                                                    id="title"
-                                                    name="title"
-                                                    required
-                                                    label="Title"
-                                                    onChange={handleTitle}
-                                                />
-                                            </Grid>
+                        <>
+                            {group.tasks.length !== 0 && group.owner === owner ?
+                                <Box mt={5} align='center'>
+                                    <Grid item xs={12} align='center'>
+                                        <Button size="small" color="primary" variant="contained" onClick={handleToEditTasksChange}>
+                                            {toUpdateTasks ? "-" : "Update Task"}
+                                        </Button>
+                                    </Grid>
+                                </Box>
+                                : ''}
+
+                            <Box pt={3} align='center'>
+                                {toAddTasks ?
+                                    <Card>
+                                        <CardContent>
+                                            <Box mt={3} align='center'>
+                                                <Grid container spacing={1} justify='center'>
+                                                    <Grid item xs={6}>
+                                                        <TextField
+                                                            type="text"
+                                                            id="title"
+                                                            name="title"
+                                                            required
+                                                            label="Title"
+                                                            onChange={handleTitle}
+                                                        />
+                                                    </Grid>
+                                                    <br />
+
+                                                    <Grid item xs={6}>
+                                                        <TextField
+                                                            type="text"
+                                                            id="points"
+                                                            name="points"
+                                                            required
+                                                            label="Points"
+                                                            onChange={handlePoints}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+
+                                                <br /><br />
+                                                <Grid container spacing={1} justify='center'>
+                                                    <Grid item xs={5}>
+                                                        <Typography variant="h6" color="textSecondary">
+                                                            Date:
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={5}>
+                                                        <input
+                                                            type="date"
+                                                            id="date"
+                                                            name="date"
+                                                            max="2050-12-31"
+                                                            min="2020-06-27"
+                                                            variant="outlined"
+                                                            margin="normal"
+                                                            required
+                                                            className="form-control"
+                                                            placeholder="2021-06-10"
+                                                            onChange={handleBeginDate}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+
+                                                <br />
+                                                <ButtonGreen
+                                                    variant="contained"
+                                                    className={classes.margin}
+                                                    onClick={handleAddTasks}
+                                                >
+                                                    Add Task
+                                                </ButtonGreen>
+                                            </Box>
                                             <br />
-
-                                            <Grid item xs={6}>
-                                                <TextField
-                                                    type="text"
-                                                    id="points"
-                                                    name="points"
-                                                    required
-                                                    label="Points"
-                                                    onChange={handlePoints}
-                                                />
-                                            </Grid>
-                                        </Grid>
-
-                                        <br /><br />
-                                        <Grid container spacing={1} justify='center'>
-                                            <Grid item xs={5}>
-                                                <Typography variant="h6" color="textSecondary">
-                                                    Date:
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={5}>
-                                                <input
-                                                    type="date"
-                                                    id="date"
-                                                    name="date"
-                                                    max="2050-12-31"
-                                                    min="2020-06-27"
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    required
-                                                    className="form-control"
-                                                    placeholder="2021-06-10"
-                                                    onChange={handleBeginDate}
-                                                />
-                                            </Grid>
-                                        </Grid>
-
-                                        <br />
-                                        <ButtonGreen
-                                            variant="contained"
-                                            className={classes.margin}
-                                            onClick={handleAddTasks}
-                                        >
-                                            Add Task
-                                        </ButtonGreen>
-                                    </Box>
-                                    <br />
-                                </Card> : ""}
-
+                                        </CardContent>
+                                    </Card> : ""}
+                            </Box>
                             <Box mt={3} align='center'>
                                 <ButtonGreen variant="contained" color="primary" className={classes.margin} onClick={handleToAddTasksChange}>
                                     <AddIcon />
                                     {toAddTasks ? "" : "Add Task"}
                                 </ButtonGreen>
                             </Box>
-                        </Box>
+                        </>
                         : ''}
                 </Container>
 
@@ -366,7 +371,7 @@ function Task(props) {
                     <Footer />
                 </Box>
             </main>
-        </div>
+        </div >
     )
 }
 
