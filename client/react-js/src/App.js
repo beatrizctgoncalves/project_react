@@ -16,6 +16,7 @@ import Projects from './views/Projects/Projects';
 import Rankings from './views/Rankings/Rankings';
 import Error404 from './views/Error/Error404';
 import Tasks from './views/Tasks/Tasks'
+import GooglePage from './views/Google/GooglePage';
 
 
 function App() {
@@ -114,11 +115,16 @@ function App() {
           {sessionStorage.getItem('username') ? <Groups /> : <SignIn />}
         </Route>
 
+        <Route
+          exact path='/googleAuth/:username'
+          render={(props) => <GooglePage {...props} />}
+        />
+
         <Route path='*'>
           <Error404 />
         </Route>
 
-      
+
       </Switch>
     </Router >
   );

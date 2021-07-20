@@ -152,7 +152,6 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     function addMemberInfoToProject(req, res) {
-        console.log(req.body)
         aux.promisesAsyncImplementation(
             services.addMemberInfoToProject(req.params.group_id, req.body.project_URL, req.params.project_id, req.params.username, req.body.memberCredentials),
             res

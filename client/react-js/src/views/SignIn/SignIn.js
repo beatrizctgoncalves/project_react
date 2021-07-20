@@ -5,9 +5,9 @@ import Footer from '../Components/Footer';
 import Form from '../Components/SignIn/FormSignIn';
 import { useStyles } from '../Components/Styles/Style';
 import Navbar from '../Components/Navbar';
-import { ToastContainer } from 'react-toastify';
-import GoogleIcon from '../GoogleIcon';
-import { loginGoogle } from "../Services/AuthenticationService"
+import { ToastContainer, toast } from 'react-toastify';
+import GoogleIcon from '../Google/GoogleIcon';
+import { loginGoogle } from "../Services/AuthenticationService";
 
 
 export default function SignIn() {
@@ -16,7 +16,15 @@ export default function SignIn() {
   function handleSubmitGoogle() {
     loginGoogle()
       .then(resp => window.location.assign(resp.url))
-      .catch(err => console.log(err))
+      .catch(err => toast.error(err.body, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }))
   }
 
   return (

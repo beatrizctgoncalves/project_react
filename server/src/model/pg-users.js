@@ -1,6 +1,8 @@
 'use strict'
 
 
+const clientPage = 'http://localhost:8081/googleAuth/';
+
 module.exports = function (express, services, aux, authization) {
     if (!services) {
         throw "Invalid services object";
@@ -95,7 +97,6 @@ module.exports = function (express, services, aux, authization) {
 
     function successCallback(req, res) {
         if (req.isAuthenticated()) {
-            console.log(req.user)
             let username = '';
             const name = req.user.username.split(' ');
 
@@ -106,16 +107,13 @@ module.exports = function (express, services, aux, authization) {
             }
 
             services.getUser(username)
-                .then(() => res.json({ message: "Successfull SignIn" }))
+                .then(() => res.redirect(clientPage.concat(username)))
                 .catch(() => {
-                    aux.promisesAsyncImplementation(
-                        services.createUserElastic(username, name[0], name[1], null),
-                        res
-                    );
+                    services.createUserElastic(username, name[0], name[1], null)
+                        .then(() => res.redirect(clientPage.concat(username)))
                 })
         } else {
-            res.json({ message: "Something wrong with SignIn" })
-
+            res.json({ message: "Something wrong with Sign In" })
         }
     }
 }
