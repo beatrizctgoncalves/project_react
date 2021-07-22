@@ -38,7 +38,7 @@ module.exports = function (express, services, aux, authization) {
     return router;
 
 
-    function signUp(req, res) {
+    function signUp(request, res) {
         const username = request.body.username;
         const password = request.body.password;
         const name = request.body.name;
@@ -97,14 +97,8 @@ module.exports = function (express, services, aux, authization) {
 
     function successCallback(req, res) {
         if (req.isAuthenticated()) {
-            let username = '';
+            let username = req.user.username;
             const name = req.user.username.split(' ');
-
-            if (req.user.idp) {
-                username = name[0].concat(req.user.idp)
-            } else if (req.user.idp_id) {
-                username = name[0].concat(req.user.idp_id)
-            }
 
             services.getUser(username)
                 .then(() => res.redirect(clientPage.concat(username)))

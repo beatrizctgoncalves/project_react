@@ -4,6 +4,9 @@
 module.exports = async function() {
     const express = require('express'); //Import the express module
     const app = express(); //Create an Express application
+    
+    var cors = require('cors');
+    app.use(cors());
 
     const bodyParser = require('body-parser'); //Import the body-parser module 
     app.use(bodyParser.json()); //Parse application/json
