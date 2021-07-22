@@ -19,6 +19,7 @@ module.exports = {
     NOT_FOUND_USER_TASK_MSG: "Member not found in this group",
     NOT_FOUND_GROUPS_MSG: "You do not have any groups yet",
     BAD_REQUEST_MSG: "Bad Request",
+    BAD_REQUEST_MSG_POINTS: "Bad Request! Points should be a positive number",
     BAD_REQUEST_AVATAR_MSG: "Bad Request! Your Avatar's link needs to end with .png",
     BAD_REQUEST_USERNAME_MSG: "Invalid username supplied",
     BAD_REQUEST_PASSWORD_MSG: "Invalid password supplied",

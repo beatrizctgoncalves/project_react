@@ -432,6 +432,12 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                             pgResponses.FORBIDDEN_TASK_MSG
                         )
                     }
+                    if(!Number.isInteger(points) || points < 0){
+                        return pgResponses.setError(
+                            pgResponses.BAD_REQUEST,
+                            pgResponses.BAD_REQUEST_MSG_POINTS
+                        )
+                    }
                     return databaseGroups.addTaskToGroup(group_id, title, date, points) //add task
                         .then(() => {
                             return pgResponses.setSuccessUri(
@@ -473,6 +479,12 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                                 pgResponses.FORBIDDEN_TASK_USER_MSG
                             )
                         }
+                    }
+                    if(updatedInfo.points && (!Number.isInteger(updatedInfo.points) || updatedInfo.points < 0)){
+                        return pgResponses.setError(
+                            pgResponses.BAD_REQUEST,
+                            pgResponses.BAD_REQUEST_MSG_POINTS
+                        )
                     }
 
                     return databaseGroups.updateTaskFromGroup(group_id, taskIndex, updatedInfo)
