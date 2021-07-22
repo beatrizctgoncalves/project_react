@@ -24,6 +24,7 @@ module.exports = {
     BAD_REQUEST_PASSWORD_MSG: "Invalid password supplied",
     FORBIDDEN_PROJECTS_MSG: "Forbidden! This Project already exists in this Group",
     FORBIDDEN_USER_MSG: "Forbidden! This User already exists in this Group",
+    FORBIDDEN_USER_NOT_OWNER: "Forbidden! This User doesn't have permission to do this action",
     FORBIDDEN_SPRINT_MSG: "Forbidden! This Sprint already exists in this Group",
     FORBIDDEN_TASK_MSG: "Forbidden! This Task already exists in this Group",
     FORBIDDEN_USER_INFO_MSG: "Forbidden! This User already saved his/her information",

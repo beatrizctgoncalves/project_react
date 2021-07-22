@@ -68,15 +68,16 @@ module.exports = function (express, services, servicesPlugins, aux) {
     }
 
     function deleteGroup(req, res) {
+        console.log(req.user.username)
         aux.promisesAsyncImplementation(
-            services.deleteGroup(req.params.group_id),
+            services.deleteGroup(req.params.group_id, req.user.username),
             res
         );
     }
 
     function editGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.editGroup(req.params.group_id, req.body.name, req.body.description),
+            services.editGroup(req.params.group_id, req.body.name, req.body.description, req.user.username),
             res
         );
     }
@@ -90,21 +91,21 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     function addTaskToGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.addTaskToGroup(req.params.group_id, req.body.title, req.body.date, req.body.points),
+            services.addTaskToGroup(req.params.group_id, req.body.title, req.body.date, req.body.points, req.user.username),
             res
         );
     }
 
     function updateTaskFromGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.updateTaskFromGroup(req.params.group_id, req.body.title, req.body.updatedInfo),
+            services.updateTaskFromGroup(req.params.group_id, req.body.title, req.body.updatedInfo, req.user.username),
             res
         );
     }
 
     function addProjectToGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.URL, req.body.ownerCredentials, req.body.type),
+            services.addProjectToGroup(req.params.group_id, req.body.Pid, req.body.URL, req.body.ownerCredentials, req.body.type, req.user.username),
             res
         );
     }
@@ -118,21 +119,21 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     function removeProjectFromGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.removeProjectFromGroup(req.params.group_id, req.body.URL, req.params.project_id),
+            services.removeProjectFromGroup(req.params.group_id, req.body.URL, req.params.project_id, req.user.username),
             res
         );
     }
 
     function removeSprintFromGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.removeSprintFromGroup(req.params.group_id, req.body.title),
+            services.removeSprintFromGroup(req.params.group_id, req.body.title, req.user.username),
             res
         );
     }
 
     function removeTaskFromGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.removeTaskFromGroup(req.params.group_id, req.body.title),
+            services.removeTaskFromGroup(req.params.group_id, req.body.title, req.user.username),
             res
         );
     }
@@ -146,28 +147,28 @@ module.exports = function (express, services, servicesPlugins, aux) {
 
     function addMemberToGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.addMemberToGroup(req.params.group_id, req.body.username),
+            services.addMemberToGroup(req.params.group_id, req.body.username, req.user.username),
             res
         );
     }
 
     function addMemberInfoToProject(req, res) {
         aux.promisesAsyncImplementation(
-            services.addMemberInfoToProject(req.params.group_id, req.body.project_URL, req.params.project_id, req.params.username, req.body.memberCredentials),
+            services.addMemberInfoToProject(req.params.group_id, req.body.project_URL, req.params.project_id, req.params.username, req.body.memberCredentials, req.user.username),
             res
         );
     }
 
     function addSprintToGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.addSprintToGroup(req.params.group_id, req.body.title, req.body.beginDate, req.body.endDate),
+            services.addSprintToGroup(req.params.group_id, req.body.title, req.body.beginDate, req.body.endDate, req.user.username),
             res
         );
     }
 
     function removeMemberFromGroup(req, res) {
         aux.promisesAsyncImplementation(
-            services.removeMemberFromGroup(req.params.group_id, req.params.username),
+            services.removeMemberFromGroup(req.params.group_id, req.params.username, req.user.username),
             res
         );
     }
