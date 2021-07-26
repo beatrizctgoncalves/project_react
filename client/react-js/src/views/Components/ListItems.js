@@ -12,7 +12,6 @@ import Home from '@material-ui/icons/Home';
 import React from 'react';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-
 const username = window.sessionStorage.getItem("username")
 
 function handleSignIn() {

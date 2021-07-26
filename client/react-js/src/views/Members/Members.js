@@ -133,9 +133,9 @@ function Members(props) {
                 <Container maxWidth="md" component="main">
                     <Grid container spacing={4} justify='center'>
                         {group.members && group.members.length !== 0 ? group.members.map(member =>
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid item xs={12} sm={6} md={4} key={member}>
                                 <Card className={classes.card}>
-                                    <CardMembers member={member} key={member} />
+                                    <CardMembers member={member} />
                                     <CardActions>
                                         <Button size="small" color="primary" onClick={handleUserProfile.bind(null, member)}>
                                             View

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-
 export default function GooglePage(props) {
     const { username } = props.match.params
 
@@ -8,7 +7,6 @@ export default function GooglePage(props) {
         window.sessionStorage.setItem('username', username);
         window.location.assign('/groups')
     })
-
 
     return (
         <></>

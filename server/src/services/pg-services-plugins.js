@@ -66,7 +66,7 @@ function services(databaseGroup, pgResponses) {
                                 let usersInfoTask = { SprintTitle: sprint.title, Scores: [] }
                                 if (task.members) {
                                     task.members.forEach(m => {
-                                        usersInfoTask.Scores.push({ AppUsername: m, Points: task.points })
+                                        usersInfoTask.Scores.push({ AppUsername: m, Points: parseInt(task.points) })
                                     })
                                 }
                                 tasksPoints.push(usersInfoTask)
