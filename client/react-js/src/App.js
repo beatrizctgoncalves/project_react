@@ -123,8 +123,6 @@ function App() {
         <Route path='*'>
           <Error404 />
         </Route>
-
-
       </Switch>
     </Router >
   );

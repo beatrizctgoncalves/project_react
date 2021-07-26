@@ -35,9 +35,11 @@ export default function CredentialsMembers(props) {
                         <br />
                         {project.type === 'Jira' ?
                             <JiraCredentialsMembers groupId={group.id} project={project} />
-                            :
+                            : ''}
+
+                        {project.type === 'Gitlab' ?
                             <GitlabCredentialsMembers groupId={group.id} project={project} />
-                        }
+                            : ''}
                     </Box>
                     <br />
                 </Paper> : ""}

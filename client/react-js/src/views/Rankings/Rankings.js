@@ -18,10 +18,9 @@ function Rankings(props) {
     useEffect(() => {
         getRankings(id)
             .then(resp => {
-                setSprints(resp.message)
+                setSprints(resp.message)                
             })
             .catch(err => {
-                console.log(err)
                 toast.error(err.body, {
                     position: "top-left",
                     autoClose: 5000,
