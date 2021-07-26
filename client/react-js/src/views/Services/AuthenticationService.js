@@ -29,10 +29,5 @@ export async function loginGoogle() {
     const uri = `google/signIn`
 
     return fetch(users.concat(uri), { method: "GET" })
-        .then(resp => {
-            console.log("here")
-            console.log(resp.url)
-
-            return resp
-        })
+        .then(resp => resp)
 }
