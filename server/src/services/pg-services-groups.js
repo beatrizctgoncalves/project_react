@@ -310,12 +310,6 @@ function services(databaseGroups, databaseUsers, pgResponses) {
                 .then(userObj => {
                     return databaseGroups.getGroupDetails(group_id) //check if the group exists
                         .then(groupObj => {
-                            if(groupObj.owner != requestUser) {
-                                return pgResponses.setError(
-                                    pgResponses.FORBIDDEN,
-                                    pgResponses.FORBIDDEN_USER_NOT_OWNER
-                                )
-                            }
                             const project_index = groupObj.projects.findIndex(p => p.id == project_id && p.URL == project_URL)
                             const userExists = groupObj.members.findIndex(m => m == username)
                             if (userExists == -1 || project_index == -1) {
